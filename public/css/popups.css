@@ -7,9 +7,89 @@
     font-size: 12px;
     border-radius: 3px;
     color: var(--color1);
-    border: var(--color1) solid 1px;
     top:-25px;
     text-align: center;
     width: 120px;
+}
+
+/*----------side popups----------*/
+.sidePopup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    height:100%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    display: none;
+    background-color: var(--color2);
+}
+
+.slideIn {
+    display: block;
+    animation: slideIn 0.8s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.sidePopupMain{
+    position: relative;    
+    text-align: center;
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.sppTitle{
+    font-size: 18px;
+    font-weight: bold;
+}
+.closeSidePopup{
+    position: absolute;
+    font-size: 16px;
+    border: var(--color1) solid 2px;
+    color: var(--color1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    right: -42px;
+    top: -38px;
+}
+
+.closeSidePopup:hover{    
+    color: var(--color2);
+    background-color: var(--color1);
+}
+
+.sidePopupContent{
+    position: relative;    
+    text-align: center;
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.sppSubtitle{
+    font-size: 17px;
+}
+
+.sppText{
+    font-size: 15px;
+}
+
+.sidePopupError{
+    height: 15px;
+}
+
+/*sizes*/
+.sppxl{
+    width: 1100px;
 }
 

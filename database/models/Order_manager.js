@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     const alias = "Orders_managers"
     const cols = {
        id:{
-       type : DataTypes.INTEGER,
-       primaryKey: true,
-       autoIncrement : true,
-       allowNull: false
+         type : DataTypes.INTEGER,
+         primaryKey: true,
+         autoIncrement : true,
+         allowNull: false
        },
        order_manager_name:{
          type: DataTypes.STRING,

@@ -23,6 +23,7 @@ accent-color: black
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+    position: relative;
 }
 
 .divInputsColumn{
@@ -54,22 +55,54 @@ accent-color: black
     top: -8px;
     padding: 0px 5px;
     background-color: var(--color2);
-    z-index: 1;
 }
 
-.inputFilter{
-    font-size: 13px;
+/*----------TABLES RESUME----------*/
+.divTableSummary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 30px;
+    font-size: 14px;
+
+
 }
+
 
 /*----------INPUTS SIZES----------*/
+.inputXS{
+    width: 40px;
+    padding: 7px 0px 3px 0px;
+}
+
+.inputS{
+    width: 70px;
+    padding: 7px 0px 3px 0px;
+}
+
+.inputM{
+    width: 100px;
+    padding: 7px 0px 3px 0px;
+}
+
 .inputL{
     width: 150px;
+    padding: 7px 0px 3px 0px;
+}
+
+.inputXL{
+    width: 200px;
     padding: 7px 0px 3px 0px;
 }
 
 .inputXXL{
     width: 300px;
     padding: 8px 0px;
+}
+
+.inputXXXL{
+    width: 360px;
+    padding: 7px 0px 3px 0px;
 }
 
 /*----------DIV CHECKBOX----------*/

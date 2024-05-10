@@ -13,6 +13,7 @@ thead{
     max-height: 400px; /*to avoid overflow, it depends on the website landscape*/
     overflow-y: auto;
     width: fit-content;
+    margin: auto;
 }
 
 .theadCss{

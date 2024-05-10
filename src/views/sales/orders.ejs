@@ -1,7 +1,7 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-<div class="mainTitle">
+<div class="mainTitle mbxxl">
 
     <div class="titleL">Pedidos en curso</div>
 
@@ -104,18 +104,16 @@
 
     </div>
 
-    
-
 </div>
 
 <div class="content">
 
     <!---------GENERAL ACTIONS--------->
     <div class="divGeneralActions">
-        <div class="divGeneralAction">
+        <div class="divGeneralAction" id="createEditOrder">
             <i class="fa-solid fa-plus"></i>
             <div class="showActionPopup">
-                Crear / Editar pedido
+                Crear pedido
             </div>
         </div>
 
@@ -152,10 +150,8 @@
             <tbody id="vehiclesBody"></tbody>
         </table>
     </div>
-
-
-    
-
-    
     
 </div>
+
+<%- include('./ordersCreateEdit') %>
+<script type="module" src="/js/orders.js"></script>

@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     const alias = "Customers"
     const cols = {
        id:{
-       type : DataTypes.INTEGER,
-       primaryKey: true,
-       autoIncrement : true,
-       allowNull: false
+        type : DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement : true,
+        allowNull: false
        },
        customer_name:{
          type: DataTypes.STRING,

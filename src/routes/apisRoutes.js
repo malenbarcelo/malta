@@ -1,9 +1,9 @@
 const express = require('express')
-const apisController = require('../controllers/apisControllers/apisDataController.js')
+const apisCuttingsController = require('../controllers/apisControllers/apisCuttingsController.js')
 const router = express.Router()
 
-router.get('/customers',apisController.customers)
-router.get('/orders-managers',apisController.ordersManagers)
+//cuttings
+router.get('/cuttings/product-options/:productDescription',apisCuttingsController.productOptions)
 
 
 module.exports = router

@@ -1,0 +1,87 @@
+<div class="sidePopup sppxl" id="createEditPopup">
+
+    <div class="sidePopupMain">
+        <div class="closeSidePopup" id="closeCreateEditPopup">X</div>
+        <div class="sppTitle">CREAR PEDIDO</div>
+        <div class="sppSubtitle mtm">Cliente XXXX - Pedido #XXXXX</div>
+    </div>
+
+    <div class="sidePopupContent">
+        
+        <div class="divInputsRow">
+
+            <div class="divInput">
+                <label for="selectProduct1" class="label1">Producto</label>
+                <select name="selectProduct1" class="input1 inputXXXL" id="selectProduct1">
+                    <option value="default"></option>
+                    <% distinctProducts.forEach(product => { %>
+                        <option value="<%= product.description %>">
+                            <%= product.description %>
+                        </option>
+                    <% }) %>
+                </select>
+                <div class="sidePopupError errorColor divError">Error</div>
+            </div>
+
+            <div class="divInput">
+                <label for="selectCustomer" class="label1">Color</label>
+                <select name="selectCustomer" id="filterCustomer" class="input1 inputL">
+                    <option value="default"></option>
+                </select>
+                <div class="sidePopupError errorColor divError">Error</div>
+            </div>
+
+            <div class="divInput">
+                <label for="selectCustomer" class="label1">Talle</label>
+                <select name="selectCustomer" id="filterCustomer" class="input1 inputS">
+                    <option value="default"></option>
+                </select>
+                <div class="sidePopupError errorColor divError">Error</div>
+            </div>
+
+            <div class="divInput">
+                <label for="selectCustomer" class="label1">Cantidad</label>
+                <input type="text" class="input1 inputM">
+                
+                <div class="sidePopupError errorColor divError">Error</div>
+            </div>
+            
+            <div class="createEditAddProduct">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+
+
+        </div>
+
+        <div class="divTableSummary mts mbm">            
+            <div><b>Subtotal:</b> $225.000,00</div>
+            <div><b>Descuento:</b> 30%</div>
+            <div><b>Total:</b> $225.000,00</div>
+        </div>
+
+        <div class="divTable mtl">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thLeftBorder thTall">Producto</th>
+                        <th class="theadCss wL thTall">Color</th>
+                        <th class="theadCss wXS thTall">Talle</th>    
+                        <th class="theadCss wS thTall">Cantidad</th>
+                        <th class="theadCss wXS thTall">Precio unitario</th>
+                        <th class="theadCss wS thRightBorder thTall">Total</th>
+                    </tr>
+                </thead>
+                <tbody id=""></tbody>
+            </table>
+        </div>
+
+        
+
+        
+    </div>
+    
+    
+
+    
+</div>
+
