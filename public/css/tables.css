@@ -1,0 +1,68 @@
+/*---------------------tables---------------------*/
+table{
+    margin: auto;
+    border-collapse: collapse;
+}
+
+thead{
+    position: sticky;
+    top:0;
+}/*to leave titles fixed*/ 
+
+.divTable{
+    max-height: 400px; /*to avoid overflow, it depends on the website landscape*/
+    overflow-y: auto;
+    width: fit-content;
+}
+
+.theadCss{
+    font-size: 13px;
+    text-align: center;
+    background-color: var(--color1);
+    color: var(--color2);
+    padding: 4px;
+    font-weight: lighter;
+}
+
+.thLeftBorder{
+    border-top-left-radius: 15px;
+}/*Add radius to left top border*/
+
+.thRightBorder{
+border-top-right-radius: 15px;
+}/*Add radius to right top border*/
+
+.thTall{
+    height: 25px;
+}
+
+.divThWithIcon{
+    display: flex;
+    column-gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+/*------Tbody------*/
+.tBody1{
+    font-weight: lighter;
+    padding: 9px 0px;
+    font-size: 13px;
+}
+
+.tBodyEven{
+    background-color: var(--color2);
+}/*background when row number is even*/
+
+.tBodyOdd{
+    background-color: var(--color5);
+}/*background when row number is odd*/
+
+.bodyIcon{
+    cursor: pointer;
+}
+
+.bodyIcon:hover{
+    font-size: 15px;
+}
+

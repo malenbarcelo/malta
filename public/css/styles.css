@@ -1,0 +1,25 @@
+/*--------------------mainMenu.ejs--------------------*/
+.mainMenu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+    margin-top: 20px;
+}
+
+.itemMainMenu{
+    width: 300px;
+    text-align: center;
+    padding: 15px 0px;
+    color: var(--color2);
+    background-color: var(--color1);
+    border: var(--color1) solid 2px;
+    border-radius: 15px;
+}
+
+.itemMainMenu:hover{
+    background-color: var(--color2);
+    color:var(--color1);
+    font-weight: bold;
+
+}

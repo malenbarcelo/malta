@@ -1,0 +1,125 @@
+/*----------------top header----------------*/
+.topHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color2);
+    height: 75%;
+    padding: 0px 30px;
+}
+
+.divCompanyLogo{
+    width: 33.33%;
+}
+.companyLogo{
+    height: 55px;
+}
+
+.divTitle{
+    width: 33.33%;
+    text-align: center;
+}
+
+.divUserLogged{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    width: 33%;
+}
+
+.iconUser{
+    font-size: 25px;
+    color: var(--color2);
+}
+
+.userLogged{
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color2);
+}
+
+.userLoggedName{
+    font-size: 13px;
+    display: flex;
+    column-gap: 8px;
+}
+.logout{
+    color: var(--color2);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+
+/*----------------bottom header----------------*/
+.bottomHeader{
+    display: flex;
+    justify-content: center;
+    column-gap: 35px;
+    height: 25%;
+    border-top: var(--color1) 1px solid;
+    border-bottom: var(--color1) 1px solid;
+    position: relative;
+    color: var(--color2);
+}
+
+.itemsMenu{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 50px;
+}
+
+.subItems{
+    position: absolute;
+    top:100%;
+    background-color: white;
+    display: none;
+    flex-direction: column;
+    width: 150px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.itemHeaderMenu{
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.subitemHeaderMenu{
+    color: var(--color5);
+    font-size: 14px;
+    padding: 8px 0px;
+}
+
+.itemHeaderMenu:hover, .subitemHeaderMenu:hover{
+    color:var(--color6);
+    font-weight: bold;
+}
+
+.selectedItem{
+    font-weight: bold;
+}
+
+.goToMainMenu{
+    color: var(--color1);
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    right: 30px;
+    font-size: 14px;
+    column-gap: 5px;
+    cursor: pointer;
+}
+
+.goToMainMenu:hover{
+    font-weight: bold;
+
+}
+

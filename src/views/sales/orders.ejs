@@ -1,0 +1,161 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<div class="mainTitle">
+
+    <div class="titleL">Pedidos en curso</div>
+
+    <div class="absoluteDivMainTitle">
+        <!--------FILTERS-------->
+        <div class="divInputsRow">
+            
+            <div class="divInput">
+                <label for="selectCustomer" class="label1">Cliente</label>
+                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                    <option value="default"></option>
+                    <% customers.forEach(customer => { %>
+                        <option value="<%= customer.id %>">
+                            <%= customer.customer_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="divInput">
+                <label for="selectCustomer" class="label1"># Pedido</label>
+                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                    <option value="default"></option>
+                    <% customers.forEach(customer => { %>
+                        <option value="<%= customer.id %>">
+                            <%= customer.customer_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="divInput">
+                <label for="selectOrderManager" class="label1">Encargado</label>
+                <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL inputFilter">
+                    <option value="default"></option>
+                    <% ordersManagers.forEach(manager => { %>
+                        <option value="<%= manager.id %>">
+                            <%= manager.order_manager_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="divInput">
+                <label for="selectOrderStatus" class="label1">Estado</label>
+                <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL inputFilter">
+                    <option value="default"></option>
+                    <% ordersStatus.forEach(status => { %>
+                        <option value="<%= status.id %>">
+                            <%= status.order_status %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="divInput">
+                <label for="selectCustomer" class="label1">Estado del pago</label>
+                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                    <option value="default"></option>
+                    <option value="paid">Pagado</option>
+                    <option value="unpaid">Pendiente</option>
+                    
+                </select>
+            </div>
+
+            <div class="filterAction">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </div>
+
+        </div>
+    
+        <div class="divInputsRow mtm">
+            
+            <div class="divCheckbox">
+                <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels">
+                <label for="allChannels">Todas</label><br>
+            </div>
+
+            <div class="divCheckbox">
+                <input type="checkbox" name ="dif1" id="dif1" value="dif1">
+                <label for="dif1">Difusión1</label><br>
+            </div>
+
+            <div class="divCheckbox">
+                <input type="checkbox" name ="dif2" id="dif2" value="dif2">
+                <label for="dif2">Difusión2</label><br>
+            </div>
+
+            <div class="divCheckbox">
+                <input type="checkbox" name ="onlinePandW" id="onlinePandW" value="onlinePandW">
+                <label for="onlinePandW">Online AyR</label><br>
+            </div>
+
+            <div class="divCheckbox">
+                <input type="checkbox" name ="onlineT" id="onlineT" value="onlineT">
+                <label for="onlineT">Online T</label><br>
+            </div>        
+
+        </div>  
+
+    </div>
+
+    
+
+</div>
+
+<div class="content">
+
+    <!---------GENERAL ACTIONS--------->
+    <div class="divGeneralActions">
+        <div class="divGeneralAction">
+            <i class="fa-solid fa-plus"></i>
+            <div class="showActionPopup">
+                Crear / Editar pedido
+            </div>
+        </div>
+
+        <div class="divGeneralAction">
+            <i class="fa-brands fa-whatsapp"></i>
+            <div class="showActionPopup">
+                Solicitar pagos
+            </div>
+        </div>
+    </div>
+
+    <!---------ORDERS TABLE--------->
+    <div class="divTable ma mtxxl">
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss wM thLeftBorder thTall"># Pedido</th>
+                    <th class="theadCss wS thTall">Fecha</th>
+                    <th class="theadCss wS thTall">Canal</th>
+                    <th class="theadCss wL thTall">Cliente</th>
+                    <th class="theadCss wS thTall">Subtotal</th>
+                    <th class="theadCss wXS thTall">Descuento %</th>
+                    <th class="theadCss wS thTall">Total</th>
+                    <th class="theadCss wS thTall">Estado</th>
+                    <th class="theadCss wS thTall">Encargado</th>
+                    <th class="theadCss wL thTall">Observaciones</th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card"></i></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-circle-info"></i></i></th>
+                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-solid fa-ban"></i></i></i></th>
+                </tr>
+            </thead>
+            <tbody id="vehiclesBody"></tbody>
+        </table>
+    </div>
+
+
+    
+
+    
+    
+</div>

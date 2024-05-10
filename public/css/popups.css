@@ -1,0 +1,15 @@
+/*----------info popups----------*/
+.showActionPopup{
+    display: none;
+    padding: 2px 5px;
+    position: absolute;
+    background-color: var(--color2);
+    font-size: 12px;
+    border-radius: 3px;
+    color: var(--color1);
+    border: var(--color1) solid 1px;
+    top:-25px;
+    text-align: center;
+    width: 120px;
+}
+

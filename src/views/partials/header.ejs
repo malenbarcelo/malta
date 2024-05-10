@@ -1,0 +1,63 @@
+<div class="header">
+
+    <div class="topHeader">
+        
+        <div class="divCompanyLogo">
+            <img src="/images/companyLogo.jpg" alt="Malta" class="companyLogo">
+        </div>
+
+        
+            <div class="divUserLogged">
+                <% if (locals.userLogged) { %>    
+                    <div class="userLogged">
+                        <i class="fa-regular fa-user iconUser"></i>
+                        <div class="userLoggedName">
+                            <%= userLogged.first_name + ' ' + userLogged.last_name %>
+                            <div class=""><a href="/logout" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></div>
+                        </div>
+                    </div>
+    
+                <% } %>
+            </div>
+
+    </div>
+
+    <div class="bottomHeader">
+
+        <% if (locals.bottomHeaderMenu) { %>
+            <div class="itemsMenu">
+                <% bottomHeaderMenu.forEach(itemMenu => { %>
+                    <div class="<%= locals.selectedItem == itemMenu.name ? 'itemHeaderMenu selectedItem' : 'itemHeaderMenu' %>">
+                        <a href="<%= itemMenu.href %>"><%= itemMenu.name %></a>
+                    </div>
+                <% }) %>
+            </div>
+
+            <a href="/main-menu">
+                <div class="goToMainMenu">
+                    <i class="fa-solid fa-house"></i>
+                    Home
+                </div>
+            </a>
+            
+        <% } %>
+
+        
+
+        
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

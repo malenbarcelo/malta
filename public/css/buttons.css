@@ -1,0 +1,32 @@
+/*---------------------Buttons---------------------*/
+.divButtonsRow{
+    display: flex;
+    column-gap: 7px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.divButtonsColumn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 10px;
+    margin-top: 20px;
+}
+
+.button1{
+    background-color: var(--color1);
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    font-size: 13px;
+    color: var(--color2);
+    border: var(--color1) solid 2px;
+}
+
+.button1:hover{
+    background-color: var(--color2);
+    color: var(--color1);
+}

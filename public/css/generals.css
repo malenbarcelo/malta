@@ -1,0 +1,166 @@
+/*---------------------Colors---------------------*/
+:root{
+    --color1:black;
+    --color2:white;
+    --color3:rgb(189, 187, 187);
+}
+
+/*---------------------font family---------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body{
+    font-family:'Poppins', Arial, "sans-serif";
+    margin: 0;
+}
+
+/*---------------------page display---------------------*/
+.header{
+    height: 18vh;
+}
+
+.mainTitle{
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.absoluteDivMainTitle{
+    position: absolute;
+    top: 80px;    
+}
+
+.content{
+    height: 72vh;
+    overflow: auto;
+}
+
+/*-----------------------------Refs-----------------------------*/
+a{
+    text-decoration: none;
+    color:black
+}
+
+/*-----------------------------errors-----------------------------*/
+.isInvalid{
+    border:rgb(221, 7, 7) solid 2px !important
+}
+
+.divError{
+    color:rgb(206, 10, 10);
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+.errorColor{
+    color:rgb(206, 10, 10);
+    font-weight: bold;
+}
+
+/*---------------------display---------------------*/
+.notVisible{
+    display: none;
+}
+
+/*-----------------------------general actions-----------------------------*/
+.divGeneralActions{
+    display: flex;
+    column-gap: 20px;
+    position: absolute;
+    right: 100px;
+    top: 185px;
+}
+
+.divGeneralAction{
+    border: var(--color1) dashed 3px;
+    font-size: 35px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.divGeneralAction:hover{
+    color:var(--color2);
+    background-color: var(--color1);
+}
+
+.divGeneralAction:hover .showActionPopup{
+    display: block;
+}
+
+/*---------------------margins---------------------*/
+.ma{
+    margin:auto
+}
+
+.mts{
+    margin-top: 5px;
+}
+.mbs{
+    margin-bottom: 5px;
+}
+.mtm{
+    margin-top: 15px;
+}
+.mbm{
+    margin-bottom: 15px;
+}
+.mtl{
+    margin-top: 30px;
+}
+.mbl{
+    margin-bottom: 30px;
+}
+.mtxl{
+    margin-top: 40px;
+}
+.mbxl{
+    margin-bottom: 40px;
+}
+.mtxxl{
+    margin-top: 100px;
+}
+.mbxxl{
+    margin-bottom: 100px;
+}
+
+/*---------------------width---------------------*/
+.wXXS{
+    width: 40px;
+}
+.wS{
+    width: 100px;
+}
+.wM{
+    width: 130px;
+}
+.wL{
+    width: 160px;
+}
+.wXL{
+    width: 200px;
+}
+.wXXL{
+    width: 300px;
+}
+
+/*---------------------padding---------------------*/
+.pS{
+    padding: 4px 0px 4px 0px;
+}
+
+.pL{
+    padding: 11px 0px 11px 0px;
+}
+
+
+
+

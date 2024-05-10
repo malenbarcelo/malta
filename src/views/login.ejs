@@ -1,0 +1,39 @@
+<%- include('./partials/head') %>
+<%- include('./partials/header') %>
+
+<div class="mainTitle">
+    <div class="titleL">Iniciar sesión</div>
+</div>
+
+<div class="content">
+
+    <form action="/login" method="POST">
+
+        <div class="divInputsColumn mtxl mbxl">
+
+            <div class="">
+                <input type="text" name="userName" placeholder="Usuario" class="input1 inputXXL<%= locals.errors && errors.userName ? 'isInvalid' : null %>" value="<%= locals.oldData ? oldData.userName : null %>" autocomplete="off">
+                <div class="divError">
+                    <% if (locals.errors && errors.userName) { %>
+                        <%= errors.userName.msg %>
+                    <% } %>
+                </div>        
+            </div>
+
+            <div class="">
+                <input type="password" name="password" placeholder="Contraseña" class="input1 inputXXL<%= locals.errors && errors.password ? 'isInvalid' : null %>" autocomplete="off">
+                <div class="divError">
+                    <% if (locals.errors && errors.password) { %>
+                        <%= errors.password.msg %>
+                    <% } %>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="divButtonsRow">
+            <button type="submit" class="button1 wS pS">Ingresar</button>
+        </div>
+
+    </form>
+</div>
