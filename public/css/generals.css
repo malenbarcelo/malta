@@ -23,18 +23,30 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
 }
 
-.absoluteDivMainTitle{
-    position: absolute;
-    top: 80px;    
+.mainTitleWfilters{
+    height: 22vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .content{
     height: 72vh;
     overflow: auto;
 }
+
+.contentWfilters{
+    height: 60vh;
+    overflow: auto;
+}
+
+.mainTitleFilters{
+    margin-top: 30px;
+}
+
 
 /*-----------------------------Refs-----------------------------*/
 a{
@@ -70,9 +82,7 @@ a{
 .divGeneralActions{
     display: flex;
     column-gap: 20px;
-    position: absolute;
-    right: 100px;
-    top: 185px;
+    position: absolute;    
 }
 
 .divGeneralAction{
@@ -135,6 +145,9 @@ a{
 /*---------------------width---------------------*/
 .wXXS{
     width: 40px;
+}
+.wXS{
+    width: 60px;
 }
 .wS{
     width: 100px;

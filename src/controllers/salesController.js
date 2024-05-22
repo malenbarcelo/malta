@@ -2,6 +2,7 @@ const customersQueries = require('./dbQueries/customersQueries')
 const ordersManagersQueries = require('./dbQueries/ordersManagersQueries')
 const ordersStatusQueries = require('./dbQueries/ordersStatusQueries')
 const productsQueries = require('./dbQueries/productsQueries')
+const ordersQueries = require('./dbQueries/ordersQueries')
 
 const bottomHeaderMenu = [
     {
@@ -31,8 +32,9 @@ const salesController = {
             const ordersManagers = await ordersManagersQueries.ordersManagers()
             const ordersStatus = await ordersStatusQueries.ordersStatus()
             const distinctProducts = await productsQueries.distinctProducts()
+            const orders = await ordersQueries.orders()
 
-            return res.render('sales/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts})
+            return res.render('sales/orders/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts,orders})
 
         }catch(error){
 

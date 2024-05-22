@@ -1,20 +1,20 @@
-<%- include('../partials/head') %>
-<%- include('../partials/header') %>
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
 
-<div class="mainTitle mbxxl">
+<div class="mainTitleWfilters">
 
     <div class="titleL">Pedidos en curso</div>
 
-    <div class="absoluteDivMainTitle">
+    <div class="mainTitleFilters">
         <!--------FILTERS-------->
         <div class="divInputsRow">
             
             <div class="divInput">
-                <label for="selectCustomer" class="label1">Cliente</label>
-                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                <label class="label1">Cliente</label>
+                <select id="filterCustomer" class="input1 inputL inputFilter">
                     <option value="default"></option>
                     <% customers.forEach(customer => { %>
-                        <option value="<%= customer.id %>">
+                        <option value="<%= customer.customer_name %>">
                             <%= customer.customer_name %>
                         </option>
                     <% }) %>
@@ -22,12 +22,12 @@
             </div>
 
             <div class="divInput">
-                <label for="selectCustomer" class="label1"># Pedido</label>
-                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                <label for="selectOrder" class="label1"># Pedido</label>
+                <select name="selectOrder" id="filterOrder" class="input1 inputL inputFilter">
                     <option value="default"></option>
-                    <% customers.forEach(customer => { %>
-                        <option value="<%= customer.id %>">
-                            <%= customer.customer_name %>
+                    <% orders.forEach(order => { %>
+                        <option value="<%= order.order_number %>">
+                            <%= order.order_number %>
                         </option>
                     <% }) %>
                 </select>
@@ -38,7 +38,7 @@
                 <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL inputFilter">
                     <option value="default"></option>
                     <% ordersManagers.forEach(manager => { %>
-                        <option value="<%= manager.id %>">
+                        <option value="<%= manager.order_manager_name %>">
                             <%= manager.order_manager_name %>
                         </option>
                     <% }) %>
@@ -50,16 +50,18 @@
                 <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL inputFilter">
                     <option value="default"></option>
                     <% ordersStatus.forEach(status => { %>
-                        <option value="<%= status.id %>">
-                            <%= status.order_status %>
-                        </option>
+                        <% if (status.order_status != 'Entregado') { %>
+                            <option value="<%= status.order_status %>">
+                                <%= status.order_status %>
+                            </option>
+                        <% } %>
                     <% }) %>
                 </select>
             </div>
 
             <div class="divInput">
-                <label for="selectCustomer" class="label1">Estado del pago</label>
-                <select name="selectCustomer" id="filterCustomer" class="input1 inputL inputFilter">
+                <label for="selectPaymentStatus" class="label1">Estado del pago</label>
+                <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputL inputFilter">
                     <option value="default"></option>
                     <option value="paid">Pagado</option>
                     <option value="unpaid">Pendiente</option>
@@ -67,7 +69,7 @@
                 </select>
             </div>
 
-            <div class="filterAction">
+            <div id="unfilterOrders">
                 <i class="fa-solid fa-filter-circle-xmark"></i>
             </div>
 
@@ -77,17 +79,17 @@
             
             <div class="divCheckbox">
                 <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels">
-                <label for="allChannels">Todas</label><br>
+                <label for="allChannels">Todos</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" name ="dif1" id="dif1" value="dif1">
-                <label for="dif1">Difusión1</label><br>
+                <input type="checkbox" id="dif1" value="dif1">
+                <label>Difusión1</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" name ="dif2" id="dif2" value="dif2">
-                <label for="dif2">Difusión2</label><br>
+                <input type="checkbox" id="dif2" value="dif2">
+                <label>Difusión2</label><br>
             </div>
 
             <div class="divCheckbox">
@@ -106,10 +108,10 @@
 
 </div>
 
-<div class="content">
+<div class="contentWfilters">
 
     <!---------GENERAL ACTIONS--------->
-    <div class="divGeneralActions">
+    <div class="divGeneralActions" id="DGAorders">
         <div class="divGeneralAction" id="createEditOrder">
             <i class="fa-solid fa-plus"></i>
             <div class="showActionPopup">
@@ -130,24 +132,23 @@
         <table>
             <thead>
                 <tr>
-                    <th class="theadCss wM thLeftBorder thTall"># Pedido</th>
-                    <th class="theadCss wS thTall">Fecha</th>
+                    <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
+                    <th class="theadCss wXS thTall">Fecha</th>
                     <th class="theadCss wS thTall">Canal</th>
-                    <th class="theadCss wL thTall">Cliente</th>
-                    <th class="theadCss wS thTall">Subtotal</th>
-                    <th class="theadCss wXS thTall">Descuento %</th>
-                    <th class="theadCss wS thTall">Total</th>
+                    <th class="theadCss wM thTall">Cliente</th>
+                    <th class="theadCss wXS thTall">Subtotal</th>
+                    <th class="theadCss wXS thTall">Dto %</th>
+                    <th class="theadCss wXS thTall">Total</th>
+                    <th class="theadCss wS thTall">Saldo</th>                    
                     <th class="theadCss wS thTall">Estado</th>
                     <th class="theadCss wS thTall">Encargado</th>
-                    <th class="theadCss wL thTall">Observaciones</th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card"></i></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box"></i></th>
-                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-circle-info"></i></i></th>
                     <th class="theadCss wXXS thTall thRightBorder"><i class="fa-solid fa-ban"></i></i></i></th>
                 </tr>
             </thead>
-            <tbody id="vehiclesBody"></tbody>
+            <tbody id="bodyOrders"></tbody>
         </table>
     </div>
     

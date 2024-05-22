@@ -13,25 +13,33 @@ module.exports = (sequelize, DataTypes) => {
          allowNull: false,
        },
        id_products:{
-         type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+       description:{
+         type: DataTypes.STRING,
          allowNull: true,
-       },      
-       unit_price:{
+       },
+       color:{
         type: DataTypes.STRING,
         allowNull: true,
       },
-      discount:{
+      size:{
+        type: DataTypes.STRING,
+        allowNull: true,
+      },        
+       unit_price:{
         type: DataTypes.DECIMAL,
+        allowNull: true,
+      },
+      quantity:{
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       extended_price:{
          type: DataTypes.DECIMAL,
          allowNull: false
        },
-      status:{
-        type: DataTypes.STRING,
-        allowNull: false
-      },
     }
     const config = {
     tableName : 'orders_details',
@@ -44,11 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       Order_detail.belongsTo(models.Orders,{
          as:'orders_details_orders',
          foreignKey: 'id_orders'
-      }),
-      Order_detail.belongsTo(models.Products,{
-        as:'orders_details_products',
-        foreignKey: 'id_products'
-     })
+      })
     }
     
     return Order_detail

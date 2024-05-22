@@ -8,17 +8,21 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement : true,
         allowNull: false
       },
+      date:{
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
       order_number:{
         type: DataTypes.STRING,
         allowNull: false,
       },
       sales_channel:{
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       id_customers:{
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       subtotal:{
       type: DataTypes.STRING,
@@ -30,7 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       total:{
         type: DataTypes.DECIMAL,
-        allowNull: false
+        allowNull: true
+      },
+      balance:{
+        type: DataTypes.DECIMAL,
+        allowNull: true
       },
       status:{
       type: DataTypes.STRING,
@@ -38,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       order_manager:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       observations:{
         type: DataTypes.STRING,

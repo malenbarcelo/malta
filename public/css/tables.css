@@ -56,7 +56,7 @@ border-top-right-radius: 15px;
 }/*background when row number is even*/
 
 .tBodyOdd{
-    background-color: var(--color5);
+    background-color: var(--color3);
 }/*background when row number is odd*/
 
 .bodyIcon{
@@ -64,6 +64,6 @@ border-top-right-radius: 15px;
 }
 
 .bodyIcon:hover{
-    font-size: 15px;
+    color: rgb(90, 89, 89);
 }
 

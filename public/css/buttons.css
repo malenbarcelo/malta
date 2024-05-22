@@ -21,12 +21,17 @@
     cursor: pointer;
     font-weight: bold;
     border: none;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--color2);
     border: var(--color1) solid 2px;
+    padding: 3px 0px;
 }
 
 .button1:hover{
     background-color: var(--color2);
     color: var(--color1);
+}
+
+.bS{
+    width: 70px;
 }

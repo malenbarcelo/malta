@@ -23,8 +23,18 @@
     font-weight: bold;
 }
 
+/*--------------------orders.ejs--------------------*/
+#DGAorders{
+    right: 100px;
+    top: 185px;
+}
+
+#unfilterOrders{
+    cursor: pointer;
+}
+
 /*--------------------ordersCreateEdit.ejs--------------------*/
-.createEditAddProduct{
+#createEditAddProduct{
     font-size: 15px;
     position: absolute;
     top: 3px;
@@ -37,7 +47,13 @@
     align-items: center;
 }
 
-.createEditAddProduct:hover{
+#createEditAddProduct:hover{
     color: var(--color2);
     background-color: var(--color1);
+}
+
+#DGAordersCreateEdit{
+    right: 0px;
+    top: -15px;
+    z-index: 2;
 }
