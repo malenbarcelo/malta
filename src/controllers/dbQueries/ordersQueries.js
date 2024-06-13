@@ -1,9 +1,11 @@
 const db = require('../../../database/models')
+const { localDB } = require('../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
+const Orders = db.local.Orders
 
 const ordersQueries = {
     orders: async() => {
-        const orders = await db.Orders.findAll({
+        const orders = await Orders.findAll({
             order:[['date','ASC'],['id','ASC']],
             raw:true,
         })
@@ -11,7 +13,7 @@ const ordersQueries = {
         return orders
     },
     newOrder: async() => {
-        const difOrders = await db.Orders.findAll({
+        const difOrders = await Orders.findAll({
             where: {sales_channel:['Difusión1','Difusión2']},
             raw:true,
         })
@@ -21,7 +23,7 @@ const ordersQueries = {
         return newOrderNumber
     },
     filterOrder: async(orderNumber) => {
-        const order = await db.Orders.findOne({
+        const order = await Orders.findOne({
             where: {order_number:orderNumber},
             raw:true,
         })
@@ -33,7 +35,7 @@ const ordersQueries = {
         const date = new Date()
 
         //create order
-        await db.Orders.create({
+        await Orders.create({
             date:date,
             order_number:data.order_number,
             sales_channel:data.sales_channel,
@@ -53,7 +55,7 @@ const ordersQueries = {
 
         for (let i = 0; i < orderDetails.length; i++) {
             //create row
-            await db.Orders_details.create({
+            await Orders_details.create({
                 id_orders:orderId,
                 id_products:orderDetails[i].id_products,
                 description:orderDetails[i].description,
@@ -66,11 +68,23 @@ const ordersQueries = {
         }        
     },
     lastId: async() => {
-        const lastId = await db.Orders.findOne({
+        const lastId = await Orders.findOne({
             attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']]
           })
 
           return lastId.id
+    },
+    deliverOrder: async(orderId) => {        
+        await Orders.update(
+            { status: 'Entregado' },
+            { where: { id: orderId } }
+        )
+    },
+    cancelOrder: async(orderId) => {        
+        await Orders.update(
+            { status: 'Cancelado' },
+            { where: { id: orderId } }
+        )
     },
 }       
 

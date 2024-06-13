@@ -57,6 +57,70 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  deliverOrder: async(req,res) =>{
+    try{
+
+      const orderId = req.body.idOrder
+
+      await ordersQueries.deliverOrder(orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  cancelOrder: async(req,res) =>{
+    try{
+
+      const orderId = req.body.idOrder
+
+      await ordersQueries.cancelOrder(orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  getNinoxSales: async(req,res) => {
+    try{
+
+      //const { anio, mes, sucursalId, incluirMediosPago } = req.query
+
+      const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
+      url.searchParams.append('anio', 2024)
+      url.searchParams.append('mes', 6)
+      url.searchParams.append('sucursalId', 1)
+      url.searchParams.append('incluirMediosPago', true)
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
+      }
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: headers
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json()
+
+      res.status(200).json(data)
+
+
+    }catch(error){
+
+        console.log(error)
+        return res.send('Ha ocurrido un error')
+    }
+},
 }
 module.exports = apisSalesController
 

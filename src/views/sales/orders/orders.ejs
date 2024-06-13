@@ -11,7 +11,7 @@
             
             <div class="divInput">
                 <label class="label1">Cliente</label>
-                <select id="filterCustomer" class="input1 inputL inputFilter">
+                <select id="filterCustomer" class="input1 inputL">
                     <option value="default"></option>
                     <% customers.forEach(customer => { %>
                         <option value="<%= customer.customer_name %>">
@@ -23,7 +23,7 @@
 
             <div class="divInput">
                 <label for="selectOrder" class="label1"># Pedido</label>
-                <select name="selectOrder" id="filterOrder" class="input1 inputL inputFilter">
+                <select name="selectOrder" id="filterOrder" class="input1 inputL">
                     <option value="default"></option>
                     <% orders.forEach(order => { %>
                         <option value="<%= order.order_number %>">
@@ -35,7 +35,7 @@
 
             <div class="divInput">
                 <label for="selectOrderManager" class="label1">Encargado</label>
-                <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL inputFilter">
+                <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL">
                     <option value="default"></option>
                     <% ordersManagers.forEach(manager => { %>
                         <option value="<%= manager.order_manager_name %>">
@@ -47,7 +47,7 @@
 
             <div class="divInput">
                 <label for="selectOrderStatus" class="label1">Estado</label>
-                <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL inputFilter">
+                <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL">
                     <option value="default"></option>
                     <% ordersStatus.forEach(status => { %>
                         <% if (status.order_status != 'Entregado') { %>
@@ -61,7 +61,7 @@
 
             <div class="divInput">
                 <label for="selectPaymentStatus" class="label1">Estado del pago</label>
-                <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputL inputFilter">
+                <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputL">
                     <option value="default"></option>
                     <option value="paid">Pagado</option>
                     <option value="unpaid">Pendiente</option>
@@ -78,28 +78,28 @@
         <div class="divInputsRow mtm">
             
             <div class="divCheckbox">
-                <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels">
+                <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels" checked>
                 <label for="allChannels">Todos</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" id="dif1" value="dif1">
+                <input type="checkbox" id="Dif_1" value="Dif_1" checked>
                 <label>Difusión1</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" id="dif2" value="dif2">
+                <input type="checkbox" id="Dif_2" value="Dif_2" checked>
                 <label>Difusión2</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" name ="onlinePandW" id="onlinePandW" value="onlinePandW">
-                <label for="onlinePandW">Online AyR</label><br>
+                <input type="checkbox" name ="onlinePandW" id="Web_AyR" value="Web_AyR" checked>
+                <label>Online AyR</label><br>
             </div>
 
             <div class="divCheckbox">
-                <input type="checkbox" name ="onlineT" id="onlineT" value="onlineT">
-                <label for="onlineT">Online T</label><br>
+                <input type="checkbox" name ="onlineT" id="Web_T" value="Web_T" checked>
+                <label>Online T</label><br>
             </div>        
 
         </div>  
@@ -129,6 +129,13 @@
 
     <!---------ORDERS TABLE--------->
     <div class="divTable ma mtxxl">
+
+        <div class="tableInfo" id="eoppInfo">Editar orden</div>
+        <div class="tableInfo" id="rpppInfo">Registrar pago</div>
+        <div class="tableInfo" id="doppInfo">Registrar entrega</div>
+        <div class="tableInfo" id="amppInfo">Agregar / Editar encargado</div>
+        <div class="tableInfo" id="coppInfo">Cancelar orden</div>
+
         <table>
             <thead>
                 <tr>
@@ -141,11 +148,12 @@
                     <th class="theadCss wXS thTall">Total</th>
                     <th class="theadCss wS thTall">Saldo</th>                    
                     <th class="theadCss wS thTall">Estado</th>
-                    <th class="theadCss wS thTall">Encargado</th>
-                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
-                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card"></i></i></th>
-                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box"></i></th>
-                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-solid fa-ban"></i></i></i></th>
+                    <th class="theadCss wS thTall">Encargado</th>                    
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="eoppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card tableIcon" id="rpppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box tableIcon" id="doppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-solid fa-user-plus tableIcon" id="amppIcon"></i></th>
+                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-solid fa-ban tableIcon" id="coppIcon"></i></th>
                 </tr>
             </thead>
             <tbody id="bodyOrders"></tbody>
@@ -154,5 +162,9 @@
     
 </div>
 
+<!----------LOADER---------->
+<div class="loader" id="ordersLoader" ></div>
+
+<%- include('./ordersPopups') %>
 <%- include('./ordersCreateEdit') %>
-<script type="module" src="/js/orders.js"></script>
+<script type="module" src="/js/sales/orders/orders.js"></script>

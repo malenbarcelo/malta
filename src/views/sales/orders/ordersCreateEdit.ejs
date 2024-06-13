@@ -2,8 +2,9 @@
 
     <div class="sidePopupMain">
         <div class="closeSidePopup" id="closeCreateEditPopup">X</div>
-        <div class="sppTitle">CREAR PEDIDO</div>
-        <div class="sppSubtitle mtm" id="customerOrder"></div>
+        <div class="sppTitle" id="customerOrder"></div>
+        <div class="sppSubitle mtm">CREAR PEDIDO</div>
+        
     </div>
 
     <div class="sidePopupContent">
@@ -19,23 +20,10 @@
         
         <div class="divInputsRow">
 
-            <div class="divInput">
+            <div class="divInput" id="inputProduct">
                 <label class="label1" id="selectProductLabel">Producto</label>
-                <select name ="selectProduct" id="selectProduct" class="input1 inputXXXL">
-                    <option value="default" id="selectProductDefault"></option>
-                    <% distinctProducts.forEach(product => { %>
-                        <option value="<%= product.description %>">
-                            <%= product.description %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="divInput">
-                <label class="label1" id="selectColorLabel">Color</label>
-                <select id="selectColor" name="selectColor" class="input1 inputL">
-                    <option value="default" id="selectColorDefault"></option>
-                </select>
+                <input type="text" class="input1 inputXXXL" id="selectProduct">
+                <ul id="predictedProductsList"></ul>
             </div>
 
             <div class="divInput">
@@ -44,17 +32,57 @@
                     <option value="default" id="selectSizeDefault"></option>
                 </select>
             </div>
-
-            <div class="divInput">
-                <label class="label1" id="quantityLabel">Cantidad</label>
-                <input type="text" id="quantity" name="quantity" class="input1 inputM">
-            </div>
             
             <div id="createEditAddProduct">
                 <i class="fa-solid fa-plus"></i>
             </div>
 
         </div>
+
+        <div class="divInputsRow mtm notVisible" id="colorsRow">
+
+            <div class="divInput notVisible" id="inputColor0">
+                <label class="label1" id="color0Label"></label>
+                <input type="number" class="input1 inputM" id="color0">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor1">
+                <label class="label1" id="color1Label"></label>
+                <input type="number" class="input1 inputM" id="color1">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor2">
+                <label class="label1" id="color2Label"></label>
+                <input type="number" class="input1 inputM" id="color2">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor3">
+                <label class="label1" id="color3Label"></label>
+                <input type="number" class="input1 inputM" id="color3">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor4">
+                <label class="label1" id="color4Label"></label>
+                <input type="number" class="input1 inputM" id="color4">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor5">
+                <label class="label1" id="color5Label"></label>
+                <input type="number" class="input1 inputM" id="color5">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor6">
+                <label class="label1" id="color6Label"></label>
+                <input type="number" class="input1 inputM" id="color6">
+            </div>
+
+            <div class="divInput notVisible" id="inputColor7">
+                <label class="label1" id="color7Label"></label>
+                <input type="number" class="input1 inputM" id="color7">
+            </div>
+
+        </div>
+       
 
         <div class="divError notVisible" id="errorText1"></div>
 

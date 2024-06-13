@@ -3,6 +3,8 @@
     --color1:black;
     --color2:white;
     --color3:rgb(189, 187, 187);
+    --color4:rgb(62, 60, 60);
+    --color5:#F5F5F5;
 }
 
 /*---------------------font family---------------------*/
@@ -54,6 +56,12 @@ a{
     color:black
 }
 
+/*-----------------------------uls-----------------------------*/
+ul {
+    list-style-type: none; 
+    padding: 0; 
+}
+
 /*-----------------------------errors-----------------------------*/
 .isInvalid{
     border:rgb(221, 7, 7) solid 2px !important
@@ -75,7 +83,7 @@ a{
 
 /*---------------------display---------------------*/
 .notVisible{
-    display: none;
+    display: none !important;
 }
 
 /*-----------------------------general actions-----------------------------*/
@@ -118,7 +126,7 @@ a{
     margin-bottom: 5px;
 }
 .mtm{
-    margin-top: 15px;
+    margin-top: 20px;
 }
 .mbm{
     margin-bottom: 15px;
@@ -173,6 +181,30 @@ a{
 .pL{
     padding: 11px 0px 11px 0px;
 }
+
+/*---------------------loader---------------------*/
+.loader {
+    border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid var(--color1);
+    width: 40px;
+    height: 40px;
+    animation: spin 3s linear infinite;
+    display: none;
+    position: absolute;
+    top: 50%;
+    
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#ordersLoader{
+    left: calc(50vw - 20px);
+}
+
 
 
 

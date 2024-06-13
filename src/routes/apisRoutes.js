@@ -2,13 +2,16 @@ const express = require('express')
 const apisSalesController = require('../controllers/apisControllers/apisSalesController.js')
 const apisCuttingsController = require('../controllers/apisControllers/apisCuttingsController.js')
 const apisDataController = require('../controllers/apisControllers/apisDataController.js')
+const apisWordpressController = require('../controllers/apisControllers/apisWordpressController.js')
 const router = express.Router()
-
 
 //sales
 router.get('/sales/orders',apisSalesController.orders)
 router.get('/sales/:salesChannel/new-order',apisSalesController.newOrder)
 router.post('/sales/save-order',apisSalesController.saveOrder)
+router.post('/sales/deliver-order',apisSalesController.deliverOrder)
+router.post('/sales/cancel-order',apisSalesController.cancelOrder)
+router.get('/sales/get-ninox-sales',apisSalesController.getNinoxSales)
 
 //cuttings
 router.get('/cuttings/product-options/:productDescription',apisCuttingsController.productOptions)
@@ -18,6 +21,11 @@ router.get('/cuttings/colors-options/:productDescription/:size',apisCuttingsCont
 //data
 router.get('/data/customers',apisDataController.customers)
 router.get('/data/products',apisDataController.products)
+router.get('/data/products/predict-products/:string',apisDataController.predictProducts)
+
+//wordpress data
+//router.get('/wp/get-new-orders',apisWordpressController.getNewOrders)
+//router.get('/wp/get-wp-posts',apisWordpressController.getWpPosts)
 
 
 module.exports = router

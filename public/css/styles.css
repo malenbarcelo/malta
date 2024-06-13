@@ -25,8 +25,10 @@
 
 /*--------------------orders.ejs--------------------*/
 #DGAorders{
-    right: 100px;
-    top: 185px;
+    /*right: 100px;
+    top: 185px;*/
+    right: 8%;
+    top: 23%;
 }
 
 #unfilterOrders{
@@ -37,8 +39,8 @@
 #createEditAddProduct{
     font-size: 15px;
     position: absolute;
-    top: 3px;
-    right: 110px;
+    top: 2.5px;
+    right: 285px;
     cursor: pointer;
     border: var(--color1) solid 2px;
     border-radius: 3px;
@@ -53,7 +55,33 @@
 }
 
 #DGAordersCreateEdit{
-    right: 0px;
-    top: -15px;
+    right: 60px;
+    top: -90px;
     z-index: 2;
+}
+
+#inputProduct{
+    position: relative;
+}
+
+#predictedProductsList{
+    display: none;
+    position: absolute;
+    top:60%;
+    width: 100%;
+    border: black solid 1px;
+    background-color: var(--color2);
+    z-index: 1;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.liPredictedProducts{
+    font-size: 12px;
+    padding: 5px 0px;
+    cursor: pointer;
+}
+
+.predictedProductFocused{
+    background-color:var(--color3);
 }

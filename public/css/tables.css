@@ -59,11 +59,27 @@ border-top-right-radius: 15px;
     background-color: var(--color3);
 }/*background when row number is odd*/
 
-.bodyIcon{
+.allowedIcon{
     cursor: pointer;
 }
 
-.bodyIcon:hover{
-    color: rgb(90, 89, 89);
+.notAllowedIcon{
+    color: rgb(159, 157, 157);
 }
 
+.tableIcon{
+    cursor: pointer;
+}
+
+.tableInfo{
+    font-size: 12px;
+    position: absolute;
+    display: none;
+    top: 37.5%;
+    width: 200px;
+    text-align: center;
+}
+
+#doppInfo,#coppInfo,#amppIcon{
+    top:37.5%
+}

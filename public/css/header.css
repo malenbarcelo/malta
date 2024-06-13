@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--color2);
+    background-color:var(--color5);
     height: 75%;
     padding: 0px 30px;
 }
@@ -12,7 +12,7 @@
     width: 33.33%;
 }
 .companyLogo{
-    height: 55px;
+    height: 60px;
 }
 
 .divTitle{
@@ -58,8 +58,7 @@
     justify-content: center;
     column-gap: 35px;
     height: 25%;
-    border-top: var(--color1) 1px solid;
-    border-bottom: var(--color1) 1px solid;
+    border-bottom: var(--color3) 1px solid;
     position: relative;
     color: var(--color2);
 }

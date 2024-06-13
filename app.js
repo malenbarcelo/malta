@@ -5,6 +5,7 @@ const session = require('express-session')
 const bcrypt = require('bcryptjs')
 const userLoggedMiddleware = require('./src/middlewares/userLoggedMiddleware.js')
 const bodyParser = require("body-parser")
+const cors = require('cors')
 
 //Routes
 const apisRoutes = require('./src/routes/apisRoutes.js')
@@ -40,6 +41,9 @@ app.use(session({
 
 //middlewares
 app.use(userLoggedMiddleware)
+
+//cors
+app.use(cors())
 
 //Declare and listen port
 const APP_PORT = 3005

@@ -1,26 +1,63 @@
 import { dominio } from "./dominio.js"
-import globals from "./globals.js"
+import globals from "./ordersGlobals.js"
 import { isValid, isInvalid, clearData, dateToString } from "./generalFunctions.js"
 
-function selectOptions(productOptions) {
+async function productSelected(selectedProduct) {
 
-    selectColor.innerHTML = '<option value="default" id="selectColorDefault" selected></option>'
+    selectProduct.value = selectedProduct
     selectSize.innerHTML = '<option value="default" id="selectSizeDefault" selected></option>'
+        
+    const productOptions = await (await fetch(dominio + 'apis/cuttings/product-options/' + selectProduct.value)).json()
 
-    productOptions.colors.forEach(color => {
-        selectColor.innerHTML += '<option value=' + color + '>' + color +'</option>'        
-    })
-}
-
-function getSizesOptions(sizesOptions) {
-
-    selectSize.innerHTML = '<option value="default" id="selectSizeDefault" selected></option>'
-
-    sizesOptions.sizes.forEach(size => {
+    productOptions.sizes.forEach(size => {
         selectSize.innerHTML += '<option value=' + size + '>' + size +'</option>'        
     })
+
+    predictedProductsList.style.display = 'none'
+    
+    //hide colors row
+    colorsRow.classList.add('notVisible')
+    hideColorsInputs()
     
 }
+
+async function getColorsOptions() {
+
+    const selectedProduct = selectProduct.value
+    const selectedSize = selectSize.value
+
+    if (selectedProduct != 'default' && selectedSize != 'default') {
+        const colorsOptions = await (await fetch(dominio + 'apis/cuttings/colors-options/' + selectedProduct + '/' + selectedSize)).json()
+        
+        //hide colors inputs
+        hideColorsInputs()
+
+        //show inputs
+        for (let i = 0; i < colorsOptions.colors.length; i++) {
+            const inputToShow = document.getElementById('inputColor' + i)
+            const labelToShow = document.getElementById('color' + i + 'Label')            
+            inputToShow.classList.remove('notVisible')
+            labelToShow.innerText = colorsOptions.colors[i]
+        }
+
+        //show colors row
+        colorsRow.classList.remove('notVisible')
+
+    }else{
+        colorsRow.classList.add('notVisible')
+    }
+}
+
+function hideColorsInputs() {
+    for (let i = 0; i < 8; i++) {
+        const inputToHide = document.getElementById('inputColor' + i)
+        const labelToHide = document.getElementById('color' + i + 'Label')
+        inputToHide.classList.add('notVisible')
+        labelToHide.innerText = ''
+    }
+}
+
+
 
 function updateOrderDetails(products) {
 
@@ -178,4 +215,4 @@ function printTableOrders(ordersToPrint,customers) {
     
 }
 
-export {selectOptions, getSizesOptions, updateOrderData, updateOrderDetails, printTableCreateEdit, printTableOrders}
+export {productSelected, getColorsOptions, hideColorsInputs, updateOrderData, updateOrderDetails, printTableCreateEdit, printTableOrders}

@@ -42,12 +42,12 @@ const salesController = {
             return res.send('Ha ocurrido un error')
         }
     },
-    consolidated: (req,res) => {
+    sales: (req,res) => {
         try{
 
             const selectedItem = 'VENTAS'
 
-            return res.render('sales/consolidated',{title:'Ventas',bottomHeaderMenu,selectedItem})
+            return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem})
 
         }catch(error){
 

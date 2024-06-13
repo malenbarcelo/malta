@@ -1,3 +1,103 @@
+/*----------yenNoPopup----------*/
+.yesNoPopup{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.yesNoContent{    
+    padding: 5px 7px;    
+    border-radius: 5px;
+    background-color: white;
+    position: relative;
+    border: var(--color1) solid 3px;
+    font-size: 14px;
+}
+
+.yesNoIcons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.yesNoIcon1{
+    font-size: 20px;
+}
+
+.yesNoClose1{
+    font-size: 23px;
+    cursor: pointer;
+    transition: color 0.5s ease;
+}
+
+.yesNoClose1:hover{
+    color: var(--color4);
+
+}
+
+.yesNoQuestion{
+    font-size: 14px;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+}
+
+#coppContent,#doppContent{
+    top: 45%;
+    width: 400px;
+    left: calc(50vw - 200px);
+}
+
+/*----------okPopup----------*/
+.okPopup{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.okContent{    
+    padding: 5px 7px;    
+    border-radius: 5px;
+    position: relative;
+    border: green solid 3px;
+    background-color: rgb(152, 179, 152);
+    font-size: 16px;
+    width: fit-content;
+    padding: 15px 30px;
+    color: green;
+}
+
+.okDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.okIcon1{
+    font-size: 25px;
+}
+
+#coppOkContent, #doppOkContent{
+    top: 45%;
+    left: calc(50vw - 150px);
+}
+
+
+
+
+
 /*----------info popups----------*/
 .showActionPopup{
     display: none;
@@ -47,7 +147,7 @@
 }
 
 .sppTitle{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
 }
 .closeSidePopup{
@@ -90,7 +190,7 @@
 
 /*sizes*/
 .sppxl{
-    width: 1100px;
+    width: 1200px;
 }
 
 
@@ -138,21 +238,3 @@
     font-size: 13px;
     margin-bottom: 20px;
 }
-
-/*.divAcceptCancelText{
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    justify-content: center;
-    align-items: center;
-    border: red solid 1px;
-}
-.divAcceptCancelInputs{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: -10px;
-}*/
-

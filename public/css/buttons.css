@@ -1,9 +1,8 @@
 /*---------------------Buttons---------------------*/
 .divButtonsRow{
     display: flex;
-    column-gap: 7px;
+    column-gap: 10px;
     justify-content: center;
-    margin-top: 20px;
 }
 
 .divButtonsColumn{
@@ -19,19 +18,17 @@
     background-color: var(--color1);
     text-align: center;
     cursor: pointer;
-    font-weight: bold;
-    border: none;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--color2);
-    border: var(--color1) solid 2px;
-    padding: 3px 0px;
+    transition: background-color 0.5s ease;
+    border-radius: 5px;
 }
 
 .button1:hover{
-    background-color: var(--color2);
-    color: var(--color1);
+    background-color: var(--color4);
 }
 
-.bS{
-    width: 70px;
+.bs{
+    width: 80px;
+    padding: 5px 0px;
 }

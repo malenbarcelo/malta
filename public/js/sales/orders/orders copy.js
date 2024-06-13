@@ -1,61 +1,18 @@
-import { dominio } from "./dominio.js"
-import { selectOptions, getSizesOptions, updateOrderData, updateOrderDetails, printTableCreateEdit, printTableOrders } from "./ordersFunctions.js"
-import { isValid, isInvalid, clearData } from "./generalFunctions.js"
-import globals from "./globals.js"
+import { dominio } from "../../dominio.js"
+import og from "./ordersGlobals.js"
+import { getElements } from "../ordersGetElements.js"
+import { getData } from "../ordersGetData.js"
+
+import { productSelected, getColorsOptions, hideColorsInputs, updateOrderData, updateOrderDetails, printTableCreateEdit, printTableOrders } from "../ordersFunctions.js"
+import { isValid, isInvalid, clearData } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
-    //orders.ejs
-    const createEditOrder = document.getElementById('createEditOrder')
-    const filterCustomer = document.getElementById('filterCustomer')
-    const filterOrder = document.getElementById('filterOrder')
-    const filterOrderManager = document.getElementById('filterOrderManager')
-    const filterOrderStatus = document.getElementById('filterOrderStatus')
-    const filterPaymentStatus = document.getElementById('filterPaymentStatus')
-    const unfilterOrders = document.getElementById('unfilterOrders')
-    const selects2 = [filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
-    const allChannels = document.getElementById('allChannels')
-    const dif1 = document.getElementById('dif1')
-    const dif2 = document.getElementById('dif2')
-    const onlinePandW = document.getElementById('onlinePandW')
-    const onlineT = document.getElementById('onlineT')
-    const checks2 = [dif1,dif2,onlinePandW,onlineT]
-    const bodyOrders = document.getElementById('bodyOrders')
-    
-    //ordersCreateEdit.ejs
-    const createEditPopup = document.getElementById('createEditPopup')
-    const closeCreateEditPopup = document.getElementById('closeCreateEditPopup')
-    const customerOrder = document.getElementById('customerOrder')
-    const selectProduct = document.getElementById('selectProduct')
-    const selectColor = document.getElementById('selectColor')
-    const selectSize = document.getElementById('selectSize')
-    const selects1 = [selectProduct,selectColor,selectSize]
-    const quantity = document.getElementById('quantity')
-    const inputs1 = [quantity]
-    const createEditAddProduct = document.getElementById('createEditAddProduct')
-    const errorText1 = document.getElementById('errorText1')
-    const orderInfo = document.getElementById('orderInfo')
-    const bodyCreateEdit = document.getElementById('bodyCreateEdit')
-    const saveOrder = document.getElementById('saveOrder')
-    let discount = 0
-    let errorsQty = 0
+    //get elements
+    const {filters1, checks1, selects2, inputs3} = getElements()
 
-    //ordersEditPopup.ejs
-    const editPopup = document.getElementById('editPopup')
-    const titleEditPopup = document.getElementById('titleEditPopup')
-    const acceptEdit = document.getElementById('acceptEdit')
-    const cancelEdit = document.getElementById('cancelEdit')
-    const closeEditPopup = document.getElementById('closeEditPopup')
-    const orderDetailsId = document.getElementById('orderDetailsId')
-    const editPrice = document.getElementById('editPrice')
-    const editQty = document.getElementById('editQty')
-    const inputs2 = [editPrice, editQty]
-    const errorText2 = document.getElementById('errorText2')
-
-    //data
-    const customers = await (await fetch(dominio + 'apis/data/customers')).json()
-    const products = await (await fetch(dominio + 'apis/data/products')).json()
-    const orders = await (await fetch(dominio + 'apis/sales/orders')).json()
+    //get data
+    const {customers,products,orders} = getData()    
     
     /*----------------------------orders.ejs-----------------------------*/
     //print table
@@ -151,7 +108,7 @@ window.addEventListener('load',async()=>{
 
         updateOrderData()
 
-        customerOrder.innerText = customer + ' - Pedido #' + orderNumber
+        customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
 
         //show popup
         createEditPopup.classList.add('slideIn')
@@ -162,64 +119,112 @@ window.addEventListener('load',async()=>{
     })
 
     /*----------------------------ordersCreateEdit.ejs-----------------------------*/
-    selectProduct.addEventListener("change", async() => {
-        const selectedProduct = selectProduct.value
-        const productOptions = await (await fetch(dominio + 'apis/cuttings/product-options/' + selectedProduct)).json()
-        selectOptions(productOptions)
-    })
+    //search products
+    selectProduct.addEventListener("input", async() => {
 
-    selectColor.addEventListener("change", async() => {
-        const selectedProduct = selectProduct.value
-        const selectedColor = selectColor.value
+        if (selectProduct.value.length >= 3) {
 
-        if (selectedProduct != 'default' && selectedColor != 'default') {
-            const sizesOptions = await (await fetch(dominio + 'apis/cuttings/sizes-options/' + selectedProduct + '/' + selectedColor)).json()
-            getSizesOptions(sizesOptions)
+            let id = 0
+            
+            const string = selectProduct.value.toLowerCase()
+            predictedProducts = await (await fetch(dominio + 'apis/data/products/predict-products/' + string)).json()
+
+            predictedProductsList.innerHTML = ''
+
+            predictedProducts.forEach(element => {
+                predictedProductsList.innerHTML += '<li class="liPredictedProducts" id="product_'+ id +'">' + element.description + '</li>'
+                id += 1
+            })
+
+            productFocused = -1
+
+            if (predictedProducts.length > 0) {
+                predictedProductsList.style.display = 'block'
+                
+                for (let i = 0; i < predictedProducts.length; i++) {
+
+                    const predictedProduct = document.getElementById('product_' + i)
+                    
+                    predictedProduct.addEventListener("mouseover", async() => {
+
+                        //unfocus all elements
+                        for (let j = 0; j < predictedProducts.length; j++) {
+                            const predictedProduct = document.getElementById('product_' + j)
+                            if (j == i ) {
+                                predictedProduct.classList.add('predictedProductFocused')
+                            }else{
+                                predictedProduct.classList.remove('predictedProductFocused')
+                            }                            
+                        }
+                    })
+                    
+                    predictedProduct.addEventListener("click", async() => {
+                        productSelected(predictedProduct.innerText)                      
+                    })
+                }
+            }
+
+        }else{
+            productFocused = -1
+            predictedProductsList.style.display = 'none'
+            predictedProductsList.innerHTML = ''
         }
     })
 
-    createEditAddProduct.addEventListener("click", async() => {
+    selectProduct.addEventListener("keydown", async(e) => {
+        if (e.key === 'ArrowDown' && predictedProducts.length > 0) {
+            
+            productFocused = (productFocused == predictedProducts.length-1) ? productFocused : (productFocused + 1)            
+            
+            elementToFocus = document.getElementById('product_' + productFocused)            
+            elementToFocus.classList.add('predictedProductFocused')
+            elementToFocus.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            })
 
-        /*errorsQty = 0
-
-        //selects validations
-        selects1.forEach(select => {
-            const selectName = select.name
-            const errorLabel = document.querySelector(`#${selectName}Label`)
-            if (select.value == 'default') {
-                errorsQty += 1
-                isInvalid(errorLabel,select)
-            }else{
-                isValid(errorLabel,select)
+            if (productFocused > 0) {
+                elementToUnfocus = document.getElementById('product_' + (productFocused-1))
+                elementToUnfocus.classList.remove('predictedProductFocused')                
             }
-        })
 
-        //inputs validations
-        inputs1.forEach(input => {
-            const inputName = input.name
-            const errorLabel = document.querySelector(`#${inputName}Label`)
-            if (input.value == '') {
-                errorsQty += 1
-                isInvalid(errorLabel,input)
-            }else{
-                isValid(errorLabel,input)
+        }else if(e.key === 'ArrowUp'){
+
+            productFocused = (productFocused == 0) ? productFocused : (productFocused - 1)
+
+            elementToFocus = document.getElementById('product_' + productFocused)            
+            elementToFocus.classList.add('predictedProductFocused')
+            elementToFocus.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            })
+
+            if (productFocused != -1) {
+                elementToUnfocus = document.getElementById('product_' + (productFocused+1))
+                elementToUnfocus.classList.remove('predictedProductFocused')                
             }
-        })
+            
+        }else if(e.key === 'Enter'){
+            
+            let productOptions = []
 
-        if (errorsQty > 0) {
-            errorText1.classList.remove('notVisible')
-        }else{
-            errorText1.classList.add('notVisible')
-            updateOrderDetails(products)
-            updateOrderData()
-            printTableCreateEdit()
-        }*/
-
-        updateOrderDetails(products)
-        updateOrderData()
-        printTableCreateEdit()
-        
+            if (productFocused == -1) {
+                selectProduct.value = ''
+                selectSize.innerHTML = '<option value="default" id="selectSizeDefault" selected></option>'
+                colorsRow.classList.add('notVisible')
+                hideColorsInputs()
+            }else{
+                productSelected(elementToFocus.innerText)
+                
+            }
+            
+            predictedProductsList.style.display = 'none'
+        }
     })
+
+    selectSize.addEventListener("change", async() => {
+        getColorsOptions()
+    })   
 
     saveOrder.addEventListener("click", async() => {
 
