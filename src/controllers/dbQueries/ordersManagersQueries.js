@@ -5,12 +5,12 @@ const Orders_managers = db.local.Orders_managers
 
 const ordersManagersQueries = {
     ordersManagers: async() => {
-        const orders_managers = await Orders_managers.findAll({
+        const ordersManagers = await Orders_managers.findAll({
             order:[['order_manager_name','ASC']],
             raw:true,
         })
-        return orders_managers
-    },
+        return ordersManagers
+    }
 }       
 
 module.exports = ordersManagersQueries

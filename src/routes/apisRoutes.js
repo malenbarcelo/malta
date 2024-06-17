@@ -6,10 +6,13 @@ const apisWordpressController = require('../controllers/apisControllers/apisWord
 const router = express.Router()
 
 //sales
-router.get('/sales/orders',apisSalesController.orders)
+router.get('/sales/in-progress-orders',apisSalesController.inProgressOrders)
+router.get('/sales/in-progress-orders/payments',apisSalesController.inProgressOrdersPayments)
 router.get('/sales/:salesChannel/new-order',apisSalesController.newOrder)
 router.post('/sales/save-order',apisSalesController.saveOrder)
+router.post('/sales/register-payment',apisSalesController.registerPayment)
 router.post('/sales/deliver-order',apisSalesController.deliverOrder)
+router.post('/sales/assign-order-manager',apisSalesController.assignOrderManager)
 router.post('/sales/cancel-order',apisSalesController.cancelOrder)
 router.get('/sales/get-ninox-sales',apisSalesController.getNinoxSales)
 
@@ -21,6 +24,7 @@ router.get('/cuttings/colors-options/:productDescription/:size',apisCuttingsCont
 //data
 router.get('/data/customers',apisDataController.customers)
 router.get('/data/products',apisDataController.products)
+router.get('/data/orders-managers',apisDataController.ordersManagers)
 router.get('/data/products/predict-products/:string',apisDataController.predictProducts)
 
 //wordpress data

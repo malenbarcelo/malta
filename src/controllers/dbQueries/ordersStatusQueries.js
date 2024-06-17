@@ -6,7 +6,6 @@ const Orders_status = db.local.Orders_status
 const ordersStatusQueries = {
     ordersStatus: async() => {
         const orders_status = await Orders_status.findAll({
-            order:[['order_status','ASC']],
             raw:true,
         })
         return orders_status

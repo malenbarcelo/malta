@@ -35,6 +35,20 @@
     cursor: pointer;
 }
 
+#rpppBalanceAlert{
+    display: flex;
+    column-gap: 5px;
+    justify-content: center;
+    font-size: 13px;
+    margin-top: 3px;
+    font-weight: bold;
+    position: absolute;
+    width: 500px;
+    top: 100%;
+    left: -100px;
+
+}
+
 /*--------------------ordersCreateEdit.ejs--------------------*/
 #createEditAddProduct{
     font-size: 15px;

@@ -40,6 +40,20 @@
 
 }
 
+.yesNoTitle1{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.yesNoSubitle1{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+
+}
+
 .yesNoQuestion{
     font-size: 14px;
     text-align: center;
@@ -48,11 +62,19 @@
     line-height: 1.8;
 }
 
-#coppContent,#doppContent{
-    top: 45%;
+#coppContent,#doppContent,#amppContent{
+    top: 35%;
     width: 400px;
     left: calc(50vw - 200px);
 }
+
+#rpppContent{
+    top: 8%;
+    width: 600px;
+    left: calc(50vw - 300px);
+}
+
+
 
 /*----------okPopup----------*/
 .okPopup{
@@ -71,7 +93,7 @@
     border-radius: 5px;
     position: relative;
     border: green solid 3px;
-    background-color: rgb(152, 179, 152);
+    background-color: rgb(173, 204, 173);
     font-size: 16px;
     width: fit-content;
     padding: 15px 30px;
@@ -89,13 +111,15 @@
     font-size: 25px;
 }
 
-#coppOkContent, #doppOkContent{
-    top: 45%;
+#coppOkContent, #doppOkContent, #amppOkContent{
+    top: 40%;
     left: calc(50vw - 150px);
 }
 
-
-
+#rpppOkContent{
+    top: 40%;
+    left: calc(50vw - 150px);
+}
 
 
 /*----------info popups----------*/

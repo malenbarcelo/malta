@@ -50,7 +50,135 @@
     <div class="okContent" id="coppOkContent">
         <div class="okDiv">
             <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
-            <div class="okText" id="coppOkText">Pedido cancelado con éxito</div>
+            <div class="okText">Pedido cancelado con éxito</div>
         </div>
     </div>
 </div>
+
+<!----------Assign order manager---------->
+<div class="yesNoPopup" id="ampp">
+    
+    <div class="yesNoContent" id="amppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-solid fa-user-pen"></i></div>
+            <div class="yesNoClose1" id="amppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle1">ASIGNAR ENCARGADO</div>
+
+        <div class="divInputsColumn mtm mbl">
+            <div class="divInput">
+                <select id="amppSelectOM" class="input1 inputXXL">
+                    <% ordersManagers.forEach(om => { %>
+                        <% if (om.enabled == 1) { %>
+                            <option value="<%= om.id %>">
+                                <%= om.order_manager_name %>
+                            </option>
+                        <% } %>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+
+        <div class="divButtonsRow mbs">
+            <div id="amppAccept" class="button1 bs">Aceptar</div>
+            <div id="amppCancel" class="button1 bs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="amppOk">    
+    <div class="okContent" id="amppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Encargado asignado con éxito</div>
+        </div>
+    </div>
+</div>
+
+<!----------Register payment---------->
+<div class="yesNoPopup" id="rppp">
+    
+    <div class="yesNoContent" id="rpppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-credit-card"></i></div>
+            <div class="yesNoClose1" id="rpppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        
+        <div class="yesNoTitle1" id="rpppTitle">PEDIDO N°1 - Agus Ereñi</div>
+        <div class="yesNoSubitle1">Registrar pago</div>
+
+        <div class="divInputsColumn mtm mbxl">
+            <div class="divInput">
+                <label class="label1 unabledLabel">Subtotal</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppSubtotal" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Descuento %</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppDiscount" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Total</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppTotal" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Pagado</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppPaid" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Pendiente</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppBalance" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Saldo a favor</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppCustomerAccount" readonly>
+                <div class="divCheckbox2">
+                    <input type="checkbox">
+                    <label for="allChannels">Usar saldo a favor</label><br>
+                </div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="rpppPaymentLabel">Abona</label>
+                <input type="number" step="0.01" class="input1 inputXXL" id="rpppPayment">
+                <div class="divError"  id="rpppPaymentError">Debe completar el importe abonado</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="rpppPaymentMethodLabel">Forma de pago</label>
+                <select class="input1 inputXXL" id="rpppPaymentMethod">
+                    <option value=""></option>
+                    <% paymentMethods.forEach(pm => { %>
+                        <% if (pm.enabled == 1) { %>
+                            <option value="<%= pm.id %>">
+                                <%= pm.payment_method %>
+                            </option>
+                        <% } %>
+                    <% }) %>
+                </select>
+                <div class="divError" id="rpppPaymentMethodError">Debe seleccionar una forma de pago</div>
+            </div>
+            <div class="divInput">
+                <label class="label1 unabledLabel">Saldo</label>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppNewBalance" readonly>
+                <div id="rpppBalanceAlert"></div>
+            </div>
+           
+        </div>
+        <div class="divButtonsRow mbs">
+            <div id="rpppAccept" class="button1 bs">Aceptar</div>
+            <div id="rpppCancel" class="button1 bs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="rpppOk">    
+    <div class="okContent" id="rpppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Pago registrado con éxito</div>
+        </div>
+    </div>
+</div>
+

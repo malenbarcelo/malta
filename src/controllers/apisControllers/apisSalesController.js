@@ -1,11 +1,12 @@
 
 const ordersQueries = require('../dbQueries/ordersQueries')
+const paymentsQueries = require('../dbQueries/paymentsQueries')
 
 const apisSalesController = {
-  orders: async(req,res) =>{
+  inProgressOrders: async(req,res) =>{
     try{
 
-      const orders = await ordersQueries.orders()
+      const orders = await ordersQueries.inProgressOrders()
 
       res.status(200).json(orders)
 
@@ -57,12 +58,85 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  inProgressOrdersPayments: async(req,res) =>{
+    try{
+
+      const inProgressOrders = await ordersQueries.inProgressOrders()
+
+      const ordersIds = inProgressOrders.map(o => o.id) 
+
+      const ordersPayments = await paymentsQueries.inProgressOrdersPayments(ordersIds)
+
+      res.status(200).json(ordersPayments)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  registerPayment: async(req,res) =>{
+    try{
+
+      const order = req.body.order
+      const idCustomer = req.body.idCustomer
+      const amount = req.body.amount
+      const balance = req.body.balance
+      const newBalance = req.body.newBalance
+      const idPaymentMethod = req.body.idPaymentMethod
+      
+      let orderPayment = 0
+
+      if (newBalance == 0 || newBalance < 0) { //order_payments_status = paid
+        await ordersQueries.updatePaymentsStatus(5,order.id)
+      }else{
+        if (amount != 0) {
+          await ordersQueries.updatePaymentsStatus(4,order.id) //order_payments_status = parcial
+        }
+      }
+
+      //register order payment
+      if (newBalance == 0 || newBalance > 0 ) {
+        orderPayment = amount
+      }else{
+        orderPayment = balance
+      }
+
+      await paymentsQueries.registerOrderPayment(order.id,idCustomer,orderPayment,idPaymentMethod)
+
+      //register without order if corresponds
+      if (newBalance < 0) {
+        const exceededAmount = -newBalance
+        await paymentsQueries.registerPayment(idCustomer,exceededAmount,idPaymentMethod)
+      }
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   deliverOrder: async(req,res) =>{
     try{
 
       const orderId = req.body.idOrder
 
       await ordersQueries.deliverOrder(orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  assignOrderManager: async(req,res) =>{
+    try{
+
+      const orderId = req.body.idOrder
+      const orderManagerId = req.body.orderManagerId
+
+      await ordersQueries.assignOrderManager(orderId,orderManagerId)
 
       res.status(200).json()
 

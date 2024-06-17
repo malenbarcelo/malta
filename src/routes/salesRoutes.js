@@ -2,7 +2,7 @@ const express = require('express')
 const salesController = require('../controllers/salesController.js')
 const router = express.Router()
 
-router.get('/orders',salesController.orders)
+router.get('/in-progress-orders',salesController.inProgressOrders)
 router.get('/consolidated',salesController.sales)
 router.get('/customers-data',salesController.customersData)
 router.get('/statistics/sales',salesController.salesStatistics)

@@ -31,6 +31,7 @@ accent-color: black
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    row-gap: 15px;
 }
 
 /*----------INPUTS ADN LABELS----------*/
@@ -50,11 +51,20 @@ accent-color: black
 
 .label1{
     position: absolute;
-    font-size: 12px;
+    font-size: 13px;
     left: 8px;
     top: -8px;
     padding: 0px 5px;
     background-color: var(--color2);
+}
+
+.unabledInput{
+    border: grey solid 1px;
+    color: grey;
+}
+
+.unabledLabel{
+    color: grey;
 }
 
 /*----------TABLES RESUME----------*/
@@ -106,8 +116,14 @@ accent-color: black
 }
 
 /*----------DIV CHECKBOX----------*/
-.divCheckbox{
+.divCheckbox1{
     font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.divCheckbox2{
+    font-size: 12px;
     display: flex;
     align-items: center;
 }

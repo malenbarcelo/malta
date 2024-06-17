@@ -1,15 +1,29 @@
 const db = require('../../../database/models')
 const { localDB } = require('../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
+const { Op } = require('sequelize');
 const Orders = db.local.Orders
 
 const ordersQueries = {
-    orders: async() => {
+    inProgressOrders: async() => {
         const orders = await Orders.findAll({
+            include: [
+                {association: 'orders_customers'},
+                {association: 'orders_orders_status'},
+                {association: 'orders_payments_status'},
+                {association: 'orders_orders_managers'}
+            ],
+            where:{
+                enabled:1,
+                [Op.or]: [
+                    { id_orders_status: { [Op.ne]: 3 } },
+                    { id_payments_status: { [Op.ne]: 5 } }
+                ]
+            },
             order:[['date','ASC'],['id','ASC']],
             raw:true,
+            nest:true
         })
-
         return orders
     },
     newOrder: async() => {
@@ -76,13 +90,29 @@ const ordersQueries = {
     },
     deliverOrder: async(orderId) => {        
         await Orders.update(
-            { status: 'Entregado' },
+            { id_orders_status: 3 },
             { where: { id: orderId } }
+        )
+    },
+    assignOrderManager: async(orderId,orderManagerId) => {
+        await Orders.update(
+            {
+                id_orders_managers:orderManagerId
+            },
+            {
+                where:{id:orderId}
+            }
         )
     },
     cancelOrder: async(orderId) => {        
         await Orders.update(
-            { status: 'Cancelado' },
+            { enabled: 0 },
+            { where: { id: orderId } }
+        )
+    },
+    updatePaymentsStatus: async(paymentsStatusId,orderId) => {                
+        await Orders.update(
+            { id_payments_status: paymentsStatusId },
             { where: { id: orderId } }
         )
     },

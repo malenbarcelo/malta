@@ -1,45 +1,34 @@
 import { dominio } from "./dominio.js"
 
-function clearData(inputs, selects, errorText, body) {
+function clearInputs(inputs) {
 
-    //inputs
-    if (inputs != undefined) {
-        inputs.forEach(input => {
-            input.value = ''
-            const inputLabel = document.getElementById(input.name + 'Label')
+    inputs.forEach(input => {
+        const label = document.getElementById(input.id + 'Label')
+        const error = document.getElementById(input.id + 'Error')
+        input.value = ''
+        label.classList.remove('errorColor')
+        error.style.display = 'none'
+        input.classList.remove('isInvalid')
+    })
+}
+
+function inputsValidation(inputs) {
+    let errors = 0
+    inputs.forEach(input => {
+        const label = document.getElementById(input.id + 'Label')
+        const error = document.getElementById(input.id + 'Error')
+        if (input.value == '') {
+            errors +=1            
+            label.classList.add('errorColor')
+            error.style.display = 'block'
+            input.classList.add('isInvalid')
+        }else{
+            label.classList.remove('errorColor')
+            error.style.display = 'none'
             input.classList.remove('isInvalid')
-            inputLabel.classList.remove('errorColor')        
-        })
-    }
-
-    //selects
-    if (selects != undefined) {
-        selects.forEach(select => {
-            const defaultOption = document.getElementById(select.name + 'Default')
-            const selectLabel = document.getElementById(select.name + 'Label')
-            defaultOption.selected = true
-            select.classList.remove('isInvalid')
-            selectLabel.classList.remove('errorColor')            
-        })
-    }
-
-    //error texts
-    errorText.classList.add('notVisible')
-
-    //bodys    
-    body.innerHTML = ''
-
-    
-}
-
-function isInvalid(errorLabel, input) {
-    errorLabel.classList.add('errorColor')
-    input.classList.add('isInvalid')
-}
-
-function isValid(errorLabel, input) {
-    errorLabel.classList.remove('errorColor')
-    input.classList.remove('isInvalid')    
+        }
+    })
+    return errors
 }
 
 function dateToString(date) {
@@ -55,4 +44,15 @@ function dateToString(date) {
     return stringDate    
 }
 
-export {isValid,isInvalid,clearData,dateToString}
+function showOkPopup(popupToShow) {
+
+    popupToShow.style.display = 'block'
+
+    //hide okPopup after one second
+    setTimeout(function() {
+        popupToShow.style.display = 'none'
+    }, 1500)
+    
+}
+
+export {clearInputs,inputsValidation,dateToString,showOkPopup}

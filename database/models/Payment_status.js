@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Orders_managers"
+    const alias = "Payments_status"
     const cols = {
        id:{
          type : DataTypes.INTEGER,
@@ -8,20 +8,16 @@ module.exports = (sequelize, DataTypes) => {
          autoIncrement : true,
          allowNull: false
        },
-       order_manager_name:{
+       payment_status:{
          type: DataTypes.STRING,
          allowNull: false,
        },
-       enabled:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     }
     const config = {
-    tableName : 'orders_managers',
+    tableName : 'payments_status',
     timestamps : false
     }
-    const Order_manager = sequelize.define(alias, cols, config)
+    const Payment_status = sequelize.define(alias, cols, config)
     
-    return Order_manager
+    return Payment_status
  }

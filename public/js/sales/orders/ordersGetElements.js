@@ -1,3 +1,5 @@
+import og from "./ordersGlobals.js"
+
 function getElements() {
     
     /*---------------------------orders.ejs (1)---------------------------*/
@@ -22,6 +24,26 @@ function getElements() {
     const amppIcon = document.getElementById('amppIcon')
     
     /*----orders.ejs popups-----*/
+
+    //register payment (rppp)
+    const rppp = document.getElementById('rppp')
+    const rpppTitle = document.getElementById('rpppTitle')
+    const rpppSubtotal = document.getElementById('rpppSubtotal')
+    const rpppDiscount = document.getElementById('rpppDiscount')
+    const rpppTotal = document.getElementById('rpppTotal')
+    const rpppPaid = document.getElementById('rpppPaid')
+    const rpppBalance = document.getElementById('rpppBalance')
+    const rpppCustomerAccount = document.getElementById('rpppCustomerAccount')
+    const rpppPayment = document.getElementById('rpppPayment')
+    const rpppPaymentMethod = document.getElementById('rpppPaymentMethod')
+    const rpppNewBalance = document.getElementById('rpppNewBalance')
+    const rpppBalanceAlert = document.getElementById('rpppBalanceAlert')
+    const rpppAccept = document.getElementById('rpppAccept')
+    const rpppClose = document.getElementById('rpppClose')
+    const rpppCancel = document.getElementById('rpppCancel')
+    const rpppOk = document.getElementById('rpppOk')
+    og.rpppValidate = [rpppPayment,rpppPaymentMethod]
+
     //deliver order popup (dopp)
     const dopp = document.getElementById('dopp')
     const doppQuestion = document.getElementById('doppQuestion')
@@ -29,7 +51,15 @@ function getElements() {
     const doppClose = document.getElementById('doppClose')
     const doppCancel = document.getElementById('doppCancel')
     const doppOk = document.getElementById('doppOk')
+
     //add manager popup (ampp)
+    const ampp = document.getElementById('ampp')
+    const amppSelectOM = document.getElementById('amppSelectOM')
+    const amppAccept = document.getElementById('amppAccept')
+    const amppClose = document.getElementById('amppClose')
+    const amppCancel = document.getElementById('amppCancel')
+    const amppOk = document.getElementById('amppOk')
+
     //cancel order popup (copp)
     const copp = document.getElementById('copp')
     const coppQuestion = document.getElementById('coppQuestion')
@@ -39,45 +69,43 @@ function getElements() {
     const coppOk = document.getElementById('coppOk')    
     
     //define arrays with elements
-    const filters1 = [filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
-    const checks1 = [Dif_1,Dif_2,Web_AyR,Web_T]
+    og.filters1 = [filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
+    og.checks1 = [Dif_1,Dif_2,Web_AyR,Web_T]
 
     /*---------------------------ordersCreateEdit.ejs (2)---------------------------*/
-    const createEditPopup = document.getElementById('createEditPopup')
-    const closeCreateEditPopup = document.getElementById('closeCreateEditPopup')
-    const customerOrder = document.getElementById('customerOrder')
-    const selectProduct = document.getElementById('selectProduct')
-    const predictedProductsList = document.getElementById('predictedProductsList')
-    const selectSize = document.getElementById('selectSize')
-    const colorsRow = document.getElementById('colorsRow')
-    const createEditAddProduct = document.getElementById('createEditAddProduct')
-    const errorText1 = document.getElementById('errorText1')
-    const orderInfo = document.getElementById('orderInfo')
-    const bodyCreateEdit = document.getElementById('bodyCreateEdit')
-    const saveOrder = document.getElementById('saveOrder')
+    // const createEditPopup = document.getElementById('createEditPopup')
+    // const closeCreateEditPopup = document.getElementById('closeCreateEditPopup')
+    // const customerOrder = document.getElementById('customerOrder')
+    // const selectProduct = document.getElementById('selectProduct')
+    // const predictedProductsList = document.getElementById('predictedProductsList')
+    // const selectSize = document.getElementById('selectSize')
+    // const colorsRow = document.getElementById('colorsRow')
+    // const createEditAddProduct = document.getElementById('createEditAddProduct')
+    // const errorText1 = document.getElementById('errorText1')
+    // const orderInfo = document.getElementById('orderInfo')
+    // const bodyCreateEdit = document.getElementById('bodyCreateEdit')
+    // const saveOrder = document.getElementById('saveOrder')
 
-    //define arrays with elements
-    const selects2 = [selectSize]
+    // //define arrays with elements
+    // const selects2 = [selectSize]
 
     /*---------------------------ordersEditPopup.ejs (3)---------------------------*/
-    const editPopup = document.getElementById('editPopup')
-    const titleEditPopup = document.getElementById('titleEditPopup')
-    const acceptEdit = document.getElementById('acceptEdit')
-    const cancelEdit = document.getElementById('cancelEdit')
-    const closeEditPopup = document.getElementById('closeEditPopup')
-    const orderDetailsId = document.getElementById('orderDetailsId')
-    const editPrice = document.getElementById('editPrice')
-    const editQty = document.getElementById('editQty')
-    const errorText2 = document.getElementById('errorText2')
+    // const editPopup = document.getElementById('editPopup')
+    // const titleEditPopup = document.getElementById('titleEditPopup')
+    // const acceptEdit = document.getElementById('acceptEdit')
+    // const cancelEdit = document.getElementById('cancelEdit')
+    // const closeEditPopup = document.getElementById('closeEditPopup')
+    // const orderDetailsId = document.getElementById('orderDetailsId')
+    // const editPrice = document.getElementById('editPrice')
+    // const editQty = document.getElementById('editQty')
+    // const errorText2 = document.getElementById('errorText2')
 
-    //define arrays with elements
-    const inputs3 = [editPrice, editQty]
+    // //define arrays with elements
+    // const inputs3 = [editPrice, editQty]
 
     /*---------------------------popups close and cancel---------------------------*/
-    const closePopups = [doppClose,doppCancel,coppClose,coppCancel]
-    const tableIcons = [eoppIcon,rpppIcon,doppIcon,amppIcon,coppIcon]    
-    
-    return {filters1,checks1,selects2,inputs3,closePopups,tableIcons}
+    og.closePopups = [rpppClose,rpppCancel,doppClose,doppCancel,amppClose,amppCancel,coppClose,coppCancel]
+    og.tableIcons = [eoppIcon,rpppIcon,doppIcon,amppIcon,coppIcon]
 }
 
 export { getElements }

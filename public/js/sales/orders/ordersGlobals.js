@@ -1,12 +1,27 @@
 
 let og = {
+    formatter:new Intl.NumberFormat('es-ES', {
+        minimumFractionDigits: 0,
+        useGrouping: true
+    }),
+    filters1:[],
+    checks1:[],
+    rpppValidate:[],
+    closePopups:[],
+    tableIcons:[],
     customers:[],
     products:[],
     orders:[],
+    ordersPayments:[],
+    ordersManagers:[],
     ordersFiltered:[],
     checkedElements:[],
     idOrderToCancel:0,
     idOrderToDeliver:0,
+    idOrderToAssign:0,
+    orderToPay:[],
+    orderToPayNewBalance:0,
+    orderToPayPayments:{},
     orderData: {
         order_number:'',
         sales_channel:'',
