@@ -1,0 +1,34 @@
+
+
+/*---------------------page display---------------------*/
+.header{
+    height: 18vh;
+}
+
+.mainTitle{
+    height: 10vh;
+    font-size: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainFilters{
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainData{
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    align-items: center;
+    font-size: 15px;
+}
+
+.mainDataElement{
+    text-align: center;
+}

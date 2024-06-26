@@ -1,0 +1,49 @@
+/*-----------------------------general actions-----------------------------*/
+.divGeneralActions{
+    display: flex;
+    column-gap: 20px;
+    position: absolute;    
+}
+
+.divGeneralAction{
+    border: var(--color1) dashed 3px;
+    font-size: 35px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.divGeneralAction:hover{
+    color:var(--color2);
+    background-color: var(--color1);
+}
+
+.divGeneralAction:hover .showActionPopup{
+    display: block;
+}
+
+.DGAerrors{
+    color: var(--errorColor);
+    font-size: 13px;
+    font-weight: bold;
+    row-gap: 20px;
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+#DGAorders{
+    right: 8%;
+    top: 23%;
+}
+
+#DGAordersErrors{
+    right: 2%;
+    top: 32%;
+    width: 250px;
+}

@@ -1,5 +1,5 @@
-const db = require('../../../database/models')
-const { remoteDB } = require('../../../database/config/sequelizeConfig')
+const db = require('../../../../database/models')
+const { remoteDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const WP_posts = db.remote.WP_posts
 const WP_postmeta = db.remote.WP_postmeta

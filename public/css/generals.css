@@ -5,50 +5,15 @@
     --color3:rgb(189, 187, 187);
     --color4:rgb(62, 60, 60);
     --color5:#F5F5F5;
+    --errorColor:rgb(221, 7, 7);
 }
 
 /*---------------------font family---------------------*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 body{
-    font-family:'Poppins', Arial, "sans-serif";
+    font-family: 'Roboto', sans-serif;
+    overflow: auto;
     margin: 0;
 }
-
-/*---------------------page display---------------------*/
-.header{
-    height: 18vh;
-}
-
-.mainTitle{
-    height: 10vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.mainTitleWfilters{
-    height: 22vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.content{
-    height: 72vh;
-    overflow: auto;
-}
-
-.contentWfilters{
-    height: 60vh;
-    overflow: auto;
-}
-
-.mainTitleFilters{
-    margin-top: 30px;
-}
-
 
 /*-----------------------------Refs-----------------------------*/
 a{
@@ -76,6 +41,15 @@ ul {
     display: none;
 }
 
+.divError2{
+    color:rgb(206, 10, 10);
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 2px;
+    display: none;
+}
+
 .errorColor{
     color:rgb(206, 10, 10);
     font-weight: bold;
@@ -84,34 +58,6 @@ ul {
 /*---------------------display---------------------*/
 .notVisible{
     display: none !important;
-}
-
-/*-----------------------------general actions-----------------------------*/
-.divGeneralActions{
-    display: flex;
-    column-gap: 20px;
-    position: absolute;    
-}
-
-.divGeneralAction{
-    border: var(--color1) dashed 3px;
-    font-size: 35px;
-    height: 50px;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.divGeneralAction:hover{
-    color:var(--color2);
-    background-color: var(--color1);
-}
-
-.divGeneralAction:hover .showActionPopup{
-    display: block;
 }
 
 /*---------------------margins---------------------*/
@@ -182,6 +128,16 @@ ul {
     padding: 11px 0px 11px 0px;
 }
 
+/*---------------------icons---------------------*/
+.unfilterIcon{
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
 /*---------------------loader---------------------*/
 .loader {
     border: 10px solid #f3f3f3;
@@ -203,6 +159,11 @@ ul {
 
 #ordersLoader{
     left: calc(50vw - 20px);
+}
+
+/*---------------------fonts---------------------*/
+.fwb{
+    font-weight: bold;
 }
 
 

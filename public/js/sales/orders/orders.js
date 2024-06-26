@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { getElements } from "./ordersGetElements.js"
-import { printTableOrders, filterOrders } from "./ordersFunctions.js"
+import { printTableOrders, filterOrders, updateOrderData, predictProducts, selectFocusedProduct, hideColorsInputs, getColorsOptions, printTableCreateEdit } from "./ordersFunctions.js"
 import { clearInputs, inputsValidation, showOkPopup } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
@@ -23,12 +23,19 @@ window.addEventListener('load',async()=>{
 
     //filters event listeners
     og.filters1.forEach(filter => {
-        
         filter.addEventListener("change", async() => {
             filterOrders()
             printTableOrders(og.ordersFiltered)
         })
-        
+    })
+
+    //filters customer error
+    filterCustomer.addEventListener("change", async() => {
+        if (filterCustomer.value != 'default') {
+            filterCustomerLabel.classList.remove('errorColor')
+            filterCustomer.classList.remove('isInvalid')
+            DGAcreateOrderError.style.display = 'none'
+        }
     })
 
     //unfilter event listener
@@ -38,6 +45,7 @@ window.addEventListener('load',async()=>{
         filterOrder.value = 'default'
         filterOrderManager.value = 'default'
         filterOrderStatus.value = 'default'
+        filterPaymentStatus.value = 'default'
         allChannels.checked = true
         og.checks1.forEach(element => {
             element.checked = true
@@ -58,11 +66,12 @@ window.addEventListener('load',async()=>{
         }
         og.checks1.forEach(element => {
             if (allChannels.checked == true) {
-                element.checked = true                                
+                element.checked = true
             }else{
                 element.checked = false
             }
         })
+        selectChannelError.style.display = 'none'
     })
 
     //filter by channel
@@ -83,15 +92,26 @@ window.addEventListener('load',async()=>{
             }else{
                 allChannels.checked = false
             }
+            selectChannelError.style.display = 'none'
         })
+
     })
 
     //close popups event listener
-    og.closePopups.forEach(element => {        
+    og.closePopups.forEach(element => {
         element.addEventListener("click", async() => {
             let popupToClose = document.getElementById(element.id.replace('Close',''))
             popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
             popupToClose.style.display = 'none'
+        })
+    })
+
+    //close side popups event listener
+    og.closeSidePopups.forEach(element => {
+        element.addEventListener("click", async() => {
+            let popupToClose = document.getElementById(element.id.replace('Close',''))
+            popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
+            popupToClose.classList.remove('slideIn')
         })
     })
 
@@ -109,78 +129,119 @@ window.addEventListener('load',async()=>{
         element.addEventListener("mouseout", async(e) => {
             info.style.display = 'none'
         })
-    
+
     })
 
     //change amount paid
-    rpppPayment.addEventListener("change", async() => {
-        
-        const payment = rpppPayment.value
-        og.orderToPayNewBalance = og.orderToPayPayments.balance - payment
+    og.rpppPaymentInputs.forEach(input => {
 
-        if (rpppPayment.value != '' && rpppPayment.value != '') {
-            clearInputs([rpppPayment])
-            rpppPayment.value = payment
-        }
-        
-        if ((og.orderToPayPayments.balance - rpppPayment.value) < 0) {
-            rpppBalanceAlert.style.color = 'green'
-            rpppBalanceAlert.innerHTML = rpppPayment.value == '' ? '' : '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo a favor de ARS ' + og.formatter.format(og.orderToPayPayments.balance - rpppPayment.value) + '</div>'
-        }
+        input.addEventListener("change", async() => {
 
-        if ((og.orderToPayPayments.balance - rpppPayment.value) > 0) {
-            rpppBalanceAlert.style.color = 'rgb(206, 10, 10)'
-            rpppBalanceAlert.innerHTML = rpppPayment.value == '' ? '' : '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPayPayments.balance - rpppPayment.value) + '</div>'
-        }
+            const payment = rpppPayment.value == '' ? 0 :parseFloat(rpppPayment.value,2)
+            const balanceUsed = og.orderToPayPayment.balanceUsed
+            const totalPayment = parseFloat(payment,2) + parseFloat(balanceUsed,2)
+            og.orderToPayPayment.payment = payment
 
-        rpppNewBalance.value = og.formatter.format(og.orderToPayPayments.balance - rpppPayment.value)
+            if (rpppPayment.value != '') {
+                clearInputs([rpppPayment])
+                rpppPayment.value = payment
+            }
+
+            if (og.orderToPay.balance < totalPayment) {
+                rpppBalanceAlert.style.color = 'green'
+                rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo a favor de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>'
+            }
+
+            if (og.orderToPay.balance > totalPayment) {
+                rpppBalanceAlert.style.color = 'rgb(206, 10, 10)'
+                rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>'
+            }
+
+            if (og.orderToPay.balance == totalPayment || rpppPayment.value == '') {
+                rpppBalanceAlert.innerHTML = ''
+            }
+
+            rpppNewBalance.value = og.formatter.format(og.orderToPay.balance - totalPayment)
+            og.orderToPayNewBalance = og.orderToPay.balance - totalPayment
+
+        })
     })
 
     //change payment method
     rpppPaymentMethod.addEventListener("change", async() => {
         const paymentMethod = rpppPaymentMethod.value
-
         if (rpppPaymentMethod.value != 'default') {
             clearInputs([rpppPaymentMethod])
             rpppPaymentMethod.value = paymentMethod
         }
     })
 
+    //check use balance
+    rpppUseBalanceCheck.addEventListener("click", async() => {
+
+        if (rpppUseBalanceCheck.checked) {
+
+            const orderBalance = og.orderToPay.balance
+            const customerBalance = og.orderToPayCustomerBalance
+
+            og.orderToPayPayment.balanceUsed = orderBalance > customerBalance ?  customerBalance :  orderBalance
+            rpppBalanceUsed.value = og.formatter.format(og.orderToPayPayment.balanceUsed)
+
+        }else{
+            og.orderToPayPayment.balanceUsed = 0
+            rpppBalanceUsed.value = 0
+        }
+
+    })
+
     //accept register payment
     rpppAccept.addEventListener("click", async() => {
+
         const errors = inputsValidation(og.rpppValidate)
 
         if (errors == 0) {
             const data = {
-                order:og.orderToPay,
-                idCustomer:og.orderToPay.id_customers,
-                amount:parseFloat(rpppPayment.value,2),
+                orderToPay:og.orderToPay,
+                amountPaid:og.orderToPayPayment,
                 idPaymentMethod:rpppPaymentMethod.value,
-                newBalance:og.orderToPayNewBalance,
-                balance:og.orderToPayPayments.balance
+                newBalance:og.orderToPayNewBalance
             }
-    
-            await fetch(dominio + 'apis/sales/register-payment',{
-                method:'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
+
+            console.log(data)
+
+            //register payment
+            if (data.amountPaid.payment > 0) {
+                await fetch(dominio + 'apis/sales/register-payment',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+            }
+
+            //register current_account_movement
+            if (data.amountPaid.balanceUsed > 0) {
+                await fetch(dominio + 'apis/sales/register-account-movement',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+            }
 
             rppp.style.display = 'none'
-    
+
             og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
             og.ordersPayments = await (await fetch(dominio + 'apis/sales/in-progress-orders/payments')).json()
             filterOrders()
             printTableOrders(og.ordersFiltered)
-    
+
             showOkPopup(rpppOk)
-            
+
         }
     })
 
     //accept deliver order
     doppAccept.addEventListener("click", async() => {
-        
+
         const data = {idOrder:og.idOrderToDeliver}
 
         await fetch(dominio + 'apis/sales/deliver-order',{
@@ -225,7 +286,7 @@ window.addEventListener('load',async()=>{
 
     //accept cancel order
     coppAccept.addEventListener("click", async() => {
-        
+
         const data = {idOrder:og.idOrderToCancel}
 
         await fetch(dominio + 'apis/sales/cancel-order',{
@@ -243,4 +304,193 @@ window.addEventListener('load',async()=>{
         showOkPopup(coppOk)
 
     })
+
+    //create order
+    DGAcreateOrder.addEventListener("click", async() => {
+        if (filterCustomer.value == 'default') {
+            filterCustomerLabel.classList.add('errorColor')
+            filterCustomer.classList.add('isInvalid')
+            DGAordersErrors.style.display = 'flex'
+            DGAcreateOrderError.style.display = 'block'
+        }
+
+        if (og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='Dif1' && og.checkedElements[0].id !='Dif2'))) {
+            DGAordersErrors.style.display = 'flex'
+            selectChannelError.style.display = 'block'
+        }
+
+        if (filterCustomer.value != 'default' && !(og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='Dif1' && og.checkedElements[0].id !='Dif2')))) {
+
+            //clear data
+            og.orderDetails = []
+
+            //complete popup info
+            const salesChannel = Dif1.checked ? 'Dif1' : 'Dif2'
+            const customer = filterCustomer.value
+            const orderNumber = await (await fetch(dominio + 'apis/sales/new-order')).json()
+            const customerData = og.customers.filter(c => c.customer_name == customer)[0]
+            og.discount = customerData.discount
+            const idCustomers = customerData.id
+            og.orderData.discount = parseFloat(og.discount,2)
+            og.orderData.subtotal = 0
+            og.orderData.total = 0
+            og.orderData.id_customers = idCustomers
+            og.orderData.sales_channel = salesChannel
+            og.orderData.order_number = orderNumber
+
+            updateOrderData()
+
+            customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
+
+            //show popup
+            ceopp.classList.add('slideIn')
+        }
+    })
+
+    //createEdit order - selectProduct
+    selectProduct.addEventListener("input", async() => {
+        predictProducts()
+    })
+
+    selectProduct.addEventListener("keydown", async(e) => {
+        selectFocusedProduct(e)
+    })
+
+    selectSize.addEventListener("change", async() => {
+        getColorsOptions()
+    })
+    
+    //createEdit order - addProduct
+    ceoppAddProduct.addEventListener("click", async() => {
+
+        og.selectedColors = []
+
+        og.colorsOptions.forEach((color,i) => {
+            const check = document.getElementById('color' + i + 'LabelCheck')
+            if (check.checked == true) {
+                og.selectedColors.push({
+                    i:i,
+                    color:check.value
+                })
+            }
+        })
+        
+        //validations
+        if (selectProduct.value == '' || selectSize.value == '') {
+            ceoppError.innerText = 'Debe seleccionar producto y talle'
+            ceoppError.style.display = 'block'            
+        }else{
+            if (og.selectedColors.length == 0) {
+                ceoppError.innerText = 'Debe seleccionar al menos un color'
+                ceoppError.style.display = 'block'
+            }else{
+                ceoppError.style.display = 'none'
+
+                let id = og.orderDetails.length == 0 ? 1 : Math.max(...og.orderDetails.map(element => element.id)) + 1
+                
+                og.selectedColors.forEach((color) => {
+
+                    const product = og.products.filter( p => p.description == selectProduct.value && p.size == selectSize.value && p.color == color.color)[0]
+                    
+                    const unitPrice = product.unit_price
+                    const id_products = product.id
+
+                    const input = document.getElementById('color' + color.i)
+
+                    const quantity = input.value == '' ? '' : parseInt(input.value)
+                    
+                    og.orderDetails.push({
+                        id: id,
+                        id_products: id_products,
+                        description: selectProduct.value,
+                        size: selectSize.value,
+                        color: color.color,
+                        unit_price: parseFloat(unitPrice,2),
+                        quantity: quantity == '' ? '' : quantity,
+                        extended_price: quantity == '' ? 0 : quantity * unitPrice,
+                        row_status: quantity == '' ? 'Incompleto' : 'Completo'
+                    })
+                    id += 1
+                })
+
+                selectProduct.value = ''
+                selectSize.value = ''
+                clearInputs(og.ceoppColorInputs)
+
+                colorsRow.classList.add('notVisible')
+
+                updateOrderData()
+                printTableCreateEdit()
+
+            }
+        }
+    })
+
+    //createEdit order - edit discount
+    cdppAccept.addEventListener("click", async() => {
+        og.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
+        og.orderData.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
+        updateOrderData()
+        cdpp.style.display = 'none'
+    })
+
+    //createEdit order - edit order detals
+    eodppAccept.addEventListener("click", async() => {
+
+        const errors = inputsValidation([eodppPrice])
+        
+        if (errors == 0) {
+
+            const unitPrice = eodppPrice.value
+            const quantity = eodppQty.value
+            const extendedPrice = unitPrice * quantity            
+            const id = og.idOrderDetailsToEdit
+
+            og.orderDetails = og.orderDetails.map(element => {
+                if (element.id == id) {
+                  return {...element, unit_price: unitPrice, quantity: quantity, extended_price: extendedPrice}
+                }
+                return element
+            })
+
+            updateOrderData()
+            printTableCreateEdit()
+
+            //close popup
+           eodpp.style.display = 'none'
+
+            
+        }
+    })
+
+    //createEdit order - save order
+    DGAsaveOrder.addEventListener("click", async() => {
+
+        let incompleteRows = 0
+        
+        og.orderDetails.forEach(element => {
+            if (element.row_status == 'Incompleto') {
+                incompleteRows +=1
+            }
+        })
+
+        if (incompleteRows > 0 || og.orderDetails.length == 0) {
+            og.orderData.id_orders_status = 1
+        }else{
+            og.orderData.id_orders_status = 2
+        }
+
+        const data = og.orderData
+        data.order_details = og.orderDetails
+
+        await fetch(dominio + 'apis/sales/save-order',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        window.location.href = '/sales/in-progress-orders'
+
+    })
+
 })

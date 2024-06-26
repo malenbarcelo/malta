@@ -6,14 +6,20 @@ const bcrypt = require('bcryptjs')
 const userLoggedMiddleware = require('./src/middlewares/userLoggedMiddleware.js')
 const bodyParser = require("body-parser")
 const cors = require('cors')
+const cron = require('node-cron')
 
 //Routes
-const apisRoutes = require('./src/routes/apisRoutes.js')
+const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
+const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
+const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
 //const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
 const mainRoutes = require('./src/routes/mainRoutes.js')
 const salesRoutes = require('./src/routes/salesRoutes.js')
 //const usersRoutes = require('./src/routes/usersRoutes.js')
+
+//Controllers
+const cronController = require('./src/controllers/cronController.js')
 
 const app = express()
 
@@ -45,13 +51,18 @@ app.use(userLoggedMiddleware)
 //cors
 app.use(cors())
 
+//get ninox data
+//cron.schedule('*/15 * * * *', cronController.getNinoxData )
+
 //Declare and listen port
 const APP_PORT = 3005
 app.listen(APP_PORT,() => console.log("Servidor corriendo en puerto " + APP_PORT))
 
 //Routes
 app.use('/',mainRoutes)
-app.use('/apis',apisRoutes)
+app.use('/apis/sales',apisSalesRoutes)
+app.use('/apis/cuttings',apisCuttingsRoutes)
+app.use('/apis/data',apisDataRoutes)
 app.use('/data',dataRoutes)
 app.use('/sales',salesRoutes)
 //app.use('/cuttings',cuttingsRoutes)

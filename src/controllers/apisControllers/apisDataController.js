@@ -1,7 +1,7 @@
 
-const customersQueries = require('../dbQueries/customersQueries')
-const productsQueries = require('../dbQueries/productsQueries')
-const ordersManagersQueries = require('../dbQueries/ordersManagersQueries')
+const customersQueries = require('../dbQueries/data/customersQueries')
+const productsQueries = require('../dbQueries/cuttings/productsQueries')
+const ordersManagersQueries = require('../dbQueries/data/ordersManagersQueries')
 
 const apisDataController = {
   customers: async(req,res) =>{

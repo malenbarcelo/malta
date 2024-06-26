@@ -1,4 +1,4 @@
-/*----------yenNoPopup----------*/
+/*----------yesNoPopup----------*/
 .yesNoPopup{
     display: none;
     position: fixed;
@@ -29,8 +29,18 @@
     font-size: 20px;
 }
 
+.yesNoIcon2{
+    font-size: 15px;
+}
+
 .yesNoClose1{
     font-size: 23px;
+    cursor: pointer;
+    transition: color 0.5s ease;
+}
+
+.yesNoClose2{
+    font-size: 18px;
     cursor: pointer;
     transition: color 0.5s ease;
 }
@@ -42,6 +52,12 @@
 
 .yesNoTitle1{
     font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.yesNoTitle2{
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
@@ -69,9 +85,21 @@
 }
 
 #rpppContent{
-    top: 8%;
+    top: 7%;
     width: 600px;
     left: calc(50vw - 300px);
+}
+
+#cdppContent{
+    top: 25%;
+    width: 250px;
+    left: 575px;
+}
+
+#eodppContent{
+    top: 25%;
+    width: 400px;
+    left: 500px;
 }
 
 
@@ -120,7 +148,6 @@
     top: 40%;
     left: calc(50vw - 150px);
 }
-
 
 /*----------info popups----------*/
 .showActionPopup{
@@ -214,8 +241,20 @@
 
 /*sizes*/
 .sppxl{
-    width: 1200px;
+    width: 1400px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*----------edit popups----------*/

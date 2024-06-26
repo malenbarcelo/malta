@@ -1,14 +1,34 @@
-
-const ordersQueries = require('../dbQueries/ordersQueries')
-const paymentsQueries = require('../dbQueries/paymentsQueries')
+const ordersQueries = require('../dbQueries/sales/ordersQueries')
+const paymentsQueries = require('../dbQueries/sales/paymentsQueries')
+const customersQueries = require('../dbQueries/data/customersQueries')
+const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
+const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQueries')
+const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
+const data = require('./apisSalesData')
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
     try{
 
       const orders = await ordersQueries.inProgressOrders()
+      const plainOrders = orders.map(order => order.get({ plain: true }))
 
-      res.status(200).json(orders)
+      plainOrders.forEach(order => {
+        let payments = 0
+        let accountMovements = 0
+        order.orders_payments.forEach(payment => {
+          payments += parseFloat(payment.amount,2)
+        })
+        order.orders_accounts_movements.forEach(movement => {
+          accountMovements += parseFloat(movement.amount,2)
+        })
+        order.payments = payments
+        order.accountMovements = accountMovements
+        order.amountPaid = payments + accountMovements
+        order.balance = order.total - (payments + accountMovements)
+      })
+
+      res.status(200).json(plainOrders)
 
     }catch(error){
       console.group(error)
@@ -17,9 +37,7 @@ const apisSalesController = {
   },
   newOrder: async(req,res) =>{
     try{
-
-      salesChannel = req.params.salesChannel
-
+      
       const newOrderNumber = await ordersQueries.newOrder()
 
       res.status(200).json(newOrderNumber)
@@ -77,37 +95,46 @@ const apisSalesController = {
   registerPayment: async(req,res) =>{
     try{
 
-      const order = req.body.order
-      const idCustomer = req.body.idCustomer
-      const amount = req.body.amount
-      const balance = req.body.balance
+      const idOrder = req.body.orderToPay.id
+      const idCustomer = req.body.orderToPay.id_customers
+      const payment = req.body.amountPaid.payment
       const newBalance = req.body.newBalance
       const idPaymentMethod = req.body.idPaymentMethod
-      
-      let orderPayment = 0
 
-      if (newBalance == 0 || newBalance < 0) { //order_payments_status = paid
-        await ordersQueries.updatePaymentsStatus(5,order.id)
-      }else{
-        if (amount != 0) {
-          await ordersQueries.updatePaymentsStatus(4,order.id) //order_payments_status = parcial
-        }
-      }
+      const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
+      const accountPayment = -newBalance
 
       //register order payment
-      if (newBalance == 0 || newBalance > 0 ) {
-        orderPayment = amount
-      }else{
-        orderPayment = balance
+      if (orderPayment > 0) {
+        await paymentsQueries.registerOrderPayment(idOrder,idCustomer,orderPayment,idPaymentMethod)
+      }      
+
+      //register payment without order if corresponds
+      if (accountPayment > 0) {
+        await paymentsQueries.registerAccountPayment(idCustomer,accountPayment,idPaymentMethod)
       }
 
-      await paymentsQueries.registerOrderPayment(order.id,idCustomer,orderPayment,idPaymentMethod)
+      //update order payment status
+      await ordersQueries.updatePaymentsStatus(idOrder)
 
-      //register without order if corresponds
-      if (newBalance < 0) {
-        const exceededAmount = -newBalance
-        await paymentsQueries.registerPayment(idCustomer,exceededAmount,idPaymentMethod)
-      }
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  registerAccountMovement: async(req,res) =>{
+    try{
+
+      const idOrder = req.body.orderToPay.id
+      const idCustomer = req.body.orderToPay.id_customers
+      const balanceUsed = req.body.amountPaid.balanceUsed
+
+      await accountsMovementsQueries.registerMovement(idOrder,idCustomer,balanceUsed)
+
+      //update order payment status
+      await ordersQueries.updatePaymentsStatus(idOrder)
 
       res.status(200).json()
 
@@ -159,42 +186,125 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  customerPositiveBalance: async(req,res) =>{
+    try{
+
+      const idCustomer = req.params.idCustomer
+      let netBalance = 0
+
+      const positiveBalance = await paymentsQueries.positiveBalance(idCustomer)
+      const positiveBalanceUsed = await accountsMovementsQueries.positiveBalanceUsed(idCustomer)
+
+      if (positiveBalance) {
+        netBalance = netBalance + parseFloat(positiveBalance.total_amount,2)
+      }
+
+      if (positiveBalanceUsed) {
+        netBalance = netBalance - parseFloat(positiveBalanceUsed.total_amount,2)
+      }
+
+      res.status(200).json(netBalance)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   getNinoxSales: async(req,res) => {
     try{
 
-      //const { anio, mes, sucursalId, incluirMediosPago } = req.query
+      // const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
+      // url.searchParams.append('fecha', '01/03/2024')
+      // url.searchParams.append('sucursalId', 1)
+      // url.searchParams.append('incluirMediosPago', true)
 
-      const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
-      url.searchParams.append('anio', 2024)
-      url.searchParams.append('mes', 6)
-      url.searchParams.append('sucursalId', 1)
-      url.searchParams.append('incluirMediosPago', true)
+      // const headers = {
+      //   'Content-Type': 'application/json',
+      //   'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
+      // }
 
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
-      }
+      // const response = await fetch(url, {
+      //   method: 'GET',
+      //   headers: headers
+      // })
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: headers
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! Status: ${response.status}`);
+      // }
+  
+      // const data = await response.json()
+
+      //await ninoxOrdersDetailsQueries.saveOrders(data)
+
+      //get data
+      const customers = await customersQueries.customers()
+      const paymentMethods = await paymentMethodsQueries.paymentMethods()
+
+      //get invoices ids
+      const idsInvoices = data.map(data => data.facturaId)
+      const idsInvoicesUnique = [...new Set(idsInvoices)]
+      const ordersData = []
+
+      //complete data for orders_ninox
+      idsInvoicesUnique.forEach(id => {
+
+        const allRows = data.filter(d => d.facturaId == id)
+        const date = allRows[0].fechaText
+        const customerName = allRows[0].cliente
+        const idCustomers = customers.filter(c => c.customer_name == customerName)[0]
+        const subtotal = allRows.reduce((sum, row) => sum + (row.precioVentaFinal * row.cantidad), 0)
+        const orderNumber = parseInt(allRows[0].numeroFull.split("-")[1])
+        
+        ordersData.push({
+          date:date,
+          order_number:orderNumber,
+          sales_channel:1,
+          id_customers: idCustomers ? idCustomers.id : null,
+          subtotal: subtotal,
+          discount:0,
+          total:subtotal,
+          id_orders_status:3,
+          id_payments_status:5,
+          id_orders_managers:1,
+          obervations:'',
+          enabled:1
+        })        
       })
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json()
+      //save data in orders_ninox
+      await ordersNinoxQueries.saveOrders(ordersData)
 
-      res.status(200).json(data)
+      return res.send(ordersData)
 
+      //res.status(200).json(data)
 
     }catch(error){
 
         console.log(error)
         return res.send('Ha ocurrido un error')
     }
-},
+  },
+  consolidatedSales: async(req,res) => {
+    try{
+
+      const year = req.params.year
+      const iDate = new Date(year + '-01-01') 
+      const fDate = new Date(year + '-12-31')
+
+      const webAndDifSales = await ordersQueries.webAndDifSales(iDate,fDate)
+      const ninoxSales = await ordersNinoxQueries.ninoxSales(iDate,fDate)
+
+      let sales = webAndDifSales.concat(ninoxSales);
+
+      res.status(200).json(sales)
+
+    }catch(error){
+
+        console.log(error)
+        return res.send('Ha ocurrido un error')
+    }
+  },
+
 }
 module.exports = apisSalesController
 

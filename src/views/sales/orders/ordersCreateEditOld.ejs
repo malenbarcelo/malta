@@ -1,16 +1,15 @@
-<!----------create / Edit order popup (ceopp)---------->
-
-<div class="sidePopup sppxl" id="ceopp">
+<div class="sidePopup sppxl" id="createEditPopup">
 
     <div class="sidePopupMain">
-        <div class="closeSidePopup" id="ceoppClose">X</div>
+        <div class="closeSidePopup" id="closeCreateEditPopup">X</div>
         <div class="sppTitle" id="customerOrder"></div>
-        <div class="sppSubitle mtm">CREAR PEDIDO</div>
+        <div class="sppSubitle mtm">CREAR PEDIDO</div>        
     </div>
 
     <div class="sidePopupContent">
+
         <div class="divGeneralActions" id="DGAordersCreateEdit">
-            <div class="divGeneralAction" id="DGAsaveOrder">
+            <div class="divGeneralAction" id="saveOrder">
                 <i class="fa-regular fa-floppy-disk"></i>
                 <div class="showActionPopup">
                     Guardar pedido
@@ -19,6 +18,7 @@
         </div>
         
         <div class="divInputsRow">
+
             <div class="divInput" id="inputProduct">
                 <label class="label1" id="selectProductLabel">Producto</label>
                 <input type="text" class="input1 inputXXXL" id="selectProduct">
@@ -28,60 +28,62 @@
             <div class="divInput">
                 <label class="label1" id="selectSizeLabel">Talle</label>
                 <select id="selectSize" name ="selectSize" class="input1 inputS">
-                    <option value="" id="selectSizeDefault"></option>
+                    <option value="default" id="selectSizeDefault"></option>
                 </select>
             </div>
             
-            <div id="ceoppAddProduct">
+            <div id="createEditAddProduct">
                 <i class="fa-solid fa-plus"></i>
             </div>
+
         </div>
 
         <div class="divInputsRow mtm notVisible" id="colorsRow">
 
             <div class="divInput notVisible" id="inputColor0">
-                <label class="label1 labelColor" id="color0Label"></label>
-                <input type="number" class="input1 inputL" id="color0">
+                <label class="label1" id="color0Label"></label>
+                <input type="number" class="input1 inputM" id="color0">
             </div>
 
             <div class="divInput notVisible" id="inputColor1">
-                <label class="label1 labelColor" id="color1Label"></label>
-                <input type="number" class="input1 inputL" id="color1">
+                <label class="label1" id="color1Label"></label>
+                <input type="number" class="input1 inputM" id="color1">
             </div>
 
             <div class="divInput notVisible" id="inputColor2">
-                <label class="label1 labelColor" id="color2Label"></label>
-                <input type="number" class="input1 inputL" id="color2">
+                <label class="label1" id="color2Label"></label>
+                <input type="number" class="input1 inputM" id="color2">
             </div>
 
             <div class="divInput notVisible" id="inputColor3">
-                <label class="label1 labelColor" id="color3Label"></label>
-                <input type="number" class="input1 inputL" id="color3">
+                <label class="label1" id="color3Label"></label>
+                <input type="number" class="input1 inputM" id="color3">
             </div>
 
             <div class="divInput notVisible" id="inputColor4">
-                <label class="label1 labelColor" id="color4Label"></label>
-                <input type="number" class="input1 inputL" id="color4">
+                <label class="label1" id="color4Label"></label>
+                <input type="number" class="input1 inputM" id="color4">
             </div>
 
             <div class="divInput notVisible" id="inputColor5">
-                <label class="label1 labelColor" id="color5Label"></label>
-                <input type="number" class="input1 inputL" id="color5">
+                <label class="label1" id="color5Label"></label>
+                <input type="number" class="input1 inputM" id="color5">
             </div>
 
             <div class="divInput notVisible" id="inputColor6">
-                <label class="label1 labelColor" id="color6Label"></label>
-                <input type="number" class="input1 inputL" id="color6">
+                <label class="label1" id="color6Label"></label>
+                <input type="number" class="input1 inputM" id="color6">
             </div>
 
             <div class="divInput notVisible" id="inputColor7">
-                <label class="label1 labelColor" id="color7Label"></label>
-                <input type="number" class="input1 inputL" id="color7">
+                <label class="label1" id="color7Label"></label>
+                <input type="number" class="input1 inputM" id="color7">
             </div>
+
         </div>
        
 
-        <div class="divError" id="ceoppError"></div>
+        <div class="divError notVisible" id="errorText1"></div>
 
         <div class="divTableSummary mtl mbm" id="orderInfo"></div>
 

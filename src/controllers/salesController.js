@@ -1,15 +1,15 @@
-const customersQueries = require('./dbQueries/customersQueries')
-const ordersManagersQueries = require('./dbQueries/ordersManagersQueries')
-const ordersStatusQueries = require('./dbQueries/ordersStatusQueries')
-const paymentsStatusQueries = require('./dbQueries/paymentsStatusQueries')
-const productsQueries = require('./dbQueries/productsQueries')
-const paymentMethodsQueries = require('./dbQueries/paymentMethodsQueries')
-const ordersQueries = require('./dbQueries/ordersQueries')
+const customersQueries = require('./dbQueries/data/customersQueries')
+const ordersManagersQueries = require('./dbQueries/data/ordersManagersQueries')
+const ordersStatusQueries = require('./dbQueries/data/ordersStatusQueries')
+const paymentsStatusQueries = require('./dbQueries/data/paymentsStatusQueries')
+const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
+const productsQueries = require('./dbQueries/cuttings/productsQueries')
+const ordersQueries = require('./dbQueries/sales/ordersQueries')
 
 const bottomHeaderMenu = [
     {
         'name':'PEDIDOS',
-        'href':'/sales/orders'
+        'href':'/sales/in-progress-orders'
     },
     {
         'name':'VENTAS',
@@ -46,13 +46,14 @@ const salesController = {
             return res.send('Ha ocurrido un error')
         }
     },
-    sales: (req,res) => {
+    sales: async(req,res) => {
         try{
 
             const selectedItem = 'VENTAS'
+            const customers = await customersQueries.customers()
 
-            return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem})
-
+            return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem,customers,})
+            
         }catch(error){
 
             console.log(error)

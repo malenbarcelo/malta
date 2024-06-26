@@ -1,6 +1,6 @@
-const db = require('../../../database/models')
+const db = require('../../../../database/models')
 const sequelize = require('sequelize')
-const { localDB } = require('../../../database/config/sequelizeConfig')
+const { localDB } = require('../../../../database/config/sequelizeConfig')
 const Orders_managers = db.local.Orders_managers
 
 const ordersManagersQueries = {

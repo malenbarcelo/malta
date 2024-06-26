@@ -1,6 +1,6 @@
 
-const wpQueries = require('../dbQueries/wpQueries')
-const wpPostsCopiedQueries = require('../dbQueries/wpPostsCopiedQueries')
+const wpQueries = require('../dbQueries/sales/wpQueries')
+const wpPostsCopiedQueries = require('../dbQueries/sales/wpPostsCopiedQueries')
 
 const apisWordpressController = {
   getNewOrders: async(req,res) =>{

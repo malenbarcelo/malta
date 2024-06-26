@@ -1,6 +1,6 @@
-const db = require('../../../database/models')
+const db = require('../../../../database/models')
 const sequelize = require('sequelize')
-const { localDB } = require('../../../database/config/sequelizeConfig')
+const { localDB } = require('../../../../database/config/sequelizeConfig')
 const Payment_methods = db.local.Payment_methods
 
 const paymenMethodsQueries = {

@@ -6,8 +6,13 @@ function clearInputs(inputs) {
         const label = document.getElementById(input.id + 'Label')
         const error = document.getElementById(input.id + 'Error')
         input.value = ''
-        label.classList.remove('errorColor')
-        error.style.display = 'none'
+        if (label) {
+            label.classList.remove('errorColor')
+        }
+        if (error) {
+            error.style.display = 'none'
+        }        
+        
         input.classList.remove('isInvalid')
     })
 }

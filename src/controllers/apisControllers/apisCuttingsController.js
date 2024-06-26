@@ -1,5 +1,5 @@
 
-const productsQueries = require('../dbQueries/productsQueries')
+const productsQueries = require('../dbQueries/cuttings/productsQueries')
 
 const apisCuttingsController = {
   productOptions: async(req,res) =>{

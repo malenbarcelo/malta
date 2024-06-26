@@ -1,8 +1,9 @@
-const db = require('../../../database/models')
-const { localDB } = require('../../../database/config/sequelizeConfig')
+const db = require('../../../../database/models')
+const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize')
 const Orders = db.local.Orders
+const Orders_details = db.local.Orders_details
 
 const ordersQueries = {
     inProgressOrders: async() => {
@@ -11,7 +12,9 @@ const ordersQueries = {
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
-                {association: 'orders_orders_managers'}
+                {association: 'orders_orders_managers'},
+                {association: 'orders_payments'},
+                {association: 'orders_accounts_movements'}
             ],
             where:{
                 enabled:1,
@@ -21,14 +24,13 @@ const ordersQueries = {
                 ]
             },
             order:[['date','ASC'],['id','ASC']],
-            raw:true,
             nest:true
         })
         return orders
     },
     newOrder: async() => {
         const difOrders = await Orders.findAll({
-            where: {sales_channel:['Difusión1','Difusión2']},
+            where: {sales_channel:['Dif1','Dif2']},
             raw:true,
         })
 
@@ -57,10 +59,11 @@ const ordersQueries = {
             subtotal:data.subtotal,
             discount:data.discount,
             total:data.total,
-            balance:data.balance,
-            status:data.status,
-            order_manager:data.order_manager,
-            observations:data.observations
+            id_orders_status:data.id_orders_status,
+            id_payments_status:3,
+            id_orders_managers:1,            
+            observations:data.observations,
+            enabled:1
         })
     },
     createOrderDetails: async(data,orderId) => {
@@ -76,7 +79,7 @@ const ordersQueries = {
                 color:orderDetails[i].color,
                 size:orderDetails[i].size,
                 unit_price: orderDetails[i].unit_price,
-                quantity:orderDetails[i].quantity,
+                quantity:orderDetails[i].quantity == '' ? null : orderDetails[i].quantity,
                 extended_price:orderDetails[i].extended_price
             })            
         }        
@@ -110,12 +113,64 @@ const ordersQueries = {
             { where: { id: orderId } }
         )
     },
-    updatePaymentsStatus: async(paymentsStatusId,orderId) => {                
+    updatePaymentsStatus: async(orderId) => {
+
+        let amountPaidPayments = 0
+        let amountPaidAccounts = 0
+        let amountPaid = 0
+
+        let idPaymentsStatus = 3
+
+        //fin order data
+        const orderToUpdate = await Orders.findOne({
+            where:{id:orderId},
+            include: [
+                {association: 'orders_payments'},
+                {association: 'orders_accounts_movements'}
+            ],
+            nest:true
+        })
+
+        //sum order payments
+        orderToUpdate.orders_payments.forEach(payment => {
+            amountPaidPayments += parseFloat(payment.amount,2)
+        })
+
+        //sum order account movements
+        orderToUpdate.orders_accounts_movements.forEach(movement => {
+            amountPaidAccounts += parseFloat(movement.amount,2)
+        })
+
+        amountPaid = amountPaidPayments + amountPaidAccounts
+
+        console.log(amountPaid)
+
+        idPaymentsStatus = (amountPaid < orderToUpdate.total && amountPaid > 0) ? 4 : 5
+        
         await Orders.update(
-            { id_payments_status: paymentsStatusId },
+            { id_payments_status: idPaymentsStatus },
             { where: { id: orderId } }
         )
+    },
+    webAndDifSales: async(iDate,fDate) => {
+        const webAndDifSales = await Orders.findAll({
+            include: [
+                {association: 'orders_customers'}
+            ],
+            where:{
+                enabled:1,
+                id_orders_status:3,
+                date: {
+                    [Op.between]: [iDate,fDate]
+                }
+                
+            },
+            order:[['date','ASC'],['id','ASC']],
+            nest:true
+        })
+        return webAndDifSales
     },
 }       
 
 module.exports = ordersQueries
+

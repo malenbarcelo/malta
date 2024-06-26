@@ -75,11 +75,10 @@ border-top-right-radius: 15px;
     font-size: 12px;
     position: absolute;
     display: none;
-    top: 37.5%;
     width: 200px;
     text-align: center;
 }
 
-#doppInfo,#coppInfo,#amppIcon{
-    top:37.5%
+#eoppInfo,#rpppInfo,#doppInfo,#coppInfo,#amppInfo,#voppInfo{
+    top:38.5%
 }

@@ -1,0 +1,10 @@
+const express = require('express')
+const apisDataController = require('../../controllers/apisControllers/apisDataController')
+const router = express.Router()
+
+router.get('/customers',apisDataController.customers)
+router.get('/products',apisDataController.products)
+router.get('/orders-managers',apisDataController.ordersManagers)
+router.get('/products/predict-products/:string',apisDataController.predictProducts)
+
+module.exports = router

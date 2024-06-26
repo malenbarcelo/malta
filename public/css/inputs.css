@@ -74,10 +74,7 @@ accent-color: black
     align-items: center;
     column-gap: 30px;
     font-size: 14px;
-
-
 }
-
 
 /*----------INPUTS SIZES----------*/
 .inputXS{
@@ -97,7 +94,7 @@ accent-color: black
 
 .inputL{
     width: 150px;
-    padding: 7px 0px 3px 0px;
+    padding: 10px 0px 3px 0px;
 }
 
 .inputXL{
@@ -112,7 +109,7 @@ accent-color: black
 
 .inputXXXL{
     width: 360px;
-    padding: 7px 0px 3px 0px;
+    padding: 7px 0px 4px 0px;
 }
 
 /*----------DIV CHECKBOX----------*/

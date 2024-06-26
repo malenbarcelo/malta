@@ -1,15 +1,86 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
 
-<div class="mainTitle">
-    <div class="titleL">Consolidado de ventas 2024</div>
-</div>
+    <!------MAIN TITLE------>
+    <div class="mainTitle">CONSOLIDADO DE VENTAS</div>
 
-<div class="content">
+    <!------MAIN FILTERS------>
+    <div class="mainFilters">
+        <div class="divInputsRow">
+            <div class="divInput">
+                <label class="label1" id="filterCustomerLabel">Cliente</label>
+                <select id="filterCustomer" class="input1 inputL">
+                    <option value="default"></option>
+                    <% customers.forEach(customer => { %>
+                        <option value="<%= customer.customer_name %>">
+                            <%= customer.customer_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="filterChannelLabel">Canal</label>
+                <select id="filterChannel" class="input1 inputL">
+                    <option value="default"></option>
+                    <% customers.forEach(customer => { %>
+                        <option value="<%= customer.customer_name %>">
+                            <%= customer.customer_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="filterChannelLabel">Mes</label>
+                <select id="filterChannel" class="input1 inputL">
+                    <option value="default"></option>
+                    <% customers.forEach(customer => { %>
+                        <option value="<%= customer.customer_name %>">
+                            <%= customer.customer_name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="unfilterIcon" id="">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </div>
+        </div>
+    </div>
 
-    
+    <!------MAIN DATA------>
+    <div class="mainData">
+        <div class="mainDataElement" id="salesAmount"></div>
+        <div class="mainDataElement" id="salesQty"></div>
+    </div>
 
-    
-</div>
+    <!------MAIN CONTENT------>
+    <div class="mts">
+        <div class="divTable">
 
-<script type="module" src="/js/sales.js"></script>
+            <div class="tableInfo" id="voppInfo">Ver detalle</div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wS thLeftBorder thTall"># Pedido</th>
+                        <th class="theadCss wS thTall">Fecha</th>
+                        <th class="theadCss wS thTall">Canal</th>
+                        <th class="theadCss wL thTall">Cliente</th>
+                        <th class="theadCss wS thTall">Subtotal</th>
+                        <th class="theadCss wS thTall">Dto %</th>
+                        <th class="theadCss wS thTall">Total</th>
+                        <th class="theadCss wXS thTall thRightBorder">
+                            <i class="fa-solid fa-magnifying-glass-plus tableIcon" id="voppIcon"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="bodySales"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!----------LOADER---------->
+    <div class="loader" id="salesLoader" ></div>
+    <script type="module" src="/js/sales/sales/sales.js"></script>
+
+
+

@@ -24,12 +24,6 @@
 }
 
 /*--------------------orders.ejs--------------------*/
-#DGAorders{
-    /*right: 100px;
-    top: 185px;*/
-    right: 8%;
-    top: 23%;
-}
 
 #unfilterOrders{
     cursor: pointer;
@@ -46,15 +40,14 @@
     width: 500px;
     top: 100%;
     left: -100px;
-
 }
 
 /*--------------------ordersCreateEdit.ejs--------------------*/
-#createEditAddProduct{
+#ceoppAddProduct{
     font-size: 15px;
     position: absolute;
     top: 2.5px;
-    right: 285px;
+    right: 375px;
     cursor: pointer;
     border: var(--color1) solid 2px;
     border-radius: 3px;
@@ -63,7 +56,7 @@
     align-items: center;
 }
 
-#createEditAddProduct:hover{
+#ceoppAddProduct:hover{
     color: var(--color2);
     background-color: var(--color1);
 }
@@ -98,4 +91,14 @@
 
 .predictedProductFocused{
     background-color:var(--color3);
+}
+
+.labelColor{
+    display: flex;
+    align-items: center;
+}
+
+.orderInfoWithIcon{
+    display: flex;
+    column-gap: 5px;
 }

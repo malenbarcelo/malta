@@ -1,5 +1,5 @@
-const db = require('../../../database/models')
-const { localDB } = require('../../../database/config/sequelizeConfig')
+const db = require('../../../../database/models')
+const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const wpPostsCopied = db.local.WP_posts_copied
 const wpPostmetaCopied = db.local.WP_postmeta_copied

@@ -1,4 +1,3 @@
-
 <!----------Deliver order popup---------->
 <div class="yesNoPopup" id="dopp">
     
@@ -108,7 +107,7 @@
         </div>
 
         
-        <div class="yesNoTitle1" id="rpppTitle">PEDIDO N°1 - Agus Ereñi</div>
+        <div class="yesNoTitle1" id="rpppTitle"></div>
         <div class="yesNoSubitle1">Registrar pago</div>
 
         <div class="divInputsColumn mtm mbxl">
@@ -134,10 +133,10 @@
             </div>
             <div class="divInput">
                 <label class="label1 unabledLabel">Saldo a favor</label>
-                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppCustomerAccount" readonly>
-                <div class="divCheckbox2">
-                    <input type="checkbox">
-                    <label for="allChannels">Usar saldo a favor</label><br>
+                <input type="text" step="0.01" class="input1 inputXXL unabledInput" id="rpppBalanceUsed" readonly>
+                <div class="divCheckbox2 notVisible" id="rpppUseBalance">
+                    <input type="checkbox" id="rpppUseBalanceCheck">
+                    <label id="rpppUseBalanceLabel"></label><br>
                 </div>
             </div>
             <div class="divInput">
@@ -178,6 +177,63 @@
         <div class="okDiv">
             <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
             <div class="okText">Pago registrado con éxito</div>
+        </div>
+    </div>
+</div>
+
+<!----------Change discount---------->
+<div class="yesNoPopup" id="cdpp">
+    
+    <div class="yesNoContent" id="cdppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon2"><i class="fa-solid fa-pencil"></i></div>
+            <div class="yesNoClose2" id="cdppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2">MODIFICAR DESCUENTO</div>
+
+        <div class="divInputsColumn mtm mbl">
+            <div class="divInput">
+                <label class="label1 fwb">Descuento %</label>
+                <input type="number" id="cdppNewDiscount" class="input1 inputL" step="0.01">
+            </div>
+        </div>
+
+        <div class="divButtonsRow mbs">
+            <div id="cdppAccept" class="button1 bxs">Aceptar</div>
+            <div id="cdppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<!----------Edit order details---------->
+<div class="yesNoPopup" id="eodpp">
+    
+    <div class="yesNoContent" id="eodppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon2"><i class="fa-solid fa-pencil"></i></div>
+            <div class="yesNoClose2" id="eodppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts" id="eodppTitle"></div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <label class="label1" id="eodppPriceLabel">Precio unitario</label>
+                <input type="number" step="0.01" class="input1 inputL" id="eodppPrice">
+                <div class="divError"  id="eodppPriceError">Debe completar el precio</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="eodppQtyLabel">Cantidad</label>
+                <input type="number" class="input1 inputL" id="eodppQty">
+            </div>            
+        </div>
+
+        <div class="divButtonsRow">
+            <div id="eodppAccept" class="button1 bxs">Aceptar</div>
+            <div id="eodppCancel" class="button1 bxs">Cancelar</div>
         </div>
     </div>
 </div>

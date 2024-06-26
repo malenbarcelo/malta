@@ -1,134 +1,127 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
 
-<div class="mainTitleWfilters">
+<!------MAIN TITLE------>
+<div class="mainTitle">PEDIDO EN CURSO</div>
 
-    <div class="titleL">Pedidos en curso</div>
-
-    <div class="mainTitleFilters">
-        <!--------FILTERS-------->
-        <div class="divInputsRow">
-            
-            <div class="divInput">
-                <label class="label1">Cliente</label>
-                <select id="filterCustomer" class="input1 inputL">
-                    <option value="default"></option>
-                    <% customers.forEach(customer => { %>
-                        <option value="<%= customer.customer_name %>">
-                            <%= customer.customer_name %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="divInput">
-                <label for="selectOrder" class="label1"># Pedido</label>
-                <select name="selectOrder" id="filterOrder" class="input1 inputL">
-                    <option value="default"></option>
-                    <% orders.forEach(order => { %>
-                        <option value="<%= order.order_number %>">
-                            <%= order.order_number %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="divInput">
-                <label for="selectOrderManager" class="label1">Encargado</label>
-                <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL">
-                    <option value="default"></option>
-                    <% ordersManagers.forEach(manager => { %>
-                        <option value="<%= manager.id %>">
-                            <%= manager.order_manager_name %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="divInput">
-                <label for="selectOrderStatus" class="label1">Estado</label>
-                <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL">
-                    <option value="default"></option>
-                    <% ordersStatus.forEach(status => { %>
-                        <option value="<%= status.id %>">
-                            <%= status.order_status %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="divInput">
-                <label for="selectPaymentStatus" class="label1">Estado del pago</label>
-                <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputL">
-                    <option value="default"></option>
-                    <% paymentsStatus.forEach(status => { %>
-                        <option value="<%= status.id %>">
-                            <%= status.payment_status %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div id="unfilterOrders">
-                <i class="fa-solid fa-filter-circle-xmark"></i>
-            </div>
-
-        </div>
-    
-        <div class="divInputsRow mtm">
-            
-            <div class="divCheckbox1">
-                <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels" checked>
-                <label for="allChannels">Todos</label><br>
-            </div>
-
-            <div class="divCheckbox1">
-                <input type="checkbox" id="Dif_1" value="Dif_1" checked>
-                <label>Difusión1</label><br>
-            </div>
-
-            <div class="divCheckbox1">
-                <input type="checkbox" id="Dif_2" value="Dif_2" checked>
-                <label>Difusión2</label><br>
-            </div>
-
-            <div class="divCheckbox1">
-                <input type="checkbox" name ="onlinePandW" id="Web_AyR" value="Web_AyR" checked>
-                <label>Web AyR</label><br>
-            </div>
-
-            <div class="divCheckbox1">
-                <input type="checkbox" name ="onlineT" id="Web_T" value="Web_T" checked>
-                <label>Web T</label><br>
-            </div>        
-
-        </div>  
-
+<!------GENERAL ACTIONS------>
+<div class="divGeneralActions" id="DGAorders">
+    <div class="divGeneralAction" id="DGAcreateOrder">
+        <i class="fa-solid fa-plus"></i>
+        <div class="showActionPopup">
+            Crear pedido
+        </div>        
     </div>
-
+    <div class="divGeneralAction">
+        <i class="fa-brands fa-whatsapp"></i>
+        <div class="showActionPopup">
+            Solicitar pagos
+        </div>
+    </div>
 </div>
 
-<div class="contentWfilters">
+<div class="DGAerrors" id="DGAordersErrors">
+    <div class="" id="DGAcreateOrderError">- Debe seleccionar un cliente</div>
+    <div class="" id="selectChannelError">- Debe seleccionar el canal Dif1 ó Dif2</div>
+</div>
 
-    <!---------GENERAL ACTIONS--------->
-    <div class="divGeneralActions" id="DGAorders">
-        <div class="divGeneralAction" id="createEditOrder">
-            <i class="fa-solid fa-plus"></i>
-            <div class="showActionPopup">
-                Crear pedido
-            </div>
+
+
+<!--------GENERAL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1" id="filterCustomerLabel">Cliente</label>
+            <select id="filterCustomer" class="input1 inputL">
+                <option value="default"></option>
+                <% customers.forEach(customer => { %>
+                    <option value="<%= customer.customer_name %>">
+                        <%= customer.customer_name %>
+                    </option>
+                <% }) %>
+            </select>            
         </div>
+        <div class="divInput">
+            <label for="selectOrder" class="label1"># Pedido</label>
+            <select name="selectOrder" id="filterOrder" class="input1 inputL">
+                <option value="default"></option>
+                <% orders.forEach(order => { %>
+                    <option value="<%= order.order_number %>">
+                        <%= order.order_number %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="divInput">
+            <label for="selectOrderManager" class="label1">Encargado</label>
+            <select name="selectOrderManager" id="filterOrderManager" class="input1 inputL">
+                <option value="default"></option>
+                <% ordersManagers.forEach(manager => { %>
+                    <option value="<%= manager.id %>">
+                        <%= manager.order_manager_name %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="divInput">
+            <label for="selectOrderStatus" class="label1">Estado</label>
+            <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputL">
+                <option value="default"></option>
+                <% ordersStatus.forEach(status => { %>
+                    <option value="<%= status.id %>">
+                        <%= status.order_status %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="divInput">
+            <label for="selectPaymentStatus" class="label1">Estado del pago</label>
+            <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputL">
+                <option value="default"></option>
+                <% paymentsStatus.forEach(status => { %>
+                    <option value="<%= status.id %>">
+                        <%= status.payment_status %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <div id="unfilterOrders">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
+</div>
 
-        <div class="divGeneralAction">
-            <i class="fa-brands fa-whatsapp"></i>
-            <div class="showActionPopup">
-                Solicitar pagos
-            </div>
+
+<!--------CHANNEL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divCheckbox1">
+            <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels" checked>
+            <label for="allChannels">Todos</label><br>
+        </div>
+        <div class="divCheckbox1">
+            <input type="checkbox" id="Dif1" value="Dif1" checked>
+            <label>Difusión1</label><br>
+        </div>
+        <div class="divCheckbox1">
+            <input type="checkbox" id="Dif2" value="Dif2" checked>
+            <label>Difusión2</label><br>
+        </div>
+        <div class="divCheckbox1">
+            <input type="checkbox" name ="onlinePandW" id="WebAyR" value="WebAyR" checked>
+            <label>Web AyR</label><br>
+        </div>
+        <div class="divCheckbox1">
+            <input type="checkbox" name ="onlineT" id="WebT" value="WebT" checked>
+            <label>Web T</label><br>
         </div>
     </div>
+</div>
 
-    <!---------ORDERS TABLE--------->
-    <div class="divTable ma mtxxl">
+<!---------ORDERS TABLE--------->
+
+<div class="mts">
+    <div class="divTable">
 
         <div class="tableInfo" id="eoppInfo">Editar pedido</div>
         <div class="tableInfo" id="rpppInfo">Registrar pago</div>
