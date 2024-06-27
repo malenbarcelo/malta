@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Orders_details"
+    const alias = "Sales_orders_details"
     const cols = {
        id:{
         type : DataTypes.INTEGER,
@@ -32,7 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: true,
       },
-      quantity:{
+      required_quantity:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      confirmed_quantity:{
         type: DataTypes.INTEGER,
         allowNull: true,
       },
@@ -42,18 +46,18 @@ module.exports = (sequelize, DataTypes) => {
        },
     }
     const config = {
-    tableName : 'orders_details',
+    tableName : 'sales_orders_details',
     timestamps : false
     }
 
-    const Order_detail = sequelize.define(alias, cols, config)
+    const Sale_order_detail = sequelize.define(alias, cols, config)
 
-    Order_detail.associate = (models) => {
-      Order_detail.belongsTo(models.Orders,{
-         as:'orders_details_orders',
+    Sale_order_detail.associate = (models) => {
+      Sale_order_detail.belongsTo(models.Sales_orders,{
+         as:'orders_orders_details',
          foreignKey: 'id_orders'
       })
     }
     
-    return Order_detail
+    return Sale_order_detail
  }

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Accounts_movements"
+    const alias = "Sales_accounts_movements"
     const cols = {
       id:{
         type : DataTypes.INTEGER,
@@ -26,22 +26,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
     const config = {
-    tableName : 'accounts_movements',
+    tableName : 'sales_accounts_movements',
     timestamps : false
     }
 
-    const Account_movement = sequelize.define(alias, cols, config)
+    const Sale_account_movement = sequelize.define(alias, cols, config)
 
-    Account_movement.associate = (models) => {
-      Account_movement.belongsTo(models.Customers,{
-         as:'payments_customers',
-         foreignKey: 'id_customers'
-      }),
-      Account_movement.belongsTo(models.Orders,{
-        as:'payments_orders',
-        foreignKey: 'id_orders'
+    Sale_account_movement.associate = (models) => {
+      Sale_account_movement.belongsTo(models.Sales_orders,{
+         as:'accounts_movements_sales_orders',
+         foreignKey: 'id_orders'
       })
     }
     
-    return Account_movement
+    return Sale_account_movement
  }

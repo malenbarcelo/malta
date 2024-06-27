@@ -1,18 +1,18 @@
 const db = require('../../../../database/models')
 const sequelize = require('sequelize')
 const { localDB } = require('../../../../database/config/sequelizeConfig')
-const Products = db.local.Products
+const Cuttings_products = db.local.Cuttings_products
 
 const productsQueries = {
     products: async() => {
-        const products = await Products.findAll({
+        const products = await Cuttings_products.findAll({
             order:[['description','ASC']],
             raw:true,
         })
         return products
     },
     distinctProducts: async() => {
-        const distinctProducts = await Products.findAll({
+        const distinctProducts = await Cuttings_products.findAll({
             attributes: [[sequelize.fn('DISTINCT', sequelize.col('description')), 'description']],
             raw:true,
         })
@@ -23,7 +23,7 @@ const productsQueries = {
         let sizes = []
         let colors = []
 
-        const products = await Products.findAll({
+        const products = await Cuttings_products.findAll({
             where: {description: productDescription},
             raw:true,
         })
@@ -49,7 +49,7 @@ const productsQueries = {
 
         let sizes = []
 
-        const products = await Products.findAll({
+        const products = await Cuttings_products.findAll({
             where: {
                 description: productDescription,
                 color: color
@@ -74,7 +74,7 @@ const productsQueries = {
 
         let colors = []
 
-        const products = await Products.findAll({
+        const products = await Cuttings_products.findAll({
             where: {
                 description: productDescription,
                 size: size

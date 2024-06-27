@@ -13,12 +13,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       order_number:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      id_sales_channel:{
+        type: DataTypes.STRING,
         allowNull: false,
       },
       id_customers:{
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       subtotal:{
       type: DataTypes.STRING,
@@ -62,31 +66,23 @@ module.exports = (sequelize, DataTypes) => {
     const Sale_order_ninox = sequelize.define(alias, cols, config)
 
     Sale_order_ninox.associate = (models) => {
-      Sale_order_ninox.belongsTo(models.Customers,{
-         as:'orders_customers',
+      Sale_order_ninox.belongsTo(models.Data_customers,{
+         as:'orders_ninox_customers',
          foreignKey: 'id_customers'
-      }),
-      Sale_order_ninox.belongsTo(models.Orders_managers,{
-          as:'orders_orders_managers',
-          foreignKey: 'id_orders_managers'
-      }),
-      Sale_order_ninox.belongsTo(models.Orders_status,{
-        as:'orders_orders_status',
-        foreignKey: 'id_orders_status'
-      }),
-      Sale_order_ninox.belongsTo(models.Payments_status,{
-        as:'orders_payments_status',
-        foreignKey: 'id_payments_status'
-      }),
-      Sale_order_ninox.hasMany(models.Payments,{
-        as:'orders_payments',
-        foreignKey: 'id_orders'
-      }),
-      Sale_order_ninox.hasMany(models.Accounts_movements,{
-        as:'orders_accounts_movements',
-        foreignKey: 'id_orders'
-      })
+    }),
+      Sale_order_ninox.belongsTo(models.Data_orders_managers,{
+        as:'orders_ninox_orders_managers',
+        foreignKey: 'id_orders_managers'
+    }),
+     Sale_order_ninox.belongsTo(models.Data_orders_status,{
+      as:'orders_ninox_orders_status',
+      foreignKey: 'id_orders_status'
+    }),
+    Sale_order_ninox.belongsTo(models.Data_payments_status,{
+      as:'orders_ninox_payments_status',
+      foreignKey: 'id_payments_status'
+    })
     }
-      
+    
     return Sale_order_ninox
  }

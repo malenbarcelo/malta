@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Orders"
+    const alias = "Sales_orders"
     const cols = {
       id:{
         type : DataTypes.INTEGER,
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      sales_channel:{
+      id_sales_channels:{
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -59,38 +59,33 @@ module.exports = (sequelize, DataTypes) => {
 
     }
     const config = {
-    tableName : 'orders',
+    tableName : 'sales_orders',
     timestamps : false
     }
 
-    const Order = sequelize.define(alias, cols, config)
+    const Sale_order = sequelize.define(alias, cols, config)
 
-    Order.associate = (models) => {
-      Order.belongsTo(models.Customers,{
+    Sale_order.associate = (models) => {
+      Sale_order.belongsTo(models.Data_customers,{
          as:'orders_customers',
          foreignKey: 'id_customers'
     }),
-      Order.belongsTo(models.Orders_managers,{
+      Sale_order.belongsTo(models.Data_orders_managers,{
         as:'orders_orders_managers',
         foreignKey: 'id_orders_managers'
     }),
-     Order.belongsTo(models.Orders_status,{
+     Sale_order.belongsTo(models.Data_orders_status,{
       as:'orders_orders_status',
       foreignKey: 'id_orders_status'
     }),
-    Order.belongsTo(models.Payments_status,{
+    Sale_order.belongsTo(models.Data_payments_status,{
       as:'orders_payments_status',
       foreignKey: 'id_payments_status'
     }),
-    Order.hasMany(models.Payments,{
-      as:'orders_payments',
-      foreignKey: 'id_orders'
-    }),
-    Order.hasMany(models.Accounts_movements,{
-      as:'orders_accounts_movements',
-      foreignKey: 'id_orders'
+    Sale_order.belongsTo(models.Data_sales_channels,{
+      as:'orders_sales_channels',
+      foreignKey: 'id_sales_channels'
     })
-    }
-    
-    return Order
+  }
+  return Sale_order
  }

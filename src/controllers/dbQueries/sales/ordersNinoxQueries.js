@@ -29,7 +29,6 @@ const ninoxOrdersQueries = {
     },
     saveOrders: async(data) => {
         for (let i = 0; i < data.length; i++) {
-            console.log(data[i].)
             await Sales_orders_ninox.create({
                 date:data[i].date,
                 order_number:data[i].order_number,

@@ -2,19 +2,17 @@ const db = require('../../../../database/models')
 const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Orders = db.local.Orders
-const Orders_details = db.local.Orders_details
+const Sales_orders = db.local.Sales_orders
+const Sales_orders_details = db.local.Sales_orders_details
 
 const ordersQueries = {
     inProgressOrders: async() => {
-        const orders = await Orders.findAll({
+        const orders = await Sales_orders.findAll({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
-                {association: 'orders_orders_managers'},
-                {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'}
+                {association: 'orders_orders_managers'}
             ],
             where:{
                 enabled:1,
@@ -29,8 +27,8 @@ const ordersQueries = {
         return orders
     },
     newOrder: async() => {
-        const difOrders = await Orders.findAll({
-            where: {sales_channel:['Dif1','Dif2']},
+        const difOrders = await Sales_orders.findAll({
+            where: {id_sales_channels:[1,2]},
             raw:true,
         })
 
@@ -39,7 +37,7 @@ const ordersQueries = {
         return newOrderNumber
     },
     filterOrder: async(orderNumber) => {
-        const order = await Orders.findOne({
+        const order = await Sales_orders.findOne({
             where: {order_number:orderNumber},
             raw:true,
         })
@@ -51,10 +49,10 @@ const ordersQueries = {
         const date = new Date()
 
         //create order
-        await Orders.create({
+        await Sales_orders.create({
             date:date,
             order_number:data.order_number,
-            sales_channel:data.sales_channel,
+            id_sales_channels:data.id_sales_channels,
             id_customers:data.id_customers,
             subtotal:data.subtotal,
             discount:data.discount,
@@ -72,7 +70,7 @@ const ordersQueries = {
 
         for (let i = 0; i < orderDetails.length; i++) {
             //create row
-            await Orders_details.create({
+            await Sales_orders_details.create({
                 id_orders:orderId,
                 id_products:orderDetails[i].id_products,
                 description:orderDetails[i].description,
@@ -85,7 +83,7 @@ const ordersQueries = {
         }        
     },
     lastId: async() => {
-        const lastId = await Orders.findOne({
+        const lastId = await Sales_orders.findOne({
             attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']]
           })
 
@@ -98,7 +96,7 @@ const ordersQueries = {
         )
     },
     assignOrderManager: async(orderId,orderManagerId) => {
-        await Orders.update(
+        await Sales_orders.update(
             {
                 id_orders_managers:orderManagerId
             },
@@ -108,7 +106,7 @@ const ordersQueries = {
         )
     },
     cancelOrder: async(orderId) => {        
-        await Orders.update(
+        await Sales_orders.update(
             { enabled: 0 },
             { where: { id: orderId } }
         )
@@ -122,7 +120,7 @@ const ordersQueries = {
         let idPaymentsStatus = 3
 
         //fin order data
-        const orderToUpdate = await Orders.findOne({
+        const orderToUpdate = await Sales_orders.findOne({
             where:{id:orderId},
             include: [
                 {association: 'orders_payments'},
@@ -147,13 +145,13 @@ const ordersQueries = {
 
         idPaymentsStatus = (amountPaid < orderToUpdate.total && amountPaid > 0) ? 4 : 5
         
-        await Orders.update(
+        await Sales_orders.update(
             { id_payments_status: idPaymentsStatus },
             { where: { id: orderId } }
         )
     },
     webAndDifSales: async(iDate,fDate) => {
-        const webAndDifSales = await Orders.findAll({
+        const webAndDifSales = await Sales_orders.findAll({
             include: [
                 {association: 'orders_customers'}
             ],

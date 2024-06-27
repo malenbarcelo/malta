@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Products"
+    const alias = "Cuttings_products"
     const cols = {
       id:{
         type : DataTypes.INTEGER,
@@ -58,10 +58,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
     const config = {
-    tableName : 'products',
+    tableName : 'cuttings_products',
     timestamps : false
     }
-    const Product = sequelize.define(alias, cols, config)
+    const Cutting_product = sequelize.define(alias, cols, config)
     
-    return Product
+    return Cutting_product
  }

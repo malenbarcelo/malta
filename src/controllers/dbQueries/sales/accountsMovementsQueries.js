@@ -2,11 +2,11 @@ const db = require('../../../../database/models')
 const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Accounts_movements = db.local.Accounts_movements
+const Sales_accounts_movements = db.local.Sales_accounts_movements
 
 const accountMovementsQueries = {
     positiveBalanceUsed: async(idCustomer) => {
-        const positiveBalanceUsed = await Accounts_movements.findOne({
+        const positiveBalanceUsed = await Sales_accounts_movements.findOne({
             attributes: [
                 [fn('SUM', col('amount')), 'total_amount']
               ],
@@ -24,7 +24,7 @@ const accountMovementsQueries = {
         
         const date = new Date()
 
-        await Accounts_movements.create({
+        await Sales_accounts_movements.create({
             date:date,
             id_orders:idOrder,
             id_customers:idCustomer,

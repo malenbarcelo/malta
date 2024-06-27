@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Orders_managers"
+    const alias = "Data_sales_channels"
     const cols = {
        id:{
          type : DataTypes.INTEGER,
@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
          autoIncrement : true,
          allowNull: false
        },
-       order_manager_name:{
+       sales_channel:{
          type: DataTypes.STRING,
-         allowNull: false,
+         allowNull: true,
        },
        enabled:{
         type: DataTypes.INTEGER,
@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
     const config = {
-    tableName : 'orders_managers',
+    tableName : 'data_sales_channels',
     timestamps : false
     }
-    const Order_manager = sequelize.define(alias, cols, config)
+    const Data_sale_channel = sequelize.define(alias, cols, config)
     
-    return Order_manager
+    return Data_sale_channel
  }

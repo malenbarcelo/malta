@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "Payments"
+    const alias = "Sales_payments"
     const cols = {
       id:{
         type : DataTypes.INTEGER,
@@ -24,32 +24,32 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: false,
       },
-      id_payment_methods:{
+      id_payments_methods:{
         type: DataTypes.INTEGER,
         allowNull: false,
       }
     }
     const config = {
-    tableName : 'payments',
+    tableName : 'sales_payments',
     timestamps : false
     }
 
-    const Payment = sequelize.define(alias, cols, config)
+    const Sale_payment = sequelize.define(alias, cols, config)
 
-    Payment.associate = (models) => {
-      Payment.belongsTo(models.Customers,{
+    Sale_payment.associate = (models) => {
+      Sale_payment.belongsTo(models.Data_customers,{
          as:'payments_customers',
          foreignKey: 'id_customers'
       }),
-      Payment.belongsTo(models.Payment_methods,{
-        as:'payments_payment_methods',
-        foreignKey: 'id_payment_methods'
+      Sale_payment.belongsTo(models.Data_payments_methods,{
+        as:'payments_payments_methods',
+        foreignKey: 'id_payments_methods'
       })
-      Payment.belongsTo(models.Orders,{
-        as:'payments_orders',
-        foreignKey: 'id_orders'
+      Sale_payment.belongsTo(models.Data_sales_channels,{
+        as:'payments_sales_channels',
+        foreignKey: 'id_sales_channels'
       })
     }
     
-    return Payment
+    return Sale_payment
  }
