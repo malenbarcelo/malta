@@ -85,6 +85,14 @@ module.exports = (sequelize, DataTypes) => {
     Sale_order.belongsTo(models.Data_sales_channels,{
       as:'orders_sales_channels',
       foreignKey: 'id_sales_channels'
+    }),
+    Sale_order.hasMany(models.Sales_payments,{
+      as:'orders_payments',
+      foreignKey: 'id_orders'
+    }),
+    Sale_order.hasMany(models.Sales_accounts_movements,{
+      as:'orders_accounts_movements',
+      foreignKey: 'id_orders'
     })
   }
   return Sale_order

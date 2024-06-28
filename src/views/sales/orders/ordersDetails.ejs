@@ -1,0 +1,81 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">DETALLE DE PEDIDOS EN CURSO</div>
+
+<!------GENERAL ACTIONS------>
+<div class="divGeneralActions" id="DGAordersDetails">
+    <div class="divGeneralAction" id="DGAaddProduct">
+        <i class="fa-solid fa-plus"></i>
+        <div class="showActionPopup">
+            Agregar producto
+        </div>        
+    </div>
+</div>
+
+<!--------GENERAL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1" id="filterProductLabel">Producto</label>
+            <input type="text" class="input1 inputXXL" id="filterProduct">
+        </div>
+        <div class="divInput">
+            <label class="label1" id="filterProductLabel">Cliente</label>
+            <input type="text" class="input1 inputL" id="filterProduct">
+        </div>
+        <div class="divInput">
+            <label class="label1">Estado</label>
+            <select id="filterOrderStatus" class="input1 inputL">
+                <option value="default"></option>
+                <% ordersStatus.forEach(status => { %>
+                    <option value="<%= status.id %>">
+                        <%= status.order_status %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <div id="unfilterOrdersDetails" class="unfilterIcon" >
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
+</div>
+
+<!---------ORDERS DETAILS TABLE--------->
+<div class="mtm">
+    <div class="divTable">
+
+        <div class="tableInfo" id="elppInfo">Editar línea</div>
+        <div class="tableInfo" id="dlppInfo">Eliminar línea</div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
+                    <th class="theadCss wXS thTall">Fecha</th>
+                    <th class="theadCss wXS thTall">Canal</th>
+                    <th class="theadCss wM thTall">Cliente</th>
+                    <th class="theadCss wXXL thTall">Producto</th>
+                    <th class="theadCss wXXS thTall">Talle</th>
+                    <th class="theadCss wM thTall">Color</th>
+                    <th class="theadCss wXS thTall">Precio</th>
+                    <th class="theadCss wXS thTall">Cantidad solicitada</th>
+                    <th class="theadCss wXS thTall">Cantidad confirmada</th>  
+                    <th class="theadCss wS thTall">Estado</th>
+                    <th class="theadCss wM thTall">Encargado</th>                    
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="elppIcon"></i></th>
+                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can tableIcon" id="dlppIcon"></i></th>
+                </tr>
+            </thead>
+            <tbody id="bodyOrdersDetails"></tbody>
+        </table>
+    </div>
+    
+</div>
+
+<!----------LOADER---------->
+<div class="loader" id="ordersDetailsLoader" ></div>
+
+<script type="module" src="/js/sales/orders/ordersDetails.js"></script>
+

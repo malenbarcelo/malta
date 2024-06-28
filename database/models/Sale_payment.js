@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       id_payments_methods:{
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      id_payments_methods:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
       }
     }
     const config = {
@@ -44,10 +48,6 @@ module.exports = (sequelize, DataTypes) => {
       Sale_payment.belongsTo(models.Data_payments_methods,{
         as:'payments_payments_methods',
         foreignKey: 'id_payments_methods'
-      })
-      Sale_payment.belongsTo(models.Data_sales_channels,{
-        as:'payments_sales_channels',
-        foreignKey: 'id_sales_channels'
       })
     }
     

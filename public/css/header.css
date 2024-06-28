@@ -91,15 +91,21 @@
 }
 
 .subitemHeaderMenu{
-    color: var(--color5);
-    font-size: 14px;
-    padding: 8px 0px;
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    padding: 7px 0px;
 }
 
-.itemHeaderMenu:hover, .subitemHeaderMenu:hover{
-    color:var(--color6);
+.itemHeaderMenu:hover{
     font-weight: bold;
 }
+
+.subitemHeaderMenu:hover{
+    font-weight: bold;
+    background-color:var(--color5);
+}
+
 
 .selectedItem{
     font-weight: bold;

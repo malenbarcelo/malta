@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Sale_order_detail.associate = (models) => {
       Sale_order_detail.belongsTo(models.Sales_orders,{
-         as:'orders_orders_details',
+         as:'orders_details_orders',
          foreignKey: 'id_orders'
       })
     }

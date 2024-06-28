@@ -4,6 +4,7 @@ const apisWordpressController = require('../../controllers/apisControllers/apisW
 const router = express.Router()
 
 router.get('/in-progress-orders',apisSalesController.inProgressOrders)
+router.get('/in-progress-orders/details',apisSalesController.inProgressOrdersDetails)
 router.get('/in-progress-orders/payments',apisSalesController.inProgressOrdersPayments)
 router.get('/new-order',apisSalesController.newOrder)
 router.get('/customer-positive-balance/:idCustomer',apisSalesController.customerPositiveBalance)

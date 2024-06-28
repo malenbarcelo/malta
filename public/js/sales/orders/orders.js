@@ -325,7 +325,7 @@ window.addEventListener('load',async()=>{
             og.orderDetails = []
 
             //complete popup info
-            const salesChannel = Dif1.checked ? 'Dif1' : 'Dif2'
+            const salesChannel = Dif1.checked ? 1 : 2
             const customer = filterCustomer.value
             const orderNumber = await (await fetch(dominio + 'apis/sales/new-order')).json()
             const customerData = og.customers.filter(c => c.customer_name == customer)[0]
@@ -335,7 +335,7 @@ window.addEventListener('load',async()=>{
             og.orderData.subtotal = 0
             og.orderData.total = 0
             og.orderData.id_customers = idCustomers
-            og.orderData.sales_channel = salesChannel
+            og.orderData.id_sales_channels = salesChannel
             og.orderData.order_number = orderNumber
 
             updateOrderData()

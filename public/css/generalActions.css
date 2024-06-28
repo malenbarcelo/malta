@@ -37,7 +37,7 @@
     row-gap: 5px;
 }
 
-#DGAorders{
+#DGAorders, #DGAordersDetails{
     right: 8%;
     top: 23%;
 }

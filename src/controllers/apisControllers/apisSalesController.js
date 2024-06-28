@@ -1,4 +1,5 @@
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
+const ordersDetailsQueries = require('../dbQueries/sales/ordersDetailsQueries')
 const paymentsQueries = require('../dbQueries/sales/paymentsQueries')
 const customersQueries = require('../dbQueries/data/customersQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
@@ -29,6 +30,18 @@ const apisSalesController = {
       })
 
       res.status(200).json(plainOrders)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  inProgressOrdersDetails: async(req,res) =>{
+    try{
+
+      const ordersDetails = await ordersDetailsQueries.inProgressOrdersDetails()
+
+      res.status(200).json(ordersDetails)
 
     }catch(error){
       console.group(error)

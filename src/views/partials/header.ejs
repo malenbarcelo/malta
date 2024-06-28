@@ -23,14 +23,21 @@
 
     <div class="bottomHeader">
 
-        <% if (locals.bottomHeaderMenu) { %>
-            <div class="itemsMenu">
-                <% bottomHeaderMenu.forEach(itemMenu => { %>
+        <% if (locals.bottomHeaderMenu) { %>            
+            <% bottomHeaderMenu.forEach(itemMenu => { %>
+                <div class="itemsMenu" id="<%= 'itemsMenu_' + itemMenu.id %>">
                     <div class="<%= locals.selectedItem == itemMenu.name ? 'itemHeaderMenu selectedItem' : 'itemHeaderMenu' %>">
                         <a href="<%= itemMenu.href %>"><%= itemMenu.name %></a>
                     </div>
-                <% }) %>
-            </div>
+                    <% if (itemMenu.subitems.length > 0) { %>
+                        <div class="subItems" id="<%= 'subItems_' + itemMenu.id %>">
+                            <% itemMenu.subitems.forEach(subitem => { %>
+                                <a href="<%= subitem.href %>" class="subitemHeaderMenu"><%= subitem.subitem %></a>
+                            <% }) %>
+                        </div>                        
+                    <% } %>
+                </div>
+            <% }) %>            
 
             <a href="/main-menu">
                 <div class="goToMainMenu">
@@ -43,6 +50,8 @@
     </div>
 
 </div>
+
+<script type="module" src="/js/header.js"></script>
 
 
 

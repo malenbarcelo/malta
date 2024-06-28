@@ -8,20 +8,31 @@ const ordersQueries = require('./dbQueries/sales/ordersQueries')
 
 const bottomHeaderMenu = [
     {
-        'name':'PEDIDOS',
-        'href':'/sales/in-progress-orders'
+        id:1,
+        name:'PEDIDOS',
+        href:'',
+        subitems:[
+            {'subitem':'Resumen de pedidos', 'href':'/sales/in-progress-orders'},
+            {'subitem':'Detalle de pedidos', 'href':'/sales/in-progress-orders/details'}
+        ]
     },
     {
-        'name':'VENTAS',
-        'href':'/sales/consolidated'
+        id:2,
+        name:'VENTAS',
+        href:'/sales/consolidated',
+        subitems:[]
     },
     {
-        'name':'CLIENTES',
-        'href':'/sales/clients-data'
+        id:3,
+        name:'CLIENTES',
+        href:'/sales/clients-data',
+        subitems:[]
     },
     {
-        'name':'ESTADÍSTICAS',
-        'href':'/sales/statistics/sales'
+        id:4,
+        name:'ESTADÍSTICAS',
+        href:'/sales/statistics/sales',
+        subitems:[]
     }
 ]
 
@@ -39,6 +50,24 @@ const salesController = {
             const orders = await ordersQueries.inProgressOrders()
 
             return res.render('sales/orders/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,paymentsStatus,distinctProducts,orders,paymentMethods})
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    inProgressOrdersDetails: async(req,res) => {
+        try{
+
+            const selectedItem = 'PEDIDOS'
+            const customers = await customersQueries.customers()
+            const ordersManagers = await ordersManagersQueries.ordersManagers()
+            const ordersStatus = await ordersStatusQueries.ordersStatus()
+            const distinctProducts = await productsQueries.distinctProducts()
+            const orders = await ordersQueries.inProgressOrders()
+
+            return res.render('sales/orders/ordersdetails',{title:'Detalle de pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts,orders})
 
         }catch(error){
 

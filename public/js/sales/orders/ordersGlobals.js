@@ -31,7 +31,7 @@ let og = {
     rpppPaymentInputs:[],
     orderData: {
         order_number:'',
-        sales_channel:'',
+        id_sales_channels:'',
         id_customers:0,
         subtotal:0,
         discount:0,

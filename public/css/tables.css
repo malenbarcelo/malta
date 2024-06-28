@@ -82,3 +82,11 @@ border-top-right-radius: 15px;
 #eoppInfo,#rpppInfo,#doppInfo,#coppInfo,#amppInfo,#voppInfo{
     top:38.5%
 }
+
+#elppInfo,#dlppInfo{
+    width: 50px;
+    top:32.5%;
+}
+
+
+
