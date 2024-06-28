@@ -21,13 +21,15 @@
 
     </div>
 
-    <div class="bottomHeader">
+    <div class="bottomHeader <%= locals.bottomHeaderMenu ? 'bottomHeaderBorder' : null %>">
+
+        <%= %>
 
         <% if (locals.bottomHeaderMenu) { %>            
             <% bottomHeaderMenu.forEach(itemMenu => { %>
                 <div class="itemsMenu" id="<%= 'itemsMenu_' + itemMenu.id %>">
                     <div class="<%= locals.selectedItem == itemMenu.name ? 'itemHeaderMenu selectedItem' : 'itemHeaderMenu' %>">
-                        <a href="<%= itemMenu.href %>"><%= itemMenu.name %></a>
+                        <a href="<%= itemMenu.href %>" class="refItemHeaderMenu"><%= itemMenu.name %></a>
                     </div>
                     <% if (itemMenu.subitems.length > 0) { %>
                         <div class="subItems" id="<%= 'subItems_' + itemMenu.id %>">

@@ -7,10 +7,11 @@
 
 .mainTitle{
     height: 10vh;
-    font-size: 23px;
+    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
 }
 
 .mainFilters{

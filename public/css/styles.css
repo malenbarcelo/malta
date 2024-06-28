@@ -3,8 +3,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     row-gap: 20px;
-    margin-top: 20px;
+    height: 82vh;
 }
 
 .itemMainMenu{
@@ -81,16 +82,6 @@
     z-index: 1;
     max-height: 400px;
     overflow-y: auto;
-}
-
-.liPredictedProducts{
-    font-size: 12px;
-    padding: 5px 0px;
-    cursor: pointer;
-}
-
-.predictedProductFocused{
-    background-color:var(--color3);
 }
 
 .labelColor{

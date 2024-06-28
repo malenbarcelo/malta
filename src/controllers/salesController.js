@@ -10,7 +10,7 @@ const bottomHeaderMenu = [
     {
         id:1,
         name:'PEDIDOS',
-        href:'',
+        href:'/sales/in-progress-orders',
         subitems:[
             {'subitem':'Resumen de pedidos', 'href':'/sales/in-progress-orders'},
             {'subitem':'Detalle de pedidos', 'href':'/sales/in-progress-orders/details'}

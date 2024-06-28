@@ -149,7 +149,6 @@ function filterOrders() {
         og.ordersFiltered = og.ordersFiltered.filter(o => channels.some(channel => o.sales_channel.includes(channel)))
     }
 
-
 }
 
 async function predictProducts() {    

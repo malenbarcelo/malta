@@ -1,6 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./ordersDetailsGlobals.js"
 import { printTableOrdersDetails } from "./ordersDetailsFunctions.js"
+import { predictElements, selectFocusedElement } from "../../generalFunctions.js"
 
 
 // import { getElements } from "./ordersGetElements.js"
@@ -31,6 +32,21 @@ window.addEventListener('load',async()=>{
         element.addEventListener("mouseout", async(e) => {
             info.style.display = 'none'
         })
+    })
+
+    //filter product event listener - predict elements
+    filterProduct.addEventListener("input", async(e) => {
+        const input = filterProduct
+        const list = ulPredictedProducts
+        const apiUrl = 'apis/data/products/predict-products/'
+        const name = 'description'
+        predictElements(input,list,apiUrl,name)
+    })
+
+    filterProduct.addEventListener("keydown", async(e) => {
+        const input = filterProduct
+        const list = ulPredictedProducts
+        selectFocusedElement(e,input,list)
     })
 
 })

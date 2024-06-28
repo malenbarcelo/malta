@@ -166,6 +166,26 @@ ul {
     font-weight: bold;
 }
 
+/*---------------------predicted items---------------------*/
+.predictedElements{
+    display: none;
+    position: absolute;
+    top:60%;
+    width: 100%;
+    border: black solid 1px;
+    background-color: var(--color2);
+    z-index: 1;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.liPredictedElements{
+    font-size: 12px;
+    padding: 5px 0px 5px 3px;
+    cursor: pointer;
+}
+.predictedElementFocused{
+    background-color:var(--color3);
+}
 
 
 

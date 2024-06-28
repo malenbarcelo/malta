@@ -1,4 +1,5 @@
 import { dominio } from "./dominio.js"
+import g from "./globals.js"
 
 function clearInputs(inputs) {
 
@@ -60,4 +61,104 @@ function showOkPopup(popupToShow) {
     
 }
 
-export {clearInputs,inputsValidation,dateToString,showOkPopup}
+async function predictElements(input,list,apiUrl,name) {
+    if (input.value.length >= 3) {
+
+        let id = 0
+        
+        const string = input.value.toLowerCase()
+        g.predictedElements = await (await fetch(dominio + apiUrl + string)).json()
+
+        list.innerHTML = ''
+
+        g.predictedElements.forEach(element => {
+            list.innerHTML += '<li class="liPredictedElements" id="element_'+ id +'">' + element[name] + '</li>'
+            id += 1
+        })
+
+        g.focusedElement = -1
+
+        if (g.predictedElements.length > 0) {
+            list.style.display = 'block'
+            
+            for (let i = 0; i < g.predictedElements.length; i++) {
+
+                const element = document.getElementById('element_' + i)
+                
+                element.addEventListener("mouseover", async() => {
+
+                    //unfocus all elements
+                    for (let j = 0; j < g.predictedElements.length; j++) {
+                        const element = document.getElementById('element_' + j)
+                        if (j == i) {
+                            element.classList.add('predictedElementFocused')
+                        }else{
+                            element.classList.remove('predictedElementFocused')
+                        }                            
+                    }
+                })
+                
+                element.addEventListener("click", async() => {
+                    input.value = element.innerText
+                    list.style.display = 'none'                      
+                })
+            }
+        }
+
+    }else{
+        list.style.display = 'none'
+        list.innerHTML = ''
+    }
+}
+
+function selectFocusedElement(e,input,list) {
+    if (e.key === 'ArrowDown' && g.predictedElements.length > 0) {
+            
+        g.focusedElement = (g.focusedElement == g.predictedElements.length-1) ? g.focusedElement : (g.focusedElement + 1)            
+        
+        g.elementToFocus = document.getElementById('element_' + g.focusedElement)            
+        g.elementToFocus.classList.add('predictedElementFocused')
+        g.elementToFocus.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+        })
+
+        if (g.focusedElement > 0) {
+            g.elementToUnfocus = document.getElementById('element_' + (g.focusedElement-1))
+            g.elementToUnfocus.classList.remove('predictedElementFocused')                
+        }
+
+    }else if(e.key === 'ArrowUp'){
+
+        g.focusedElement = (g.focusedElement == 0) ? g.focusedElement : (g.focusedElement - 1)
+
+        g.elementToFocus = document.getElementById('element_' + g.focusedElement)            
+        g.elementToFocus.classList.add('predictedElementFocused')
+        g.elementToFocus.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+        })
+
+        if (g.focusedElement != -1) {
+            g.elementToUnfocus = document.getElementById('element_' + (g.focusedElement + 1))
+            g.elementToUnfocus.classList.remove('predictedElementFocused')                
+        }
+        
+    }else if(e.key === 'Enter'){
+
+        if (g.productFocused == -1) {
+            input.value = ''
+        }else{
+            input.value = g.elementToFocus.innerText
+        }
+        
+        list.style.display = 'none'
+    }else if(e.key === 'Escape'){
+        g.focusedElement = -1
+        input.value = ''
+        list.style.display = 'none'
+
+    }
+}
+
+export {clearInputs,inputsValidation,dateToString,showOkPopup,predictElements,selectFocusedElement}
