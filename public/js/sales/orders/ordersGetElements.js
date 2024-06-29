@@ -39,7 +39,7 @@ function getElements() {
     og.filters1 = [filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
 
     //checks
-    og.checks1 = [Dif1,Dif2,WebAyR,WebT]
+    og.checks1 = [channel_1,channel_2,channel_3,channel_4]
 
     //close and cancel
     og.closePopups = [rpppClose,rpppCancel,doppClose,doppCancel,amppClose,amppCancel,coppClose,coppCancel,cdppClose,cdppCancel,eodppClose,eodppCancel]

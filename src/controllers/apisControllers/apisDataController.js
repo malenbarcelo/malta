@@ -55,6 +55,21 @@ const apisDataController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  predictCustomers: async(req,res) =>{
+    try{
+      const string = req.params.string.toLowerCase()
+
+      const customers = await customersQueries.customers()
+
+      const predictedCustomers = customers.filter(c => c.customer_name.toLowerCase().includes(string))
+
+      res.status(200).json(predictedCustomers)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
 }
 module.exports = apisDataController
 

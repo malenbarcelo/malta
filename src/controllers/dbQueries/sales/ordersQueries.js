@@ -14,7 +14,9 @@ const ordersQueries = {
                 {association: 'orders_payments_status'},
                 {association: 'orders_orders_managers'},
                 {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'}
+                {association: 'orders_accounts_movements'},
+                {association: 'orders_sales_channels'}
+
             ],
             where:{
                 enabled:1,

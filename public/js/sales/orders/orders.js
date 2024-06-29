@@ -314,18 +314,18 @@ window.addEventListener('load',async()=>{
             DGAcreateOrderError.style.display = 'block'
         }
 
-        if (og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='Dif1' && og.checkedElements[0].id !='Dif2'))) {
+        if (og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='channel_1' && og.checkedElements[0].id !='channel_2'))) {
             DGAordersErrors.style.display = 'flex'
             selectChannelError.style.display = 'block'
         }
 
-        if (filterCustomer.value != 'default' && !(og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='Dif1' && og.checkedElements[0].id !='Dif2')))) {
+        if (filterCustomer.value != 'default' && !(og.checkedElements.length == 0 || (og.checkedElements.length > 1 || (og.checkedElements[0].id !='channel_1' && og.checkedElements[0].id !='channel_2')))) {
 
             //clear data
             og.orderDetails = []
 
             //complete popup info
-            const salesChannel = Dif1.checked ? 1 : 2
+            const salesChannel = channel_1.checked ? 1 : 2
             const customer = filterCustomer.value
             const orderNumber = await (await fetch(dominio + 'apis/sales/new-order')).json()
             const customerData = og.customers.filter(c => c.customer_name == customer)[0]

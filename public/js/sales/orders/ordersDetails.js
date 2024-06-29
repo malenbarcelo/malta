@@ -49,4 +49,19 @@ window.addEventListener('load',async()=>{
         selectFocusedElement(e,input,list)
     })
 
+    //filter customer event listener - predict elements
+    filterCustomer.addEventListener("input", async(e) => {
+        const input = filterCustomer
+        const list = ulPredictedCustomers
+        const apiUrl = 'apis/data/customers/predict-customers/'
+        const name = 'customer_name'
+        predictElements(input,list,apiUrl,name)
+    })
+
+    filterCustomer.addEventListener("keydown", async(e) => {
+        const input = filterCustomer
+        const list = ulPredictedCustomers
+        selectFocusedElement(e,input,list)
+    })
+
 })

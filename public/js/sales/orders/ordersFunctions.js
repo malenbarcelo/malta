@@ -21,7 +21,7 @@ async function printTableOrders(dataToPrint) {
         //print table
         const line1 = '<th class="' + rowClass + '">' + element.order_number + '</th>'
         const line2 = '<th class="' + rowClass + '">' + date + '</th>'
-        const line3 = '<th class="' + rowClass + '">' + element.sales_channel + '</th>'
+        const line3 = '<th class="' + rowClass + '">' + element.orders_sales_channels.sales_channel + '</th>'
         const line4 = '<th class="' + rowClass + '">' + element.orders_customers.customer_name + '</th>'
         const line5 = '<th class="' + rowClass + '">' + og.formatter.format(element.subtotal) + '</th>'
         const line6 = '<th class="' + rowClass + '">' + element.discount * 100 + '%' + '</th>'
@@ -145,8 +145,16 @@ function filterOrders() {
     if (og.checkedElements.length == 0) {
         og.ordersFiltered = []
     }else{
-        const channels = og.checkedElements.map(input => input.id)
-        og.ordersFiltered = og.ordersFiltered.filter(o => channels.some(channel => o.sales_channel.includes(channel)))
+        const selectedChannels = og.checkedElements.map(input => input.id)
+        const channels = []
+        
+        selectedChannels.forEach(channel => {
+            const channelId = parseInt(channel.split('_')[1])
+            channels.push(channelId)
+        })
+
+        //og.ordersFiltered = og.ordersFiltered.filter(o => channels.some(channel => o.id_sales_channels.includes(channel)))
+        og.ordersFiltered  = og.ordersFiltered .filter(o => channels.includes(o.id_sales_channels))
     }
 
 }
