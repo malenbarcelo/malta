@@ -102,6 +102,12 @@
     left: 500px;
 }
 
+#dlppContent{
+    top: 30%;
+    width: 400px;
+    left: calc(50vw - 210px);
+}
+
 
 
 /*----------okPopup----------*/

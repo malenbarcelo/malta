@@ -24,16 +24,24 @@
         </div>
         <div class="divInput">
             <label class="label1" id="filterCustomerLabel">Cliente</label>
-            <input type="text" class="input1 inputL" id="filterCustomer">
+            <input type="text" class="input1 inputXL" id="filterCustomer">
             <ul class="predictedElements" id="ulPredictedCustomers"></ul>
         </div>
         <div class="divInput">
             <label class="label1">Estado</label>
-            <select id="filterOrderStatus" class="input1 inputL">
+            <select id="filterOrderStatus" class="input1 inputM">
                 <option value="default"></option>
-                <% ordersStatus.forEach(status => { %>
-                    <option value="<%= status.id %>">
-                        <%= status.order_status %>
+                <option value="complete">Completo</option>
+                <option value="incomplete">Incompleto</option>
+            </select>
+        </div>
+        <div class="divInput">
+            <label class="label1">Encargado</label>
+            <select id="filterOrderManager" class="input1 inputXL">
+                <option value="default"></option>
+                <% ordersManagers.forEach(manager => { %>
+                    <option value="<%= manager.id %>">
+                        <%= manager.order_manager_name %>
                     </option>
                 <% }) %>
             </select>
@@ -79,5 +87,6 @@
 <!----------LOADER---------->
 <div class="loader" id="ordersDetailsLoader" ></div>
 
+<%- include('./ordersDetailsPopups') %>
 <script type="module" src="/js/sales/orders/ordersDetails.js"></script>
 

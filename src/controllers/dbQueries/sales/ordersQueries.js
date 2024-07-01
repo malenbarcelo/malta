@@ -123,7 +123,7 @@ const ordersQueries = {
 
         let idPaymentsStatus = 3
 
-        //fin order data
+        //find order data
         const orderToUpdate = await Sales_orders.findOne({
             where:{id:orderId},
             include: [
@@ -144,8 +144,6 @@ const ordersQueries = {
         })
 
         amountPaid = amountPaidPayments + amountPaidAccounts
-
-        console.log(amountPaid)
 
         idPaymentsStatus = (amountPaid < orderToUpdate.total && amountPaid > 0) ? 4 : 5
         

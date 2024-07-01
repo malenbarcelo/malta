@@ -61,7 +61,7 @@ function showOkPopup(popupToShow) {
     
 }
 
-async function predictElements(input,list,apiUrl,name) {
+async function predictElements(input,list,apiUrl,name,elementName) {
     if (input.value.length >= 3) {
 
         let id = 0
@@ -72,7 +72,7 @@ async function predictElements(input,list,apiUrl,name) {
         list.innerHTML = ''
 
         g.predictedElements.forEach(element => {
-            list.innerHTML += '<li class="liPredictedElements" id="element_'+ id +'">' + element[name] + '</li>'
+            list.innerHTML += '<li class="liPredictedElements" id="' + elementName + '_'+ id +'">' + element[name] + '</li>'
             id += 1
         })
 
@@ -83,13 +83,13 @@ async function predictElements(input,list,apiUrl,name) {
             
             for (let i = 0; i < g.predictedElements.length; i++) {
 
-                const element = document.getElementById('element_' + i)
+                const element = document.getElementById(elementName + '_' + i)
                 
                 element.addEventListener("mouseover", async() => {
 
                     //unfocus all elements
                     for (let j = 0; j < g.predictedElements.length; j++) {
-                        const element = document.getElementById('element_' + j)
+                        const element = document.getElementById(elementName + '_' + j)
                         if (j == i) {
                             element.classList.add('predictedElementFocused')
                         }else{
@@ -111,12 +111,12 @@ async function predictElements(input,list,apiUrl,name) {
     }
 }
 
-function selectFocusedElement(e,input,list) {
+function selectFocusedElement(e,input,list,elementName) {
     if (e.key === 'ArrowDown' && g.predictedElements.length > 0) {
             
         g.focusedElement = (g.focusedElement == g.predictedElements.length-1) ? g.focusedElement : (g.focusedElement + 1)            
         
-        g.elementToFocus = document.getElementById('element_' + g.focusedElement)            
+        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)            
         g.elementToFocus.classList.add('predictedElementFocused')
         g.elementToFocus.scrollIntoView({
             behavior: 'smooth',
@@ -124,7 +124,7 @@ function selectFocusedElement(e,input,list) {
         })
 
         if (g.focusedElement > 0) {
-            g.elementToUnfocus = document.getElementById('element_' + (g.focusedElement-1))
+            g.elementToUnfocus = document.getElementById(elementName + '_' + (g.focusedElement-1))
             g.elementToUnfocus.classList.remove('predictedElementFocused')                
         }
 
@@ -132,7 +132,7 @@ function selectFocusedElement(e,input,list) {
 
         g.focusedElement = (g.focusedElement == 0) ? g.focusedElement : (g.focusedElement - 1)
 
-        g.elementToFocus = document.getElementById('element_' + g.focusedElement)            
+        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)            
         g.elementToFocus.classList.add('predictedElementFocused')
         g.elementToFocus.scrollIntoView({
             behavior: 'smooth',
@@ -140,7 +140,7 @@ function selectFocusedElement(e,input,list) {
         })
 
         if (g.focusedElement != -1) {
-            g.elementToUnfocus = document.getElementById('element_' + (g.focusedElement + 1))
+            g.elementToUnfocus = document.getElementById(elementName + '_' + (g.focusedElement + 1))
             g.elementToUnfocus.classList.remove('predictedElementFocused')                
         }
         

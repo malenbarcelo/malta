@@ -93,3 +93,12 @@
     display: flex;
     column-gap: 5px;
 }
+
+/*--------------------ordersDetailsPopups.ejs--------------------*/
+#dlppAlert{
+    color: var(--errorColor);
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: -10px;    
+    line-height: 1.2;
+}

@@ -8,13 +8,16 @@ router.get('/in-progress-orders/details',apisSalesController.inProgressOrdersDet
 router.get('/in-progress-orders/payments',apisSalesController.inProgressOrdersPayments)
 router.get('/new-order',apisSalesController.newOrder)
 router.get('/customer-positive-balance/:idCustomer',apisSalesController.customerPositiveBalance)
+router.get('/consolidated-sales/:year',apisSalesController.consolidatedSales)
 router.post('/save-order',apisSalesController.saveOrder)
 router.post('/register-payment',apisSalesController.registerPayment)
 router.post('/register-account-movement',apisSalesController.registerAccountMovement)
 router.post('/deliver-order',apisSalesController.deliverOrder)
 router.post('/assign-order-manager',apisSalesController.assignOrderManager)
 router.post('/cancel-order',apisSalesController.cancelOrder)
-router.get('/consolidated-sales/:year',apisSalesController.consolidatedSales)
+router.post('/delete-product',apisSalesController.deleteProduct)
+router.post('/update-payment-status',apisSalesController.updatePaymentStatus)
+
 
 //ninox data
 router.get('/get-ninox-sales',apisSalesController.getNinoxSales)

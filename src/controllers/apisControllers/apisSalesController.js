@@ -317,6 +317,47 @@ const apisSalesController = {
         return res.send('Ha ocurrido un error')
     }
   },
+  deleteProduct: async(req,res) => {
+    try{
+
+      const year = req.params.year
+      const iDate = new Date(year + '-01-01') 
+      const fDate = new Date(year + '-12-31')
+
+      const webAndDifSales = await ordersQueries.webAndDifSales(iDate,fDate)
+      const ninoxSales = await ordersNinoxQueries.ninoxSales(iDate,fDate)
+
+      let sales = webAndDifSales.concat(ninoxSales);
+
+      res.status(200).json(sales)
+
+    }catch(error){
+
+        console.log(error)
+        return res.send('Ha ocurrido un error')
+    }
+  },
+  updatePaymentStatus: async(req,res) => {
+    try{
+
+      const year = req.params.year
+      const iDate = new Date(year + '-01-01') 
+      const fDate = new Date(year + '-12-31')
+
+      const webAndDifSales = await ordersQueries.webAndDifSales(iDate,fDate)
+      const ninoxSales = await ordersNinoxQueries.ninoxSales(iDate,fDate)
+
+      let sales = webAndDifSales.concat(ninoxSales);
+
+      res.status(200).json(sales)
+
+    }catch(error){
+
+        console.log(error)
+        return res.send('Ha ocurrido un error')
+    }
+  },
+
 
 }
 module.exports = apisSalesController
