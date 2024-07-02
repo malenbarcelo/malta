@@ -155,7 +155,9 @@ const ordersQueries = {
     webAndDifSales: async(iDate,fDate) => {
         const webAndDifSales = await Sales_orders.findAll({
             include: [
-                {association: 'orders_customers'}
+                {association: 'orders_customers'},
+                {association: 'orders_sales_channels'}
+
             ],
             where:{
                 enabled:1,

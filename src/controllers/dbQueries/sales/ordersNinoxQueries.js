@@ -11,7 +11,8 @@ const ninoxOrdersQueries = {
     ninoxSales: async(iDate,fDate) => {
         const ninoxSales = await Sales_orders_ninox.findAll({
             include: [
-                {association: 'orders_customers'}
+                {association: 'orders_customers'},
+                {association: 'orders_sales_channels'}
             ],
             where:{
                 enabled:1,
@@ -27,12 +28,24 @@ const ninoxOrdersQueries = {
         })
         return ninoxSales
     },
+    getOrder: async(orderNumber) => {
+        const getOrder = await Sales_orders_ninox.findAll({            
+            where:{
+                order_number:orderNumber,
+            }
+        })
+
+        const orderId = getOrder[0].id
+        
+        return orderId
+    },
     saveOrders: async(data) => {
         for (let i = 0; i < data.length; i++) {
             await Sales_orders_ninox.create({
                 date:data[i].date,
                 order_number:data[i].order_number,
-                sales_channel:'Local',
+                id_sales_channels:5,
+                customer_name:data[i].customer_name,
                 id_customers:data[i].id_customers,
                 subtotal:data[i].subtotal,
                 discount:data[i].discount,

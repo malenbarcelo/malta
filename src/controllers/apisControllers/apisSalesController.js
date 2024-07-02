@@ -5,7 +5,6 @@ const customersQueries = require('../dbQueries/data/customersQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQueries')
 const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
-const data = require('./apisSalesData')
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
@@ -221,80 +220,6 @@ const apisSalesController = {
     }catch(error){
       console.group(error)
       return res.send('Ha ocurrido un error')
-    }
-  },
-  getNinoxSales: async(req,res) => {
-    try{
-
-      // const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
-      // url.searchParams.append('fecha', '01/03/2024')
-      // url.searchParams.append('sucursalId', 1)
-      // url.searchParams.append('incluirMediosPago', true)
-
-      // const headers = {
-      //   'Content-Type': 'application/json',
-      //   'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
-      // }
-
-      // const response = await fetch(url, {
-      //   method: 'GET',
-      //   headers: headers
-      // })
-
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
-  
-      // const data = await response.json()
-
-      //await ninoxOrdersDetailsQueries.saveOrders(data)
-
-      //get data
-      const customers = await customersQueries.customers()
-      const paymentMethods = await paymentMethodsQueries.paymentMethods()
-
-      //get invoices ids
-      const idsInvoices = data.map(data => data.facturaId)
-      const idsInvoicesUnique = [...new Set(idsInvoices)]
-      const ordersData = []
-
-      //complete data for orders_ninox
-      idsInvoicesUnique.forEach(id => {
-
-        const allRows = data.filter(d => d.facturaId == id)
-        const date = allRows[0].fechaText
-        const customerName = allRows[0].cliente
-        const idCustomers = customers.filter(c => c.customer_name == customerName)[0]
-        const subtotal = allRows.reduce((sum, row) => sum + (row.precioVentaFinal * row.cantidad), 0)
-        const orderNumber = parseInt(allRows[0].numeroFull.split("-")[1])
-        
-        ordersData.push({
-          date:date,
-          order_number:orderNumber,
-          sales_channel:1,
-          id_customers: idCustomers ? idCustomers.id : null,
-          subtotal: subtotal,
-          discount:0,
-          total:subtotal,
-          id_orders_status:3,
-          id_payments_status:5,
-          id_orders_managers:1,
-          obervations:'',
-          enabled:1
-        })        
-      })
-
-      //save data in orders_ninox
-      await ordersNinoxQueries.saveOrders(ordersData)
-
-      return res.send(ordersData)
-
-      //res.status(200).json(data)
-
-    }catch(error){
-
-        console.log(error)
-        return res.send('Ha ocurrido un error')
     }
   },
   consolidatedSales: async(req,res) => {

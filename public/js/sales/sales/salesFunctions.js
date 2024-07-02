@@ -5,6 +5,7 @@ import { dateToString } from "../../generalFunctions.js"
 async function printTableSales(dataToPrint) {
 
     salesLoader.style.display = 'block'
+    
     bodySales.innerHTML = ''
     let counter = 0
     let amount = 0
@@ -20,7 +21,7 @@ async function printTableSales(dataToPrint) {
         //print table
         const line1 = '<th class="' + rowClass + '">' + element.order_number + '</th>'
         const line2 = '<th class="' + rowClass + '">' + date + '</th>'
-        const line3 = '<th class="' + rowClass + '">' + element.sales_channel + '</th>'
+        const line3 = '<th class="' + rowClass + '">' + element.orders_sales_channels.sales_channel + '</th>'
         const line4 = '<th class="' + rowClass + '">' + customer + '</th>'
         const line5 = '<th class="' + rowClass + '">' + sg.formatter.format(element.subtotal) + '</th>'
         const line6 = '<th class="' + rowClass + '">' + element.discount * 100 + '%' + '</th>'

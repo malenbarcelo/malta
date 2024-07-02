@@ -18,10 +18,6 @@ router.post('/cancel-order',apisSalesController.cancelOrder)
 router.post('/delete-product',apisSalesController.deleteProduct)
 router.post('/update-payment-status',apisSalesController.updatePaymentStatus)
 
-
-//ninox data
-router.get('/get-ninox-sales',apisSalesController.getNinoxSales)
-
 //wordpress data
 //router.get('/wp/get-new-orders',apisWordpressController.getNewOrders)
 //router.get('/wp/get-wp-posts',apisWordpressController.getWpPosts)
