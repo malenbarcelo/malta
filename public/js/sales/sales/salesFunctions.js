@@ -17,6 +17,7 @@ async function printTableSales(dataToPrint) {
         const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
         const customer = element.orders_customers == null ? '' : element.orders_customers.customer_name
         amount += parseFloat(element.total,2)
+        const deleteClass = element.id_sales_channels == 5 ? 'allowedIcon' : 'notAllowedIcon'
         
         //print table
         const line1 = '<th class="' + rowClass + '">' + element.order_number + '</th>'
@@ -27,127 +28,63 @@ async function printTableSales(dataToPrint) {
         const line6 = '<th class="' + rowClass + '">' + element.discount * 100 + '%' + '</th>'
         const line7 = '<th class="' + rowClass + '">' + sg.formatter.format(element.total) + '</th>'
         const line8 = '<th class="' + rowClass + '"><i class="fa-solid fa-magnifying-glass-plus allowedIcon" id="edit_' + element.id + '"></i></th>'
-        
+        const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can ' + deleteClass + '" id="' + (deleteClass == 'allowedIcon' ? ('delete_' + element.id) : null) +'"></i></th>'
 
-        bodySales.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + '</tr>'
+        bodySales.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
 
         counter += 1
 
     })
 
     //get main data
-
     salesAmount.innerHTML = '<b>Total (ARS):</b> $' + sg.formatter.format(amount)
     salesQty.innerHTML = '<b>Cantidad:</b> ' + dataToPrint.length
 
-    //addOrdersEventListeners(dataToPrint)
+    addSalesEventListeners(dataToPrint)
 
     salesLoader.style.display = 'none'
 }
+function addSalesEventListeners() {
 
-function addOrdersEventListeners(dataToPrint) {
+    sg.sales.forEach(element => {
 
-    dataToPrint.forEach(element => {
-
-        const payment = document.getElementById('payment_' + element.id)
-        const deliverOrder = document.getElementById('deliver_' + element.id)
-        const assignOrder = document.getElementById('assign_' + element.id)
-        const cancelOrder = document.getElementById('cancel_' + element.id)
-        const customer = element.orders_customers.customer_name
-
-        //payment
-        if (payment) {
-            payment.addEventListener('click',async()=>{
-
-                //find customer positive balance and show checkbox if applies
-                let positiveBalance = await (await fetch(dominio + 'apis/sales/customer-positive-balance/' + element.id_customers)).json()
-
-                if (positiveBalance > 0) {
-                    og.orderToPayCustomerBalance = positiveBalance
-                    rpppUseBalanceLabel.innerText = 'Usar saldo a favor (ARS ' + og.formatter.format(positiveBalance) + ')'
-                    rpppUseBalance.classList.remove('notVisible')
-                }else{
-                    rpppUseBalance.classList.add('notVisible')
-                    og.orderToPayCustomerBalance = 0
-                }
-
-                //complete elements and globals data
-                og.orderToPay = element
-                rpppSubtotal.value = og.formatter.format(element.subtotal)
-                rpppDiscount.value = og.formatter.format(element.discount * 100) + '%'
-                rpppTotal.value = og.formatter.format(element.total)
-                rpppPaid.value = og.formatter.format(element.amountPaid)
-                rpppBalance.value = og.formatter.format(element.balance)
-                rpppBalanceUsed.value = og.formatter.format(0)
-                rpppNewBalance.value = og.formatter.format(element.balance)
-                rpppBalanceAlert.innerHTML = ''
-                rpppUseBalanceCheck.checked = false
-                clearInputs(og.rpppValidate)
-                rppp.style.display = 'block'
-            })
-        }
-
-        //deliver order
-        if (deliverOrder) {
-            deliverOrder.addEventListener('click',async()=>{
-                og.idOrderToDeliver = element.id
-                doppQuestion.innerHTML = '¿Confirma que desea entregar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-                dopp.style.display = 'block'
-            })
-        }
-
-        //assign manager
-        if (assignOrder) {
-            assignOrder.addEventListener('click',async()=>{
-                amppSelectOM.value = element.id_orders_managers
-                og.idOrderToAssign = element.id
-                ampp.style.display = 'block'
-            })
-        }
-
-        //cancel order
-        if (cancelOrder) {
-            cancelOrder.addEventListener('click',async()=>{
-                og.idOrderToCancel = element.id
-                coppQuestion.innerHTML = '¿Confirma que desea cancelar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-                copp.style.display = 'block'
+        const deleteSale = document.getElementById('delete_' + element.id)
+        
+        //delete sale
+        if (deleteSale) {
+            deleteSale.addEventListener('click',async()=>{
+                sg.idSaleToDelete = element.id
+                dsppQuestion.innerHTML = '¿Confirma que desea cancelar el pedido <b>N° ' + element.order_number + '</b> de Ninox </b>?'
+                dspp.style.display = 'block'
             })
         }
 
     })
-
+    
 }
 
-function filterOrders() {
+function filterSales() {
 
-    og.ordersFiltered = og.orders
+    sg.salesFiltered = sg.sales
 
+    //orderNumber    
+    sg.salesFiltered = filterOrder.value == '' ? sg.salesFiltered : sg.salesFiltered.filter(s => s.order_number == filterOrder.value)
+    
     //customer
-    const idCustomer = filterCustomer.value == 'default' ? '' :og.customers.filter(c => c.customer_name == filterCustomer.value)[0].id
-    og.ordersFiltered = filterCustomer.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_customers == idCustomer)
+    const idCustomer = filterCustomer.value == '' ? '' :sg.customers.filter(s => s.customer_name == filterCustomer.value)[0].id
+    sg.salesFiltered = filterCustomer.value == '' ? sg.salesFiltered : sg.salesFiltered.filter(s => s.id_customers == idCustomer)
 
-    //order
-    og.ordersFiltered = filterOrder.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.order_number == filterOrder.value)
+    //sales-channel
+    const idSalesChannels = filterSalesChannels.value == 'default' ? '' : sg.salesChannels.filter(sc => sc.id == filterSalesChannels.value)[0].id
+    sg.salesFiltered = filterSalesChannels.value == 'default' ? sg.salesFiltered : sg.salesFiltered.filter(s => s.id_sales_channels == idSalesChannels)
 
-    //order_manager
-    og.ordersFiltered = filterOrderManager.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_managers == filterOrderManager.value)
+    //month
+    sg.salesFiltered = filterMonth.value == 'default' ? sg.salesFiltered : sg.salesFiltered.filter(s => parseInt(s.date.split('-')[1]) == filterMonth.value)
 
-    //order_status
-    og.ordersFiltered = filterOrderStatus.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_status == filterOrderStatus.value)
-
-    //order_status
-    og.ordersFiltered = filterPaymentStatus.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_payments_status == filterPaymentStatus.value)
-
-    //sales channels
-    if (og.checkedElements.length == 0) {
-        og.ordersFiltered = []
-    }else{
-        const channels = og.checkedElements.map(input => input.id)
-        og.ordersFiltered = og.ordersFiltered.filter(o => channels.some(channel => o.sales_channel.includes(channel)))
-    }
-
+    //date
+    sg.salesFiltered = filterDate.value == '' ? sg.salesFiltered : sg.salesFiltered.filter(s => s.date == filterDate.value)
 
 }
 
 
-export {printTableSales}
+export {printTableSales,filterSales}

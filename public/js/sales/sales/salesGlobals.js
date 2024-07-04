@@ -4,7 +4,12 @@ let sg = {
         minimumFractionDigits: 0,
         useGrouping: true
     }),
-    sales:[]
+    customers:[],
+    salesChannels:[],
+    sales:[],
+    salesFiltered:[],
+    year:0,
+    idSaleToDelete:0
 }
 
 export default sg

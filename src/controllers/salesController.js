@@ -1,10 +1,12 @@
 const customersQueries = require('./dbQueries/data/customersQueries')
 const ordersManagersQueries = require('./dbQueries/data/ordersManagersQueries')
+const salesChannelsQueries = require('./dbQueries/data/salesChannelsQueries')
 const ordersStatusQueries = require('./dbQueries/data/ordersStatusQueries')
 const paymentsStatusQueries = require('./dbQueries/data/paymentsStatusQueries')
 const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
 const productsQueries = require('./dbQueries/cuttings/productsQueries')
 const ordersQueries = require('./dbQueries/sales/ordersQueries')
+const { datesToGet } = require('./functions/ninoxCronFunctions')
 
 const bottomHeaderMenu = [
     {
@@ -78,10 +80,28 @@ const salesController = {
     sales: async(req,res) => {
         try{
 
+            let date = new Date()
+            const year = date.getFullYear()
+
             const selectedItem = 'VENTAS'
             const customers = await customersQueries.customers()
+            const salesChannels = await salesChannelsQueries.salesChannels()
+            const months = [
+                {id:1,month:'Enero'},
+                {id:2,month:'Febrero'},
+                {id:3,month:'Marzo'},
+                {id:4,month:'Abril'},
+                {id:5,month:'Mayo'},
+                {id:6,month:'Junio'},
+                {id:7,month:'Julio'},
+                {id:8,month:'Agosto'},
+                {id:9,month:'Septiembre'},
+                {id:10,month:'Octubre'},
+                {id:11,month:'Noviembre'},
+                {id:12,month:'Diciembre'},
+            ]
 
-            return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem,customers,})
+            return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem,customers,year,salesChannels,months})
             
         }catch(error){
 

@@ -5,6 +5,8 @@ const customersQueries = require('../dbQueries/data/customersQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQueries')
 const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
+const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
+const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
@@ -198,6 +200,22 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  cancelOrderNinox: async(req,res) =>{
+    try{
+
+      const orderId = req.body.idSale
+
+      await ordersNinoxQueries.cancelOrder(orderId)
+      await ordersDetailsNinoxQueries.cancelOrderDetails(orderId)
+      await ordersNinoxQueries.cancelPayment(orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   customerPositiveBalance: async(req,res) =>{
     try{
 
@@ -280,6 +298,21 @@ const apisSalesController = {
 
         console.log(error)
         return res.send('Ha ocurrido un error')
+    }
+  },
+  predictSalesNumbers: async(req,res) =>{
+    try{
+      const string = req.params.string.toLowerCase()
+
+      const salesNumbers = await ordersQueries.salesNumbers()
+
+      const predictedSalesNumbers = salesNumbers.filter(sn => sn.order_number.toLowerCase().includes(string))
+
+      res.status(200).json(predictedSalesNumbers)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
     }
   },
 

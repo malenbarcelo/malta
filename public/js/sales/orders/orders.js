@@ -1,8 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { getElements } from "./ordersGetElements.js"
-import { printTableOrders, filterOrders, updateOrderData, predictProducts, selectFocusedProduct, hideColorsInputs, getColorsOptions, printTableCreateEdit } from "./ordersFunctions.js"
-import { clearInputs, inputsValidation, showOkPopup } from "../../generalFunctions.js"
+import { printTableOrders, filterOrders, updateOrderData, printColorsOptions, printTableCreateEdit,changeSizesOptions } from "./ordersFunctions.js"
+import { clearInputs, inputsValidation, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -103,6 +103,12 @@ window.addEventListener('load',async()=>{
             let popupToClose = document.getElementById(element.id.replace('Close',''))
             popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
             popupToClose.style.display = 'none'
+
+            //select color popup exception
+            if (element.id == 'scppCancel' || element.id == 'scppClose') {
+                selectProduct.value = ''
+                selectSize.innerHTML = '<option value="default" id="selectSizeDefault"></option>'            
+            }
         })
     })
 
@@ -117,19 +123,15 @@ window.addEventListener('load',async()=>{
 
     //table info events listeners
     og.tableIcons.forEach(element => {
-
         const info = document.getElementById(element.id.replace('Icon','Info'))
-
         element.addEventListener("mouseover", async(e) => {
             const mouseX = e.clientX
             info.style.left = (mouseX - 100) + 'px'
             info.style.display = 'block'
         })
-
         element.addEventListener("mouseout", async(e) => {
             info.style.display = 'none'
         })
-
     })
 
     //change amount paid
@@ -323,6 +325,7 @@ window.addEventListener('load',async()=>{
 
             //clear data
             og.orderDetails = []
+            printTableCreateEdit(og.orderDetails)
 
             //complete popup info
             const salesChannel = channel_1.checked ? 1 : 2
@@ -347,85 +350,119 @@ window.addEventListener('load',async()=>{
         }
     })
 
-    //createEdit order - selectProduct
-    selectProduct.addEventListener("input", async() => {
-        predictProducts()
+    //createEdit order - selectProduct - predict elements
+    selectProduct.addEventListener("input", async(e) => {
+        const input = selectProduct
+        const list = ulPredictedProducts
+        const apiUrl = 'apis/data/products/predict-products/'
+        const name = 'description'
+        const elementName = 'product'
+        predictElements(input,list,apiUrl,name,elementName)
     })
 
     selectProduct.addEventListener("keydown", async(e) => {
-        selectFocusedProduct(e)
+        const input = selectProduct
+        const list = ulPredictedProducts
+        const elementName = 'product'
+        selectFocusedElement(e,input,list,elementName)
     })
 
+    selectProduct.addEventListener("change", async(e) => {
+        changeSizesOptions()
+    })
+
+    //createEdit order - selectsize
     selectSize.addEventListener("change", async() => {
-        getColorsOptions()
-    })
-    
-    //createEdit order - addProduct
-    ceoppAddProduct.addEventListener("click", async() => {
-
-        og.selectedColors = []
-
-        og.colorsOptions.forEach((color,i) => {
-            const check = document.getElementById('color' + i + 'LabelCheck')
-            if (check.checked == true) {
-                og.selectedColors.push({
-                    i:i,
-                    color:check.value
-                })
-            }
-        })
         
-        //validations
-        if (selectProduct.value == '' || selectSize.value == '') {
-            ceoppError.innerText = 'Debe seleccionar producto y talle'
-            ceoppError.style.display = 'block'            
+        const selectedProduct = selectProduct.value
+        const selectedSize = selectSize.value
+
+        if (selectedProduct != 'default' && selectedSize != 'default') {
+            const colorsOptions = await (await fetch(dominio + 'apis/cuttings/colors-options/' + selectedProduct + '/' + selectedSize)).json()
+            og.colorsOptions = colorsOptions.colors
+
+            printColorsOptions(og.colorsOptions)
+            
+            //show scpp
+            scppTitle.innerText = selectedProduct + ' - TALLE ' + selectedSize
+            selectAllColors.checked = false
+            scppError.style.display = 'none'
+            og.selectedColors = []
+            scpp.style.display = 'block'
+    
         }else{
-            if (og.selectedColors.length == 0) {
-                ceoppError.innerText = 'Debe seleccionar al menos un color'
-                ceoppError.style.display = 'block'
-            }else{
-                ceoppError.style.display = 'none'
+            scpp.style.display = 'none'
+        }
 
-                let id = og.orderDetails.length == 0 ? 1 : Math.max(...og.orderDetails.map(element => element.id)) + 1
-                
-                og.selectedColors.forEach((color) => {
+        
+    })
 
-                    const product = og.products.filter( p => p.description == selectProduct.value && p.size == selectSize.value && p.color == color.color)[0]
-                    
-                    const unitPrice = product.unit_price
-                    const id_products = product.id
-
-                    const input = document.getElementById('color' + color.i)
-
-                    const quantity = input.value == '' ? '' : parseInt(input.value)
-                    
-                    og.orderDetails.push({
-                        id: id,
-                        id_products: id_products,
-                        description: selectProduct.value,
-                        size: selectSize.value,
-                        color: color.color,
-                        unit_price: parseFloat(unitPrice,2),
-                        quantity: quantity == '' ? '' : quantity,
-                        extended_price: quantity == '' ? 0 : quantity * unitPrice,
-                        row_status: quantity == '' ? 'Incompleto' : 'Completo'
-                    })
-                    id += 1
-                })
-
-                selectProduct.value = ''
-                selectSize.value = ''
-                clearInputs(og.ceoppColorInputs)
-
-                colorsRow.classList.add('notVisible')
-
-                updateOrderData()
-                printTableCreateEdit()
-
-            }
+    selectAllColors.addEventListener("click", async() => {
+        if (selectAllColors.checked) {
+            og.colorsOptions.forEach((color,i) => {
+                const check = document.getElementById('check_' + i)
+                check.checked = true
+            })
+        }else{
+            og.colorsOptions.forEach((color,i) => {
+                const check = document.getElementById('check_' + i)
+                check.checked = false
+            })
         }
     })
 
+    //createEdit order - select colors accept
+    scppAccept.addEventListener("click", async() => {
+
+        og.colorsOptions.forEach((color,i) => {
+            const check = document.getElementById('check_' + i)
+            if (check.checked == true) {
+                og.selectedColors.push({
+                    i:i,
+                    color:color
+                })
+            }
+        })
+
+        //validations
+        if (og.selectedColors.length == 0) {
+            scppError.style.display = 'block'
+        }else{
+            scppError.style.display = 'none'
+            let id = og.orderDetails.length == 0 ? 1 : Math.max(...og.orderDetails.map(element => element.id)) + 1
+
+            og.selectedColors.forEach((color) => {
+
+                const product = og.products.filter( p => p.description == selectProduct.value && p.size == selectSize.value && p.color == color.color)[0]
+                
+                const unitPrice = product.unit_price
+                const id_products = product.id
+                const requiredInput = document.getElementById('required_' + color.i)
+                const confirmedInput = document.getElementById('confirmed_' + color.i)
+                
+                og.orderDetails.push({
+                    id: id,
+                    id_products: id_products,
+                    description: selectProduct.value,
+                    size: selectSize.value,
+                    color: color.color,
+                    unit_price: parseFloat(unitPrice,2),
+                    required_quantity: requiredInput.value,
+                    confirmed_quantity: confirmedInput.value,
+                    extended_price: confirmedInput.value == '' ? 0 : confirmedInput.value * unitPrice,
+                    row_status: confirmedInput.value == '' ? 'Incompleto' : 'Completo'
+                })
+                id += 1
+            })
+            selectProduct.value = ''
+            selectSize.value = ''
+            scpp.style.display = 'none'
+            updateOrderData()
+            printTableCreateEdit()
+        }
+
+    })
+    
     //createEdit order - edit discount
     cdppAccept.addEventListener("click", async() => {
         og.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
@@ -433,6 +470,9 @@ window.addEventListener('load',async()=>{
         updateOrderData()
         cdpp.style.display = 'none'
     })
+
+    //change discount with enter
+    acceptWithEnter(cdppNewDiscount,cdppAccept)
 
     //createEdit order - edit order detals
     eodppAccept.addEventListener("click", async() => {
@@ -442,13 +482,14 @@ window.addEventListener('load',async()=>{
         if (errors == 0) {
 
             const unitPrice = eodppPrice.value
-            const quantity = eodppQty.value
-            const extendedPrice = unitPrice * quantity            
+            const quantityR = eodppQtyR.value
+            const quantityC = eodppQtyC.value
+            const extendedPrice = unitPrice * quantityC            
             const id = og.idOrderDetailsToEdit
 
             og.orderDetails = og.orderDetails.map(element => {
                 if (element.id == id) {
-                  return {...element, unit_price: unitPrice, quantity: quantity, extended_price: extendedPrice}
+                  return {...element, unit_price: unitPrice, required_quantity: quantityR, confirmed_quantity: quantityC, extended_price: extendedPrice}
                 }
                 return element
             })

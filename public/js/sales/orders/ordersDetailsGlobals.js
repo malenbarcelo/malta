@@ -3,9 +3,11 @@ let odg = {
     customers:[],
     products:[],
     ordersManagers: [],
+    orders:[],
     ordersDetails: [],
     ordersDetailsFiltered: [],
-    idLineToDelete:0
+    orderToEdit:[],
+    idLineToDelete:0,
 }
 
 export default odg

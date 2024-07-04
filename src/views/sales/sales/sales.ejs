@@ -2,48 +2,55 @@
 <%- include('../../partials/header') %>
 
     <!------MAIN TITLE------>
-    <div class="mainTitle">CONSOLIDADO DE VENTAS</div>
+    <div class="mainTitle" id="mainTitleSales">
+        <div id="salesTitle"><%= 'CONSOLIDADO DE VENTAS ' + year %></div>
+        <div id="changeYearIcon"><i class="fa-solid fa-pencil"></i></div>
+    </div>
 
     <!------MAIN FILTERS------>
     <div class="mainFilters">
-        <div class="divInputsRow">
+        <div class="divInputsRow">            
+            <div class="divInput">
+                <label class="label1" id="filterOrderLabel">#Pedido</label>
+                <input type="text" class="input1 inputS" id="filterOrder">
+                <ul class="predictedElements" id="filterOrderUl"></ul>
+            </div>
             <div class="divInput">
                 <label class="label1" id="filterCustomerLabel">Cliente</label>
-                <select id="filterCustomer" class="input1 inputL">
-                    <option value="default"></option>
-                    <% customers.forEach(customer => { %>
-                        <option value="<%= customer.customer_name %>">
-                            <%= customer.customer_name %>
-                        </option>
-                    <% }) %>
-                </select>
+                <input type="text" class="input1 inputXL" id="filterCustomer">
+                <ul class="predictedElements" id="filterCustomerUl"></ul>
             </div>
             <div class="divInput">
                 <label class="label1" id="filterChannelLabel">Canal</label>
-                <select id="filterChannel" class="input1 inputL">
+                <select class="input1 selectS" id="filterSalesChannels">
                     <option value="default"></option>
-                    <% customers.forEach(customer => { %>
-                        <option value="<%= customer.customer_name %>">
-                            <%= customer.customer_name %>
+                    <% salesChannels.forEach(channel => { %>
+                        <option value="<%= channel.id %>">
+                            <%= channel.sales_channel %>
                         </option>
                     <% }) %>
                 </select>
             </div>
             <div class="divInput">
                 <label class="label1" id="filterChannelLabel">Mes</label>
-                <select id="filterChannel" class="input1 inputL">
+                <select class="input1 inputL" id="filterMonth">
                     <option value="default"></option>
-                    <% customers.forEach(customer => { %>
-                        <option value="<%= customer.customer_name %>">
-                            <%= customer.customer_name %>
+                    <% months.forEach(month => { %>
+                        <option value="<%= month.id %>">
+                            <%= month.month %>
                         </option>
                     <% }) %>
                 </select>
             </div>
-            <div class="unfilterIcon" id="">
+            <div class="divInput">
+                <label class="label1" id="filterDateLabel">Dia (dd-mm-aaaa)</label>
+                <input type="date" class="input1 inputL" id="filterDate">
+                <ul class="predictedElements" id="ulPredictedCustomers"></ul>
+            </div>
+            <div class="unfilterIcon" id="unfilterSales" >
                 <i class="fa-solid fa-filter-circle-xmark"></i>
             </div>
-        </div>
+        </div>    
     </div>
 
     <!------MAIN DATA------>
@@ -56,7 +63,8 @@
     <div class="mts">
         <div class="divTable">
 
-            <div class="tableInfo" id="voppInfo">Ver detalle</div>
+            <div class="tableInfo" id="vsppInfo">Ver detalle</div>
+            <div class="tableInfo" id="dsppInfo">Eliminar orden</div>
 
             <table>
                 <thead>
@@ -68,8 +76,11 @@
                         <th class="theadCss wS thTall">Subtotal</th>
                         <th class="theadCss wS thTall">Dto %</th>
                         <th class="theadCss wS thTall">Total</th>
+                        <th class="theadCss wXS thTall">
+                            <i class="fa-solid fa-magnifying-glass-plus tableIcon" id="vsppIcon"></i>
+                        </th>
                         <th class="theadCss wXS thTall thRightBorder">
-                            <i class="fa-solid fa-magnifying-glass-plus tableIcon" id="voppIcon"></i>
+                            <i class="fa-solid fa-trash-can tableIcon" id="dsppIcon"></i>
                         </th>
                     </tr>
                 </thead>
@@ -80,6 +91,7 @@
 
     <!----------LOADER---------->
     <div class="loader" id="salesLoader"></div>
+    <%- include('./salesPopups') %>
     <script type="module" src="/js/sales/sales/sales.js"></script>
 
 

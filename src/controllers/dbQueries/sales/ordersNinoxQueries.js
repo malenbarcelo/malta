@@ -39,6 +39,14 @@ const ninoxOrdersQueries = {
         
         return orderId
     },
+    lastOrder: async(orderNumber) => {
+        const lastOrder = await Sales_orders_ninox.findOne({
+            order:[['id','DESC']],
+            raw:true
+        })
+        
+        return lastOrder
+    },
     saveOrders: async(data) => {
         for (let i = 0; i < data.length; i++) {
             await Sales_orders_ninox.create({
@@ -57,7 +65,13 @@ const ninoxOrdersQueries = {
                 enabled:data[i].enabled
             })
         }
-    }
+    },
+    cancelOrder: async(orderId) => {        
+        await Sales_orders_ninox.update(
+            { enabled: 0 },
+            { where: { id: orderId } }
+        )
+    },
 }
         
 

@@ -49,9 +49,29 @@ accent-color: black
     font-size: 13px;
 }
 
+.input2{
+    text-align: center;
+    border:grey solid 1px;
+    background-color: var(--color2);
+    border-radius: 2px;
+    font-size: 12px;
+    padding: 2px;
+    height: 100%;
+    width: 45px;
+}
+
 .label1{
     position: absolute;
     font-size: 13px;
+    left: 8px;
+    top: -8px;
+    padding: 0px 5px;
+    background-color: var(--color2);
+}
+
+.label2{
+    position: absolute;
+    font-size: 11px;
     left: 8px;
     top: -8px;
     padding: 0px 5px;
@@ -76,18 +96,43 @@ accent-color: black
     font-size: 14px;
 }
 
-/*----------INPUTS SIZES----------*/
+/*----------INPUTS AND SELECTS SIZES----------*/
+
+.selectS{
+    width: 120px;
+    padding: 7px 0px 4px 0px;
+}
+
+.inputS{
+    width: 120px;
+    padding: 8px 0px 4px 0px;
+}
+
+.inputXL{
+    width: 200px;
+    padding: 8px 0px 4px 0px;
+}
+
+
+
 .inputXS{
     width: 40px;
     padding: 7px 0px 3px 0px;
 }
 
-.inputS{
+
+
+.ss{
     width: 70px;
     padding: 7px 0px 3px 0px;
 }
 
 .inputM{
+    width: 120px;
+    padding: 8px 0px 4px 0px;
+}
+
+.sM{
     width: 120px;
     padding: 7px 0px 3px 0px;
 }
@@ -97,7 +142,7 @@ accent-color: black
     padding: 10px 0px 3px 0px;
 }
 
-.inputXL{
+.sxl{
     width: 200px;
     padding: 7px 0px 3px 0px;
 }

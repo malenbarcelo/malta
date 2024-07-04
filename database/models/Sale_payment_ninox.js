@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       id_payments_methods:{
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      enabled:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
       }
     }
     const config = {

@@ -61,7 +61,7 @@ function showOkPopup(popupToShow) {
     
 }
 
-async function predictElements(input,list,apiUrl,name,elementName) {
+async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
     if (input.value.length >= 3) {
 
         let id = 0
@@ -72,7 +72,7 @@ async function predictElements(input,list,apiUrl,name,elementName) {
         list.innerHTML = ''
 
         g.predictedElements.forEach(element => {
-            list.innerHTML += '<li class="liPredictedElements" id="' + elementName + '_'+ id +'">' + element[name] + '</li>'
+            list.innerHTML += '<li class="liPredictedElements" id="' + elementName + '_'+ id +'">' + element[dataToPrint] + '</li>'
             id += 1
         })
 
@@ -161,4 +161,38 @@ function selectFocusedElement(e,input,list,elementName) {
     }
 }
 
-export {clearInputs,inputsValidation,dateToString,showOkPopup,predictElements,selectFocusedElement}
+function closePopupsEventListeners(closePopups) {
+    closePopups.forEach(element => {
+        element.addEventListener("click", async() => {
+            let popupToClose = document.getElementById(element.id.replace('Close',''))
+            popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
+            popupToClose.style.display = 'none'
+        })
+    })
+}
+
+function acceptWithEnter(input,button) {
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            button.click()
+        }
+    })
+}
+
+function showTableInfo(tableIcons,top,left) {
+    tableIcons.forEach(element => {
+        const info = document.getElementById(element.id.replace('Icon','Info'))
+        element.addEventListener("mouseover", async(e) => {
+            const mouseX = e.clientX
+            info.style.top = top + '%'
+            info.style.left = (mouseX - left) + 'px'
+            info.style.display = 'block'
+        })
+        element.addEventListener("mouseout", async(e) => {
+            info.style.display = 'none'
+        })
+    })
+    
+}
+
+export {clearInputs,inputsValidation,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo}

@@ -52,8 +52,8 @@ app.use(userLoggedMiddleware)
 app.use(cors())
 
 //get ninox data
-//cron.schedule('*/15 * * * *', cronController.getNinoxData )
-cron.schedule('* * * * *', cronController.getNinoxData )
+cron.schedule('*/15 * * * *', cronController.getNinoxData)
+//cron.schedule('* * * * *', cronController.getNinoxData)
 
 //Declare and listen port
 const APP_PORT = 3005
@@ -68,6 +68,3 @@ app.use('/data',dataRoutes)
 app.use('/sales',salesRoutes)
 //app.use('/cuttings',cuttingsRoutes)
 //app.use('/users',usersRoutes)
-
-/*console.log('malen: ' + bcrypt.hashSync('malen',10))
-console.log('fran: ' + bcrypt.hashSync('francisco',10))*/

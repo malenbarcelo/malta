@@ -15,6 +15,7 @@ window.addEventListener('load',async()=>{
     odg.products = await (await fetch(dominio + 'apis/data/products')).json()    
     odg.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+    odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
     odg.ordersDetailsFiltered = odg.ordersDetails
     
     //print table
@@ -99,7 +100,15 @@ window.addEventListener('load',async()=>{
 
     //dlpp accept    
     dlppAccept.addEventListener("click", async() => {
-        console.log('hola')
+
+        const orderToEditData = odg.orders.filter( o => o.id == odg.orderToEdit[0].id_orders)[0]
+        const orderToEditAmount = orderToEditData.total
+        
+        const newDetails = odg.orderToEdit.filter(o => o.id != odg.idLineToDelete)
+        
+        const newAmount = newDetails.length == 0 ? 0 : newDetails.reduce((acum, line) => acum + parseFloat(line.extended_price,2), 0)
+        
+        console.log(newAmount)
     })
 
 

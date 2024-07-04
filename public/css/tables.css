@@ -51,6 +51,12 @@ border-top-right-radius: 15px;
     font-size: 13px;
 }
 
+.tBody2{
+    font-weight: lighter;
+    padding: 2px 0px;
+    font-size: 13px;
+}
+
 .tBodyEven{
     background-color: var(--color2);
 }/*background when row number is even*/
@@ -79,7 +85,7 @@ border-top-right-radius: 15px;
     text-align: center;
 }
 
-#eoppInfo,#rpppInfo,#doppInfo,#coppInfo,#amppInfo,#voppInfo{
+#eoppInfo,#rpppInfo,#doppInfo,#coppInfo,#amppInfo{
     top:38.5%
 }
 

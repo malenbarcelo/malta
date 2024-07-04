@@ -15,8 +15,10 @@ router.post('/register-account-movement',apisSalesController.registerAccountMove
 router.post('/deliver-order',apisSalesController.deliverOrder)
 router.post('/assign-order-manager',apisSalesController.assignOrderManager)
 router.post('/cancel-order',apisSalesController.cancelOrder)
+router.post('/cancel-order-ninox',apisSalesController.cancelOrderNinox)
 router.post('/delete-product',apisSalesController.deleteProduct)
 router.post('/update-payment-status',apisSalesController.updatePaymentStatus)
+router.get('/predict-sales-numbers/:string',apisSalesController.predictSalesNumbers)
 
 //wordpress data
 //router.get('/wp/get-new-orders',apisWordpressController.getNewOrders)

@@ -4,33 +4,34 @@ const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
 const ordersNinoxQueries = require('./dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('./dbQueries/sales/ordersNinoxDetailsQueries')
 const paymentsNinoxQueries = require('./dbQueries/sales/paymentsNinoxQueries')
-const data = require('./apisControllers/apisSalesData')
+const { datesToGet } = require('./functions/ninoxCronFunctions')
+//const data = require('./apisControllers/apisSalesData')
 
 const cronController = {
     getNinoxData: async(req,res) => {
         try {
 
-            // //get ninox sales from API
-            // const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
-            // url.searchParams.append('fecha', '01/06/2024')
-            // url.searchParams.append('sucursalId', 1)
-            // url.searchParams.append('incluirMediosPago', true)
+            //get ninox sales from API
+            const url = new URL('https://sync.ninox.com.ar/api/Terceros/exportar/ventaitems')
+            url.searchParams.append('fecha', '01/07/2024')
+            url.searchParams.append('sucursalId', 1)
+            url.searchParams.append('incluirMediosPago', true)
 
-            // const headers = {
-            //     'Content-Type': 'application/json',
-            //     'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
-            // }
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-NX-TOKEN': 'bl9f6RQBLfq6JDDtFzWZFCtddlxxtIsR'
+            }
 
-            // const response = await fetch(url, {
-            //     method: 'GET',
-            //     headers: headers
-            // })
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            })
 
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! Status: ${response.status}`);
-            // }
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
-            // const data = await response.json()
+            const data = await response.json()
 
             //get other data
             const customers = await customersQueries.customers()
@@ -68,50 +69,48 @@ const cronController = {
                 payment_method:paymentMethod,
                 id_payments_methods:idPaymentsMethods ? idPaymentsMethods.id : null,
                 enabled:1,
-                //orderDetails:allRows
+                orderDetails:allRows
                 })        
             })
 
             //save data in orders_ninox
             await ordersNinoxQueries.saveOrders(ordersData)
 
-            // //save payments in payments_ninox
-            // for (let i = 0; i < ordersData.length; i++) {                
-            //     //get order id
-            //     const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
-            //     await paymentsNinoxQueries.registerOrderPayment(ordersData[i],orderId)
-            // }
+            //save payments in payments_ninox
+            for (let i = 0; i < ordersData.length; i++) {                
+                //get order id
+                const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
+                await paymentsNinoxQueries.registerOrderPayment(ordersData[i],orderId)
+            }
 
-            // //save orders_ninox_details
-            // const products = await productsQueries.products()
-            // let orderDetails = []
+            //save orders_ninox_details
+            const products = await productsQueries.products()
+            let orderDetails = []
 
-            // for (let i = 0; i < ordersData.length; i++) {
+            for (let i = 0; i < ordersData.length; i++) {
                 
-            //     const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
+                const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
 
-            //     for (let j = 0; j < ordersData[i].orderDetails.length; j++) {
-            //         const findProduct = products.filter(p => p.description == ordersData[i].orderDetails[j].descripcion)[0]
-            //         const productId = findProduct ? findProduct.id : null
-            //         orderDetails.push({
-            //             id_orders:orderId,
-            //             description:ordersData[i].orderDetails[j].descripcion,
-            //             id_products:productId,
-            //             color:ordersData[i].orderDetails[j].color,
-            //             size:ordersData[i].orderDetails[j].talle,
-            //             unit_price:ordersData[i].orderDetails[j].precioVentaFinal,
-            //             required_quantity:ordersData[i].orderDetails[j].cantidad,
-            //             confirmed_quantity:ordersData[i].orderDetails[j].cantidad,
-            //             extended_price:ordersData[i].orderDetails[j].cantidad * ordersData[i].orderDetails[j].precioVentaFinal
-            //         })                    
-            //     }
+                for (let j = 0; j < ordersData[i].orderDetails.length; j++) {
+                    const findProduct = products.filter(p => p.description == ordersData[i].orderDetails[j].descripcion)[0]
+                    const productId = findProduct ? findProduct.id : null
+                    orderDetails.push({
+                        id_orders:orderId,
+                        description:ordersData[i].orderDetails[j].descripcion,
+                        id_products:productId,
+                        color:ordersData[i].orderDetails[j].color,
+                        size:ordersData[i].orderDetails[j].talle,
+                        unit_price:ordersData[i].orderDetails[j].precioVentaFinal,
+                        required_quantity:ordersData[i].orderDetails[j].cantidad,
+                        confirmed_quantity:ordersData[i].orderDetails[j].cantidad,
+                        extended_price:ordersData[i].orderDetails[j].cantidad * ordersData[i].orderDetails[j].precioVentaFinal
+                    })                    
+                }
 
-            //     await ordersNinoxDetailsQueries.saveOrderDetails(orderDetails)
+                await ordersNinoxDetailsQueries.saveOrderDetails(orderDetails)
                 
-            // }
+            }
             
-
-            //res.status(200).json(data)
 
         }catch (error) {
              console.log(error)

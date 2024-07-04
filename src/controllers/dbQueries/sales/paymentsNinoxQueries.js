@@ -13,9 +13,17 @@ const paymentsNinoxQueries = {
             id_customers:orderData.id_customers,
             amount:orderData.total,
             id_payments_methods:orderData.id_payments_methods,
-            payment_method:orderData.payment_method
+            payment_method:orderData.payment_method,
+            enabled:1
         })        
-    }
+    },
+    cancelPayment: async(orderId) => {
+        
+        await Sales_payments_orders.update(
+            { enabled: 0 },
+            { where: { id: orderId } }
+        )  
+    },
 }       
 
 module.exports = paymentsNinoxQueries

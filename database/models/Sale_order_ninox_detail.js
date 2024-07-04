@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.DECIMAL,
          allowNull: false
        },
+       enabled:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     }
     const config = {
     tableName : 'sales_orders_ninox_details',

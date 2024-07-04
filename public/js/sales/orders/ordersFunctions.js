@@ -2,6 +2,29 @@ import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { clearInputs, dateToString } from "../../generalFunctions.js"
 
+function printColorsOptions(dataToPrint) {
+    bodyColors.innerHTML = ''
+    let counter = 0
+
+    //printTable
+    dataToPrint.forEach(element => {
+
+        const rowClass = counter % 2 == 0 ? 'tBody2 tBodyEven' : 'tBody2 tBodyOdd'
+        
+        //print table
+        const line1 = '<th class="' + rowClass + '"><div class="inputColor"><div class="colorCheck"><input type="checkbox" id="check_'+ counter + '"></div><div class="colorName">' + element + '</div></div></th>'
+        const line2 = '<th class="' + rowClass + '"><input type="text" class="input2" id="required_'+ counter + '"></th>'
+        const line3 = '<th class="' + rowClass + '"><input type="text" class="input2" id="confirmed_'+ counter + '"></th>'
+
+        bodyColors.innerHTML += '<tr>' + line1 + line2 + line3 + '</tr>'
+
+        counter += 1
+
+    })
+
+
+}
+
 async function printTableOrders(dataToPrint) {
 
     ordersLoader.style.display = 'block'
@@ -13,8 +36,7 @@ async function printTableOrders(dataToPrint) {
 
         const date = dateToString(element.date)
         const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
-        const paymentClass = (element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'
-        
+        const paymentClass = (element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'        
         const deliverClass = element.id_orders_status == 2 ? 'allowedIcon' : 'notAllowedIcon'
         const cancelClass = (element.id_orders_status == 1 || element.id_orders_status == 2) && (element.id_payments_status == 1 || element.id_payments_status == 2 || element.id_payments_status == 3) ? 'allowedIcon' : 'notAllowedIcon'
 
@@ -249,8 +271,6 @@ function selectFocusedProduct(e) {
         if (og.productFocused == -1) {
             selectProduct.value = ''
             selectSize.innerHTML = '<option value="default" id="selectSizeDefault" selected></option>'
-            colorsRow.classList.add('notVisible')
-            hideColorsInputs()
         }else{
             productSelected(og.elementToFocus.innerText)
             
@@ -260,62 +280,23 @@ function selectFocusedProduct(e) {
     }
 }
 
-async function productSelected(selectedProduct) {
+async function changeSizesOptions() {
 
-    selectProduct.value = selectedProduct
-    selectSize.innerHTML = '<option value="default" id="selectSizeDefault" selected></option>'
+    selectSize.innerHTML = '<option value="default" id="selectSizeDefault"></option>'
         
     const productOptions = await (await fetch(dominio + 'apis/cuttings/product-options/' + selectProduct.value)).json()
 
-    productOptions.sizes.forEach(size => {
-        selectSize.innerHTML += '<option value=' + size + '>' + size +'</option>'        
-    })
-
-    predictedProductsList.style.display = 'none'
-    
-    //hide colors row
-    colorsRow.classList.add('notVisible')
-    hideColorsInputs()
-    
-}
-
-function hideColorsInputs() {
-    for (let i = 0; i < 8; i++) {
-        const inputToHide = document.getElementById('inputColor' + i)
-        const labelToHide = document.getElementById('color' + i + 'Label')
-        inputToHide.classList.add('notVisible')
-        labelToHide.innerText = ''
-    }
-}
-
-async function getColorsOptions() {
-
-    const selectedProduct = selectProduct.value
-    const selectedSize = selectSize.value
-
-    if (selectedProduct != 'default' && selectedSize != 'default') {
-        const colorsOptions = await (await fetch(dominio + 'apis/cuttings/colors-options/' + selectedProduct + '/' + selectedSize)).json()
-        og.colorsOptions = colorsOptions.colors
-        
-        //hide colors inputs
-        hideColorsInputs()
-
-        //show inputs
-        for (let i = 0; i < og.colorsOptions.length; i++) {
-            const inputToShow = document.getElementById('inputColor' + i)
-            const labelToShow = document.getElementById('color' + i + 'Label')
-            inputToShow.classList.remove('notVisible')
-
-            labelToShow.innerHTML = og.colorsOptions[i] + '<input type="checkbox" name ="" id="color' + i + 'LabelCheck" value="' + og.colorsOptions[i] + '">'
-            
-        }
-
-        //show colors row
-        colorsRow.classList.remove('notVisible')
-
+    if (productOptions.sizes.length == 1 && productOptions.sizes[0] == 'U') {
+        selectSize.innerHTML += '<option value=' + 'U' + '>' + 'U' +'</option>'
+        selectSize.value = 'U'
+        const event = new Event('change')
+        selectSize.dispatchEvent(event)
     }else{
-        colorsRow.classList.add('notVisible')
+        productOptions.sizes.forEach(size => {
+            selectSize.innerHTML += '<option value=' + size + '>' + size +'</option>'        
+        })
     }
+    
 }
 
 function updateOrderData() {
@@ -357,12 +338,13 @@ function printTableCreateEdit() {
         const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
         const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
         const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
-        const line5 = '<th class="' + rowClass + '">' + element.quantity + '</th>'
-        const line6 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
-        const line7 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
-        const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
+        const line5 = '<th class="' + rowClass + '">' + element.required_quantity + '</th>'
+        const line6 = '<th class="' + rowClass + '">' + element.confirmed_quantity + '</th>'
+        const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
+        const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
+        const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
 
-        bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + '</tr>'
+        bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
 
         counter += 1
 
@@ -397,8 +379,9 @@ function addCreateEditEventListeners() {
             clearInputs([eodppPrice])
 
             eodppPrice.value = element.unit_price
-            eodppQty.value = element.quantity
-
+            eodppQtyR.value = element.required_quantity
+            eodppQtyC.value = element.confirmed_quantity
+            
             og.idOrderDetailsToEdit = productData.id
 
             //show popup
@@ -411,4 +394,4 @@ function addCreateEditEventListeners() {
 }
 
 
-export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, hideColorsInputs, getColorsOptions, updateOrderData, printTableCreateEdit}
+export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions}

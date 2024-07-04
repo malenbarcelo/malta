@@ -177,6 +177,7 @@ ul {
     z-index: 1;
     max-height: 400px;
     overflow-y: auto;
+    text-align: center;
 }
 .liPredictedElements{
     font-size: 12px;

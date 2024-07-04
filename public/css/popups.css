@@ -10,6 +10,17 @@
     background-color: rgba(0,0,0,0.7);
 }
 
+.yesNoPopup2{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
 .yesNoContent{    
     padding: 5px 7px;    
     border-radius: 5px;
@@ -78,7 +89,7 @@
     line-height: 1.8;
 }
 
-#coppContent,#doppContent,#amppContent{
+#coppContent,#doppContent,#amppContent,#dsppContent{
     top: 35%;
     width: 400px;
     left: calc(50vw - 200px);
@@ -106,6 +117,18 @@
     top: 30%;
     width: 400px;
     left: calc(50vw - 210px);
+}
+
+#scppContent{
+    top: 26%;
+    width: 500px;
+    left: calc(700px - 250px);
+}
+
+#chyppContent{
+    top: 26%;
+    width: 300px;
+    left: calc(50vw - 160px);
 }
 
 
@@ -145,7 +168,7 @@
     font-size: 25px;
 }
 
-#coppOkContent, #doppOkContent, #amppOkContent{
+#coppOkContent, #doppOkContent, #amppOkContent,#dsppOkContent{
     top: 40%;
     left: calc(50vw - 150px);
 }
