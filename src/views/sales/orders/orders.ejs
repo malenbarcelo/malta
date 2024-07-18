@@ -2,7 +2,13 @@
 <%- include('../../partials/header') %>
 
 <!------MAIN TITLE------>
-<div class="mainTitle">RESUMEN DE PEDIDOS EN CURSO</div>
+<div class="mainTitle mbm">
+    RESUMEN DE PEDIDOS EN CURSO
+    <div class="divCheckbox1 mbm" id="showCanceledDiv">
+        <input type="checkbox" id="showCanceled">
+        <label>Mostrar cancelados</label><br>
+    </div>    
+</div>
 
 <!------GENERAL ACTIONS------>
 <div class="divGeneralActions" id="DGAorders">
@@ -96,23 +102,19 @@
 <div class="mainFilters">
     <div class="divInputsRow">            
         <div class="divCheckbox1">
-            <input type="checkbox" name ="allChannels" id="allChannels" value="allChannels" checked>
-            <label for="allChannels">Todos</label><br>
-        </div>
-        <div class="divCheckbox1">
-            <input type="checkbox" id="channel_1" value="Dif1" checked>
+            <input type="checkbox" id="channel_1" value="Dif1">
             <label>Difusión1</label><br>
         </div>
         <div class="divCheckbox1">
-            <input type="checkbox" id="channel_2" value="Dif2" checked>
+            <input type="checkbox" id="channel_2" value="Dif2">
             <label>Difusión2</label><br>
         </div>
         <div class="divCheckbox1">
-            <input type="checkbox" id="channel_3" value="WebAyR" checked>
+            <input type="checkbox" id="channel_3" value="WebAyR">
             <label>Web AyR</label><br>
         </div>
         <div class="divCheckbox1">
-            <input type="checkbox" id="channel_4" value="WebT" checked>
+            <input type="checkbox" id="channel_4" value="WebT">
             <label>Web T</label><br>
         </div>
     </div>
@@ -125,8 +127,9 @@
 
         <div class="tableInfo" id="eoppInfo">Editar pedido</div>
         <div class="tableInfo" id="rpppInfo">Registrar pago</div>
+        <div class="tableInfo" id="pvppInfo">Verificar pago</div>
         <div class="tableInfo" id="doppInfo">Registrar entrega</div>
-        <div class="tableInfo" id="amppInfo">Asignar / Cambiar encargado</div>
+        <div class="tableInfo" id="amppInfo">Asignar encargado</div>
         <div class="tableInfo" id="coppInfo">Cancelar orden</div>
 
         <table>
@@ -146,9 +149,10 @@
                     <th class="theadCss wM thTall">Encargado</th>                    
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="eoppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card tableIcon" id="rpppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-square-check tableIcon" id="pvppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box tableIcon" id="doppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-user-pen tableIcon" id="amppIcon"></i></th>
-                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-solid fa-ban tableIcon" id="coppIcon"></i></th>
+                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-circle-xmark tableIcon" id="coppIcon"></i></th>
                 </tr>
             </thead>
             <tbody id="bodyOrders"></tbody>

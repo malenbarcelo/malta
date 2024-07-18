@@ -43,6 +43,13 @@
     left: -100px;
 }
 
+/*--------------------orders.ejs--------------------*/
+#showCanceledDiv{
+    position: absolute;
+    top: 70%;
+    font-weight: lighter;
+}
+
 /*--------------------ordersCreateEdit.ejs--------------------*/
 #ceoppAddProduct{
     font-size: 15px;

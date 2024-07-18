@@ -16,17 +16,22 @@
 
 <!--------GENERAL FILTERS-------->
 <div class="mainFilters">
-    <div class="divInputsRow">            
+    <div class="divInputsRow">
         <div class="divInput">
-            <label class="label1" id="filterProductLabel">Producto</label>
-            <input type="text" class="input1 inputXXXL" id="filterProduct">
-            <ul class="predictedElements" id="ulPredictedProducts"></ul>
+            <label class="label1" id="filterOrderLabel">Pedido</label>
+            <input type="text" class="input1 inputS" id="filterOrder">
+            <ul class="predictedElements" id="ulPredictedOrders"></ul>
         </div>
         <div class="divInput">
             <label class="label1" id="filterCustomerLabel">Cliente</label>
             <input type="text" class="input1 inputXL" id="filterCustomer">
             <ul class="predictedElements" id="ulPredictedCustomers"></ul>
         </div>
+        <div class="divInput">
+            <label class="label1" id="filterProductLabel">Producto</label>
+            <input type="text" class="input1 inputXXXL" id="filterProduct">
+            <ul class="predictedElements" id="ulPredictedProducts"></ul>
+        </div>        
         <div class="divInput">
             <label class="label1">Estado</label>
             <select id="filterOrderStatus" class="input1 inputM">
@@ -37,7 +42,7 @@
         </div>
         <div class="divInput">
             <label class="label1">Encargado</label>
-            <select id="filterOrderManager" class="input1 inputXL">
+            <select id="filterOrderManager" class="input1 sxl">
                 <option value="default"></option>
                 <% ordersManagers.forEach(manager => { %>
                     <option value="<%= manager.id %>">

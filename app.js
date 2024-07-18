@@ -52,7 +52,7 @@ app.use(userLoggedMiddleware)
 app.use(cors())
 
 //get ninox data
-cron.schedule('*/15 * * * *', cronController.getNinoxData)
+//cron.schedule('*/15 * * * *', cronController.getNinoxData)
 //cron.schedule('* * * * *', cronController.getNinoxData)
 
 //Declare and listen port

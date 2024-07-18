@@ -25,16 +25,26 @@ function inputsValidation(inputs) {
         const error = document.getElementById(input.id + 'Error')
         if (input.value == '') {
             errors +=1            
-            label.classList.add('errorColor')
+            label.classList.add('invalidLabel')
             error.style.display = 'block'
-            input.classList.add('isInvalid')
+            input.classList.add('invalidInput')
         }else{
-            label.classList.remove('errorColor')
+            label.classList.remove('invalidLabel')
             error.style.display = 'none'
-            input.classList.remove('isInvalid')
+            input.classList.remove('invalidInput')
         }
     })
     return errors
+}
+
+function isValid(inputs) {
+    inputs.forEach(input => {
+        const label = document.getElementById(input.id + 'Label')
+        const error = document.getElementById(input.id + 'Error')
+        input.classList.remove('invalidInput')
+        label.classList.remove('invalidLabel')
+        error.style.display = 'none'
+    })    
 }
 
 function dateToString(date) {
@@ -192,7 +202,14 @@ function showTableInfo(tableIcons,top,left) {
             info.style.display = 'none'
         })
     })
-    
 }
 
-export {clearInputs,inputsValidation,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo}
+function clearFilters(filters) {
+    filters.forEach(filter => {
+        filter.value = ''
+    })
+}
+
+
+
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters}

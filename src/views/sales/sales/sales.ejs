@@ -23,7 +23,7 @@
             <div class="divInput">
                 <label class="label1" id="filterChannelLabel">Canal</label>
                 <select class="input1 selectS" id="filterSalesChannels">
-                    <option value="default"></option>
+                    <option value=""></option>
                     <% salesChannels.forEach(channel => { %>
                         <option value="<%= channel.id %>">
                             <%= channel.sales_channel %>
@@ -34,7 +34,7 @@
             <div class="divInput">
                 <label class="label1" id="filterChannelLabel">Mes</label>
                 <select class="input1 inputL" id="filterMonth">
-                    <option value="default"></option>
+                    <option value=""></option>
                     <% months.forEach(month => { %>
                         <option value="<%= month.id %>">
                             <%= month.month %>

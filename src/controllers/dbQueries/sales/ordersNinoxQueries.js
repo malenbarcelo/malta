@@ -39,13 +39,20 @@ const ninoxOrdersQueries = {
         
         return orderId
     },
-    lastOrder: async(orderNumber) => {
-        const lastOrder = await Sales_orders_ninox.findOne({
-            order:[['id','DESC']],
-            raw:true
+    monthOrders: async(month,year) => {
+        const monthOrders = await Sales_orders_ninox.findAll({
+            where: {
+                date: {
+                    [sequelize.Op.and]: [
+                        sequelize.where(sequelize.fn('MONTH', sequelize.col('date')), month),
+                        sequelize.where(sequelize.fn('YEAR', sequelize.col('date')), year)
+                    ]
+                }
+            },
+            order: [['date', 'DESC'], ['id', 'DESC']],
+            raw: true
         })
-        
-        return lastOrder
+        return monthOrders
     },
     saveOrders: async(data) => {
         for (let i = 0; i < data.length; i++) {

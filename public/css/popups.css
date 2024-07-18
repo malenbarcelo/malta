@@ -89,7 +89,7 @@
     line-height: 1.8;
 }
 
-#coppContent,#doppContent,#amppContent,#dsppContent{
+#coppContent,#roppContent,#doppContent,#amppContent,#dsppContent{
     top: 35%;
     width: 400px;
     left: calc(50vw - 200px);
@@ -168,7 +168,7 @@
     font-size: 25px;
 }
 
-#coppOkContent, #doppOkContent, #amppOkContent,#dsppOkContent{
+#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent{
     top: 40%;
     left: calc(50vw - 150px);
 }

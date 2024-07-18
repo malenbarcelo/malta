@@ -19,6 +19,8 @@ const paymentsQueries = {
         return orderPayments
     },
     registerOrderPayment: async(idOrder,idCustomer,orderPayment,idPaymentMethod) => {
+
+        console.log('metodo de pago' + idPaymentMethod)
         
         const date = new Date()
 
@@ -27,7 +29,7 @@ const paymentsQueries = {
             id_orders:idOrder,
             id_customers:idCustomer,
             amount:orderPayment,
-            id_payment_methods:idPaymentMethod
+            id_payments_methods:idPaymentMethod
         })
     },
     registerAccountPayment: async(idCustomer,accountPayment,idPaymentMethod) => {
@@ -39,7 +41,7 @@ const paymentsQueries = {
             id_customers:idCustomer,
             id_orders:null,
             amount:accountPayment,
-            id_payment_methods:idPaymentMethod
+            id_payments_methods:idPaymentMethod
         })
     },
     positiveBalance: async(idCustomer) => {

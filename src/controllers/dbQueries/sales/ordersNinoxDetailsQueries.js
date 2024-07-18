@@ -6,11 +6,11 @@ const Sales_orders_ninox_details = db.local.Sales_orders_ninox_details
 
 const ordersNinoxDetailsQueries = {
 
-    saveOrderDetails: async(orderDetails) => {
+    saveOrderDetails: async(orderDetails,orderId) => {
         for (let i = 0; i < orderDetails.length; i++) {
             //create row
             await Sales_orders_ninox_details.create({
-                id_orders:orderDetails[i].id_orders,
+                id_orders:orderId,
                 id_products:orderDetails[i].id_products,
                 description:orderDetails[i].description,
                 color:orderDetails[i].color,
@@ -27,7 +27,7 @@ const ordersNinoxDetailsQueries = {
         
         await Sales_orders_ninox_details.update(
             { enabled: 0 },
-            { where: { id: orderId } }
+            { where: { id_orders: orderId } }
         )  
     },
 }       

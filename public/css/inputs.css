@@ -110,7 +110,7 @@ accent-color: black
 
 .inputXL{
     width: 200px;
-    padding: 8px 0px 4px 0px;
+    padding: 9px 0px 4px 0px;
 }
 
 
@@ -149,12 +149,12 @@ accent-color: black
 
 .inputXXL{
     width: 300px;
-    padding: 8px 0px;
+    padding: 9px 0px;
 }
 
 .inputXXXL{
     width: 360px;
-    padding: 7px 0px 4px 0px;
+    padding: 9px 0px 4px 0px;
 }
 
 /*----------DIV CHECKBOX----------*/
@@ -162,6 +162,7 @@ accent-color: black
     font-size: 13px;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .divCheckbox2{

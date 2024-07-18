@@ -55,16 +55,16 @@ function addOrdersDetailsEventListeners(dataToPrint) {
         //delete line        
         deleteLine.addEventListener('click',async()=>{
 
-            odg.orderToEdit = odg.ordersDetails.filter(o => o.id_orders == element.id_orders)
-            odg.idLineToDelete = element.id
+            odg.orderToEditLines = odg.ordersDetails.filter(o => o.id_orders == element.id_orders)
+            odg.lineToDelete = element
             dlppQuestion.innerHTML = '¿Confirma que desea eliminar el item <b>' + element.description + '</b> de la orden <b>' + element.orders_details_orders.order_number + '</b> del cliente <b>' + element.orders_details_orders.orders_customers.customer_name + '</b>'
 
-            if (odg.orderToEdit.length == 1) {
-                dlppAlert.classList.remove('notVisible')                
-            }else{
-                dlppAlert.classList.add('notVisible')
-            }
-            dlpp.style.display = 'block'
+            // if (odg.orderToEditLines.length == 1) {
+            //     dlppAlert.classList.remove('notVisible')                
+            // }else{
+            //     dlppAlert.classList.add('notVisible')
+            // }
+            // dlpp.style.display = 'block'
         })
 
     })

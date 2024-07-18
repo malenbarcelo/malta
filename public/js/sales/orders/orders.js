@@ -2,7 +2,7 @@ import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { getElements } from "./ordersGetElements.js"
 import { printTableOrders, filterOrders, updateOrderData, printColorsOptions, printTableCreateEdit,changeSizesOptions } from "./ordersFunctions.js"
-import { clearInputs, inputsValidation, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter } from "../../generalFunctions.js"
+import { clearInputs, inputsValidation, isValid, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -12,14 +12,21 @@ window.addEventListener('load',async()=>{
     //get data and complete globals
     og.customers = await (await fetch(dominio + 'apis/data/customers')).json()
     og.products = await (await fetch(dominio + 'apis/data/products')).json()
-    og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+    og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
     og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     og.ordersPayments = await (await fetch(dominio + 'apis/sales/in-progress-orders/payments')).json()
     og.ordersFiltered = og.orders
-    og.checkedElements = og.checks1
 
     //print table
     printTableOrders(og.orders)
+
+    //showCanceled
+    showCanceled.addEventListener("click", async() => {
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        og.ordersFiltered = og.orders
+        filterOrders()
+        printTableOrders(og.orders)
+    })
 
     //filters event listeners
     og.filters1.forEach(filter => {
@@ -46,38 +53,16 @@ window.addEventListener('load',async()=>{
         filterOrderManager.value = 'default'
         filterOrderStatus.value = 'default'
         filterPaymentStatus.value = 'default'
-        allChannels.checked = true
         og.checks1.forEach(element => {
-            element.checked = true
+            element.checked = false
         })
+        og.checkedElements = []
         printTableOrders(og.ordersFiltered)
-    })
-
-    //view allChannels event lister
-    allChannels.addEventListener("click", async() => {
-        if (allChannels.checked) {
-            og.checkedElements = og.checks1
-            filterOrders()
-            printTableOrders(og.ordersFiltered)
-        }else{
-            og.checkedElements = []
-            filterOrders()
-            printTableOrders(og.ordersFiltered)
-        }
-        og.checks1.forEach(element => {
-            if (allChannels.checked == true) {
-                element.checked = true
-            }else{
-                element.checked = false
-            }
-        })
-        selectChannelError.style.display = 'none'
     })
 
     //filter by channel
     og.checks1.forEach(element => {
         element.addEventListener("click", async() => {
-            allChannels.checked = false
             if (element.checked == true) {
                 og.checkedElements.push(element)
                 filterOrders()
@@ -87,14 +72,8 @@ window.addEventListener('load',async()=>{
                 filterOrders()
                 printTableOrders(og.ordersFiltered)
             }
-            if (og.checkedElements.length == og.checks1.length) {
-                allChannels.checked = true
-            }else{
-                allChannels.checked = false
-            }
             selectChannelError.style.display = 'none'
         })
-
     })
 
     //close popups event listener
@@ -126,7 +105,7 @@ window.addEventListener('load',async()=>{
         const info = document.getElementById(element.id.replace('Icon','Info'))
         element.addEventListener("mouseover", async(e) => {
             const mouseX = e.clientX
-            info.style.left = (mouseX - 100) + 'px'
+            info.style.left = (mouseX - 30) + 'px'
             info.style.display = 'block'
         })
         element.addEventListener("mouseout", async(e) => {
@@ -202,14 +181,13 @@ window.addEventListener('load',async()=>{
         const errors = inputsValidation(og.rpppValidate)
 
         if (errors == 0) {
+
             const data = {
                 orderToPay:og.orderToPay,
                 amountPaid:og.orderToPayPayment,
                 idPaymentMethod:rpppPaymentMethod.value,
                 newBalance:og.orderToPayNewBalance
             }
-
-            console.log(data)
 
             //register payment
             if (data.amountPaid.payment > 0) {
@@ -231,7 +209,7 @@ window.addEventListener('load',async()=>{
 
             rppp.style.display = 'none'
 
-            og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+            og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
             og.ordersPayments = await (await fetch(dominio + 'apis/sales/in-progress-orders/payments')).json()
             filterOrders()
             printTableOrders(og.ordersFiltered)
@@ -239,6 +217,7 @@ window.addEventListener('load',async()=>{
             showOkPopup(rpppOk)
 
         }
+        
     })
 
     //accept deliver order
@@ -254,7 +233,7 @@ window.addEventListener('load',async()=>{
 
         dopp.style.display = 'none'
 
-        og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
         filterOrders()
         printTableOrders(og.ordersFiltered)
 
@@ -278,7 +257,7 @@ window.addEventListener('load',async()=>{
 
         ampp.style.display = 'none'
 
-        og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
         filterOrders()
         printTableOrders(og.ordersFiltered)
 
@@ -299,11 +278,32 @@ window.addEventListener('load',async()=>{
 
         copp.style.display = 'none'
 
-        og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
         filterOrders()
         printTableOrders(og.ordersFiltered)
 
         showOkPopup(coppOk)
+
+    })
+
+    //accept restore order
+    roppAccept.addEventListener("click", async() => {
+
+        const data = {idOrder:og.idOrderToRestore}
+
+        await fetch(dominio + 'apis/sales/restore-order',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        ropp.style.display = 'none'
+
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        filterOrders()
+        printTableOrders(og.ordersFiltered)
+
+        showOkPopup(roppOk)
 
     })
 
@@ -529,7 +529,7 @@ window.addEventListener('load',async()=>{
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         })
-
+        
         window.location.href = '/sales/in-progress-orders'
 
     })

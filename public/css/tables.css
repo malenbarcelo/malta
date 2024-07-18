@@ -85,7 +85,8 @@ border-top-right-radius: 15px;
     text-align: center;
 }
 
-#eoppInfo,#rpppInfo,#doppInfo,#coppInfo,#amppInfo{
+#eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo{
+    width: 60px;
     top:38.5%
 }
 

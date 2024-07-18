@@ -22,6 +22,36 @@ function printColorsOptions(dataToPrint) {
 
     })
 
+    addColorsOptionsEventListeners(dataToPrint)
+}
+
+function addColorsOptionsEventListeners(dataToPrint) {
+
+    let counter = 0
+
+    dataToPrint.forEach(element => {
+
+        const required = document.getElementById('required_' + counter)
+        const confirmed = document.getElementById('confirmed_' + counter)
+        const check = document.getElementById('check_' + counter)
+
+        //required
+        required.addEventListener('change',async()=>{
+            if (required.value != '') {
+                check.checked = true
+            }
+        })
+
+        //confirmed
+        confirmed.addEventListener('change',async()=>{
+            if (confirmed.value != '') {
+                check.checked = true
+            }
+        })
+
+        counter += 1
+
+    })
 
 }
 
@@ -36,30 +66,39 @@ async function printTableOrders(dataToPrint) {
 
         const date = dateToString(element.date)
         const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
-        const paymentClass = (element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'        
-        const deliverClass = element.id_orders_status == 2 ? 'allowedIcon' : 'notAllowedIcon'
+        const paymentClass = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'
+        const paymentVStatus = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? '' : 'disabled'
+        const paymentVchequed = element.id_payments_status == 7 ? 'checked' : ''
+        const deliverClass = (element.enabled == 1 && element.id_orders_status == 2) ? 'allowedIcon' : 'notAllowedIcon'
         const cancelClass = (element.id_orders_status == 1 || element.id_orders_status == 2) && (element.id_payments_status == 1 || element.id_payments_status == 2 || element.id_payments_status == 3) ? 'allowedIcon' : 'notAllowedIcon'
+        const status = element.enabled == 0 ? 'Cancelado' : element.orders_orders_status.order_status
+        const color = element.enabled == 0 ? 'errorColor' : ''
+        const cancelIcon = element.enabled == 1 ? 'fa-circle-xmark' : 'fa-circle-check'
+        const cancelId = element.enabled == 1 ? 'cancel_' : 'restore_'
 
         //print table
-        const line1 = '<th class="' + rowClass + '">' + element.order_number + '</th>'
-        const line2 = '<th class="' + rowClass + '">' + date + '</th>'
-        const line3 = '<th class="' + rowClass + '">' + element.orders_sales_channels.sales_channel + '</th>'
-        const line4 = '<th class="' + rowClass + '">' + element.orders_customers.customer_name + '</th>'
-        const line5 = '<th class="' + rowClass + '">' + og.formatter.format(element.subtotal) + '</th>'
-        const line6 = '<th class="' + rowClass + '">' + element.discount * 100 + '%' + '</th>'
-        const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.total) + '</th>'
-        const line8 = '<th class="' + rowClass + '">' + og.formatter.format(element.amountPaid) + '</th>'
-        const line9 = '<th class="' + rowClass + '">' + og.formatter.format(element.balance) + '</th>'
-        const line10 = '<th class="' + rowClass + '">' + element.orders_orders_status.order_status + '</th>'
-        const line11 = '<th class="' + rowClass + '">' + element.orders_payments_status.payment_status + '</th>'
-        const line12 = '<th class="' + rowClass + '">' + element.orders_orders_managers.order_manager_name + '</th>'
-        const line13 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
-        const line14 = '<th class="' + rowClass + '"><i class="fa-regular fa-credit-card ' + paymentClass + '" id="' + (paymentClass == 'allowedIcon' ? ('payment_' + element.id) : null) +'"></i></th>'
-        const line15 = '<th class="' + rowClass + '"><i class="fa-solid fa-truck-ramp-box ' + deliverClass + '" id="' + (deliverClass == 'allowedIcon' ? ('deliver_' + element.id) : null) +'"></i></th>'
-        const line16 = '<th class="' + rowClass + '"><i class="fa-solid fa-user-pen allowedIcon" id="assign_' + element.id + '"></i></th>'
-        const line17 = '<th class="' + rowClass + '"><i class="fa-solid fa-ban ' + cancelClass + '" id="' + (cancelClass == 'allowedIcon' ? ('cancel_' + element.id) : null) +'"></i></th>'
+        const line1 = '<th class="' + rowClass + ' ' + color + '">' + element.order_number + '</th>'
+        const line2 = '<th class="' + rowClass + ' ' + color +  '">' + date + '</th>'
+        const line3 = '<th class="' + rowClass + ' ' + color +  '">' + element.orders_sales_channels.sales_channel + '</th>'
+        const line4 = '<th class="' + rowClass + ' ' + color +  '">' + element.orders_customers.customer_name + '</th>'
+        const line5 = '<th class="' + rowClass + ' ' + color +  '">' + og.formatter.format(element.subtotal) + '</th>'
+        const line6 = '<th class="' + rowClass + ' ' + color + '">' + element.discount * 100 + '%' + '</th>'
+        const line7 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.total) + '</th>'
+        const line8 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.amountPaid) + '</th>'
+        const line9 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.balance) + '</th>'
+        const line10 = '<th class="' + rowClass + ' ' + color + '">' + status + '</th>'
+        const line11 = '<th class="' + rowClass + ' ' + color + '">' + element.orders_payments_status.payment_status + '</th>'
+        const line12 = '<th class="' + rowClass + ' ' + color + '">' + element.orders_orders_managers.order_manager_name + '</th>'
+        const line13 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
+        const line14 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular fa-credit-card ' + paymentClass + '" id="' + (paymentClass == 'allowedIcon' ? ('payment_' + element.id) : null) +'"></i></th>'
 
-        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + line16 + line17 + '</tr>'
+        const line15 = '<th class="' + rowClass + ' ' + color + '"><input type="checkbox" id="paymentV_'+ element.id +'"' + ' ' + paymentVchequed + ' ' + paymentVStatus + '></th>'
+
+        const line16 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-solid fa-truck-ramp-box ' + deliverClass + '" id="' + (deliverClass == 'allowedIcon' ? ('deliver_' + element.id) : null) +'"></i></th>'
+        const line17 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-solid fa-user-pen allowedIcon" id="assign_' + element.id + '"></i></th>'
+        const line18 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular ' + cancelIcon + ' ' + cancelClass + '" id="' + (cancelClass == 'allowedIcon' ? (cancelId + element.id) : null) +'"></i></th>'
+
+        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + line16 + line17 + line18 + '</tr>'
 
         counter += 1
 
@@ -75,9 +114,11 @@ function addOrdersEventListeners(dataToPrint) {
     dataToPrint.forEach(element => {
 
         const payment = document.getElementById('payment_' + element.id)
+        const paymentV = document.getElementById('paymentV_' + element.id)
         const deliverOrder = document.getElementById('deliver_' + element.id)
         const assignOrder = document.getElementById('assign_' + element.id)
         const cancelOrder = document.getElementById('cancel_' + element.id)
+        const restoreOrder = document.getElementById('restore_' + element.id)
         const customer = element.orders_customers.customer_name
 
         //payment
@@ -112,6 +153,28 @@ function addOrdersEventListeners(dataToPrint) {
             })
         }
 
+        //payment verification
+        if (paymentV) {
+            paymentV.addEventListener('click',async()=>{
+                const data = {
+                    orderId:element.id
+                }
+    
+                //register payment
+                await fetch(dominio + 'apis/sales/set-payment-verification',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+
+                og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+                og.ordersPayments = await (await fetch(dominio + 'apis/sales/in-progress-orders/payments')).json()
+                filterOrders()
+                printTableOrders(og.ordersFiltered)
+                })
+
+        }
+
         //deliver order
         if (deliverOrder) {
             deliverOrder.addEventListener('click',async()=>{
@@ -136,6 +199,15 @@ function addOrdersEventListeners(dataToPrint) {
                 og.idOrderToCancel = element.id
                 coppQuestion.innerHTML = '¿Confirma que desea cancelar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
                 copp.style.display = 'block'
+            })
+        }
+
+        //restore order
+        if (restoreOrder) {
+            restoreOrder.addEventListener('click',async()=>{
+                og.idOrderToRestore = element.id
+                roppQuestion.innerHTML = '¿Confirma que desea reflotar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
+                ropp.style.display = 'block'
             })
         }
 
@@ -165,7 +237,7 @@ function filterOrders() {
 
     //sales channels
     if (og.checkedElements.length == 0) {
-        og.ordersFiltered = []
+        og.ordersFiltered = og.ordersFiltered
     }else{
         const selectedChannels = og.checkedElements.map(input => input.id)
         const channels = []
@@ -175,8 +247,7 @@ function filterOrders() {
             channels.push(channelId)
         })
 
-        //og.ordersFiltered = og.ordersFiltered.filter(o => channels.some(channel => o.id_sales_channels.includes(channel)))
-        og.ordersFiltered  = og.ordersFiltered .filter(o => channels.includes(o.id_sales_channels))
+        og.ordersFiltered  = og.ordersFiltered.filter(o => channels.includes(o.id_sales_channels))
     }
 
 }

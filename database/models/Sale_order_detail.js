@@ -44,11 +44,24 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.DECIMAL,
          allowNull: false
        },
+       enabled:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      observations:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+
     }
+    
     const config = {
-    tableName : 'sales_orders_details',
-    timestamps : false
-    }
+      tableName : 'sales_orders_details',
+      timestamps : true,
+      updatedAt: 'update_at',
+      createdAt: 'create_at'
+
+   }
 
     const Sale_order_detail = sequelize.define(alias, cols, config)
 

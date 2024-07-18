@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      id_payments_methods:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      }
     }
     const config = {
     tableName : 'sales_payments',

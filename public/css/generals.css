@@ -32,6 +32,15 @@ ul {
     border:rgb(221, 7, 7) solid 2px !important
 }
 
+.invalidInput{
+    border: var(--errorColor) solid 2px !important;
+}
+
+.invalidLabel{
+    color: var(--errorColor);
+    font-weight: bold;
+}
+
 .divError{
     color:rgb(206, 10, 10);
     text-align: center;

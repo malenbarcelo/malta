@@ -24,10 +24,30 @@ const ordersDetailsQueries = {
                     ]
                 }
             ],
+            where:{enabled:1},
             order:[['id_orders','ASC']],
             nest:true
         })
         return ordersDetails
+    },
+    cancelOrderDetail: async(orderId,observations) => {        
+        await Sales_orders_details.update(
+            { 
+                enabled: 0,
+                observations:observations 
+            },
+            { where: { id: orderId } }
+        )
+    },
+    orderDetails: async(orderId) => {
+        const orderDetails = await Sales_orders_details.findAll({
+            where:{
+                enabled:1,
+                /*id_orders:orderId*/
+            },
+            raw:true
+        })
+        return orderDetails
     },
 }       
 

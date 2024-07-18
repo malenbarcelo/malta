@@ -49,8 +49,10 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const { localDB, remoteDB } = require('../config/sequelizeConfig');
+const config = require('../config/config')
 const basename = path.basename(__filename);
 const db = {};
+config.timezone = '-03:00';
 
 // Función para inicializar todos los modelos con una instancia de Sequelize
 const initializeModels = (sequelize, dbObject) => {

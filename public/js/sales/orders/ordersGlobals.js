@@ -17,6 +17,7 @@ let og = {
     ordersFiltered:[],
     checkedElements:[],
     idOrderToCancel:0,
+    idOrderToRestore:0,
     idOrderToDeliver:0,
     idOrderToAssign:0,
     idOrderDetailsToEdit:0,

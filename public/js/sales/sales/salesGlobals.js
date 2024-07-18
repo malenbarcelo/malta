@@ -6,6 +6,7 @@ let sg = {
     }),
     customers:[],
     salesChannels:[],
+    filters:[],
     sales:[],
     salesFiltered:[],
     year:0,

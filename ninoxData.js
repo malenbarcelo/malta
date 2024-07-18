@@ -1,43 +1,59 @@
 const ordersNinoxQueries = require('./src/controllers/dbQueries/sales/ordersNinoxQueries')
-const { datesToGet,getNinoxData,getOrdersData } = require('./src/controllers/functions/ninoxCronFunctions')
-//const data = require('./src/controllers/apisControllers/apisSalesData')
+const ordersNinoxDetailsQueries = require('./src/controllers/dbQueries/sales/ordersNinoxDetailsQueries')
+const paymentsNinoxQueries = require('./src/controllers/dbQueries/sales/paymentsNinoxQueries')
+const { datesToGet,getOrdersData,getNinoxMonthData} = require('./src/controllers/functions/ninoxCronFunctions')
+//const ninoxMonthData = require('./src/controllers/apisControllers/apisSalesData')
 
-async function getDates() {
+async function getNinoxData() {
     try {
 
+        const date = new Date()
+        const options = {
+            timeZone: 'America/Argentina/Buenos_Aires',
+            hour12: false,
+        };
+
+        const localDateTime = date.toLocaleString('es-AR', options)
+        const localDate = localDateTime.split(',')[0]
+        const month = parseInt(localDate.split('/')[1])
+        const year =  parseInt(localDate.split('/')[2])
+
+        // const month = 7
+        // const year = 2024
+        
+        //get data from ninox
+        const ninoxMonthData = await getNinoxMonthData(month,year)
+
         //get last order data from orders_ninox
-        const lastOrder = await ordersNinoxQueries.lastOrder()
+        const monthOrders = await ordersNinoxQueries.monthOrders(month, year)
+        const monthOrdersNumbers = monthOrders.map(order => order.order_number)
 
-        //get dates to add
-        const {datesToGetArray,lastDateString} = await datesToGet(lastOrder)
-
-        //get data from NINOX
-        const ninoxData = []
-
-        for (let i = 0; i < datesToGetArray.length; i++) {
-            const data = await getNinoxData(datesToGetArray[i])
-            if (datesToGetArray[i] == lastDateString) {
-                const filterData = data.filter( d => parseInt(d.numeroFull.split("-")[1]) != lastOrder.order_number)
-                filterData.forEach(element => {
-                    ninoxData.push(element)
-                })        
-            }else{
-                data.forEach(element => {
-                    ninoxData.push(element
-                    )
-                })
-            }
-        }
+        //filter ninoxData
+        const dataToAdd = monthOrdersNumbers.length == 0 ? ninoxMonthData : ninoxMonthData.filter(d => !monthOrdersNumbers.includes(parseInt(d.numeroFull.split("-")[1])));
 
         //configure data to add to database
-        const ordersData = await getOrdersData(ninoxData)
+        const ordersData = await getOrdersData(dataToAdd)
 
         //save data in orders_ninox
         await ordersNinoxQueries.saveOrders(ordersData)
+
+        //save payments in payments_ninox
+        for (let i = 0; i < ordersData.length; i++) {                
+            //get order id
+            const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
+            await paymentsNinoxQueries.registerOrderPayment(ordersData[i],orderId)
+        }
+
+        //save orders_details
+        for (let i = 0; i < ordersData.length; i++) {                
+            //get order id
+            const orderId = await ordersNinoxQueries.getOrder(ordersData[i].order_number)
+            await ordersNinoxDetailsQueries.saveOrderDetails(ordersData[i].orderDetails,orderId)
+        }
 
     } catch (error) {
         console.error('Error al obtener las fechas:', error)
     }
 }
 
-getDates()
+getNinoxData()

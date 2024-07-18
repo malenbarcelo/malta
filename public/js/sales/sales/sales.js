@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import sg from "./salesGlobals.js"
 import { printTableSales,filterSales } from "./salesFunctions.js"
-import { closePopupsEventListeners,acceptWithEnter,predictElements,selectFocusedElement,showTableInfo,showOkPopup } from "../../generalFunctions.js"
+import { closePopupsEventListeners,acceptWithEnter,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -15,10 +15,11 @@ window.addEventListener('load',async()=>{
     sg.salesFiltered = sg.sales
     sg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
     sg.salesChannels = await (await fetch(dominio + 'apis/data/sales-channels')).json()
+    sg.filters = [filterOrder,filterCustomer,filterSalesChannels,filterMonth,filterDate]
 
     //print table
     printTableSales(sg.sales)
-
+    
     //change year
     changeYearIcon.addEventListener("click", async(e) => {
         chyppYear.value = sg.year
@@ -33,6 +34,7 @@ window.addEventListener('load',async()=>{
         sg.sales = await (await fetch(dominio + 'apis/sales/consolidated-sales/' + year)).json()
         sg.salesFiltered = sg.sales
         salesLoader.style.display = 'none'
+        clearFilters(sg.filters)
         printTableSales(sg.sales)
         salesTitle.innerText = 'CONSOLIDADO DE VENTAS ' + year
         chypp.style.display = 'none'
@@ -59,8 +61,7 @@ window.addEventListener('load',async()=>{
     })
 
     //filters event listeners
-    const filters = [filterOrder,filterCustomer,filterSalesChannels,filterMonth,filterDate]
-    filters.forEach(filter => {
+    sg.filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             filterSales()
             printTableSales(sg.salesFiltered)
@@ -69,13 +70,18 @@ window.addEventListener('load',async()=>{
 
     //unfilter event listener
     unfilterSales.addEventListener("click", async() => {
-       sg.salesFiltered = sg.sales
-        filterOrder.value = ''
-        filterCustomer.value = ''
-        filterSalesChannels.value = 'default'
-        filterMonth.value = 'default'
-        filterDate.value = ''
-        printTableSales(sg.salesFiltered)
+        salesLoader.style.display = 'block'
+
+        //Let the browser render the change in the DOM before continuing
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                sg.salesFiltered = sg.sales
+                clearFilters(sg.filters)
+                printTableSales(sg.salesFiltered)
+                salesLoader.style.display = 'none'
+            }, 0);
+        })
+
     })
 
     //table info events listeners
@@ -88,6 +94,8 @@ window.addEventListener('load',async()=>{
 
     //accept delete sale
     dsppAccept.addEventListener("click", async() => {
+
+        salesLoader.style.display = 'block'
 
         const data = {idSale:sg.idSaleToDelete}
 
@@ -103,11 +111,10 @@ window.addEventListener('load',async()=>{
         filterSales()
         printTableSales(sg.sales)
 
+        salesLoader.style.display = 'none'
+
         showOkPopup(dsppOk)
 
     })
-
-    
-    
 
 })

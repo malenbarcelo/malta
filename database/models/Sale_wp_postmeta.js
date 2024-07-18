@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const alias = "WP_postmeta_copied"
+    const alias = "Sales_wp_postmeta"
     const cols = {
       meta_id:{
         type : DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement : true,
         allowNull: false
       },
       post_id:{
@@ -19,20 +20,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      month:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      year:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     }
     const config = {
-    tableName : 'wp_postmeta_copied',
+    tableName : 'sales_wp_postmeta',
     timestamps : false
     }
 
-    const WP_postmeta_copied = sequelize.define(alias, cols, config)
-
-    WP_postmeta_copied.associate = (models) => {
-      WP_postmeta_copied.belongsTo(models.WP_posts_copied,{
-         as:'postmeta_posts',
-         foreignKey: 'post_id'
-      })
-    }
+    const Sale_wp_postmeta = sequelize.define(alias, cols, config)
     
-    return WP_postmeta_copied
+    return Sale_wp_postmeta
  }

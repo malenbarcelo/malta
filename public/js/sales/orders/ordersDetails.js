@@ -101,14 +101,25 @@ window.addEventListener('load',async()=>{
     //dlpp accept    
     dlppAccept.addEventListener("click", async() => {
 
-        const orderToEditData = odg.orders.filter( o => o.id == odg.orderToEdit[0].id_orders)[0]
-        const orderToEditAmount = orderToEditData.total
+        const data = {
+            lineToDelete:odg.lineToDelete
+        }
+
+        await fetch(dominio + 'apis/sales/cancel-order-detail',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+        odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        odg.ordersDetailsFiltered = odg.ordersDetails
         
-        const newDetails = odg.orderToEdit.filter(o => o.id != odg.idLineToDelete)
-        
-        const newAmount = newDetails.length == 0 ? 0 : newDetails.reduce((acum, line) => acum + parseFloat(line.extended_price,2), 0)
-        
-        console.log(newAmount)
+        //print table
+        printTableOrdersDetails(odg.ordersDetails)
+
+        dlpp.style.display = 'none'
+
     })
 
 

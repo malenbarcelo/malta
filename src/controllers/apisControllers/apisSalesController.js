@@ -7,12 +7,41 @@ const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQu
 const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
 const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
+const moment = require('moment-timezone');
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
     try{
 
       const orders = await ordersQueries.inProgressOrders()
+      const plainOrders = orders.map(order => order.get({ plain: true }))
+
+      plainOrders.forEach(order => {
+        let payments = 0
+        let accountMovements = 0
+        order.orders_payments.forEach(payment => {
+          payments += parseFloat(payment.amount,2)
+        })
+        order.orders_accounts_movements.forEach(movement => {
+          accountMovements += parseFloat(movement.amount,2)
+        })
+        order.payments = payments
+        order.accountMovements = accountMovements
+        order.amountPaid = payments + accountMovements
+        order.balance = order.total - (payments + accountMovements)
+      })
+
+      res.status(200).json(plainOrders)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  inProgressOrdersShowCanceled: async(req,res) =>{
+    try{
+
+      const orders = await ordersQueries.inProgressOrdersShowCanceled()
       const plainOrders = orders.map(order => order.get({ plain: true }))
 
       plainOrders.forEach(order => {
@@ -64,6 +93,8 @@ const apisSalesController = {
   saveOrder: async(req,res) =>{
     try{
 
+      console.log('hola')
+
       const data = req.body
       var orderId = 0
 
@@ -113,7 +144,9 @@ const apisSalesController = {
       const idCustomer = req.body.orderToPay.id_customers
       const payment = req.body.amountPaid.payment
       const newBalance = req.body.newBalance
-      const idPaymentMethod = req.body.idPaymentMethod
+      const idPaymentMethod = parseInt(req.body.idPaymentMethod)
+
+      console.log(req.body)
 
       const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
       const accountPayment = -newBalance
@@ -200,14 +233,62 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  cancelOrderDetail: async(req,res) =>{
+    try{
+
+      const lineDetails = req.body.lineToDelete
+      const orderData = req.body.lineToDelete.orders_details_orders
+      
+      const date = new Date()
+      const argDate = moment(date).tz('America/Argentina/Buenos_Aires').format();
+
+      const observations = 'Línea eliminada el ' + argDate
+
+      //unable line
+      await ordersDetailsQueries.cancelOrderDetail(lineDetails.id,observations)
+
+      //update order total      
+      const newTotal = (parseFloat(orderData.subtotal,2) - parseFloat(lineDetails.extended_price,2)) * (1 - parseFloat(orderData.discount,2))
+      await ordersQueries.updateOrderTotal(orderData.id,newTotal)
+
+      //update order status
+      if (condition) {
+        
+      }
+
+
+
+      
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  restoreOrder: async(req,res) =>{
+    try{
+
+      const orderId = req.body.idOrder
+
+      await ordersQueries.restoreOrder(orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   cancelOrderNinox: async(req,res) =>{
     try{
 
       const orderId = req.body.idSale
 
       await ordersNinoxQueries.cancelOrder(orderId)
-      await ordersDetailsNinoxQueries.cancelOrderDetails(orderId)
-      await ordersNinoxQueries.cancelPayment(orderId)
+      await ordersNinoxDetailsQueries.cancelOrderDetails(orderId)
+      await paymentsNinoxQueries.cancelPayment(orderId)
 
       res.status(200).json()
 
@@ -259,40 +340,15 @@ const apisSalesController = {
         console.log(error)
         return res.send('Ha ocurrido un error')
     }
-  },
-  deleteProduct: async(req,res) => {
+  },  
+  setPaymentVerification: async(req,res) => {
     try{
 
-      const year = req.params.year
-      const iDate = new Date(year + '-01-01') 
-      const fDate = new Date(year + '-12-31')
+      const orderId = req.body.orderId
 
-      const webAndDifSales = await ordersQueries.webAndDifSales(iDate,fDate)
-      const ninoxSales = await ordersNinoxQueries.ninoxSales(iDate,fDate)
-
-      let sales = webAndDifSales.concat(ninoxSales);
-
-      res.status(200).json(sales)
-
-    }catch(error){
-
-        console.log(error)
-        return res.send('Ha ocurrido un error')
-    }
-  },
-  updatePaymentStatus: async(req,res) => {
-    try{
-
-      const year = req.params.year
-      const iDate = new Date(year + '-01-01') 
-      const fDate = new Date(year + '-12-31')
-
-      const webAndDifSales = await ordersQueries.webAndDifSales(iDate,fDate)
-      const ninoxSales = await ordersNinoxQueries.ninoxSales(iDate,fDate)
-
-      let sales = webAndDifSales.concat(ninoxSales);
-
-      res.status(200).json(sales)
+      await ordersQueries.setPaymentVerification(orderId)
+      
+      res.status(200).json()
 
     }catch(error){
 

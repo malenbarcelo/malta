@@ -15,7 +15,8 @@ const ordersQueries = {
                 {association: 'orders_orders_managers'},
                 {association: 'orders_payments'},
                 {association: 'orders_accounts_movements'},
-                {association: 'orders_sales_channels'}
+                {association: 'orders_sales_channels'},
+                {association: 'orders_orders_details'}
 
             ],
             where:{
@@ -30,13 +31,55 @@ const ordersQueries = {
         })
         return orders
     },
+    inProgressOrdersShowCanceled: async() => {
+        const orders = await Sales_orders.findAll({
+            include: [
+                {association: 'orders_customers'},
+                {association: 'orders_orders_status'},
+                {association: 'orders_payments_status'},
+                {association: 'orders_orders_managers'},
+                {association: 'orders_payments'},
+                {association: 'orders_accounts_movements'},
+                {association: 'orders_sales_channels'}
+
+            ],
+            where:{
+                [Op.or]: [
+                    { id_orders_status: { [Op.ne]: 3 } },
+                    { id_payments_status: { [Op.ne]: 5 } }
+                ]
+            },
+            order:[['date','ASC'],['id','ASC']],
+            nest:true
+        })
+        return orders
+    },
+    findOrder: async(orderId) => {
+        const orders = await Sales_orders.findOne({
+            include: [
+                {association: 'orders_customers'},
+                {association: 'orders_orders_status'},
+                {association: 'orders_payments_status'},
+                {association: 'orders_orders_managers'},
+                {association: 'orders_payments'},
+                {association: 'orders_accounts_movements'},
+                {association: 'orders_sales_channels'},
+
+            ],
+            where:{
+                id:orderId
+            },
+            nest:true,
+            raw:true
+        })
+        return orders
+    },
     newOrder: async() => {
-        const difOrders = await Sales_orders.findAll({
-            where: {id_sales_channels:[1,2]},
-            raw:true,
+        const maxOrderNumber = await Sales_orders.max('order_number', {
+            where: {id_sales_channels: [1, 2]}
         })
 
-        const newOrderNumber = difOrders.length + 1
+        const newOrderNumber = maxOrderNumber + 1
 
         return newOrderNumber
     },
@@ -81,8 +124,10 @@ const ordersQueries = {
                 color:orderDetails[i].color,
                 size:orderDetails[i].size,
                 unit_price: orderDetails[i].unit_price,
-                quantity:orderDetails[i].quantity == '' ? null : orderDetails[i].quantity,
-                extended_price:orderDetails[i].extended_price
+                required_quantity:orderDetails[i].required_quantity == '' ? null : orderDetails[i].required_quantity,
+                confirmed_quantity:orderDetails[i].confirmed_quantity == '' ? null : orderDetails[i].confirmed_quantity,
+                extended_price:orderDetails[i].extended_price,
+                enabled:1
             })            
         }        
     },
@@ -94,7 +139,7 @@ const ordersQueries = {
           return lastId.id
     },
     deliverOrder: async(orderId) => {        
-        await Orders.update(
+        await Sales_orders.update(
             { id_orders_status: 3 },
             { where: { id: orderId } }
         )
@@ -115,6 +160,18 @@ const ordersQueries = {
             { where: { id: orderId } }
         )
     },
+    restoreOrder: async(orderId) => {        
+        await Sales_orders.update(
+            { enabled: 1 },
+            { where: { id: orderId } }
+        )
+    },
+    setPaymentVerification: async(orderId) => {        
+        await Sales_orders.update(
+            { id_payments_status: 7 },
+            { where: { id: orderId } }
+        )
+    },
     updatePaymentsStatus: async(orderId) => {
 
         let amountPaidPayments = 0
@@ -130,7 +187,7 @@ const ordersQueries = {
                 {association: 'orders_payments'},
                 {association: 'orders_accounts_movements'}
             ],
-            nest:true
+            nest:true,
         })
 
         //sum order payments
@@ -171,6 +228,12 @@ const ordersQueries = {
             nest:true
         })
         return webAndDifSales
+    },
+    updateOrderTotal: async(orderId,newTotal) => {        
+        await Sales_orders.update(
+            { total: newTotal },
+            { where: { id: orderId } }
+        )
     },
 }       
 
