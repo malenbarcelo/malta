@@ -1,5 +1,5 @@
 const wpPostsQueries = require('../dbQueries/sales/wpPostsQueries')
-const {getNewPosts,getNewPostmeta,getNewOrderItems} = require('../functions/salesWpFuntions')
+const {getNewPosts,getNewPostmeta,getNewOrderItems,getNewOrderItemmeta} = require('../functions/salesWpFuntions')
 
 const apisWordpressController = {
   newOrdersData: async(req,res) => {
@@ -12,13 +12,16 @@ const apisWordpressController = {
       const month = date.getMonth() + 1
       
       //get new posts from wordpress and save data in sales_wp_posts
-      await getNewPosts(month,year)
+      //await getNewPosts(month,year)
 
       //get new postmeta from wordpress and save data in sales_wp_postmeta
       await getNewPostmeta(month,year)
 
       //get new order items from wordpress and save data in sales_wp_order_items
-      await getNewOrderItems(month,year)
+      //await getNewOrderItems(month,year)
+
+      //get new order itemmeta from wordpress and save data in sales_wp_order_items
+      //await getNewOrderItemmeta(month,year)
 
 
 

@@ -1,6 +1,7 @@
 const wpPostsQueries = require('../dbQueries/sales/wpPostsQueries')
 const wpPostmetaQueries = require('../dbQueries/sales/wpPostmetaQueries')
 const wpOrderItemsQueries = require('../dbQueries/sales/wpOrderItemsQueries')
+const wpOrderItemmetaQueries = require('../dbQueries/sales/wpOrderItemmetaQueries')
 
 async function getNewPosts(month,year) {
 
@@ -65,4 +66,28 @@ async function getNewOrderItems(month, year) {
     //save new posts in sales_wp_order_items
     await wpOrderItemsQueries.createOrderItem(newOrderItems,month,year)
 }
-module.exports = {getNewPosts,getNewPostmeta,getNewOrderItems}
+
+async function getNewOrderItemmeta(month, year) {
+
+    //get order_items from database
+    const monthOrderItemmeta = await wpOrderItemmetaQueries.monthOrderItemmeta(month,year)
+    const monthOrderItemmetaIds = monthOrderItemmeta.map(oi => oi.meta_id)
+
+    //get month order items from wordpress
+    const url = 'https://maltachic.com.ar/webOrderItemmeta.php'
+    const response = await fetch(url)
+    if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+    }  
+    const monthWpOrderItemmeta = await response.json()
+
+    console.log(monthWpOrderItemmeta.length)
+
+    //compare posts
+    const newOrderItemmeta = monthWpOrderItemmeta.filter(oi => !monthOrderItemmetaIds.includes(parseInt(oi.meta_id)))
+
+    //save new posts in sales_wp_order_items
+    await wpOrderItemmetaQueries.createOrderItemmeta(newOrderItemmeta,month,year)
+}
+
+module.exports = {getNewPosts,getNewPostmeta,getNewOrderItems,getNewOrderItemmeta}
