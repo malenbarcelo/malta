@@ -1,0 +1,56 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle mbm">
+    DETALLE DE PAGOS
+</div>
+
+<!------MAIN FILTERS------>
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1" id="filterCustomerLabel">Cliente</label>
+            <input type="text" class="input1 inputXL" id="filterCustomer">
+            <ul class="predictedElements" id="filterCustomerUl"></ul>
+        </div>
+    </div>
+</div>
+
+<!------MAIN DATA------>
+<div class="mainData">
+    <div class="mainDataElement" id="salesAmount"></div>
+    <div class="mainDataElement" id="salesQty"></div>
+</div>
+
+<!------MAIN CONTENT------>
+<div class="mts">
+    <div class="divTable">
+
+        <div class="tableInfo" id="epppInfo">Editar pago</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss wS thLeftBorder thTall">Cliente</th>
+                    <th class="theadCss wS thTall">Fecha</th>
+                    <th class="theadCss wS thTall">Importe</th>
+                    <th class="theadCss wL thTall">#Pedido</th>
+                    <th class="theadCss wS thTall">Forma de pago</th>
+                    <th class="theadCss wXS thTall thRightBorder">
+                        <i class="fa-solid fa-trash-can tableIcon" id="epppIcon"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="bodyPayments"></tbody>
+        </table>
+    </div>
+</div>
+
+<!----------LOADER---------->
+<div class="loader" id="paymentsLoader"></div>
+<%- include('./paymentsPopups') %>
+<!-- <script type="module" src="/js/sales/sales/sales.js"></script> -->
+
+
+

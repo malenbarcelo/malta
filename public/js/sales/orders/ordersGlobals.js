@@ -6,9 +6,7 @@ let og = {
     }),
     filters1:[],
     checks1:[],
-    closePopups:[],
     closeSidePopups:[],
-    tableIcons:[],
     customers:[],
     products:[],
     orders:[],
@@ -20,6 +18,7 @@ let og = {
     idOrderToRestore:0,
     idOrderToDeliver:0,
     idOrderToAssign:0,
+    idOrderObservations:0,
     idOrderDetailsToEdit:0,
     orderToPay:[],
     orderToPayNewBalance:0,
@@ -31,6 +30,7 @@ let og = {
     rpppValidate:[],
     rpppPaymentInputs:[],
     orderData: {
+        id:'',
         order_number:'',
         id_sales_channels:'',
         id_customers:0,
@@ -49,6 +49,7 @@ let og = {
     productFocused:-1,
     elementToFocus:'',
     elementToUnfocus:'',
+    action:''
 
 }
 

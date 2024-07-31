@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import sg from "./salesGlobals.js"
 import { printTableSales,filterSales } from "./salesFunctions.js"
-import { closePopupsEventListeners,acceptWithEnter,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters } from "../../generalFunctions.js"
+import { closePopupsEventListeners,acceptWithEnter,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters,selectWithClick } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -58,6 +58,23 @@ window.addEventListener('load',async()=>{
         const list = filterCustomerUl
         const elementName = 'customer'
         selectFocusedElement(e,input,list,elementName)
+    })
+
+    //data to predit
+    const dataToSelect = [
+        {
+            name: 'customer_name',
+            list: ulPredictedCustomers,
+            input: filterCustomer
+        }
+    ]
+
+    document.addEventListener('click', function(e) {
+        const {clickPredictedElement,inputToClick} = selectWithClick(e,dataToSelect)
+        if (clickPredictedElement && inputToClick.id == 'filterCustomer') {
+            filterSales()
+            printTableSales(sg.salesFiltered)
+        }  
     })
 
     //filters event listeners

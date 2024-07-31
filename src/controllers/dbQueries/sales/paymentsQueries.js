@@ -19,8 +19,6 @@ const paymentsQueries = {
         return orderPayments
     },
     registerOrderPayment: async(idOrder,idCustomer,orderPayment,idPaymentMethod) => {
-
-        console.log('metodo de pago' + idPaymentMethod)
         
         const date = new Date()
 

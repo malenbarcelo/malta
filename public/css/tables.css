@@ -85,14 +85,18 @@ border-top-right-radius: 15px;
     text-align: center;
 }
 
-#eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo{
+#productsClientsTable{
+    height: 250px;
+}
+
+#eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo,#obppInfo,#ob2ppInfo{
     width: 60px;
     top:38.5%
 }
 
-#elppInfo,#dlppInfo{
+#elppInfo,#dlppInfo,#loppInfo{
     width: 50px;
-    top:32.5%;
+    top:34%;
 }
 
 

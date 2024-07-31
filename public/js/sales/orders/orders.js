@@ -1,8 +1,9 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
+import g from "../../globals.js"
 import { getElements } from "./ordersGetElements.js"
 import { printTableOrders, filterOrders, updateOrderData, printColorsOptions, printTableCreateEdit,changeSizesOptions } from "./ordersFunctions.js"
-import { clearInputs, inputsValidation, isValid, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter } from "../../generalFunctions.js"
+import { clearInputs, inputsValidation, isValid, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter,selectWithClick } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -23,9 +24,8 @@ window.addEventListener('load',async()=>{
     //showCanceled
     showCanceled.addEventListener("click", async() => {
         og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-        og.ordersFiltered = og.orders
         filterOrders()
-        printTableOrders(og.orders)
+        printTableOrders(og.ordersFiltered)
     })
 
     //filters event listeners
@@ -38,17 +38,60 @@ window.addEventListener('load',async()=>{
 
     //filters customer error
     filterCustomer.addEventListener("change", async() => {
-        if (filterCustomer.value != 'default') {
+        if (filterCustomer.value != '') {
             filterCustomerLabel.classList.remove('errorColor')
             filterCustomer.classList.remove('isInvalid')
             DGAcreateOrderError.style.display = 'none'
         }
     })
 
+    //filter customer event listener - predict elements
+    filterCustomer.addEventListener("input", async(e) => {
+        const input = filterCustomer
+        const list = ulPredictedCustomers
+        const apiUrl = 'apis/data/customers/predict-customers/'
+        const name = 'customer_name'
+        const elementName = 'customer'
+        predictElements(input,list,apiUrl,name,elementName)
+    })
+
+    filterCustomer.addEventListener("keydown", async(e) => {
+        const input = filterCustomer
+        const list = ulPredictedCustomers
+        const elementName = 'customer'
+        selectFocusedElement(e,input,list,elementName)
+    })
+
+    //data to predit
+    const dataToSelect = [
+        {
+            name: 'customer_name',
+            list: ulPredictedCustomers,
+            input: filterCustomer
+        },
+        {
+            name: 'description',
+            list: ulPredictedProducts,
+            input: selectProduct
+        }
+
+    ]
+
+    document.addEventListener('click', function(e) {
+        const {clickPredictedElement,inputToClick} = selectWithClick(e,dataToSelect)
+        if (clickPredictedElement && inputToClick.id == 'filterCustomer') {
+            filterOrders()
+            printTableOrders(og.ordersFiltered)
+        }
+        if (clickPredictedElement && inputToClick.id == 'selectProduct') {
+            changeSizesOptions()
+        }       
+    })
+
     //unfilter event listener
     unfilterOrders.addEventListener("click", async() => {
         og.ordersFiltered = og.orders
-        filterCustomer.value = 'default'
+        filterCustomer.value = ''
         filterOrder.value = 'default'
         filterOrderManager.value = 'default'
         filterOrderStatus.value = 'default'
@@ -77,7 +120,8 @@ window.addEventListener('load',async()=>{
     })
 
     //close popups event listener
-    og.closePopups.forEach(element => {
+    const closePopups = [rpppClose,rpppCancel,doppClose,doppCancel,amppClose,amppCancel,coppClose,coppCancel,roppClose,roppCancel,cdppClose,cdppCancel,eodppClose,eodppCancel,scppCancel,scppClose,obppClose]
+    closePopups.forEach(element => {
         element.addEventListener("click", async() => {
             let popupToClose = document.getElementById(element.id.replace('Close',''))
             popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
@@ -101,7 +145,8 @@ window.addEventListener('load',async()=>{
     })
 
     //table info events listeners
-    og.tableIcons.forEach(element => {
+    const tableIcons = [eoppIcon,rpppIcon,pvppIcon,doppIcon,amppIcon,obppIcon,coppIcon]
+    tableIcons.forEach(element => {
         const info = document.getElementById(element.id.replace('Icon','Info'))
         element.addEventListener("mouseover", async(e) => {
             const mouseX = e.clientX
@@ -309,7 +354,8 @@ window.addEventListener('load',async()=>{
 
     //create order
     DGAcreateOrder.addEventListener("click", async() => {
-        if (filterCustomer.value == 'default') {
+        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
+        if (filterCustomer.value == '' || findCustomer.length == 0) {
             filterCustomerLabel.classList.add('errorColor')
             filterCustomer.classList.add('isInvalid')
             DGAordersErrors.style.display = 'flex'
@@ -340,6 +386,9 @@ window.addEventListener('load',async()=>{
             og.orderData.id_customers = idCustomers
             og.orderData.id_sales_channels = salesChannel
             og.orderData.order_number = orderNumber
+            og.orderData.id = 'NA'
+            og.action = 'create'
+            ceoppTitle.innerText = 'CREAR PEDIDO'
 
             updateOrderData()
 
@@ -499,8 +548,6 @@ window.addEventListener('load',async()=>{
 
             //close popup
            eodpp.style.display = 'none'
-
-            
         }
     })
 
@@ -511,6 +558,7 @@ window.addEventListener('load',async()=>{
         
         og.orderDetails.forEach(element => {
             if (element.row_status == 'Incompleto') {
+                console.log(element)
                 incompleteRows +=1
             }
         })
@@ -524,14 +572,46 @@ window.addEventListener('load',async()=>{
         const data = og.orderData
         data.order_details = og.orderDetails
 
-        await fetch(dominio + 'apis/sales/save-order',{
-            method:'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        })
+        if (og.action == 'create') {
+            await fetch(dominio + 'apis/sales/save-order',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+        }else{
+            await fetch(dominio + 'apis/sales/edit-order',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+        }
         
         window.location.href = '/sales/in-progress-orders'
 
     })
+
+    //save observations
+    obppAccept.addEventListener("click", async() => {
+        const data = {
+            id: og.idOrderObservations,
+            observations: obppObs.value
+        }
+
+        await fetch(dominio + 'apis/sales/edit-order-observations',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+
+        filterOrders()
+        printTableOrders(og.ordersFiltered)
+
+        obpp.style.display = 'none'
+        showOkPopup(obppOk)
+
+    })
+
 
 })

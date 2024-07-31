@@ -1,5 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
+import g from "../../globals.js"
 import { clearInputs, dateToString } from "../../generalFunctions.js"
 
 function printColorsOptions(dataToPrint) {
@@ -14,7 +15,7 @@ function printColorsOptions(dataToPrint) {
         //print table
         const line1 = '<th class="' + rowClass + '"><div class="inputColor"><div class="colorCheck"><input type="checkbox" id="check_'+ counter + '"></div><div class="colorName">' + element + '</div></div></th>'
         const line2 = '<th class="' + rowClass + '"><input type="text" class="input2" id="required_'+ counter + '"></th>'
-        const line3 = '<th class="' + rowClass + '"><input type="text" class="input2" id="confirmed_'+ counter + '"></th>'
+        const line3 = '<th class="' + rowClass + '"><input type="text" class="input2 highlightedInput" id="confirmed_'+ counter + '"></th>'
 
         bodyColors.innerHTML += '<tr>' + line1 + line2 + line3 + '</tr>'
 
@@ -68,7 +69,7 @@ async function printTableOrders(dataToPrint) {
         const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
         const paymentClass = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'
         const paymentVStatus = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? '' : 'disabled'
-        const paymentVchequed = element.id_payments_status == 7 ? 'checked' : ''
+        const paymentVchequed = element.id_payments_status == 6 ? 'checked' : ''
         const deliverClass = (element.enabled == 1 && element.id_orders_status == 2) ? 'allowedIcon' : 'notAllowedIcon'
         const cancelClass = (element.id_orders_status == 1 || element.id_orders_status == 2) && (element.id_payments_status == 1 || element.id_payments_status == 2 || element.id_payments_status == 3) ? 'allowedIcon' : 'notAllowedIcon'
         const status = element.enabled == 0 ? 'Cancelado' : element.orders_orders_status.order_status
@@ -96,9 +97,10 @@ async function printTableOrders(dataToPrint) {
 
         const line16 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-solid fa-truck-ramp-box ' + deliverClass + '" id="' + (deliverClass == 'allowedIcon' ? ('deliver_' + element.id) : null) +'"></i></th>'
         const line17 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-solid fa-user-pen allowedIcon" id="assign_' + element.id + '"></i></th>'
-        const line18 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular ' + cancelIcon + ' ' + cancelClass + '" id="' + (cancelClass == 'allowedIcon' ? (cancelId + element.id) : null) +'"></i></th>'
+        const line18 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular fa-comment allowedIcon" id="obs_' + element.id + '"></i></th>'
+        const line19 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular ' + cancelIcon + ' ' + cancelClass + '" id="' + (cancelClass == 'allowedIcon' ? (cancelId + element.id) : null) +'"></i></th>'
 
-        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + line16 + line17 + line18 + '</tr>'
+        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + line16 + line17 + line18 + line19 + '</tr>'
 
         counter += 1
 
@@ -113,13 +115,47 @@ function addOrdersEventListeners(dataToPrint) {
 
     dataToPrint.forEach(element => {
 
+        const edit = document.getElementById('edit_' + element.id)
         const payment = document.getElementById('payment_' + element.id)
         const paymentV = document.getElementById('paymentV_' + element.id)
         const deliverOrder = document.getElementById('deliver_' + element.id)
         const assignOrder = document.getElementById('assign_' + element.id)
+        const obs = document.getElementById('obs_' + element.id)
         const cancelOrder = document.getElementById('cancel_' + element.id)
         const restoreOrder = document.getElementById('restore_' + element.id)
         const customer = element.orders_customers.customer_name
+
+        //edit
+        edit.addEventListener("click", async() => {
+                
+            //clear data
+            og.orderDetails = element.orders_orders_details
+            printTableCreateEdit(og.orderDetails)
+    
+            //complete popup info
+            const salesChannel = element.id_sales_channels
+            const orderNumber = element.order_number
+            og.discount = element.discount
+            const idCustomers = element.id_customers
+            const customer = element.orders_customers.customer_name
+            og.orderData.discount = parseFloat(og.discount,2)
+            og.orderData.subtotal = parseFloat(element.subtotal,2)
+            og.orderData.total = parseFloat(element.total,2)
+            og.orderData.id_customers = idCustomers
+            og.orderData.id_sales_channels = salesChannel
+            og.orderData.order_number = orderNumber
+            og.orderDetails = element.orders_orders_details
+            og.action = 'edit'
+            og.orderData.id = element.id
+            ceoppTitle.innerText = 'EDITAR PEDIDO'
+    
+            updateOrderData()
+
+            customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
+
+            //show popup
+            ceopp.classList.add('slideIn')
+        })
 
         //payment
         if (payment) {
@@ -160,7 +196,7 @@ function addOrdersEventListeners(dataToPrint) {
                     orderId:element.id
                 }
     
-                //register payment
+                //set payment verification
                 await fetch(dominio + 'apis/sales/set-payment-verification',{
                     method:'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -211,6 +247,12 @@ function addOrdersEventListeners(dataToPrint) {
             })
         }
 
+        //observations
+        obs.addEventListener('click',async()=>{
+            og.idOrderObservations = element.id
+            obppObs.value = element.observations
+            obpp.style.display = 'block'
+        })
     })
 
 }
@@ -220,8 +262,9 @@ function filterOrders() {
     og.ordersFiltered = og.orders
 
     //customer
-    const idCustomer = filterCustomer.value == 'default' ? '' :og.customers.filter(c => c.customer_name == filterCustomer.value)[0].id
-    og.ordersFiltered = filterCustomer.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_customers == idCustomer)
+    let idCustomer = filterCustomer.value == '' ? '' : og.customers.filter(c => c.customer_name == filterCustomer.value)
+    idCustomer = idCustomer.length == 0 ? 0 : idCustomer[0].id
+    og.ordersFiltered = filterCustomer.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_customers == idCustomer)
 
     //order
     og.ordersFiltered = filterOrder.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.order_number == filterOrder.value)
@@ -375,7 +418,7 @@ function updateOrderData() {
     og.orderData.subtotal = 0
 
     og.orderDetails.forEach(element => {
-        og.orderData.subtotal += element.extended_price
+        og.orderData.subtotal += element.enabled == 0 ? 0 : parseFloat(element.extended_price,2)
     })
 
     og.orderData.total = og.orderData.subtotal * (1-og.orderData.discount)
@@ -402,22 +445,24 @@ function printTableCreateEdit() {
     //printTable
     og.orderDetails.forEach(element => {
 
-        const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        if (element.enabled == 1) {
+            const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
 
-        //print table
-        const line1 = '<th class="' + rowClass + '">' + element.description + '</th>'
-        const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
-        const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
-        const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
-        const line5 = '<th class="' + rowClass + '">' + element.required_quantity + '</th>'
-        const line6 = '<th class="' + rowClass + '">' + element.confirmed_quantity + '</th>'
-        const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
-        const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
-        const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
+            //print table
+            const line1 = '<th class="' + rowClass + '">' + element.description + '</th>'
+            const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
+            const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
+            const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
+            const line5 = '<th class="' + rowClass + '">' + (element.required_quantity == null ? '' : element.required_quantity) + '</th>'
+            const line6 = '<th class="' + rowClass + '">' + (element.confirmed_quantity == null ? '' : element.confirmed_quantity) + '</th>'
+            const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
+            const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
+            const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
 
-        bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
+            bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
 
-        counter += 1
+            counter += 1
+        }
 
     })
 
@@ -433,35 +478,31 @@ function addCreateEditEventListeners() {
         const editRow = document.getElementById('edit_' + element.id)
         
         //delete
-        deleteRow.addEventListener('click',async()=>{
-            og.orderDetails = og.orderDetails.filter(data => data.id !== element.id)
-            updateOrderData()
-            printTableCreateEdit()
-        })
+        if (deleteRow) {
+            deleteRow.addEventListener('click',async()=>{
+                og.orderDetails = og.orderDetails.filter(data => data.id !== element.id)
+                updateOrderData()
+                printTableCreateEdit()
+            })
+        }
+        
 
         //edit
-        editRow.addEventListener('click',async()=>{
-
-            const productData = og.orderDetails.filter(product => product.id == element.id)[0]
-
-            eodppTitle.innerText = productData.description + ' - ' + productData.color + ' - ' + productData.size
-
-            //clear errors
-            clearInputs([eodppPrice])
-
-            eodppPrice.value = element.unit_price
-            eodppQtyR.value = element.required_quantity
-            eodppQtyC.value = element.confirmed_quantity
-            
-            og.idOrderDetailsToEdit = productData.id
-
-            //show popup
-            eodpp.style.display = 'block'
-
-        })
-
-    })
-    
+        if (editRow) {
+            editRow.addEventListener('click',async()=>{
+                const productData = og.orderDetails.filter(product => product.id == element.id)[0]    
+                eodppTitle.innerText = productData.description + ' - ' + productData.color + ' - ' + productData.size    
+                //clear errors
+                clearInputs([eodppPrice])    
+                eodppPrice.value = element.unit_price
+                eodppQtyR.value = element.required_quantity
+                eodppQtyC.value = element.confirmed_quantity                
+                og.idOrderDetailsToEdit = productData.id    
+                //show popup
+                eodpp.style.display = 'block'    
+            })
+        }
+    })    
 }
 
 

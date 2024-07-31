@@ -142,6 +142,11 @@ accent-color: black
     padding: 10px 0px 3px 0px;
 }
 
+.inputXL{
+    width: 250px;
+    padding: 10px 0px 3px 0px;
+}
+
 .sxl{
     width: 200px;
     padding: 7px 0px 3px 0px;

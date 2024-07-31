@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./ordersDetailsGlobals.js"
 import { printTableOrdersDetails,filterOrdersDetails } from "./ordersDetailsFunctions.js"
-import { predictElements, selectFocusedElement } from "../../generalFunctions.js"
+import { acceptWithEnter, predictElements, selectFocusedElement,selectWithClick,showOkPopup } from "../../generalFunctions.js"
 
 
 // import { getElements } from "./ordersGetElements.js"
@@ -22,7 +22,7 @@ window.addEventListener('load',async()=>{
     printTableOrdersDetails(odg.ordersDetails)
 
     //table info events listeners
-    const tableIcons = [elppIcon,dlppIcon]
+    const tableIcons = [elppIcon,dlppIcon,loppIcon]
     tableIcons.forEach(element => {
         const info = document.getElementById(element.id.replace('Icon','Info'))
         element.addEventListener("mouseover", async(e) => {
@@ -36,7 +36,7 @@ window.addEventListener('load',async()=>{
     })
 
     //filters event listeners
-    const filters = [filterProduct,filterCustomer,filterOrderStatus,filterOrderManager]
+    const filters = [filterOrder,filterProduct,filterCustomer,filterOrderStatus,filterOrderManager]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             filterOrdersDetails()
@@ -88,8 +88,30 @@ window.addEventListener('load',async()=>{
         selectFocusedElement(e,input,list,elementName)
     })
 
+    //data to predit
+    const dataToSelect = [
+        {
+            name: 'customer_name',
+            list: ulPredictedCustomers,
+            input: filterCustomer
+        },
+        {
+            name: 'description',
+            list: ulPredictedProducts,
+            input: filterProduct
+        }
+    ]
+
+    document.addEventListener('click', function(e) {
+        const {clickPredictedElement,inputToClick} = selectWithClick(e,dataToSelect)
+        if (clickPredictedElement && (inputToClick.id == 'filterCustomer' || inputToClick.id == 'filterProduct')) {
+            filterOrdersDetails()
+            printTableOrdersDetails(odg.ordersDetailsFiltered)
+        }  
+    })
+
     //close popups
-    const closePopups = [dlppClose,dlppCancel]
+    const closePopups = [apppClose, apppCancel,dlppClose,dlppCancel,elppClose,loppClose]
     closePopups.forEach(element => {
         element.addEventListener("click", async() => {
             let popupToClose = document.getElementById(element.id.replace('Close',''))
@@ -122,5 +144,98 @@ window.addEventListener('load',async()=>{
 
     })
 
+    //elpp accept    
+    elppAccept.addEventListener("click", async() => {
+
+        const data = {
+            lineToEdit:odg.lineToEdit,
+            unit_price:elppPrice.value,
+            required_quantity:elppQtyR.value,
+            confirmed_quantity:elppQtyC.value
+        }
+        
+        await fetch(dominio + 'apis/sales/edit-order-detail',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+        odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        odg.ordersDetailsFiltered = odg.ordersDetails
+        
+        //print table
+        printTableOrdersDetails(odg.ordersDetails)
+
+        elpp.style.display = 'none'
+    })
+
+    acceptWithEnter(elppPrice,elppAccept)
+    acceptWithEnter(elppQtyR,elppAccept)
+    acceptWithEnter(elppQtyC,elppAccept)
+
+    //DGAaddProduct    
+    DGAaddProduct.addEventListener("click", async() => {
+        appp.style.display = 'block'
+    })
+
+    //select product event listener - predict elements
+    selectProduct.addEventListener("input", async(e) => {
+        const input = selectProduct
+        const list = ulPredictedProducts2
+        const apiUrl = 'apis/data/products/predict-products/'
+        const name = 'description'
+        const elementName = 'product'
+        predictElements(input,list,apiUrl,name,elementName)
+    })
+
+    selectProduct.addEventListener("keydown", async(e) => {
+        const input = selectProduct
+        const list = ulPredictedProducts2
+        const elementName = 'product'
+        selectFocusedElement(e,input,list,elementName)
+    })
+
+    //select customer event listener - predict elements
+    selectCustomer.addEventListener("input", async(e) => {
+        const input = selectCustomer
+        const list = ulPredictedCustomers2
+        const apiUrl = 'apis/data/customers/predict-customers/'
+        const name = 'customer_name'
+        const elementName = 'customer'
+        predictElements(input,list,apiUrl,name,elementName)
+    })
+
+    selectCustomer.addEventListener("keydown", async(e) => {
+        const input = selectCustomer
+        const list = ulPredictedCustomers2
+        const elementName = 'customer'
+        selectFocusedElement(e,input,list,elementName)
+    })
+
+    //save observations
+    loppAccept.addEventListener("click", async() => {
+        const data = {
+            id: odg.lineToEdit.id,
+            observations: loppObs.value
+        }
+
+        await fetch(dominio + 'apis/sales/edit-order-detail-observations',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+        odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        odg.ordersDetailsFiltered = odg.ordersDetails
+        
+        //print table
+        printTableOrdersDetails(odg.ordersDetails)
+
+        lopp.style.display = 'none'
+        showOkPopup(loppOk)
+
+    })
 
 })

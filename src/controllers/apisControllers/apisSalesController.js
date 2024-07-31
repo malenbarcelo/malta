@@ -7,6 +7,7 @@ const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQu
 const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
 const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
+const {updateOrderData,updateOrderStatus,updatePaymentStatus} = require('../functions/salesFunctions')
 const moment = require('moment-timezone');
 
 const apisSalesController = {
@@ -93,26 +94,67 @@ const apisSalesController = {
   saveOrder: async(req,res) =>{
     try{
 
-      console.log('hola')
-
       const data = req.body
-      var orderId = 0
 
-      //get order id if exists
-      const getOrder = await ordersQueries.filterOrder(data.order_number)
-
-      //update order if exists, else create order
-      if (getOrder != null) {
-        orderId = getOrder.id
-        //await ordersQueries.editOrder(data, orderId)
-        //await ordersQueries.deleteOrderDetails(orderId)
-      }else{
-        await ordersQueries.createOrder(data)
-        orderId = await ordersQueries.lastId()        
-      }
-
+      await ordersQueries.createOrder(data)
+      orderId = await ordersQueries.lastId()        
+      
       //create order details
       await ordersQueries.createOrderDetails(data,orderId)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  editOrder: async(req,res) =>{
+    try{
+
+      const data = req.body
+
+      //update order
+      await ordersQueries.updateOrder(data.id, data)
+
+      //delete order details
+      await ordersDetailsQueries.delete(data.id)
+
+      //create order details
+      await ordersQueries.createOrderDetails(data,data.id)
+
+      //update order status
+      updateOrderStatus(data.id)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  editOrderObs: async(req,res) =>{
+    try{
+
+      const data = req.body
+
+      //update order
+      await ordersQueries.updateOrderObs(data.id, data.observations)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  editOrderDetailObs: async(req,res) =>{
+    try{
+
+      const data = req.body
+
+      //update order detail
+      await ordersDetailsQueries.updateOrderDetailObs(data.id, data.observations)
 
       res.status(200).json()
 
@@ -145,8 +187,6 @@ const apisSalesController = {
       const payment = req.body.amountPaid.payment
       const newBalance = req.body.newBalance
       const idPaymentMethod = parseInt(req.body.idPaymentMethod)
-
-      console.log(req.body)
 
       const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
       const accountPayment = -newBalance
@@ -247,18 +287,50 @@ const apisSalesController = {
       //unable line
       await ordersDetailsQueries.cancelOrderDetail(lineDetails.id,observations)
 
-      //update order total      
-      const newTotal = (parseFloat(orderData.subtotal,2) - parseFloat(lineDetails.extended_price,2)) * (1 - parseFloat(orderData.discount,2))
-      await ordersQueries.updateOrderTotal(orderData.id,newTotal)
-
+      //update order total
+      const newTotal = await updateOrderData(orderData.id)
+      
       //update order status
-      if (condition) {
-        
+      updateOrderStatus(lineDetails.id_orders)
+
+      //update payment status
+      const idPaymentsStatus = orderData.id_payments_status
+      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+        updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
       }
 
+      res.status(200).json()
 
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  editOrderDetail: async(req,res) =>{
+    try{
 
+      const data = req.body
       
+      const date = new Date()
+      const argDate = moment(date).tz('America/Argentina/Buenos_Aires').format();
+
+      const observations = 'Línea editada el ' + argDate
+
+      //update line
+      await ordersDetailsQueries.editOrderDetail(data.lineToEdit.id,data,observations)
+
+      //update order data
+      const newTotal = await updateOrderData(data.lineToEdit.id_orders)
+      
+      //update order status
+      updateOrderStatus(data.lineToEdit.id_orders)
+
+      //update payment status
+      const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
+      const total = data.lineToEdit.orders_details_orders.total
+      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+        updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
+      }
 
       res.status(200).json()
 

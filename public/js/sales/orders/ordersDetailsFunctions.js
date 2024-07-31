@@ -32,9 +32,11 @@ async function printTableOrdersDetails(dataToPrint) {
         const line11 = '<th class="' + rowClass + '">' + orderData.orders_orders_status.order_status + '</th>'
         const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'
         const line13 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
-        const line14 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
+        const line14 = '<th class="' + rowClass + '"><i class="fa-regular fa-comment allowedIcon" id="obs_' + element.id + '"></i></th>'
+        const line15 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
+        
 
-        bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + '</tr>'
+        bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + '</tr>'
 
         counter += 1
 
@@ -51,36 +53,51 @@ function addOrdersDetailsEventListeners(dataToPrint) {
 
         const edit = document.getElementById('edit_' + element.id)
         const deleteLine = document.getElementById('delete_' + element.id)
+        const obs = document.getElementById('obs_' + element.id)
+
+        //edit line
+        edit.addEventListener('click',async()=>{
+
+            odg.lineToEdit = element
+            elppPrice.value = element.unit_price
+            elppQtyR.value = element.required_quantity
+            elppQtyC.value = element.confirmed_quantity
+            elpp.style.display = 'block'
+            
+        })
 
         //delete line        
         deleteLine.addEventListener('click',async()=>{
 
             odg.orderToEditLines = odg.ordersDetails.filter(o => o.id_orders == element.id_orders)
             odg.lineToDelete = element
-            dlppQuestion.innerHTML = '¿Confirma que desea eliminar el item <b>' + element.description + '</b> de la orden <b>' + element.orders_details_orders.order_number + '</b> del cliente <b>' + element.orders_details_orders.orders_customers.customer_name + '</b>'
+            dlppQuestion.innerHTML = '¿Confirma que desea eliminar el item <b>' + element.description + '</b> de la orden <b>' + element.orders_details_orders.order_number + '</b> del cliente <b>' + element.orders_details_orders.orders_customers.customer_name + '</b>'            
+            dlpp.style.display = 'block'
+        })
 
-            // if (odg.orderToEditLines.length == 1) {
-            //     dlppAlert.classList.remove('notVisible')                
-            // }else{
-            //     dlppAlert.classList.add('notVisible')
-            // }
-            // dlpp.style.display = 'block'
+        //line observations
+        obs.addEventListener('click',async()=>{
+            odg.lineToEdit = element
+            loppObs.value = element.observations2
+            lopp.style.display = 'block'         
         })
 
     })
-
 }
 
 function filterOrdersDetails() {
 
     odg.ordersDetailsFiltered = odg.ordersDetails
 
+    //order
+    odg.ordersDetailsFiltered = filterOrder.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.order_number == filterOrder.value)
+
     //product
-    //const idProduct = filterProduct.value == '' ? '' :odg.products.filter( p => p.description == filterProduct.value)[0].id
     odg.ordersDetailsFiltered = filterProduct.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.description == filterProduct.value)
 
     //customer
-    const idCustomer = filterCustomer.value == '' ? '' :odg.customers.filter(c => c.customer_name == filterCustomer.value)[0].id
+    let idCustomer = filterCustomer.value == '' ? '' : odg.customers.filter(c => c.customer_name == filterCustomer.value)
+    idCustomer = idCustomer.length == 0 ? 0 : idCustomer[0].id
     odg.ordersDetailsFiltered = idCustomer == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_customers == idCustomer)
 
     //order_status

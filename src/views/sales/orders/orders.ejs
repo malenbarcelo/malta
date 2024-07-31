@@ -27,7 +27,7 @@
 </div>
 
 <div class="DGAerrors" id="DGAordersErrors">
-    <div class="" id="DGAcreateOrderError">- Debe seleccionar un cliente</div>
+    <div class="" id="DGAcreateOrderError">- Cliente inválido</div>
     <div class="" id="selectChannelError">- Debe seleccionar el canal Dif1 ó Dif2</div>
 </div>
 
@@ -38,14 +38,8 @@
     <div class="divInputsRow">            
         <div class="divInput">
             <label class="label1" id="filterCustomerLabel">Cliente</label>
-            <select id="filterCustomer" class="input1 inputL">
-                <option value="default"></option>
-                <% customers.forEach(customer => { %>
-                    <option value="<%= customer.customer_name %>">
-                        <%= customer.customer_name %>
-                    </option>
-                <% }) %>
-            </select>            
+            <input type="text" id="filterCustomer" class="input1 inputXL">
+            <ul class="predictedElements" id="ulPredictedCustomers"></ul>
         </div>
         <div class="divInput">
             <label for="selectOrder" class="label1"># Pedido</label>
@@ -130,6 +124,7 @@
         <div class="tableInfo" id="pvppInfo">Verificar pago</div>
         <div class="tableInfo" id="doppInfo">Registrar entrega</div>
         <div class="tableInfo" id="amppInfo">Asignar encargado</div>
+        <div class="tableInfo" id="obppInfo">Ver observaciones</div>
         <div class="tableInfo" id="coppInfo">Cancelar orden</div>
 
         <table>
@@ -152,6 +147,7 @@
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-square-check tableIcon" id="pvppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box tableIcon" id="doppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-user-pen tableIcon" id="amppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment tableIcon" id="obppIcon"></i></th>
                     <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-circle-xmark tableIcon" id="coppIcon"></i></th>
                 </tr>
             </thead>

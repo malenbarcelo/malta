@@ -7,7 +7,8 @@ let g = {
     predictedElements:[],
     focusedElement:-1,
     elementToFocus:'',
-    elementToUnfocus:''
+    elementToUnfocus:'',
+    inputValue:''
 
 }
 

@@ -109,8 +109,7 @@ async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
                 })
                 
                 element.addEventListener("click", async() => {
-                    input.value = element.innerText
-                    list.style.display = 'none'                      
+                    list.style.display = 'none'
                 })
             }
         }
@@ -119,6 +118,22 @@ async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
         list.style.display = 'none'
         list.innerHTML = ''
     }
+}
+
+function selectWithClick(e,dataToSelect) {
+    let clickPredictedElement = false
+    let inputToClick
+    dataToSelect.forEach(element => {
+        const input = element.input
+        const name = element.name        
+        const findeElement = g.predictedElements.filter(p => p[name] == e.target.innerText)
+        if (findeElement.length > 0) {
+            input.value = e.target.innerText
+            clickPredictedElement = true
+            inputToClick = input
+        }
+    })
+    return {clickPredictedElement,inputToClick}
 }
 
 function selectFocusedElement(e,input,list,elementName) {
@@ -167,7 +182,6 @@ function selectFocusedElement(e,input,list,elementName) {
         g.focusedElement = -1
         input.value = ''
         list.style.display = 'none'
-
     }
 }
 
@@ -212,4 +226,4 @@ function clearFilters(filters) {
 
 
 
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters}
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick}

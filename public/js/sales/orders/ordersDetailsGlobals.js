@@ -7,7 +7,8 @@ let odg = {
     ordersDetails: [],
     ordersDetailsFiltered: [],
     orderToEditLines:[],
-    lineToDelete:[]
+    lineToDelete:[],
+    lineToEdit:[]
 }
 
 export default odg

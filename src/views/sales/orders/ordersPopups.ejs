@@ -293,7 +293,7 @@
                 <tr>
                     <th class="theadCss wM thLeftBorder">Color</th>
                     <th class="theadCss wS ">Requerido</th>
-                    <th class="theadCss wS thRightBorder">Confirmado</th>
+                    <th class="theadCss wS thRightBorder thHighlighted">Confirmado</th>
                 </tr>
             </thead>
             <tbody id="bodyColors"></tbody>
@@ -304,6 +304,39 @@
         <div class="divButtonsRow mtl mbs">
             <div id="scppAccept" class="button1 bxs">Aceptar</div>
             <div id="scppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<!----------Observations---------->
+<div class="yesNoPopup" id="obpp">
+    
+    <div class="yesNoContent" id="obppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-comment"></i></div>
+            <div class="yesNoClose1" id="obppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts" id="obppTitle">OBSERVACIONES</div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <textarea class="input1 inputXXL" id="obppObs"></textarea>
+            </div> 
+        </div>
+
+        <div class="divButtonsRow">
+            <div id="obppAccept" class="button1 bxs">Guardar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="obppOk">    
+    <div class="okContent" id="obppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Observaciones guardadas con éxito</div>
         </div>
     </div>
 </div>

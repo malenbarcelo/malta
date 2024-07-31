@@ -43,7 +43,6 @@
     left: -100px;
 }
 
-/*--------------------orders.ejs--------------------*/
 #showCanceledDiv{
     position: absolute;
     top: 70%;
@@ -121,6 +120,16 @@
     width: 70%;
     text-align: left;
 }
+
+/*--------------------ordersPopups.ejs--------------------*/
+.thHighlighted{
+    font-weight: bold !important;
+}
+
+.highlightedInput{
+    border: black solid 2px !important;
+}
+
 
 /*--------------------ordersDetailsPopups.ejs--------------------*/
 #dlppAlert{

@@ -89,50 +89,6 @@
     line-height: 1.8;
 }
 
-#coppContent,#roppContent,#doppContent,#amppContent,#dsppContent{
-    top: 35%;
-    width: 400px;
-    left: calc(50vw - 200px);
-}
-
-#rpppContent{
-    top: 7%;
-    width: 600px;
-    left: calc(50vw - 300px);
-}
-
-#cdppContent{
-    top: 25%;
-    width: 250px;
-    left: 575px;
-}
-
-#eodppContent{
-    top: 25%;
-    width: 400px;
-    left: 500px;
-}
-
-#dlppContent{
-    top: 30%;
-    width: 400px;
-    left: calc(50vw - 210px);
-}
-
-#scppContent{
-    top: 26%;
-    width: 500px;
-    left: calc(700px - 250px);
-}
-
-#chyppContent{
-    top: 26%;
-    width: 300px;
-    left: calc(50vw - 160px);
-}
-
-
-
 /*----------okPopup----------*/
 .okPopup{
     display: none;
@@ -166,16 +122,6 @@
 
 .okIcon1{
     font-size: 25px;
-}
-
-#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent{
-    top: 40%;
-    left: calc(50vw - 150px);
-}
-
-#rpppOkContent{
-    top: 40%;
-    left: calc(50vw - 150px);
 }
 
 /*----------info popups----------*/

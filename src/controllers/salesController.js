@@ -26,8 +26,8 @@ const bottomHeaderMenu = [
     },
     {
         id:3,
-        name:'CLIENTES',
-        href:'/sales/clients-data',
+        name:'PAGOS',
+        href:'/sales/payments',
         subitems:[]
     },
     {
@@ -109,12 +109,12 @@ const salesController = {
             return res.send('Ha ocurrido un error')
         }
     },
-    customersData: (req,res) => {
+    payments: (req,res) => {
         try{
 
-            const selectedItem = 'CLIENTES'
+            const selectedItem = 'PAGOS'
 
-            return res.render('sales/customersData',{title:'Clientes',bottomHeaderMenu,selectedItem})
+            return res.render('sales/payments/payments',{title:'Pagos',bottomHeaderMenu,selectedItem})
 
         }catch(error){
 

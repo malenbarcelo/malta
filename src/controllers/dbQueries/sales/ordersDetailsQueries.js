@@ -20,7 +20,8 @@ const ordersDetailsQueries = {
                         {association: 'orders_customers'},
                         {association: 'orders_sales_channels'},
                         {association: 'orders_orders_status'},
-                        {association: 'orders_orders_managers'}
+                        {association: 'orders_orders_managers'},
+                        {association: 'orders_payments_status'}
                     ]
                 }
             ],
@@ -30,24 +31,58 @@ const ordersDetailsQueries = {
         })
         return ordersDetails
     },
-    cancelOrderDetail: async(orderId,observations) => {        
+    cancelOrderDetail: async(lineId,observations) => {        
         await Sales_orders_details.update(
             { 
                 enabled: 0,
                 observations:observations 
             },
-            { where: { id: orderId } }
+            { where: { id: lineId } }
         )
     },
-    orderDetails: async(orderId) => {
-        const orderDetails = await Sales_orders_details.findAll({
+    // orderDetails: async(orderId) => {
+    //     const orderDetails = await Sales_orders_details.findAll({
+    //         where:{
+    //             enabled:1,
+    //             /*id_orders:orderId*/
+    //         },
+    //         raw:true
+    //     })
+    //     return orderDetails
+    // },
+    findOrderDetails: async(idOrders) => {
+        const findOrderDetails = await Sales_orders_details.findAll({
             where:{
-                enabled:1,
-                /*id_orders:orderId*/
+                id_orders:idOrders
             },
             raw:true
         })
-        return orderDetails
+        return findOrderDetails
+    },
+    editOrderDetail: async(lineId,data,observations) => {        
+        await Sales_orders_details.update(
+            { 
+                unit_price:data.unit_price,
+                required_quantity:data.required_quantity == '' ? null : data.required_quantity,
+                confirmed_quantity:data.confirmed_quantity == '' ? null : data.confirmed_quantity,
+                extended_price: data.unit_price * (data.confirmed_quantity == '' ? 0 : data.confirmed_quantity),
+                observations:observations 
+            },
+            { where: { id: lineId } }
+        )
+    },
+    delete: async(orderId) => {        
+        await Sales_orders_details.destroy(
+            { where: { id_orders: orderId } }
+        )
+    },
+    updateOrderDetailObs: async(orderDetailId,observations) => {        
+        await Sales_orders_details.update(
+            {
+                observations2: observations
+             },
+            { where: { id: orderDetailId } }
+        )
     },
 }       
 

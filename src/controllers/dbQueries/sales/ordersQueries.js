@@ -64,13 +64,13 @@ const ordersQueries = {
                 {association: 'orders_payments'},
                 {association: 'orders_accounts_movements'},
                 {association: 'orders_sales_channels'},
+                {association: 'orders_orders_details'}
 
             ],
             where:{
                 id:orderId
             },
             nest:true,
-            raw:true
         })
         return orders
     },
@@ -168,7 +168,7 @@ const ordersQueries = {
     },
     setPaymentVerification: async(orderId) => {        
         await Sales_orders.update(
-            { id_payments_status: 7 },
+            { id_payments_status: 6 },
             { where: { id: orderId } }
         )
     },
@@ -209,6 +209,19 @@ const ordersQueries = {
             { where: { id: orderId } }
         )
     },
+    updatePaymentsStatusById: async(idOrders,idPaymentsStatus) => {
+        await Sales_orders.update(
+            { id_payments_status: idPaymentsStatus },
+            { where: { id: idOrders } }
+        )
+    },
+    updateOrderStatus: async(idOrders,idOrderStatus) => {
+
+        await Sales_orders.update(
+            { id_orders_status: idOrderStatus },
+            { where: { id: idOrders } }
+        )
+    },
     webAndDifSales: async(iDate,fDate) => {
         const webAndDifSales = await Sales_orders.findAll({
             include: [
@@ -229,9 +242,31 @@ const ordersQueries = {
         })
         return webAndDifSales
     },
-    updateOrderTotal: async(orderId,newTotal) => {        
+    updateOrderTotal: async(orderId,newSubtotal,newTotal) => {        
         await Sales_orders.update(
-            { total: newTotal },
+            {
+                subtotal: newSubtotal,
+                total: newTotal,
+             },
+            { where: { id: orderId } }
+        )
+    },
+    updateOrder: async(orderId,data) => {        
+        await Sales_orders.update(
+            {
+                subtotal: data.subtotal,
+                discount:data.discount,                
+                total: data.total,
+                id_orders_status:data.id_orders_status,
+             },
+            { where: { id: orderId } }
+        )
+    },
+    updateOrderObs: async(orderId,observations) => {        
+        await Sales_orders.update(
+            {
+                observations: observations
+             },
             { where: { id: orderId } }
         )
     },

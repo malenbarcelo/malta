@@ -9,11 +9,6 @@
         </div>
 
         <div class="yesNoQuestion" id="dlppQuestion"></div>
-
-        <!---<div class="yesNoQuestion notVisible" id="dlppAlert">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Al eliminar el producto, el pedido quedará sin productos se eliminará el pedido ya que el mismo cuenta con una sola línea.
-        </div>--->
         
         <div class="divButtonsRow mbs">
             <div id="dlppAccept" class="button1 bs">Aceptar</div>
@@ -30,3 +25,118 @@
         </div>
     </div>
 </div>
+
+<!----------Edit line ---------->
+<div class="yesNoPopup" id="elpp">
+    
+    <div class="yesNoContent" id="elppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="yesNoClose1" id="elppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts" id="elppTitle">EDITAR DATOS</div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <label class="label1" id="elppPriceLabel">Precio unitario</label>
+                <input type="number" step="0.01" class="input1 inputL" id="elppPrice">
+                <div class="divError"  id="elppPriceError">Debe completar el precio</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="elppQtyLabel">Cantidad requerida</label>
+                <input type="number" class="input1 inputL" id="elppQtyR">
+            </div>
+            <div class="divInput">
+                <label class="label1" id="elppQtyLabel">Cantidad confirmada</label>
+                <input type="number" class="input1 inputL" id="elppQtyC">
+            </div>            
+        </div>
+
+        <div class="divButtonsRow">
+            <div id="elppAccept" class="button1 bxs">Aceptar</div>
+            <div id="elppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<!----------add product---------->
+<div class="yesNoPopup" id="appp">
+    
+    <div class="yesNoContent" id="apppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="yesNoClose1" id="apppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts" id="apppTitle">ASIGNACIÓN MASIVA</div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <label class="label1" id="selectProductLabel">Producto</label>
+                <input type="text" class="input1 inputXXXL" id="selectProduct">
+                <ul class="predictedElements" id="ulPredictedProducts2"></ul>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="selectCustomerLabel">Cliente</label>
+                <input type="text" class="input1 inputXXXL" id="selectCustomer">
+                <ul class="predictedElements" id="ulPredictedCustomers2"></ul>
+            </div>
+        </div>
+
+        <div class="divTable" id="productsClientsTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thLeftBorder">Producto</th>
+                        <th class="theadCss wXL">Cliente</th>
+                        <th class="theadCss wXXS thRightBorder"><i class="fa-regular fa-trash-can tableIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="bodyProductsClients"></tbody>
+            </table>
+        </div>
+
+        <div class="divButtonsRow">
+            <div id="apppAccept" class="button1 bxs">Aceptar</div>
+            <div id="apppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<!----------Observations---------->
+<div class="yesNoPopup" id="lopp">
+    
+    <div class="yesNoContent" id="loppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-comment"></i></div>
+            <div class="yesNoClose1" id="loppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts" id="loppTitle">OBSERVACIONES</div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <textarea class="input1 inputXXL" id="loppObs"></textarea>
+            </div> 
+        </div>
+
+        <div class="divButtonsRow">
+            <div id="loppAccept" class="button1 bxs">Guardar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="loppOk">    
+    <div class="okContent" id="loppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Observaciones guardadas con éxito</div>
+        </div>
+    </div>
+</div>
+
+

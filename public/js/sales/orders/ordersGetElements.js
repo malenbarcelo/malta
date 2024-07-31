@@ -41,12 +41,11 @@ function getElements() {
     //checks
     og.checks1 = [channel_1,channel_2,channel_3,channel_4]
 
-    //close and cancel
-    og.closePopups = [rpppClose,rpppCancel,doppClose,doppCancel,amppClose,amppCancel,coppClose,coppCancel,roppClose,roppCancel,cdppClose,cdppCancel,eodppClose,eodppCancel,scppCancel,scppClose]
+    //close and cancel    
     og.closeSidePopups = [ceoppClose]
 
     //table icons
-    og.tableIcons = [eoppIcon,rpppIcon,pvppIcon,doppIcon,amppIcon,coppIcon]
+    
 
     //inputs
     og.ceoppColorInputs = [color0,color1,color2,color3,color4,color5,color6,color7]
