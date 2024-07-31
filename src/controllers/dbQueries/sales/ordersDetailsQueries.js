@@ -1,12 +1,11 @@
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Sales_orders_details = db.local.Sales_orders_details
+const model = db.Sales_orders_details
 
 const ordersDetailsQueries = {
     inProgressOrdersDetails: async() => {
-        const ordersDetails = await Sales_orders_details.findAll({
+        const ordersDetails = await model.findAll({
             include: [
                 {
                     association: 'orders_details_orders',
@@ -32,7 +31,7 @@ const ordersDetailsQueries = {
         return ordersDetails
     },
     cancelOrderDetail: async(lineId,observations) => {        
-        await Sales_orders_details.update(
+        await model.update(
             { 
                 enabled: 0,
                 observations:observations 
@@ -40,18 +39,8 @@ const ordersDetailsQueries = {
             { where: { id: lineId } }
         )
     },
-    // orderDetails: async(orderId) => {
-    //     const orderDetails = await Sales_orders_details.findAll({
-    //         where:{
-    //             enabled:1,
-    //             /*id_orders:orderId*/
-    //         },
-    //         raw:true
-    //     })
-    //     return orderDetails
-    // },
     findOrderDetails: async(idOrders) => {
-        const findOrderDetails = await Sales_orders_details.findAll({
+        const findOrderDetails = await model.findAll({
             where:{
                 id_orders:idOrders
             },
@@ -60,7 +49,7 @@ const ordersDetailsQueries = {
         return findOrderDetails
     },
     editOrderDetail: async(lineId,data,observations) => {        
-        await Sales_orders_details.update(
+        await model.update(
             { 
                 unit_price:data.unit_price,
                 required_quantity:data.required_quantity == '' ? null : data.required_quantity,
@@ -72,12 +61,12 @@ const ordersDetailsQueries = {
         )
     },
     delete: async(orderId) => {        
-        await Sales_orders_details.destroy(
+        await model.destroy(
             { where: { id_orders: orderId } }
         )
     },
     updateOrderDetailObs: async(orderDetailId,observations) => {        
-        await Sales_orders_details.update(
+        await model.update(
             {
                 observations2: observations
              },

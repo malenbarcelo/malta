@@ -1,12 +1,11 @@
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Sales_payments_ninox = db.local.Sales_payments_ninox
+const model = db.Sales_payments_ninox
 
 const paymentsNinoxQueries = {
     registerOrderPayment: async(orderData, orderId) => {
-        await Sales_payments_ninox.create({
+        await model.create({
             date:orderData.date,
             id_orders:orderId,
             id_customers:orderData.id_customers,
@@ -18,7 +17,7 @@ const paymentsNinoxQueries = {
     },
     cancelPayment: async(orderId) => {
         
-        await Sales_payments_ninox.update(
+        await model.update(
             { enabled: 0 },
             { where: { id_orders: orderId } }
         )  

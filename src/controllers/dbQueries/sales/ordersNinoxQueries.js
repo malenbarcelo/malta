@@ -1,15 +1,12 @@
+
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Sales_orders_ninox = db.local.Sales_orders_ninox
-const customersQueries = require('../data/customersQueries')
-const productsQueries = require('../cuttings/productsQueries')
-const paymenMethodsQueriesQueries = require('../data/paymentMethodsQueries')
+const model = db.Sales_orders_ninox
 
 const ninoxOrdersQueries = {
     ninoxSales: async(iDate,fDate) => {
-        const ninoxSales = await Sales_orders_ninox.findAll({
+        const ninoxSales = await model.findAll({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_sales_channels'}
@@ -29,7 +26,7 @@ const ninoxOrdersQueries = {
         return ninoxSales
     },
     getOrder: async(orderNumber) => {
-        const getOrder = await Sales_orders_ninox.findAll({            
+        const getOrder = await model.findAll({            
             where:{
                 order_number:orderNumber,
             }
@@ -40,7 +37,7 @@ const ninoxOrdersQueries = {
         return orderId
     },
     monthOrders: async(month,year) => {
-        const monthOrders = await Sales_orders_ninox.findAll({
+        const monthOrders = await model.findAll({
             where: {
                 date: {
                     [sequelize.Op.and]: [
@@ -56,7 +53,7 @@ const ninoxOrdersQueries = {
     },
     saveOrders: async(data) => {
         for (let i = 0; i < data.length; i++) {
-            await Sales_orders_ninox.create({
+            await model.create({
                 date:data[i].date,
                 order_number:data[i].order_number,
                 id_sales_channels:5,
@@ -74,7 +71,7 @@ const ninoxOrdersQueries = {
         }
     },
     cancelOrder: async(orderId) => {        
-        await Sales_orders_ninox.update(
+        await model.update(
             { enabled: 0 },
             { where: { id: orderId } }
         )

@@ -1,8 +1,7 @@
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
-const model = db.local.Sales_wp_order_itemmeta
-const { Op } = require('sequelize')
+const { Op, fn, col } = require('sequelize')
+const model = db.Sales_wp_order_itemmeta
 
 const wpOrderItemmetaQueries = {
     monthOrderItemmeta: async(month,year) => {

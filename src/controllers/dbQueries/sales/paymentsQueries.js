@@ -1,12 +1,11 @@
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Sales_payments = db.local.Sales_payments
+const model = db.Sales_payments
 
 const paymentsQueries = {
     inProgressOrdersPayments: async(ordersIds) => {
-        const orderPayments = await Sales_payments.findAll({
+        const orderPayments = await model.findAll({
             attributes: [
                 'id_orders',
                 [fn('SUM', col('amount')), 'total_amount']
@@ -22,7 +21,7 @@ const paymentsQueries = {
         
         const date = new Date()
 
-        await Sales_payments.create({
+        await model.create({
             date:date,
             id_orders:idOrder,
             id_customers:idCustomer,
@@ -34,7 +33,7 @@ const paymentsQueries = {
         
         const date = new Date()
 
-        await Sales_payments.create({
+        await model.create({
             date:date,
             id_customers:idCustomer,
             id_orders:null,
@@ -43,7 +42,7 @@ const paymentsQueries = {
         })
     },
     positiveBalance: async(idCustomer) => {
-        const positiveBalance = await Sales_payments.findOne({
+        const positiveBalance = await model.findOne({
             attributes: [
                 [fn('SUM', col('amount')), 'total_amount']
               ],

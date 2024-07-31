@@ -1,13 +1,12 @@
 const db = require('../../../../database/models')
-const { localDB } = require('../../../../database/config/sequelizeConfig')
 const sequelize = require('sequelize')
 const { Op, fn, col } = require('sequelize')
-const Sales_orders = db.local.Sales_orders
-const Sales_orders_details = db.local.Sales_orders_details
+const model = db.Sales_orders
+const Sales_orders_details = db.Sales_orders_details
 
 const ordersQueries = {
     inProgressOrders: async() => {
-        const orders = await Sales_orders.findAll({
+        const orders = await model.findAll({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
@@ -32,7 +31,7 @@ const ordersQueries = {
         return orders
     },
     inProgressOrdersShowCanceled: async() => {
-        const orders = await Sales_orders.findAll({
+        const orders = await model.findAll({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
@@ -55,7 +54,7 @@ const ordersQueries = {
         return orders
     },
     findOrder: async(orderId) => {
-        const orders = await Sales_orders.findOne({
+        const orders = await model.findOne({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
@@ -75,7 +74,7 @@ const ordersQueries = {
         return orders
     },
     newOrder: async() => {
-        const maxOrderNumber = await Sales_orders.max('order_number', {
+        const maxOrderNumber = await model.max('order_number', {
             where: {id_sales_channels: [1, 2]}
         })
 
@@ -84,7 +83,7 @@ const ordersQueries = {
         return newOrderNumber
     },
     filterOrder: async(orderNumber) => {
-        const order = await Sales_orders.findOne({
+        const order = await model.findOne({
             where: {order_number:orderNumber},
             raw:true,
         })
@@ -96,7 +95,7 @@ const ordersQueries = {
         const date = new Date()
 
         //create order
-        await Sales_orders.create({
+        await model.create({
             date:date,
             order_number:data.order_number,
             id_sales_channels:data.id_sales_channels,
@@ -132,20 +131,20 @@ const ordersQueries = {
         }        
     },
     lastId: async() => {
-        const lastId = await Sales_orders.findOne({
+        const lastId = await model.findOne({
             attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']]
           })
 
           return lastId.id
     },
     deliverOrder: async(orderId) => {        
-        await Sales_orders.update(
+        await model.update(
             { id_orders_status: 3 },
             { where: { id: orderId } }
         )
     },
     assignOrderManager: async(orderId,orderManagerId) => {
-        await Sales_orders.update(
+        await model.update(
             {
                 id_orders_managers:orderManagerId
             },
@@ -155,19 +154,19 @@ const ordersQueries = {
         )
     },
     cancelOrder: async(orderId) => {        
-        await Sales_orders.update(
+        await model.update(
             { enabled: 0 },
             { where: { id: orderId } }
         )
     },
     restoreOrder: async(orderId) => {        
-        await Sales_orders.update(
+        await model.update(
             { enabled: 1 },
             { where: { id: orderId } }
         )
     },
     setPaymentVerification: async(orderId) => {        
-        await Sales_orders.update(
+        await model.update(
             { id_payments_status: 6 },
             { where: { id: orderId } }
         )
@@ -181,7 +180,7 @@ const ordersQueries = {
         let idPaymentsStatus = 3
 
         //find order data
-        const orderToUpdate = await Sales_orders.findOne({
+        const orderToUpdate = await model.findOne({
             where:{id:orderId},
             include: [
                 {association: 'orders_payments'},
@@ -204,26 +203,26 @@ const ordersQueries = {
 
         idPaymentsStatus = (amountPaid < orderToUpdate.total && amountPaid > 0) ? 4 : 5
         
-        await Sales_orders.update(
+        await model.update(
             { id_payments_status: idPaymentsStatus },
             { where: { id: orderId } }
         )
     },
     updatePaymentsStatusById: async(idOrders,idPaymentsStatus) => {
-        await Sales_orders.update(
+        await model.update(
             { id_payments_status: idPaymentsStatus },
             { where: { id: idOrders } }
         )
     },
     updateOrderStatus: async(idOrders,idOrderStatus) => {
 
-        await Sales_orders.update(
+        await model.update(
             { id_orders_status: idOrderStatus },
             { where: { id: idOrders } }
         )
     },
     webAndDifSales: async(iDate,fDate) => {
-        const webAndDifSales = await Sales_orders.findAll({
+        const webAndDifSales = await model.findAll({
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_sales_channels'}
@@ -243,7 +242,7 @@ const ordersQueries = {
         return webAndDifSales
     },
     updateOrderTotal: async(orderId,newSubtotal,newTotal) => {        
-        await Sales_orders.update(
+        await model.update(
             {
                 subtotal: newSubtotal,
                 total: newTotal,
@@ -252,7 +251,7 @@ const ordersQueries = {
         )
     },
     updateOrder: async(orderId,data) => {        
-        await Sales_orders.update(
+        await model.update(
             {
                 subtotal: data.subtotal,
                 discount:data.discount,                
@@ -263,7 +262,7 @@ const ordersQueries = {
         )
     },
     updateOrderObs: async(orderId,observations) => {        
-        await Sales_orders.update(
+        await model.update(
             {
                 observations: observations
              },
