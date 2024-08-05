@@ -48,9 +48,9 @@
 }
 
 #apppContent{
-    top: 26%;
-    width: 500px;
-    left: calc(50vw - 250px);
+    top: 13%;
+    width: 1000px;
+    left: calc(50vw - 500px);
 }
 
 #obppContent,#loppContent{
@@ -60,8 +60,16 @@
     z-index: 10;
 }
 
+#scppContent{
+    top: 30%;
+    width: 400px;
+    left: calc(50vw - 215px);
+    z-index: 10;
+}
+
+
 /*---ok popups content---*/
-#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent{
+#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent,#apppOkContent{
     top: 40%;
     left: calc(50vw - 150px);
 }

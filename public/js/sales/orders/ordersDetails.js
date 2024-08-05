@@ -1,12 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./ordersDetailsGlobals.js"
-import { printTableOrdersDetails,filterOrdersDetails } from "./ordersDetailsFunctions.js"
+import { printTableOrdersDetails,filterOrdersDetails,printTableAddProducts } from "./ordersDetailsFunctions.js"
 import { acceptWithEnter, predictElements, selectFocusedElement,selectWithClick,showOkPopup } from "../../generalFunctions.js"
-
-
-// import { getElements } from "./ordersGetElements.js"
-// import { printTableOrders, filterOrders, updateOrderData, predictProducts, selectFocusedProduct, hideColorsInputs, getColorsOptions, printTableCreateEdit } from "./ordersFunctions.js"
-// import { clearInputs, inputsValidation, showOkPopup } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -88,30 +83,8 @@ window.addEventListener('load',async()=>{
         selectFocusedElement(e,input,list,elementName)
     })
 
-    //data to predit
-    const dataToSelect = [
-        {
-            name: 'customer_name',
-            list: ulPredictedCustomers,
-            input: filterCustomer
-        },
-        {
-            name: 'description',
-            list: ulPredictedProducts,
-            input: filterProduct
-        }
-    ]
-
-    document.addEventListener('click', function(e) {
-        const {clickPredictedElement,inputToClick} = selectWithClick(e,dataToSelect)
-        if (clickPredictedElement && (inputToClick.id == 'filterCustomer' || inputToClick.id == 'filterProduct')) {
-            filterOrdersDetails()
-            printTableOrdersDetails(odg.ordersDetailsFiltered)
-        }  
-    })
-
     //close popups
-    const closePopups = [apppClose, apppCancel,dlppClose,dlppCancel,elppClose,loppClose]
+    const closePopups = [apppClose, apppCancel,dlppClose,dlppCancel,elppClose,loppClose,scppClose]
     closePopups.forEach(element => {
         element.addEventListener("click", async() => {
             let popupToClose = document.getElementById(element.id.replace('Close',''))
@@ -176,12 +149,16 @@ window.addEventListener('load',async()=>{
 
     //DGAaddProduct    
     DGAaddProduct.addEventListener("click", async() => {
+        apppProduct.value = ''
+        apppCustomer.value = ''
+        odg.salesChannel = 0
+        apppError.style.display = 'none'
         appp.style.display = 'block'
     })
 
     //select product event listener - predict elements
-    selectProduct.addEventListener("input", async(e) => {
-        const input = selectProduct
+    apppProduct.addEventListener("input", async(e) => {
+        const input = apppProduct
         const list = ulPredictedProducts2
         const apiUrl = 'apis/data/products/predict-products/'
         const name = 'description'
@@ -189,16 +166,16 @@ window.addEventListener('load',async()=>{
         predictElements(input,list,apiUrl,name,elementName)
     })
 
-    selectProduct.addEventListener("keydown", async(e) => {
-        const input = selectProduct
+    apppProduct.addEventListener("keydown", async(e) => {
+        const input = apppProduct
         const list = ulPredictedProducts2
         const elementName = 'product'
         selectFocusedElement(e,input,list,elementName)
     })
 
     //select customer event listener - predict elements
-    selectCustomer.addEventListener("input", async(e) => {
-        const input = selectCustomer
+    apppCustomer.addEventListener("input", async(e) => {
+        const input = apppCustomer
         const list = ulPredictedCustomers2
         const apiUrl = 'apis/data/customers/predict-customers/'
         const name = 'customer_name'
@@ -206,8 +183,8 @@ window.addEventListener('load',async()=>{
         predictElements(input,list,apiUrl,name,elementName)
     })
 
-    selectCustomer.addEventListener("keydown", async(e) => {
-        const input = selectCustomer
+    apppCustomer.addEventListener("keydown", async(e) => {
+        const input = apppCustomer
         const list = ulPredictedCustomers2
         const elementName = 'customer'
         selectFocusedElement(e,input,list,elementName)
@@ -237,5 +214,106 @@ window.addEventListener('load',async()=>{
         showOkPopup(loppOk)
 
     })
+
+    //add products
+    apppAddLine.addEventListener("click", async(e) => {
+        if (apppProduct.value == '' && apppCustomer.value == '') {
+            apppError.innerText = 'Debe completar producto y cliente'
+            apppError.style.display = 'block'
+        }else{
+            if (apppProduct.value != '' && apppCustomer.value != '') {
+                const productsToAdd = odg.products.filter(p => p.description == apppProduct.value)
+                const customer = odg.customers.filter(c => c.customer_name == apppCustomer.value)
+
+                if (productsToAdd.length == 0) {
+                    apppError.innerText = 'Producto inválido'
+                    apppError.style.display = 'block'
+                }else{
+                    if (customer.length == 0) {
+                        apppError.innerText = 'Cliente inválido'
+                        apppError.style.display = 'block'
+                    }else{
+                        const id = odg.productsToAdd.length == 0 ? 1 : Math.max(...odg.productsToAdd.map(element => element.id)) + 1
+                        odg.productsToAdd.push({
+                            'id':id,
+                            'customer':customer[0],
+                            'products':productsToAdd
+                        })
+                        printTableAddProducts(odg.productsToAdd)
+                        apppCustomer.value = ''
+                        apppError.style.display = 'none'
+                    }
+                }
+            }
+        }
+        
+    })
+
+    acceptWithEnter(apppCustomer,apppAddLine)
+
+    apppAccept.addEventListener("click", async(e) => {
+
+        const data = odg.productsToAdd
+        odg.createOrder = false
+
+        //find out if there are order to create
+        let ordersToCreate = 0
+        data.forEach(element => {
+            const customerOrders = odg.orders.filter( o => o.id_customers == element.customer.id)
+            if (customerOrders.length == 0) {
+                ordersToCreate +=1
+                odg.createOrder = true
+                element.createOrder = true
+            }else{
+                element.createOrder = false
+            }
+        })
+
+        if (ordersToCreate > 0 && odg.salesChannel == 0) {
+            scpp.style.display = 'block'
+        }else{
+            
+            data.forEach(element => {
+                if (element.createOrder == true) {
+                    element.id_sales_channels = parseInt(odg.salesChannel)
+                }
+            })
+
+            await fetch(dominio + 'apis/sales/add-products',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+        }
+
+        // console.log(data)
+        // console.log(ordersToCreate)
+
+        // await fetch(dominio + 'apis/sales/add-products',{
+        //     method:'POST',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(data)
+        // })
+
+        // odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+        // odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+        // odg.ordersDetailsFiltered = odg.ordersDetails
+        
+        // //print table
+        // filterOrdersDetails()
+        // printTableOrdersDetails(odg.ordersDetails)
+
+        // appp.style.display = 'none'
+        // showOkPopup(apppOk)
+    })
+
+    scppAccept.addEventListener("click", async(e) => {
+        odg.salesChannel = scppSalesChannel.value
+        scpp.style.display = 'none'
+        apppAccept.click()
+    })
+
+
+
 
 })

@@ -28,6 +28,8 @@ router.post('/edit-order-observations',apisSalesController.editOrderObs)
 router.post('/cancel-order-detail',apisSalesController.cancelOrderDetail)
 router.post('/edit-order-detail',apisSalesController.editOrderDetail)
 router.post('/edit-order-detail-observations',apisSalesController.editOrderDetailObs)
+router.post('/add-products',apisSalesController.addProducts)
+
 
 
 //router.post('/delete-product',apisSalesController.deleteProduct)

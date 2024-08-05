@@ -62,32 +62,6 @@ window.addEventListener('load',async()=>{
         selectFocusedElement(e,input,list,elementName)
     })
 
-    //data to predit
-    const dataToSelect = [
-        {
-            name: 'customer_name',
-            list: ulPredictedCustomers,
-            input: filterCustomer
-        },
-        {
-            name: 'description',
-            list: ulPredictedProducts,
-            input: selectProduct
-        }
-
-    ]
-
-    document.addEventListener('click', function(e) {
-        const {clickPredictedElement,inputToClick} = selectWithClick(e,dataToSelect)
-        if (clickPredictedElement && inputToClick.id == 'filterCustomer') {
-            filterOrders()
-            printTableOrders(og.ordersFiltered)
-        }
-        if (clickPredictedElement && inputToClick.id == 'selectProduct') {
-            changeSizesOptions()
-        }       
-    })
-
     //unfilter event listener
     unfilterOrders.addEventListener("click", async() => {
         og.ordersFiltered = og.orders

@@ -109,6 +109,9 @@ async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
                 })
                 
                 element.addEventListener("click", async() => {
+                    input.value = element.innerText
+                    const event = new Event('change')
+                    input.dispatchEvent(event)
                     list.style.display = 'none'
                 })
             }
@@ -119,6 +122,7 @@ async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
         list.innerHTML = ''
     }
 }
+
 
 function selectWithClick(e,dataToSelect) {
     let clickPredictedElement = false
@@ -171,13 +175,16 @@ function selectFocusedElement(e,input,list,elementName) {
         
     }else if(e.key === 'Enter'){
 
-        if (g.productFocused == -1) {
-            input.value = ''
-        }else{
-            input.value = g.elementToFocus.innerText
+        if (list.style.display == 'block') {
+            if (g.productFocused == -1) {
+                input.value = ''
+            }else{
+                input.value = g.elementToFocus.innerText
+            }
+            
+            list.style.display = 'none'
         }
-        
-        list.style.display = 'none'
+
     }else if(e.key === 'Escape'){
         g.focusedElement = -1
         input.value = ''
@@ -196,6 +203,7 @@ function closePopupsEventListeners(closePopups) {
 }
 
 function acceptWithEnter(input,button) {
+
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             button.click()

@@ -21,6 +21,7 @@
     color: var(--color2);
     transition: background-color 0.5s ease;
     border-radius: 5px;
+    border:none
 }
 
 .button1:hover{
@@ -37,4 +38,16 @@
     font-size: 12px;
     width: 70px;
     padding: 4px 0px;
+}
+
+.bm{
+    font-size: 13px;
+    width: 100px;
+    padding: 5px 0px;
+}
+
+.bl{
+    font-size: 14px;
+    width: 150px;
+    padding: 8px 0px;
 }

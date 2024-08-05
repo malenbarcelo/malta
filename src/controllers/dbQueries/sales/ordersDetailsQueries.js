@@ -73,6 +73,9 @@ const ordersDetailsQueries = {
             { where: { id: orderDetailId } }
         )
     },
+    createOrdersDetails: async(ordersDetailsToCreate) => {
+        model.bulkCreate(ordersDetailsToCreate)
+    },
 }       
 
 module.exports = ordersDetailsQueries

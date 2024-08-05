@@ -28,6 +28,7 @@ const ordersQueries = {
             order:[['date','ASC'],['id','ASC']],
             nest:true
         })
+
         return orders
     },
     inProgressOrdersShowCanceled: async() => {
@@ -110,6 +111,9 @@ const ordersQueries = {
             enabled:1
         })
     },
+    createOrders: async(ordersToreate) => {
+        model.bulkCreate(ordersToreate)
+    },
     createOrderDetails: async(data,orderId) => {
 
         const orderDetails = data.order_details
@@ -130,6 +134,7 @@ const ordersQueries = {
             })            
         }        
     },
+    
     lastId: async() => {
         const lastId = await model.findOne({
             attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']]

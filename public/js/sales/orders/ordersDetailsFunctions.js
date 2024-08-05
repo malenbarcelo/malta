@@ -17,6 +17,7 @@ async function printTableOrdersDetails(dataToPrint) {
         
         const requiredQuantity = element.required_quantity == null ? '' : element.required_quantity
         const confirmedQuantity = element.confirmed_quantity == null ? '' : element.confirmed_quantity
+        const commentIcon = (element.observations2 == '' || element.observations2 == null) ? 'fa-comment' : 'fa-comment-dots'
 
         //print table
         const line1 = '<th class="' + rowClass + '">' + orderData.order_number + '</th>'
@@ -32,7 +33,7 @@ async function printTableOrdersDetails(dataToPrint) {
         const line11 = '<th class="' + rowClass + '">' + orderData.orders_orders_status.order_status + '</th>'
         const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'
         const line13 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
-        const line14 = '<th class="' + rowClass + '"><i class="fa-regular fa-comment allowedIcon" id="obs_' + element.id + '"></i></th>'
+        const line14 = '<th class="' + rowClass + '"><i class="fa-regular ' + commentIcon + ' allowedIcon" id="obs_' + element.id + '"></i></th>'
         const line15 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
         
 
@@ -115,8 +116,67 @@ function filterOrdersDetails() {
     odg.ordersDetailsFiltered = filterOrderManager.value == 'default' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_managers == filterOrderManager.value)
 }
 
+function printTableAddProducts(dataToPrint) {
 
+    bodyAddProducts.innerHTML = ''
+    let counter = 0
+    const fragment = document.createDocumentFragment()
 
+    dataToPrint.forEach(element => {
+        element.products.forEach(product => {
+            if (product.enabled != 0) {
+                
+                const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        
+                const row = document.createElement('tr')
 
+                row.innerHTML = `
+                    <th class="${rowClass}">${element.customer.customer_name}</th>
+                    <th class="${rowClass}">${product.description}</th>
+                    <th class="${rowClass}">${product.color}</th>
+                    <th class="${rowClass}">${product.size}</th>
+                    <th class="${rowClass}"><i class="fa-regular fa-trash-can allowedIcon" id="delete_${element.id}_${product.id}"></i></th>
+                `;
+                fragment.appendChild(row)
 
-export {printTableOrdersDetails,filterOrdersDetails}
+                counter += 1
+            }                        
+        })        
+    })
+
+    bodyAddProducts.appendChild(fragment)
+
+    addProductsEventListeners(dataToPrint)
+}
+
+function addProductsEventListeners(dataToPrint) {
+
+    dataToPrint.forEach(element => {
+        element.products.forEach(product => {
+            const deleteLine = document.getElementById('delete_' + element.id + '_' + product.id)
+
+            //delete line
+            if (deleteLine) {
+                deleteLine.addEventListener('click',async()=>{
+
+                    odg.productsToAdd = odg.productsToAdd.map(item => {
+                        if (item.id == element.id) {
+                            item.products = item.products.map(product2 => {
+                                if (product2.id === product.id) {
+                                    return { ...product2, enabled: 0 };
+                                }
+                                return product2
+                            })
+                        }
+                        return item
+                    })
+
+                    printTableAddProducts(odg.productsToAdd,)
+                })
+            }        
+            
+        })
+    })
+}
+
+export {printTableOrdersDetails,filterOrdersDetails,printTableAddProducts}

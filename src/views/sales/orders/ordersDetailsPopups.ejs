@@ -56,7 +56,7 @@
 
         <div class="divButtonsRow">
             <div id="elppAccept" class="button1 bxs">Aceptar</div>
-            <div id="elppCancel" class="button1 bxs">Cancelar</div>
+            <div id="elppCancel" class="button1 bxs">Guardar</div>
         </div>
     </div>
 </div>
@@ -73,35 +73,80 @@
 
         <div class="yesNoTitle2 mts" id="apppTitle">ASIGNACIÓN MASIVA</div>
 
-        <div class="divInputsColumn mtl mbl">
+        <div class="divInputsColumn mtl">
             <div class="divInput">
-                <label class="label1" id="selectProductLabel">Producto</label>
-                <input type="text" class="input1 inputXXXL" id="selectProduct">
+                <label class="label1" id="apppProductLabel">Producto</label>
+                <input type="text" class="input1 inputXXXL" id="apppProduct">
                 <ul class="predictedElements" id="ulPredictedProducts2"></ul>
             </div>
             <div class="divInput">
-                <label class="label1" id="selectCustomerLabel">Cliente</label>
-                <input type="text" class="input1 inputXXXL" id="selectCustomer">
+                <label class="label1" id="apppCustomerLabel">Cliente</label>
+                <input type="text" class="input1 inputXXXL" id="apppCustomer">
                 <ul class="predictedElements" id="ulPredictedCustomers2"></ul>
             </div>
+        </div>
+
+        <div class="divError" id="apppError">Debe completar todos los datos</div>
+
+        <div class="divButtonsRow mtm mbm">
+            <div id="apppAddLine" class="button1 bxs">Agregar</div>
         </div>
 
         <div class="divTable" id="productsClientsTable">
             <table>
                 <thead>
                     <tr>
-                        <th class="theadCss wXL thLeftBorder">Producto</th>
-                        <th class="theadCss wXL">Cliente</th>
+                        <th class="theadCss wXL thLeftBorder">Cliente</th>
+                        <th class="theadCss wXXL">Producto</th>
+                        <th class="theadCss wXL">Color</th>
+                        <th class="theadCss wXS">Talle</th>
                         <th class="theadCss wXXS thRightBorder"><i class="fa-regular fa-trash-can tableIcon"></i></th>
                     </tr>
                 </thead>
-                <tbody id="bodyProductsClients"></tbody>
+                <tbody id="bodyAddProducts"></tbody>
             </table>
         </div>
 
-        <div class="divButtonsRow">
+        <div class="divButtonsRow mtm mbm">
             <div id="apppAccept" class="button1 bxs">Aceptar</div>
             <div id="apppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="apppOk">    
+    <div class="okContent" id="apppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Productos agregados con éxito</div>
+        </div>
+    </div>
+</div>
+
+<!----------select sales channel---------->
+<div class="yesNoPopup" id="scpp">
+    
+    <div class="yesNoContent" id="scppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="yesNoClose1" id="scppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="yesNoTitle2 mts">Debe seleccionar el canal de venta para las órdenes nuevas</div>
+
+        <div class="divInputsColumn mtm">
+            <div class="divInput">
+                <select id="scppSalesChannel" class="input1 inputLNoLabel">
+                    <option value="1">Difusión1</option>
+                    <option value="2">Difusión2</option>
+                </select>
+                
+            </div>            
+        </div>
+
+        <div class="divButtonsRow mtm mbs">
+            <div id="scppAccept" class="button1 bxs">Aceptar</div>
         </div>
     </div>
 </div>

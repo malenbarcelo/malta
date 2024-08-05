@@ -8,7 +8,7 @@ const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
 const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
 const {updateOrderData,updateOrderStatus,updatePaymentStatus} = require('../functions/salesFunctions')
-const moment = require('moment-timezone');
+const moment = require('moment-timezone')
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
@@ -133,6 +133,88 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  addProducts: async(req,res) =>{
+
+    try{
+
+      let data = req.body
+      let ordersToCreate = []
+      let ordersDetailsToCreate = []
+
+      //get orders to create data
+      const newOrderNumber = await ordersQueries.newOrder()
+      let orderNumber = newOrderNumber
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].createOrder == true) {
+          const date = new Date()
+          date.setHours(date.getHours() - 3)
+          ordersToCreate.push({
+            date:date,
+            order_number:orderNumber,
+            id_sales_channels:data[i].id_sales_channels,
+            id_customers: data[i].customer.id,
+            subtotal:0,
+            discount:parseFloat(data[i].customer.discount,2),
+            total:0,
+            id_orders_status:1,
+            id_payments_status:3,
+            id_orders_managers:1,
+            observations:null,
+            enabled:1
+          })
+          orderNumber += 1
+        }
+      }
+
+      //create orders if necessary
+      if (ordersToCreate.length > 0) {
+        for (let i = 0; i < ordersToCreate.length; i++) {
+          await ordersQueries.createOrder(ordersToCreate[i])
+          
+        }
+        //await ordersQueries.createOrders(ordersToCreate)        
+      }
+
+      //get order to create details data      
+      let inProgressOrders = await ordersQueries.inProgressOrders()
+      console.log(inProgressOrders.length)
+      inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
+      console.log(inProgressOrders.length)
+
+      for (let i = 0; i < data.length; i++) {        
+        let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)
+        //console.log(customerOrders)
+        
+        const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
+
+        for (let j = 0; j < data[i].products.length; j++) {
+          ordersDetailsToCreate.push({
+            id_orders: orderId,
+            id_products:data[i].products[j].id,
+            description:data[i].products[j].description,
+            color:data[i].products[j].color,
+            size:data[i].products[j].size,
+            unit_price:data[i].products[j].unit_price,
+            required_quantity:null,
+            confirmed_quantity:null,
+            extended_price:0,
+            enabled:1,
+            observations:null,
+            observations2:null
+          })
+        }        
+      }
+
+      //create orders details
+      await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)        
+      
+      res.status(200).json()
+
+    }catch(error){
+      console.log(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   editOrderObs: async(req,res) =>{
     try{
 
@@ -144,7 +226,7 @@ const apisSalesController = {
       res.status(200).json()
 
     }catch(error){
-      console.group(error)
+      console.log(error)
       return res.send('Ha ocurrido un error')
     }
   },
