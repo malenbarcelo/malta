@@ -477,11 +477,13 @@ window.addEventListener('load',async()=>{
                 })
                 id += 1
             })
+
+            console.log(og.orderDetails)
             selectProduct.value = ''
             selectSize.value = ''
             scpp.style.display = 'none'
             updateOrderData()
-            printTableCreateEdit()
+            printTableCreateEdit(og.orderDetails)
         }
 
     })

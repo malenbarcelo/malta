@@ -206,7 +206,7 @@ const ordersQueries = {
 
         amountPaid = amountPaidPayments + amountPaidAccounts
 
-        idPaymentsStatus = (amountPaid < orderToUpdate.total && amountPaid > 0) ? 4 : 5
+        idPaymentsStatus = ((amountPaid < orderToUpdate.total && amountPaid > 0) || orderToUpdate.id_orders_status == 1) ? 4 : 5
         
         await model.update(
             { id_payments_status: idPaymentsStatus },

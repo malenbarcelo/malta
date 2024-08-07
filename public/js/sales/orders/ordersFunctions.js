@@ -67,7 +67,8 @@ async function printTableOrders(dataToPrint) {
 
         const date = dateToString(element.date)
         const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
-        const paymentClass = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'
+        //const paymentClass = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? 'allowedIcon' : 'notAllowedIcon'
+        const paymentClass = 'allowedIcon'
         const paymentVStatus = (element.enabled == 1 && element.id_orders_status != 1 && element.id_payments_status != 5) ? '' : 'disabled'
         const paymentVchequed = element.id_payments_status == 6 ? 'checked' : ''
         const deliverClass = (element.enabled == 1 && element.id_orders_status == 2) ? 'allowedIcon' : 'notAllowedIcon'
@@ -444,24 +445,23 @@ function printTableCreateEdit() {
     //printTable
     og.orderDetails.forEach(element => {
 
-        if (og.action == 'create' || element.enabled == 1) {
-            const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
 
-            //print table
-            const line1 = '<th class="' + rowClass + '">' + element.description + '</th>'
-            const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
-            const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
-            const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
-            const line5 = '<th class="' + rowClass + '">' + (element.required_quantity == null ? '' : element.required_quantity) + '</th>'
-            const line6 = '<th class="' + rowClass + '">' + (element.confirmed_quantity == null ? '' : element.confirmed_quantity) + '</th>'
-            const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
-            const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
-            const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
+        //print table
+        const line1 = '<th class="' + rowClass + '">' + element.description + '</th>'
+        const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
+        const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
+        const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
+        const line5 = '<th class="' + rowClass + '">' + (element.required_quantity == null ? '' : element.required_quantity) + '</th>'
+        const line6 = '<th class="' + rowClass + '">' + (element.confirmed_quantity == null ? '' : element.confirmed_quantity) + '</th>'
+        const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
+        const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
+        const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
 
-            bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
+        bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
 
-            counter += 1
-        }
+        counter += 1
+        
 
     })
 

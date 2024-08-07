@@ -126,6 +126,18 @@ const apisSalesController = {
       //update order status
       updateOrderStatus(data.id)
 
+      //get order data
+      const orderData = await ordersQueries.findOrder(data.id)
+      
+      //update order total
+      const newTotal = await updateOrderData(orderData.id)
+
+      //update payment status      
+      const idPaymentsStatus = orderData.id_payments_status
+      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+        updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
+      }
+
       res.status(200).json()
 
     }catch(error){
@@ -169,25 +181,26 @@ const apisSalesController = {
       //create orders if necessary
       if (ordersToCreate.length > 0) {
         for (let i = 0; i < ordersToCreate.length; i++) {
-          await ordersQueries.createOrder(ordersToCreate[i])
-          
+          await ordersQueries.createOrder(ordersToCreate[i])          
         }
-        //await ordersQueries.createOrders(ordersToCreate)        
       }
 
-      //get order to create details data      
+      //get order to create details data
+      let ordersToUpdate = []      
       let inProgressOrders = await ordersQueries.inProgressOrders()
-      console.log(inProgressOrders.length)
       inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
-      console.log(inProgressOrders.length)
 
-      for (let i = 0; i < data.length; i++) {        
-        let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)
-        //console.log(customerOrders)
+      for (let i = 0; i < data.length; i++) {
         
+        let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)        
         const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
-
+        
         for (let j = 0; j < data[i].products.length; j++) {
+
+          if (!ordersToUpdate.includes(orderId)) {
+            ordersToUpdate.push(orderId)
+          }
+
           ordersDetailsToCreate.push({
             id_orders: orderId,
             id_products:data[i].products[j].id,
@@ -206,7 +219,19 @@ const apisSalesController = {
       }
 
       //create orders details
-      await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)        
+      await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)
+      
+      //update order_status
+      await ordersQueries.updateOrderStatus(ordersToUpdate,1)
+
+      //update payment_status
+      for (let i = 0; i < ordersToUpdate.length; i++) {
+        const orderData = await ordersQueries.findOrder(ordersToUpdate[i])
+        console.log(orderData)
+        if (orderData.id_payments_status == 5) {
+          await ordersQueries.updatePaymentsStatus(ordersToUpdate[i],4)
+        }
+      }
       
       res.status(200).json()
 

@@ -284,27 +284,21 @@ window.addEventListener('load',async()=>{
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
+
+            odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
+            odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+            odg.ordersDetailsFiltered = odg.ordersDetails
+            
+            //print table
+            filterOrdersDetails()
+            printTableOrdersDetails(odg.ordersDetails)
+
+            appp.style.display = 'none'
+            
+            showOkPopup(apppOk)
         }
 
-        // console.log(data)
-        // console.log(ordersToCreate)
-
-        // await fetch(dominio + 'apis/sales/add-products',{
-        //     method:'POST',
-        //     headers: {'Content-Type': 'application/json'},
-        //     body: JSON.stringify(data)
-        // })
-
-        // odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
-        // odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-        // odg.ordersDetailsFiltered = odg.ordersDetails
         
-        // //print table
-        // filterOrdersDetails()
-        // printTableOrdersDetails(odg.ordersDetails)
-
-        // appp.style.display = 'none'
-        // showOkPopup(apppOk)
     })
 
     scppAccept.addEventListener("click", async(e) => {
