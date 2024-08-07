@@ -24,18 +24,18 @@ const bottomHeaderMenu = [
         href:'/sales/consolidated',
         subitems:[]
     },
-    {
-        id:3,
-        name:'PAGOS',
-        href:'/sales/payments',
-        subitems:[]
-    },
-    {
-        id:4,
-        name:'ESTADÍSTICAS',
-        href:'/sales/statistics/sales',
-        subitems:[]
-    }
+    // {
+    //     id:3,
+    //     name:'PAGOS',
+    //     href:'/sales/payments',
+    //     subitems:[]
+    // },
+    // {
+    //     id:4,
+    //     name:'ESTADÍSTICAS',
+    //     href:'/sales/statistics/sales',
+    //     subitems:[]
+    // }
 ]
 
 const salesController = {
