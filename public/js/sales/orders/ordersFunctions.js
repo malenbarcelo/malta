@@ -74,7 +74,7 @@ async function printTableOrders(dataToPrint) {
         const deliverClass = (element.enabled == 1 && element.id_orders_status == 2) ? 'allowedIcon' : 'notAllowedIcon'
         const cancelClass = (element.id_orders_status == 1 || element.id_orders_status == 2) && (element.id_payments_status == 1 || element.id_payments_status == 2 || element.id_payments_status == 3) ? 'allowedIcon' : 'notAllowedIcon'
         const status = element.enabled == 0 ? 'Cancelado' : element.orders_orders_status.order_status
-        const color = element.enabled == 0 ? 'errorColor' : ''
+        const color = (element.enabled == 0) ? 'errorColor' : ''
         const cancelIcon = element.enabled == 1 ? 'fa-circle-xmark' : 'fa-circle-check'
         const cancelId = element.enabled == 1 ? 'cancel_' : 'restore_'
         const commentIcon = (element.observations == '' ||  element.observations == null) ? 'fa-comment' : 'fa-comment-dots'
@@ -85,13 +85,13 @@ async function printTableOrders(dataToPrint) {
         const line3 = '<th class="' + rowClass + ' ' + color +  '">' + element.orders_sales_channels.sales_channel + '</th>'
         const line4 = '<th class="' + rowClass + ' ' + color +  '">' + element.orders_customers.customer_name + '</th>'
         const line5 = '<th class="' + rowClass + ' ' + color +  '">' + og.formatter.format(element.subtotal) + '</th>'
-        const line6 = '<th class="' + rowClass + ' ' + color + '">' + element.discount * 100 + '%' + '</th>'
+        const line6 = '<th class="' + rowClass + ' ' + color + '">' + Math.round(element.discount * 100) + '%' + '</th>'
         const line7 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.total) + '</th>'
         const line8 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.amountPaid) + '</th>'
         const line9 = '<th class="' + rowClass + ' ' + color + '">' + og.formatter.format(element.balance) + '</th>'
-        const line10 = '<th class="' + rowClass + ' ' + color + '">' + status + '</th>'
+        const line10 = '<th class="' + rowClass + ' ' + (element.id_orders_status == 1 ? 'errorColor' : color) + '">' + status + '</th>'
         const line11 = '<th class="' + rowClass + ' ' + color + '">' + element.orders_payments_status.payment_status + '</th>'
-        const line12 = '<th class="' + rowClass + ' ' + color + '">' + element.orders_orders_managers.order_manager_name + '</th>'
+        //const line12 = '<th class="' + rowClass + ' ' + color + '">' + element.orders_orders_managers.order_manager_name + '</th>'
         const line13 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
         const line14 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular fa-credit-card ' + paymentClass + '" id="' + (paymentClass == 'allowedIcon' ? ('payment_' + element.id) : null) +'"></i></th>'
         const line15 = '<th class="' + rowClass + ' ' + color + '"><input type="checkbox" id="paymentV_'+ element.id +'"' + ' ' + paymentVchequed + ' ' + paymentVStatus + '></th>'
@@ -100,7 +100,7 @@ async function printTableOrders(dataToPrint) {
         const line18 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular ' + commentIcon + ' allowedIcon" id="obs_' + element.id + '"></i></th>'
         const line19 = '<th class="' + rowClass + ' ' + color + '"><i class="fa-regular ' + cancelIcon + ' ' + cancelClass + '" id="' + (cancelClass == 'allowedIcon' ? (cancelId + element.id) : null) +'"></i></th>'
 
-        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + line16 + line17 + line18 + line19 + '</tr>'
+        bodyOrders.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line13 + line14 + line15 + line16 + line17 + line18 + line19 + '</tr>'
 
         counter += 1
 

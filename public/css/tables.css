@@ -10,14 +10,13 @@ thead{
 }/*to leave titles fixed*/ 
 
 .divTable{
-    max-height: 400px; /*to avoid overflow, it depends on the website landscape*/
     overflow-y: auto;
     width: fit-content;
     margin: auto;
 }
 
 .theadCss{
-    font-size: 13px;
+    font-size: 12px;
     text-align: center;
     background-color: var(--color1);
     color: var(--color2);
@@ -48,7 +47,7 @@ border-top-right-radius: 15px;
 .tBody1{
     font-weight: lighter;
     padding: 9px 0px;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .tBody2{
@@ -85,19 +84,7 @@ border-top-right-radius: 15px;
     text-align: center;
 }
 
-#productsClientsTable{
-    height: 250px;
-}
 
-#eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo,#obppInfo,#ob2ppInfo{
-    width: 60px;
-    top:38.5%
-}
-
-#elppInfo,#dlppInfo,#loppInfo{
-    width: 50px;
-    top:34%;
-}
 
 
 

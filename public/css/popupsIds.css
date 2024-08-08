@@ -14,7 +14,7 @@
 #cdppContent{
     top: 25%;
     width: 250px;
-    left: 575px;
+    left: calc(500px - 125px);
 }
 
 #eodppContent{
@@ -63,7 +63,7 @@
 #scppContent{
     top: 20%;
     width: 400px;
-    left: calc(700px - 200px);
+    left: calc(500px - 200px);
     z-index: 10;
 }
 

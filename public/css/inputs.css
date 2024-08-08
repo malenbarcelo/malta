@@ -128,7 +128,12 @@ accent-color: black
 }
 
 .inputM{
-    width: 120px;
+    width: 150px;
+    padding: 8px 0px 4px 0px;
+}
+
+.inputM{
+    width: 150px;
     padding: 8px 0px 4px 0px;
 }
 
@@ -138,7 +143,7 @@ accent-color: black
 }
 
 .inputL{
-    width: 150px;
+    width: 200px;
     padding: 10px 0px 3px 0px;
 }
 

@@ -30,14 +30,14 @@ async function printTableOrdersDetails(dataToPrint) {
         const line8 = '<th class="' + rowClass + '">' + element.unit_price + '</th>'
         const line9 = '<th class="' + rowClass + '">' + requiredQuantity + '</th>'
         const line10 = '<th class="' + rowClass + '">' + confirmedQuantity + '</th>'
-        const line11 = '<th class="' + rowClass + '">' + orderData.orders_orders_status.order_status + '</th>'
-        const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'
+        const line11 = '<th class="' + rowClass + ' ' + (orderData.id_orders_status == 1 ? 'errorColor': null) + '">' + orderData.orders_orders_status.order_status + '</th>'
+        //const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'
         const line13 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
         const line14 = '<th class="' + rowClass + '"><i class="fa-regular ' + commentIcon + ' allowedIcon" id="obs_' + element.id + '"></i></th>'
         const line15 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
         
 
-        bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + '</tr>'
+        bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line13 + line14 + line15 + '</tr>'
 
         counter += 1
 
@@ -116,37 +116,92 @@ function filterOrdersDetails() {
     odg.ordersDetailsFiltered = filterOrderManager.value == 'default' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_managers == filterOrderManager.value)
 }
 
+// function printTableAddProducts(dataToPrint) {
+
+//     bodyAddProducts.innerHTML = ''
+//     let counter = 0
+//     const fragment = document.createDocumentFragment()
+
+//     dataToPrint.forEach(element => {
+//         element.products.forEach(product => {
+//             if (product.enabled != 0) {
+                
+//                 const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        
+//                 const row = document.createElement('tr')
+
+//                 row.innerHTML = `
+//                     <th class="${rowClass}">${element.customer.customer_name}</th>
+//                     <th class="${rowClass}">${product.description}</th>
+//                     <th class="${rowClass}">${product.color}</th>
+//                     <th class="${rowClass}">${product.size}</th>
+//                     <th class="${rowClass}"><i class="fa-regular fa-trash-can allowedIcon" id="delete_${element.id}_${product.id}"></i></th>
+//                 `;
+//                 fragment.appendChild(row)
+
+//                 counter += 1
+//             }                        
+//         })        
+//     })
+
+//     bodyAddProducts.appendChild(fragment)
+
+//     addProductsEventListeners(dataToPrint)
+// }
+
 function printTableAddProducts(dataToPrint) {
 
-    bodyAddProducts.innerHTML = ''
-    let counter = 0
-    const fragment = document.createDocumentFragment()
+    bodyAddProducts.innerHTML = '';
+    let counter = 0;
+    const fragment = document.createDocumentFragment();
 
     dataToPrint.forEach(element => {
         element.products.forEach(product => {
             if (product.enabled != 0) {
-                
-                const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
-        
-                const row = document.createElement('tr')
 
-                row.innerHTML = `
-                    <th class="${rowClass}">${element.customer.customer_name}</th>
-                    <th class="${rowClass}">${product.description}</th>
-                    <th class="${rowClass}">${product.color}</th>
-                    <th class="${rowClass}">${product.size}</th>
-                    <th class="${rowClass}"><i class="fa-regular fa-trash-can allowedIcon" id="delete_${element.id}_${product.id}"></i></th>
-                `;
-                fragment.appendChild(row)
+                const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
 
-                counter += 1
-            }                        
-        })        
-    })
+                const row = document.createElement('tr');
 
-    bodyAddProducts.appendChild(fragment)
+                const thCustomer = document.createElement('th');
+                thCustomer.className = rowClass;
+                thCustomer.textContent = element.customer.customer_name;
 
-    addProductsEventListeners(dataToPrint)
+                const thDescription = document.createElement('th');
+                thDescription.className = rowClass;
+                thDescription.textContent = product.description;
+
+                const thColor = document.createElement('th');
+                thColor.className = rowClass;
+                thColor.textContent = product.color;
+
+                const thSize = document.createElement('th');
+                thSize.className = rowClass;
+                thSize.textContent = product.size;
+
+                const thDelete = document.createElement('th');
+                thDelete.className = rowClass;
+                const deleteIcon = document.createElement('i');
+                deleteIcon.className = 'fa-regular fa-trash-can allowedIcon';
+                deleteIcon.id = `delete_${element.id}_${product.id}`;
+                thDelete.appendChild(deleteIcon);
+
+                row.appendChild(thCustomer);
+                row.appendChild(thDescription);
+                row.appendChild(thColor);
+                row.appendChild(thSize);
+                row.appendChild(thDelete);
+
+                fragment.appendChild(row);
+
+                counter += 1;
+            }
+        });
+    });
+
+    bodyAddProducts.appendChild(fragment);
+
+    addProductsEventListeners(dataToPrint);
 }
 
 function addProductsEventListeners(dataToPrint) {

@@ -1,0 +1,19 @@
+/*----TABLES----*/
+#ordersTable{
+    max-height: 350px; /*to avoid overflow, it depends on the website landscape*/
+}
+
+
+#productsClientsTable{
+    height: 250px;
+}
+
+#eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo,#obppInfo,#ob2ppInfo{
+    width: 60px;
+    top:38.5%
+}
+
+#elppInfo,#dlppInfo,#loppInfo{
+    width: 50px;
+    top:34%;
+}
