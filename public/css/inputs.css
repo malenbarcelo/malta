@@ -186,5 +186,14 @@ accent-color: black
     align-items: center;
 }
 
+/*----------INPUTS WIDTH----------*/
+.il{
+    width: 250px;
+}
+
+/*----------INPUTS PADDING----------*/
+.ipm{
+    padding: 8px 0px 3px 0px;
+}
 
 
