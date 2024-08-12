@@ -1,1 +1,1 @@
-export const dominio = 'https://maltachic.wnpower.host/'
+export const dominio = 'http://localhost:3005/'

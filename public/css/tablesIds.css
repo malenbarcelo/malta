@@ -3,6 +3,10 @@
     max-height: 350px; /*to avoid overflow, it depends on the website landscape*/
 }
 
+#customersTable{
+    max-height: 400px;
+}
+
 
 #productsClientsTable{
     height: 250px;

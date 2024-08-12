@@ -9,6 +9,8 @@ const cors = require('cors')
 const cron = require('node-cron')
 
 //Routes
+const customersRoutes = require('./src/routes/sales/customersRoutes.js')
+
 const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
 const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
@@ -61,10 +63,13 @@ app.listen(APP_PORT,() => console.log("Servidor corriendo en puerto " + APP_PORT
 
 //Routes
 app.use('/',mainRoutes)
-app.use('/apis/sales',apisSalesRoutes)
 app.use('/apis/cuttings',apisCuttingsRoutes)
 app.use('/apis/data',apisDataRoutes)
+app.use('/apis/sales',apisSalesRoutes)
 app.use('/data',dataRoutes)
 app.use('/sales',salesRoutes)
-//app.use('/cuttings',cuttingsRoutes)
-//app.use('/users',usersRoutes)
+
+
+app.use('/sales/customers',customersRoutes)
+app.use('/sales/customers/apis',customersRoutes)
+

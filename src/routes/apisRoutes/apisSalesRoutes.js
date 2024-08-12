@@ -3,6 +3,7 @@ const apisSalesController = require('../../controllers/apisControllers/apisSales
 const apisWordpressController = require('../../controllers/apisControllers/apisWordpressController.js')
 const router = express.Router()
 
+
 router.get('/in-progress-orders',apisSalesController.inProgressOrders)
 router.get('/in-progress-orders/show-canceled',apisSalesController.inProgressOrdersShowCanceled)
 router.get('/in-progress-orders/details',apisSalesController.inProgressOrdersDetails)

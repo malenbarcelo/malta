@@ -274,6 +274,25 @@ const ordersQueries = {
             { where: { id: orderId } }
         )
     },
+    inProgressOrdersClients: async() => {
+        const orders = await model.findAll({
+            attributes: ['id_customers'],
+            where:{
+                enabled:1,
+                [Op.or]: [
+                    { id_payments_status: { [Op.ne]: 5 } }
+                ]
+            },
+            include: [
+                {association: 'orders_customers'},
+            ],
+            raw:true,
+            nest:true,
+            group: ['id_customers']
+        })
+
+        return orders
+    },
 }       
 
 module.exports = ordersQueries

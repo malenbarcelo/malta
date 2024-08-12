@@ -166,7 +166,7 @@ ul {
     100% { transform: rotate(360deg); }
 }
 
-#ordersLoader,#ordersDetailsLoader,#salesLoader{
+#ordersLoader,#ordersDetailsLoader,#salesLoader,#customersLoader{
     left: calc(50vw - 20px);
 }
 

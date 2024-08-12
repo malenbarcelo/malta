@@ -6,37 +6,8 @@ const paymentsStatusQueries = require('./dbQueries/data/paymentsStatusQueries')
 const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
 const productsQueries = require('./dbQueries/cuttings/productsQueries')
 const ordersQueries = require('./dbQueries/sales/ordersQueries')
+const bottomHeaderMenu = require("./sales/bottomHeaderMenu")
 const { datesToGet } = require('./functions/ninoxCronFunctions')
-
-const bottomHeaderMenu = [
-    {
-        id:1,
-        name:'PEDIDOS',
-        href:'/sales/in-progress-orders',
-        subitems:[
-            {'subitem':'Resumen de pedidos', 'href':'/sales/in-progress-orders'},
-            {'subitem':'Detalle de pedidos', 'href':'/sales/in-progress-orders/details'}
-        ]
-    },
-    {
-        id:2,
-        name:'VENTAS',
-        href:'/sales/consolidated',
-        subitems:[]
-    },
-    // {
-    //     id:3,
-    //     name:'PAGOS',
-    //     href:'/sales/payments',
-    //     subitems:[]
-    // },
-    // {
-    //     id:4,
-    //     name:'ESTADÍSTICAS',
-    //     href:'/sales/statistics/sales',
-    //     subitems:[]
-    // }
-]
 
 const salesController = {
     inProgressOrders: async(req,res) => {
@@ -103,19 +74,6 @@ const salesController = {
 
             return res.render('sales/sales/sales',{title:'Ventas',bottomHeaderMenu,selectedItem,customers,year,salesChannels,months})
             
-        }catch(error){
-
-            console.log(error)
-            return res.send('Ha ocurrido un error')
-        }
-    },
-    payments: (req,res) => {
-        try{
-
-            const selectedItem = 'PAGOS'
-
-            return res.render('sales/payments/payments',{title:'Pagos',bottomHeaderMenu,selectedItem})
-
         }catch(error){
 
             console.log(error)

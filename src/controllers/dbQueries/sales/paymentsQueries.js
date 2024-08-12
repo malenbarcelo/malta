@@ -1,6 +1,6 @@
 const db = require('../../../../database/models')
 const sequelize = require('sequelize')
-const { Op, fn, col } = require('sequelize')
+const { Op, fn, col, literal } = require('sequelize')
 const model = db.Sales_payments
 
 const paymentsQueries = {
@@ -55,6 +55,48 @@ const paymentsQueries = {
         })
 
         return positiveBalance
+    },
+    lastYearPayments: async(dateFrom) => {
+        const lastYearPayments = await model.findAll({
+            where: {
+                [Op.and]: [
+                    sequelize.where(
+                        fn('DATE', col('date')),
+                        {
+                            [Op.gt]: new Date(dateFrom)
+                        }
+                    )
+                ]
+            },
+            order: [['date', 'DESC']],
+            raw:true
+        })
+        return lastYearPayments
+    },
+    customersNullPayments: async(dateFrom) => {
+        const customersNullPayments = await model.findAll({
+            attributes: [
+                'id_customers', 
+                [fn('SUM', col('amount')), 'total_amount']
+            ],
+            where: {
+                id_orders: null,
+                [Op.and]: [
+                    sequelize.where(
+                        fn('DATE', col('date')),
+                        {
+                            [Op.gt]: new Date(dateFrom)
+                        }
+                    )
+                ]
+            },
+            group: ['id_customers'], 
+            order: [
+                [literal('SUM(amount)'), 'DESC']
+            ],
+            raw:true
+        })
+        return customersNullPayments
     },
 }       
 

@@ -1,0 +1,51 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">
+    DETALLE DE PAGOS
+</div>
+
+<!------MAIN FILTERS------>
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1" id="filterCustomerLabel">Cliente</label>
+            <input type="text" class="input1 inputXL" id="filterCustomer" autocomplete="off">
+            <ul class="predictedElements" id="filterCustomerUl"></ul>
+        </div>
+    </div>
+</div>
+
+<!------MAIN DATA------>
+<div class="mainData">
+    <div class="mainDataElement" id="salesAmount">SALDO: $ 850.000</div>
+</div>
+
+<!------MAIN CONTENT------>
+<div class="divTable" id="customersTable">
+
+    <div class="tableInfo" id="vdppInfo">Ver detalle</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="theadCss wXL thLeftBorder thTall">Cliente</th>
+                <th class="theadCss wL thTall">Saldo órdenes</th>
+                <th class="theadCss wM thTall">Saldo a favor</th>
+                <th class="theadCss wM thTall">Saldo neto</th>
+                <th class="theadCss wXS thTall thRightBorder">
+                    <i class="fa-solid fa-magnifying-glass-plus tableIcon" id="vdppIcon"></i>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="bodyCustomers"></tbody>
+    </table>
+</div>
+
+<!----------LOADER---------->
+<div class="loader" id="customersLoader"></div>
+<%- include('./customersPopups') %>
+<script type="module" src="/js/sales/customers/customers.js"></script>
+
+
