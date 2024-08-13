@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
-import cg from "./customersGlobals.js"
-import { printCustomersSummary } from "./customersFunctions.js"
+import cg from "./cGlobals.js"
+import { printCustomersSummary } from "./cPrintTables.js"
 import { showTableInfo  } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{

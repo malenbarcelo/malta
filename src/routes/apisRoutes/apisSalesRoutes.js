@@ -1,5 +1,6 @@
 const express = require('express')
 const apisSalesController = require('../../controllers/apisControllers/apisSalesController.js')
+const ordersController = require('../../controllers/sales/ordersController.js')
 const apisWordpressController = require('../../controllers/apisControllers/apisWordpressController.js')
 const router = express.Router()
 
@@ -7,9 +8,8 @@ const router = express.Router()
 router.get('/in-progress-orders',apisSalesController.inProgressOrders)
 router.get('/in-progress-orders/show-canceled',apisSalesController.inProgressOrdersShowCanceled)
 router.get('/in-progress-orders/details',apisSalesController.inProgressOrdersDetails)
-router.get('/in-progress-orders/payments',apisSalesController.inProgressOrdersPayments)
 router.get('/new-order',apisSalesController.newOrder)
-router.get('/customer-positive-balance/:idCustomer',apisSalesController.customerPositiveBalance)
+
 router.get('/consolidated-sales/:year',apisSalesController.consolidatedSales)
 router.post('/save-order',apisSalesController.saveOrder)
 router.post('/edit-order',apisSalesController.editOrder)
@@ -21,6 +21,10 @@ router.post('/assign-order-manager',apisSalesController.assignOrderManager)
 router.post('/cancel-order',apisSalesController.cancelOrder)
 router.post('/restore-order',apisSalesController.restoreOrder)
 router.post('/cancel-order-ninox',apisSalesController.cancelOrderNinox)
+
+//payments assignations
+router.get('/payments-assignations/customer-assignations/:idCustomer',ordersController.customerAssignations)
+
 
 //orders
 router.post('/edit-order-observations',apisSalesController.editOrderObs)

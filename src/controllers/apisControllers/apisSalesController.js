@@ -1,6 +1,7 @@
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../dbQueries/sales/ordersDetailsQueries')
 const paymentsQueries = require('../dbQueries/sales/paymentsQueries')
+const paymentsAssignationsQueries = require('../dbQueries/sales/paymentsAssignationsQueries')
 const customersQueries = require('../dbQueries/data/customersQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const accountsMovementsQueries = require('../dbQueries/sales/accountsMovementsQueries')
@@ -18,18 +19,11 @@ const apisSalesController = {
       const plainOrders = orders.map(order => order.get({ plain: true }))
 
       plainOrders.forEach(order => {
-        let payments = 0
-        let accountMovements = 0
-        order.orders_payments.forEach(payment => {
-          payments += parseFloat(payment.amount,2)
-        })
-        order.orders_accounts_movements.forEach(movement => {
-          accountMovements += parseFloat(movement.amount,2)
-        })
-        order.payments = payments
-        order.accountMovements = accountMovements
-        order.amountPaid = payments + accountMovements
-        order.balance = order.total - (payments + accountMovements)
+        const amountPaid = order.orders_assignations.reduce((sum, oa) => sum +parseFloat(oa.amount,2), 0)
+        const balance = parseFloat(order.total) - amountPaid
+        order.amountPaid = amountPaid
+        order.balance = balance
+
       })
 
       res.status(200).json(plainOrders)
@@ -46,18 +40,11 @@ const apisSalesController = {
       const plainOrders = orders.map(order => order.get({ plain: true }))
 
       plainOrders.forEach(order => {
-        let payments = 0
-        let accountMovements = 0
-        order.orders_payments.forEach(payment => {
-          payments += parseFloat(payment.amount,2)
-        })
-        order.orders_accounts_movements.forEach(movement => {
-          accountMovements += parseFloat(movement.amount,2)
-        })
-        order.payments = payments
-        order.accountMovements = accountMovements
-        order.amountPaid = payments + accountMovements
-        order.balance = order.total - (payments + accountMovements)
+        const amountPaid = order.orders_assignations.reduce((sum, oa) => sum +parseFloat(oa.amount,2), 0)
+        const balance = parseFloat(order.total) - amountPaid
+        order.amountPaid = amountPaid
+        order.balance = balance
+
       })
 
       res.status(200).json(plainOrders)
@@ -288,17 +275,58 @@ const apisSalesController = {
   },
   registerPayment: async(req,res) =>{
     try{
-
       const idOrder = req.body.orderToPay.id
+      const idCustomer = req.body.orderToPay.id_customers
+      const payment = req.body.amountPaid.payment
+      const balanceUsed = req.body.amountPaid.balanceUsed
+      const newBalance = req.body.newBalance
+      const idPaymentMethod = parseInt(req.body.idPaymentMethod)
+
+      const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
+      const notAssignedPayment = -newBalance
+
+      //register payment
+      let newPayment
+      if (payment > 0) {
+        newPayment = await paymentsQueries.registerPayment(idCustomer,payment,idPaymentMethod,'PAGO')
+      }
+
+      //register order payment
+      if (orderPayment > 0) {
+        await paymentsAssignationsQueries.registerAssignation('PAGO ASIGNADO', newPayment.id, idCustomer, idOrder, orderPayment)
+      }
+      
+      //register payment without order if corresponds
+      if (notAssignedPayment > 0) {
+        await paymentsAssignationsQueries.registerAssignation('PAGO NO ASIGNADO', newPayment.id, idCustomer, null, notAssignedPayment)
+      }
+
+      //assign balance used if corresponds
+      if (balanceUsed > 0) {
+        await paymentsAssignationsQueries.registerAssignation('ASIGNACION', newPayment.id, idCustomer, idOrder, balanceUsed)
+      }
+
+      //update order payment status
+      const idPaymentsStatus = (newBalance == 0 || newBalance < 0) ? 5 : 4
+      
+      await ordersQueries.updatePaymentsStatusById(idOrder,idPaymentsStatus)
+
+      res.status(200).json()
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  registerPayment2: async(req,res) =>{
+    try{
+
       const idCustomer = req.body.orderToPay.id_customers
       const payment = req.body.amountPaid.payment
       const newBalance = req.body.newBalance
       const idPaymentMethod = parseInt(req.body.idPaymentMethod)
 
-      const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
-      const accountPayment = -newBalance
-
-      //register order payment
+      //register payment
       if (orderPayment > 0) {
         await paymentsQueries.registerOrderPayment(idOrder,idCustomer,orderPayment,idPaymentMethod)
       }      
@@ -476,30 +504,7 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
-  customerPositiveBalance: async(req,res) =>{
-    try{
-
-      const idCustomer = req.params.idCustomer
-      let netBalance = 0
-
-      const positiveBalance = await paymentsQueries.positiveBalance(idCustomer)
-      const positiveBalanceUsed = await accountsMovementsQueries.positiveBalanceUsed(idCustomer)
-
-      if (positiveBalance) {
-        netBalance = netBalance + parseFloat(positiveBalance.total_amount,2)
-      }
-
-      if (positiveBalanceUsed) {
-        netBalance = netBalance - parseFloat(positiveBalanceUsed.total_amount,2)
-      }
-
-      res.status(200).json(netBalance)
-
-    }catch(error){
-      console.group(error)
-      return res.send('Ha ocurrido un error')
-    }
-  },
+  
   consolidatedSales: async(req,res) => {
     try{
 

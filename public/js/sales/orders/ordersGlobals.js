@@ -10,7 +10,6 @@ let og = {
     customers:[],
     products:[],
     orders:[],
-    ordersPayments:[],
     ordersManagers:[],
     ordersFiltered:[],
     checkedElements:[],

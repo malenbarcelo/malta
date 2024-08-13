@@ -41,7 +41,14 @@ module.exports = (sequelize, DataTypes) => {
     tableName : 'data_customers',
     timestamps : false
     }
-    const Data_Customer = sequelize.define(alias, cols, config)
+    const Data_customer = sequelize.define(alias, cols, config)
+
+    Data_customer.associate = (models) => {
+      Data_customer.hasMany(models.Sales_payments_assignations,{
+      as:'customers_payments_assignations',
+      foreignKey: 'id_customers'
+      })
+    }
     
-    return Data_Customer
+    return Data_customer
  }

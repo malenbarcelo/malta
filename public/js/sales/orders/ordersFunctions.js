@@ -162,7 +162,9 @@ function addOrdersEventListeners(dataToPrint) {
             payment.addEventListener('click',async()=>{
 
                 //find customer positive balance and show checkbox if applies
-                let positiveBalance = await (await fetch(dominio + 'apis/sales/customer-positive-balance/' + element.id_customers)).json()
+                let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
+
+                console.log(positiveBalance)
 
                 if (positiveBalance > 0) {
                     og.orderToPayCustomerBalance = positiveBalance

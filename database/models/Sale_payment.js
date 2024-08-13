@@ -12,21 +12,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      id_customers:{
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      },
-      id_orders:{
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
       amount:{
         type: DataTypes.DECIMAL,
         allowNull: false,
       },
-      id_payments_methods:{
+      type:{
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      id_customers:{
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      notes:{
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     }
     const config = {
@@ -44,10 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       Sale_payment.belongsTo(models.Data_payments_methods,{
         as:'payments_payments_methods',
         foreignKey: 'id_payments_methods'
-      }),
-      Sale_payment.belongsTo(models.Sales_orders,{
-        as:'orders_payments',
-        foreignKey: 'id_orders'
       })
     }
     

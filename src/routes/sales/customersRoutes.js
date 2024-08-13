@@ -1,5 +1,5 @@
 const express = require('express')
-const customersController = require('../../controllers/sales/customersControllers')
+const customersController = require('../../controllers/sales/customersController')
 const router = express.Router()
 
 //(/sales/customers)

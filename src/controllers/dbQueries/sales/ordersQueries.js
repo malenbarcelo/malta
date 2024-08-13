@@ -12,10 +12,9 @@ const ordersQueries = {
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
                 {association: 'orders_orders_managers'},
-                {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'},
                 {association: 'orders_sales_channels'},
-                {association: 'orders_orders_details'}
+                {association: 'orders_orders_details'},
+                {association: 'orders_assignations'}
 
             ],
             where:{
@@ -38,9 +37,9 @@ const ordersQueries = {
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
                 {association: 'orders_orders_managers'},
-                {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'},
-                {association: 'orders_sales_channels'}
+                {association: 'orders_sales_channels'},
+                {association: 'orders_orders_details'},
+                {association: 'orders_assignations'}
 
             ],
             where:{
@@ -173,43 +172,6 @@ const ordersQueries = {
     setPaymentVerification: async(orderId) => {        
         await model.update(
             { id_payments_status: 6 },
-            { where: { id: orderId } }
-        )
-    },
-    updatePaymentsStatus: async(orderId) => {
-
-        let amountPaidPayments = 0
-        let amountPaidAccounts = 0
-        let amountPaid = 0
-
-        let idPaymentsStatus = 3
-
-        //find order data
-        const orderToUpdate = await model.findOne({
-            where:{id:orderId},
-            include: [
-                {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'}
-            ],
-            nest:true,
-        })
-
-        //sum order payments
-        orderToUpdate.orders_payments.forEach(payment => {
-            amountPaidPayments += parseFloat(payment.amount,2)
-        })
-
-        //sum order account movements
-        orderToUpdate.orders_accounts_movements.forEach(movement => {
-            amountPaidAccounts += parseFloat(movement.amount,2)
-        })
-
-        amountPaid = amountPaidPayments + amountPaidAccounts
-
-        idPaymentsStatus = ((amountPaid < orderToUpdate.total && amountPaid > 0) || orderToUpdate.id_orders_status == 1) ? 4 : 5
-        
-        await model.update(
-            { id_payments_status: idPaymentsStatus },
             { where: { id: orderId } }
         )
     },

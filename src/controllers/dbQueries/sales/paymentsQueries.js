@@ -17,17 +17,19 @@ const paymentsQueries = {
 
         return orderPayments
     },
-    registerOrderPayment: async(idOrder,idCustomer,orderPayment,idPaymentMethod) => {
+    registerPayment: async(idCustomer,payment,idPaymentMethod,type) => {
         
         const date = new Date()
 
-        await model.create({
+        const newPayment = await model.create({
             date:date,
-            id_orders:idOrder,
             id_customers:idCustomer,
-            amount:orderPayment,
-            id_payments_methods:idPaymentMethod
+            amount:payment,
+            id_payments_methods:idPaymentMethod,
+            type:type
         })
+
+        return newPayment
     },
     registerAccountPayment: async(idCustomer,accountPayment,idPaymentMethod) => {
         
@@ -40,21 +42,6 @@ const paymentsQueries = {
             amount:accountPayment,
             id_payments_methods:idPaymentMethod
         })
-    },
-    positiveBalance: async(idCustomer) => {
-        const positiveBalance = await model.findOne({
-            attributes: [
-                [fn('SUM', col('amount')), 'total_amount']
-              ],
-            group: ['id_customers'],
-            where:{
-                id_customers:idCustomer,
-                id_orders: null,
-            },
-            raw:true,
-        })
-
-        return positiveBalance
     },
     lastYearPayments: async(dateFrom) => {
         const lastYearPayments = await model.findAll({

@@ -86,18 +86,14 @@ module.exports = (sequelize, DataTypes) => {
       as:'orders_sales_channels',
       foreignKey: 'id_sales_channels'
     }),
-    Sale_order.hasMany(models.Sales_payments,{
-      as:'orders_payments',
+    Sale_order.hasMany(models.Sales_payments_assignations,{
+      as:'orders_assignations',
       foreignKey: 'id_orders'
     }),
-    Sale_order.hasMany(models.Sales_accounts_movements,{
-      as:'orders_accounts_movements',
-      foreignKey: 'id_orders'
-    })
     Sale_order.hasMany(models.Sales_orders_details,{
       as:'orders_orders_details',
       foreignKey: 'id_orders'
     })
-  }
+    }
   return Sale_order
  }

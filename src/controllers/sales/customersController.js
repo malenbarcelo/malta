@@ -24,31 +24,33 @@ const customersController = {
             dateFrom.setHours(0, 0, 0, 0)
 
             //get customers
-            const customersData = await customersQueries.customers()
+            let customersData = await customersQueries.customers(dateFrom)
+            customersData = customersData.map(cd => cd.get({ plain: true }))
 
             //in progress orders
             let inProgressOrders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
 
-            //customers payments whitout assigned order (last year)
-            const customersNullPayments = await paymentsQueries.customersNullPayments(dateFrom)
-
-            //customers accounts movements (last year)
-            const customersAccountsMovements = await accountsMovementsQueries.customersMovements(dateFrom)
-
+            //complete customers data
             customersData.forEach(c => {
-                const ordersBalance = inProgressOrders
-                    .filter(item => item.id_customers == c.id)
-                    .reduce((acc, item) => acc + item.balance, 0)
-
-                let nullPayments = customersNullPayments.filter(cnp => cnp.id_customers == c.id )
-                nullPayments = nullPayments.length > 0 ? nullPayments[0].total_amount : 0
                 
-                let assignments = customersAccountsMovements.filter(cam => cam.id_customers == c.id )
-                assignments = assignments.length > 0 ? assignments[0].total_amount : 0
+                const ordersBalance = inProgressOrders
+                     .filter(o => o.id_customers == c.id)
+                     .reduce((acc, o) => acc + o.balance, 0)
+
+                const notAssignedPayments = c.customers_payments_assignations
+                     .filter(cpa => cpa.type == 'PAGO NO ASIGNADO')
+                     .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
+
+                const assignments = c.customers_payments_assignations
+                     .filter(cpa => cpa.type == 'ASIGNACION')
+                     .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
+
+                const returns = c.customers_payments_assignations
+                     .filter(cpa => cpa.type == 'DEVOLUCION')
+                     .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
                 
                 c.ordersBalance = ordersBalance
-                c.notAssignedBalance = nullPayments - assignments
-                
+                c.positiveBalance = notAssignedPayments - assignments - returns
             })
 
             customersData.sort((a, b) => b.ordersBalance - a.ordersBalance)

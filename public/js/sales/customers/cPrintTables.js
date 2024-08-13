@@ -1,5 +1,5 @@
 import { dominio } from "../../dominio.js"
-import cg from "./customersGlobals.js"
+import cg from "./cGlobals.js"
 
 async function printCustomersSummary(dataToPrint) {
 
@@ -15,8 +15,8 @@ async function printCustomersSummary(dataToPrint) {
         row.innerHTML = `
             <th class="${rowClass}">${element.customer_name}</th>
             <th class="${rowClass}">${cg.formatter.format(element.ordersBalance)}</th>
-            <th class="${rowClass}">${cg.formatter.format(element.notAssignedBalance)}</th>
-            <th class="${rowClass}">${cg.formatter.format(element.notAssignedBalance - element.ordersBalance)}</th>            
+            <th class="${rowClass}">${cg.formatter.format(element.positiveBalance)}</th>
+            <th class="${rowClass}">${cg.formatter.format(element.positiveBalance - element.ordersBalance)}</th>            
             <th class="${rowClass}"><i class="fa-solid fa-magnifying-glass-plus allowedIcon" id="edit_${element.id}"></i></th>
         `
         fragment.appendChild(row)
