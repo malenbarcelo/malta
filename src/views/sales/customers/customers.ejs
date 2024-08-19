@@ -11,15 +11,18 @@
     <div class="divInputsRow">            
         <div class="divInput">
             <label class="label1" id="filterCustomerLabel">Cliente</label>
-            <input type="text" class="input1 inputXL" id="filterCustomer" autocomplete="off">
+            <input type="text" id="filterCustomer" class="input1 inputL" autocomplete="off">
             <ul class="predictedElements" id="filterCustomerUl"></ul>
         </div>
-    </div>
+        <div id="unfilter">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
 </div>
 
 <!------MAIN DATA------>
 <div class="mainData">
-    <div class="mainDataElement" id="salesAmount">SALDO: $ 850.000</div>
+    <div class="mainDataElement" id="balance"></div>
 </div>
 
 <!------MAIN CONTENT------>
@@ -46,6 +49,7 @@
 <!----------LOADER---------->
 <div class="loader" id="customersLoader"></div>
 <%- include('./customersPopups') %>
+<%- include('./customersSidePopup') %>
 <script type="module" src="/js/sales/customers/customers.js"></script>
 
 

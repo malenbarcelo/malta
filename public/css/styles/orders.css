@@ -1,0 +1,9 @@
+#positiveBalance{
+    color: green;
+    display: none;
+}
+
+#notes{
+    cursor: pointer;
+    display: none;
+}

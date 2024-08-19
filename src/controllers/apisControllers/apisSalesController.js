@@ -275,6 +275,7 @@ const apisSalesController = {
   },
   registerPayment: async(req,res) =>{
     try{
+
       const idOrder = req.body.orderToPay.id
       const idCustomer = req.body.orderToPay.id_customers
       const payment = req.body.amountPaid.payment
@@ -303,7 +304,7 @@ const apisSalesController = {
 
       //assign balance used if corresponds
       if (balanceUsed > 0) {
-        await paymentsAssignationsQueries.registerAssignation('ASIGNACION', newPayment.id, idCustomer, idOrder, balanceUsed)
+        await paymentsAssignationsQueries.registerAssignation('ASIGNACION', null, idCustomer, idOrder, balanceUsed)
       }
 
       //update order payment status

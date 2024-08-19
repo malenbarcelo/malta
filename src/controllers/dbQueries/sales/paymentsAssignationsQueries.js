@@ -4,6 +4,10 @@ const { Op, fn, col, literal } = require('sequelize')
 const model = db.Sales_payments_assignations
 
 const paymentsAssignationsQueries = {
+    create: async(data) => {
+        
+        await model.create(data)
+    },
     customerAssignations: async(dateFrom) => {
         const customersAssignations = await model.findAll({
             attributes: [

@@ -12,6 +12,12 @@
     height: 250px;
 }
 
+#cmppTable{
+    height: 400px;
+}
+
+
+
 #eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo,#obppInfo,#ob2ppInfo{
     width: 60px;
     top:38.5%

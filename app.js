@@ -9,8 +9,6 @@ const cors = require('cors')
 const cron = require('node-cron')
 
 //Routes
-const customersRoutes = require('./src/routes/sales/customersRoutes.js')
-
 const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
 const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
@@ -69,7 +67,7 @@ app.use('/apis/sales',apisSalesRoutes)
 app.use('/data',dataRoutes)
 app.use('/sales',salesRoutes)
 
-
-app.use('/sales/customers',customersRoutes)
-app.use('/sales/customers/apis',customersRoutes)
+/*---APIS---*/
+app.use('/apis/sales/customers',salesRoutes) //customers
+app.use('/apis/sales/payments',salesRoutes) //payments
 

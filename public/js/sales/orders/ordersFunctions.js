@@ -106,6 +106,7 @@ async function printTableOrders(dataToPrint) {
 
     })
 
+    updateData(dataToPrint)
     addOrdersEventListeners(dataToPrint)
 
     ordersLoader.style.display = 'none'
@@ -163,8 +164,6 @@ function addOrdersEventListeners(dataToPrint) {
 
                 //find customer positive balance and show checkbox if applies
                 let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
-
-                console.log(positiveBalance)
 
                 if (positiveBalance > 0) {
                     og.orderToPayCustomerBalance = positiveBalance
@@ -251,12 +250,24 @@ function addOrdersEventListeners(dataToPrint) {
 
         //observations
         obs.addEventListener('click',async()=>{
+            og.notesFrom = 'orders'
+            obppTitle.innerText = 'Pedido #' + element.order_number + ' - OBSERVACIONES' 
             og.idOrderObservations = element.id
             obppObs.value = element.observations
             obpp.style.display = 'block'
         })
     })
 
+}
+
+function updateData(dataToPrint) {
+    const total = dataToPrint.reduce((acc, i) => acc + parseFloat(i.total,2), 0)
+    const amountPaid = dataToPrint.reduce((acc, i) => acc + parseFloat(i.amountPaid,2), 0)
+    const balance = dataToPrint.reduce((acc, i) => acc + parseFloat(i.balance,2), 0)
+    
+    orderTotal.innerHTML = '<div><b>TOTAL:</b> $ ' + og.formatter.format(total) + '</div>'
+    ordersAmountPaid.innerHTML = '<div><b>PAGADO:</b> $ ' + og.formatter.format(amountPaid) + '</div>'
+    ordersBalance.innerHTML = '<div><b>SALDO:</b> $ ' + og.formatter.format(balance) + '</div>'
 }
 
 function filterOrders() {
@@ -503,8 +514,43 @@ function addCreateEditEventListeners() {
                 eodpp.style.display = 'block'    
             })
         }
-    })    
+    })
+}
+    
+async function updateCustomerData() {
+
+    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
+
+    if (filterCustomer.value != '') {
+        og.customerData = og.customersSummary.filter(c => c.customer_name == filterCustomer.value)
+        const customerPositiveBalance = og.customerData.length > 0 ? og.customerData[0].positiveBalance : 0
+        const customerNotes = og.customerData.length > 0 ? og.customerData[0].notes : null
+    
+        //balance
+        if (customerPositiveBalance > 0) {
+            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(customerPositiveBalance)
+            positiveBalance.style.display = 'block'
+        }else{
+            positiveBalance.style.display = 'none'
+        }
+
+        //comments
+        if (customerNotes == null || customerNotes =='') {
+            notes.innerHTML = '<i class="fa-regular fa-comment"></i>'
+        }else{
+            notes.innerHTML = '<i class="fa-regular fa-comment-dots"></i>'
+        }
+        
+        if (og.customerData.length > 0) {
+            notes.style.display = 'block'
+        }else{
+            notes.style.display = 'none'
+        }        
+    }else{
+        positiveBalance.style.display = 'none'
+        notes.style.display = 'none'
+    }
+    
 }
 
-
-export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions}
+export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions,updateCustomerData}

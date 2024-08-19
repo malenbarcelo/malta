@@ -36,6 +36,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: false
       },
+      notes:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      enabled:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
     }
     const config = {
     tableName : 'data_customers',

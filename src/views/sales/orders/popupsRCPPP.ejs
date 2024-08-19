@@ -1,0 +1,60 @@
+<!----------Register customer payment popup (RCPPP)---------->
+<div class="yesNoPopup" id="rcppp">
+    
+    <div class="yesNoContent" id="rcpppContent">
+
+        <div class="yesNoIcons">
+            <div class="yesNoIcon1"><i class="fa-regular fa-credit-card"></i></div>
+            <div class="yesNoClose1" id="rcpppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="yesNoTitle1" id="rcpppTitle">REGISTRAR PAGO</div>
+        <div class="yesNoSubitle1" id="rcpppSubtitle"></div>
+
+        <div class="divInputsColumn mtm mbm">
+            <div class="divInput">
+                <label class="label1" id="rcpppTypeLabel">Tipo</label>
+                <select id="rcpppType" class="input1 il ipl">
+                    <option value=""></option>
+                    <option value="PAGO">PAGO</option>
+                    <option value="REINTEGRO">REINTENGRO</option>
+                </select>
+                <div class="divError" id="rcpppTypeError">Debe ingresar un tipo de pago</div>                
+            </div>
+            <div class="divInput">
+                <label class="label1" id="rcpppPaymentMethodLabel">Forma de pago</label>
+                <select class="input1 il ipl" id="rcpppPaymentMethod">
+                    <option value=""></option>
+                    <% paymentMethods.forEach(pm => { %>
+                        <% if (pm.enabled == 1) { %>
+                            <option value="<%= pm.id %>">
+                                <%= pm.payment_method %>
+                            </option>
+                        <% } %>
+                    <% }) %>
+                </select>
+                <div class="divError" id="rcpppPaymentMethodError">Debe seleccionar una forma de pago</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="rcpppAmountLabel">Importe $</label>
+                <input type="number" step="0.01" class="input1 il ipl" id="rcpppAmount">
+                <div class="divError" id="rcpppAmountError">Debe ingresar un importe</div>
+            </div>
+        </div>
+
+        <div class="divButtonsRow mtm mbm">
+            <div id="rcpppAccept" class="button1 bxs">Aceptar</div>
+            <div id="rcpppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+
+    </div>
+</div>
+
+<div class="okPopup" id="rcpppOk">    
+    <div class="okContent" id="rcpppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Pago registrado con éxito</div>
+        </div>
+    </div>
+</div>

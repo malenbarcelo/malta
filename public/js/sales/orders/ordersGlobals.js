@@ -12,6 +12,7 @@ let og = {
     orders:[],
     ordersManagers:[],
     ordersFiltered:[],
+    customersSummary:[],
     checkedElements:[],
     idOrderToCancel:0,
     idOrderToRestore:0,
@@ -48,7 +49,8 @@ let og = {
     productFocused:-1,
     elementToFocus:'',
     elementToUnfocus:'',
-    action:''
+    action:'',
+    customerData:[]
 
 }
 

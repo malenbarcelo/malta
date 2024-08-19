@@ -9,12 +9,14 @@ function clearInputs(inputs) {
         input.value = ''
         if (label) {
             label.classList.remove('errorColor')
+            label.classList.remove('invalidLabel')
         }
         if (error) {
             error.style.display = 'none'
         }        
         
         input.classList.remove('isInvalid')
+        input.classList.remove('invalidInput')
     })
 }
 
@@ -211,16 +213,17 @@ function acceptWithEnter(input,button) {
     })
 }
 
-function showTableInfo(tableIcons,top,left) {
+function showTableInfo(tableIcons,top,width) {
     tableIcons.forEach(element => {
-        const info = document.getElementById(element.id.replace('Icon','Info'))
-        element.addEventListener("mouseover", async(e) => {
-            const mouseX = e.clientX
-            info.style.top = top + '%'
-            info.style.left = (mouseX - left) + 'px'
+        const info = document.getElementById(element.icon.id.replace('Icon','Info'))
+        element.icon.addEventListener("mouseover", async(e) => {
+            info.style.top = top + 'px'
+            info.style.right = element.right
+            
+            info.style.width = width + 'px'
             info.style.display = 'block'
         })
-        element.addEventListener("mouseout", async(e) => {
+        element.icon.addEventListener("mouseout", async(e) => {
             info.style.display = 'none'
         })
     })

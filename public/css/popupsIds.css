@@ -67,9 +67,23 @@
     z-index: 10;
 }
 
+/*-----orers.ejs-----*/
+#rcpppContent{
+    top: 20%;
+    width: 400px;
+    left: calc(50vw - 200px);
+}
+
+#cmppContent{
+    top: 15%;
+    width: 600px;
+    left: calc(50vw - 300px);
+    padding-bottom: 30px;
+}
+
 
 /*---ok popups content---*/
-#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent,#apppOkContent{
+#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent,#apppOkContent,#rcpppOkContent{
     top: 40%;
     left: calc(50vw - 150px);
 }

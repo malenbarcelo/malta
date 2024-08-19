@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { inputsValidation, clearInputs, showOkPopup } from "../../generalFunctions.js"
-import { filterOrders,printTableOrders } from "./ordersFunctions.js"
+import { filterOrders,printTableOrders, updateCustomerData } from "./ordersFunctions.js"
 
 //REGISTER PAYMENT POPUP (RPPP)
 function rpppEventListeners() {
@@ -83,7 +83,7 @@ function rpppEventListeners() {
             }
 
             //register payment
-            if (data.amountPaid.payment > 0) {
+            if (data.amountPaid.payment > 0 || data.amountPaid.balanceUsed > 0) {
                 await fetch(dominio + 'apis/sales/register-payment',{
                     method:'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -92,6 +92,8 @@ function rpppEventListeners() {
             }
 
             rppp.style.display = 'none'
+
+            updateCustomerData()
 
             og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
             filterOrders()

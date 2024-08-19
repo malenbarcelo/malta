@@ -18,6 +18,18 @@
             Crear pedido
         </div>        
     </div>
+    <div class="divGeneralAction notVisible"id="DGAregisterPayment">
+        <i class="fa-regular fa-credit-card"></i>
+        <div class="showActionPopup">
+            Registrar pago
+        </div>
+    </div>
+    <div class="divGeneralAction notVisible" id="DGAmovementsDetails">
+        <i class="fa-solid fa-magnifying-glass-plus"></i>
+        <div class="showActionPopup">
+            Detalle de movimientos
+        </div>
+    </div>
     <div class="divGeneralAction">
         <i class="fa-brands fa-whatsapp"></i>
         <div class="showActionPopup">
@@ -114,6 +126,15 @@
     </div>
 </div>
 
+<!--------TABLE DATA-------->
+<div class="tableSummary">    
+    <div id="orderTotal"></div>
+    <div id="ordersAmountPaid"></div>
+    <div id="ordersBalance"></div>
+    <div id="positiveBalance"></div> 
+    <div id="notes"></div>    
+</div>
+
 <!---------ORDERS TABLE--------->
 
 <div class="mts">
@@ -133,11 +154,11 @@
                     <th class="theadCss wXS thTall">Fecha</th>
                     <th class="theadCss wXS thTall">Canal</th>
                     <th class="theadCss wS thTall">Cliente</th>
-                    <th class="theadCss wXS thTall">Subtotal</th>
+                    <th class="theadCss wS thTall">Subtotal</th>
                     <th class="theadCss wXXS thTall">Dto %</th>
-                    <th class="theadCss wXS thTall">Total</th>
+                    <th class="theadCss wS thTall">Total</th>
                     <th class="theadCss wXXS thTall">Pagado</th>
-                    <th class="theadCss wXS thTall">Saldo</th>                    
+                    <th class="theadCss wS thTall">Saldo</th>                    
                     <th class="theadCss wXS thTall">Estado</th>
                     <th class="theadCss wS thTall">Pago</th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="eoppIcon"></i></th>
@@ -159,6 +180,12 @@
 <!----------LOADER---------->
 <div class="loader" id="ordersLoader" ></div>
 
+<!----------POPUPS---------->
+
 <%- include('./ordersPopups') %>
 <%- include('./ordersCreateEdit') %>
+<%- include('./popupsCMPP') %>
+<%- include('./popupsRCPPP') %>
+
+<!----------SCRIPTS---------->
 <script type="module" src="/js/sales/orders/orders.js"></script>

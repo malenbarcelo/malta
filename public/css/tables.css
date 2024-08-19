@@ -84,6 +84,16 @@ border-top-right-radius: 15px;
     text-align: center;
 }
 
+/*table summary*/
+.tableSummary{
+    display: flex;
+    font-size: 13px;
+    column-gap: 15px;
+    justify-content: center;
+    align-items: center;
+    height: 4vh;
+}
+
 
 
 

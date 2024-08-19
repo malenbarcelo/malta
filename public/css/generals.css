@@ -175,6 +175,11 @@ ul {
     font-weight: bold;
 }
 
+/*---------------------position---------------------*/
+.relativePosition{
+    position: relative;
+}
+
 /*---------------------predicted items---------------------*/
 .predictedElements{
     display: none;

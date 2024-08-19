@@ -6,6 +6,7 @@ let cg = {
     }),
     customersSummary:[],
     customersSummaryFiltered:[],
+    idCustomer:0
 }
 
 export default cg

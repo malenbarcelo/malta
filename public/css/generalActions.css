@@ -2,7 +2,7 @@
 .divGeneralActions{
     display: flex;
     column-gap: 20px;
-    position: absolute;    
+    position: absolute;
 }
 
 .divGeneralAction{
@@ -37,15 +37,20 @@
     row-gap: 5px;
 }
 
-#DGAorders, #DGAordersDetails{
+#DGAorders{
+    right: 15vh;
+    top: 23vh;
+}
+
+#DGAordersDetails{
     right: 15vh;
     top: 23vh;
 }
 
 #DGAordersErrors{
-    right: 9vh;
+    right: 7vh;
     top: 31vh;
-    width: 150px;
+    width: 230px;
 }
 
 @media screen and (max-width: 1300px) {

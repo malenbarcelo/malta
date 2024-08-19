@@ -22,6 +22,18 @@ const customersQueries = {
         })
         return customers
     },
-}       
+    postNotes: async(notes,id) => {
+        await model.update(
+            {
+                notes:notes
+            },
+            {
+                where:{
+                    id:id
+                }
+            }
+        )
+    },
+}
 
 module.exports = customersQueries

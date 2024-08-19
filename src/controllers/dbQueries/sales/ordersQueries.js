@@ -24,7 +24,7 @@ const ordersQueries = {
                     { id_payments_status: { [Op.ne]: 5 } }
                 ]
             },
-            order:[['date','ASC'],['id','ASC']],
+            order:[['id','ASC']],
             nest:true
         })
 
@@ -48,7 +48,7 @@ const ordersQueries = {
                     { id_payments_status: { [Op.ne]: 5 } }
                 ]
             },
-            order:[['date','ASC'],['id','ASC']],
+            order:[['id','ASC']],
             nest:true
         })
         return orders
@@ -70,6 +70,26 @@ const ordersQueries = {
                 id:orderId
             },
             nest:true,
+        })
+        return orders
+    },
+    findCustomerOrders: async(idCustomer,dateFrom) => {
+        const orders = await model.findAll({
+            attributes: ['date','total','order_number',[sequelize.literal("'PEDIDO'"), 'type'],[sequelize.literal("1"), 'type_number']],            
+            where: {
+                id_customers:idCustomer,
+                enabled:1,
+                [Op.and]: [
+                    sequelize.where(
+                        fn('DATE', col('date')),
+                        {
+                            [Op.gt]: new Date(dateFrom)
+                        }
+                    )
+                ]
+            },
+            order:[['date','ASC']],
+            raw:true,
         })
         return orders
     },

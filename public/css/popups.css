@@ -135,7 +135,7 @@
     color: var(--color1);
     top:-25px;
     text-align: center;
-    width: 120px;
+    width: 150px;
 }
 
 /*----------side popups----------*/
@@ -176,6 +176,20 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+.sppTitle2{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.sppSubtitle{
+    font-size: 17px;
+}
+
+.sppText{
+    font-size: 15px;
+}
+
 .closeSidePopup{
     position: absolute;
     font-size: 16px;
@@ -202,13 +216,7 @@
     margin-top: 30px;
 }
 
-.sppSubtitle{
-    font-size: 17px;
-}
 
-.sppText{
-    font-size: 15px;
-}
 
 .sidePopupError{
     height: 15px;
@@ -218,18 +226,6 @@
 .sppxl{
     width: 1000px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*----------edit popups----------*/
