@@ -7,13 +7,20 @@
     max-height: 400px;
 }
 
-
 #productsClientsTable{
     height: 250px;
 }
 
 #cmppTable{
     height: 400px;
+}
+
+#scppTable{
+    height: 350px;
+}
+
+#ceoppTable{
+    height: 430px;
 }
 
 
@@ -27,3 +34,20 @@
     width: 50px;
     top:34%;
 }
+
+
+
+/*----------ordersDetails.ejs----------*/
+#ordersDetailsTable{
+    height: 400px;
+}
+
+
+
+/*----------sales.ejs----------*/
+#salesTable{
+    height: 400px;
+}
+
+
+

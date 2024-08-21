@@ -143,18 +143,33 @@ const ordersController = {
         let customerMovements = [...orders, ...payments]
         customerMovements.sort((a, b) => new Date(a.date) - new Date(b.date))
         customerMovements = customerMovements.map(c => {
-          c.total = c.type == 'PAGO' ? -parseFloat(c.total, 10) : parseFloat(c.total, 10)
+          c.total = c.type == 'PAGO' ? parseFloat(c.total, 10) : -parseFloat(c.total, 10)
           return c
         })
 
-        customerMovements[0].balance = customerMovements[0].total
+        if (customerMovements.length > 0) {
+          customerMovements[0].balance = customerMovements[0].total
+        }
 
         for (let i = 1; i < customerMovements.length; i++) {
           customerMovements[i].balance = customerMovements[i-1].balance + customerMovements[i].total          
         }
 
-
         res.status(200).json(customerMovements)
+  
+      }catch(error){
+        console.group(error)
+        return res.send('Ha ocurrido un error')
+      }
+    },
+    updatePaymentStatus: async(req,res) =>{
+      try{
+
+        const data = req.body
+
+        await ordersQueries.updatePaymentsStatusById(data.orderId,data.id_payments_status)
+
+        res.status(200).json()
   
       }catch(error){
         console.group(error)

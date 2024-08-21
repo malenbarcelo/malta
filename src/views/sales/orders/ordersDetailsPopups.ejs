@@ -76,12 +76,12 @@
         <div class="divInputsColumn mtl">
             <div class="divInput">
                 <label class="label1" id="apppProductLabel">Producto</label>
-                <input type="text" class="input1 inputXXXL" id="apppProduct">
+                <input type="text" class="input1 inputXXXL" id="apppProduct" autocomplete="off">
                 <ul class="predictedElements" id="ulPredictedProducts2"></ul>
             </div>
             <div class="divInput">
                 <label class="label1" id="apppCustomerLabel">Cliente</label>
-                <input type="text" class="input1 inputXXXL" id="apppCustomer">
+                <input type="text" class="input1 inputXXXL" id="apppCustomer" autocomplete="off">
                 <ul class="predictedElements" id="ulPredictedCustomers2"></ul>
             </div>
         </div>
@@ -123,21 +123,21 @@
     </div>
 </div>
 
-<!----------select sales channel---------->
-<div class="yesNoPopup" id="scpp">
+<!----------select channel popup---------->
+<div class="yesNoPopup" id="sscpp">
     
-    <div class="yesNoContent" id="scppContent">
+    <div class="yesNoContent" id="sscppContent">
 
         <div class="yesNoIcons">
             <div class="yesNoIcon1"><i class="fa-regular fa-pen-to-square"></i></div>
-            <div class="yesNoClose1" id="scppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+            <div class="yesNoClose1" id="sscppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
         </div>
 
         <div class="yesNoTitle2 mts">Debe seleccionar el canal de venta para las órdenes nuevas</div>
 
         <div class="divInputsColumn mtm">
             <div class="divInput">
-                <select id="scppSalesChannel" class="input1 inputLNoLabel">
+                <select id="sscppSalesChannel" class="input1 inputLNoLabel">
                     <option value="1">Difusión1</option>
                     <option value="2">Difusión2</option>
                 </select>
@@ -146,7 +146,7 @@
         </div>
 
         <div class="divButtonsRow mtm mbs">
-            <div id="scppAccept" class="button1 bxs">Aceptar</div>
+            <div id="sscppAccept" class="button1 bxs">Aceptar</div>
         </div>
     </div>
 </div>

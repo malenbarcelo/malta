@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import { inputsValidation, clearInputs, showOkPopup } from "../../generalFunctions.js"
-import { filterOrders,printTableOrders, updateCustomerData } from "./ordersFunctions.js"
+import { updateData } from "./functions.js"
 
 //OBSERVATIONS POPUP (OBPP)
 function obppEventListeners() {
@@ -33,11 +33,7 @@ function obppEventListeners() {
 
         }
 
-        updateCustomerData()
-        
-        og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-        filterOrders()
-        printTableOrders(og.ordersFiltered)
+        updateData()
         
         obpp.style.display = 'none'
 

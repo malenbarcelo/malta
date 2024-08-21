@@ -2,8 +2,6 @@ import og from "./ordersGlobals.js"
 import { dateToString } from "../../generalFunctions.js"
 
 async function printCustomerMovements(dataToPrint) {
-    
-    console.log(dataToPrint)
 
     ordersLoader.style.display = 'block'
     cmppBody.innerHTML = ''

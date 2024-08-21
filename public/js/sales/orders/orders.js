@@ -2,14 +2,18 @@ import { dominio } from "../../dominio.js"
 import og from "./ordersGlobals.js"
 import g from "../../globals.js"
 import { getElements } from "./ordersGetElements.js"
-import { printTableOrders, filterOrders, updateOrderData, printColorsOptions, printTableCreateEdit,changeSizesOptions, updateCustomerData } from "./ordersFunctions.js"
+import { printTableOrders, filterOrders, updateOrderData, printColorsOptions, printTableCreateEdit,changeSizesOptions} from "./ordersFunctions.js"
+import { updateCustomerData } from "./functions.js"
 import { printCustomerMovements } from "./printTables.js"
 import { clearInputs, inputsValidation, isValid, showOkPopup, predictElements,selectFocusedElement, acceptWithEnter,selectWithClick,showTableInfo} from "../../generalFunctions.js"
 
 //popups events listeners
-import { rpppEventListeners } from "./ordersRPPP.js"
+import { ceoppEventListeners } from "./ordersCEOPP.js"
+import { eodppEventListeners } from "./ordersEODPP.js"
 import { obppEventListeners } from "./ordersOBPP.js"
 import { rcpppEventListeners } from "./ordersRCPPP.js"
+import { rpppEventListeners } from "./ordersRPPP.js"
+import { scppEventListeners } from "./ordersSCPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -28,9 +32,12 @@ window.addEventListener('load',async()=>{
     printTableOrders(og.orders)
 
     //POPUPS EVENTS LISTENERS
+    ceoppEventListeners() //CREATE EDIT ORDER POPUP
+    eodppEventListeners() //EDIT ORDER DETAILS POPUP
     rpppEventListeners() //REGISTER PAYMENT POPUP
     rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
     obppEventListeners() //OBSERVATIONS POPUP
+    scppEventListeners() //SELECT COLOR POPUP
 
     //showCanceled
     showCanceled.addEventListener("click", async() => {
@@ -321,6 +328,7 @@ window.addEventListener('load',async()=>{
         }else{
             rcpppSubtitle.innerText = og.customerData[0].customer_name
             clearInputs([rcpppType,rcpppPaymentMethod,rcpppAmount])
+            selectChannelError.style.display = 'none'
             rcppp.style.display = 'block'
 
         }
@@ -328,213 +336,12 @@ window.addEventListener('load',async()=>{
 
     //view customer movements
     DGAmovementsDetails.addEventListener("click", async() => {
-        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)  
-        if (findCustomer.length > 0) {
-            const customerMovements = await (await fetch(dominio + 'apis/sales/customers/customer-movements/' + findCustomer[0].id)).json()
-            cmppSubtitle.innerText = findCustomer[0].customer_name
-            printCustomerMovements(customerMovements)
-            cmpp.style.display = 'block'
-        }else{
-            
-
-        }
-
-        
-
-            
-    })
-
-    //createEdit order - selectProduct - predict elements
-    selectProduct.addEventListener("input", async(e) => {
-        const input = selectProduct
-        const list = ulPredictedProducts
-        const apiUrl = 'apis/data/products/predict-products/'
-        const name = 'description'
-        const elementName = 'product'
-        predictElements(input,list,apiUrl,name,elementName)
-    })
-
-    selectProduct.addEventListener("keydown", async(e) => {
-        const input = selectProduct
-        const list = ulPredictedProducts
-        const elementName = 'product'
-        selectFocusedElement(e,input,list,elementName)
-    })
-
-    selectProduct.addEventListener("change", async(e) => {
-        changeSizesOptions()
-    })
-
-    //createEdit order - selectsize
-    selectSize.addEventListener("change", async() => {
-        
-        const selectedProduct = selectProduct.value
-        const selectedSize = selectSize.value
-
-        if (selectedProduct != 'default' && selectedSize != 'default') {
-            const colorsOptions = await (await fetch(dominio + 'apis/cuttings/colors-options/' + selectedProduct + '/' + selectedSize)).json()
-            og.colorsOptions = colorsOptions.colors
-
-            printColorsOptions(og.colorsOptions)
-            
-            //show scpp
-            scppTitle.innerText = selectedProduct + ' - TALLE ' + selectedSize
-            selectAllColors.checked = false
-            scppError.style.display = 'none'
-            og.selectedColors = []
-            scpp.style.display = 'block'
-    
-        }else{
-            scpp.style.display = 'none'
-        }
-
-        
-    })
-
-    selectAllColors.addEventListener("click", async() => {
-        if (selectAllColors.checked) {
-            og.colorsOptions.forEach((color,i) => {
-                const check = document.getElementById('check_' + i)
-                check.checked = true
-            })
-        }else{
-            og.colorsOptions.forEach((color,i) => {
-                const check = document.getElementById('check_' + i)
-                check.checked = false
-            })
-        }
-    })
-
-    //createEdit order - select colors accept
-    scppAccept.addEventListener("click", async() => {
-
-        og.colorsOptions.forEach((color,i) => {
-            const check = document.getElementById('check_' + i)
-            if (check.checked == true) {
-                og.selectedColors.push({
-                    i:i,
-                    color:color
-                })
-            }
-        })
-
-        //validations
-        if (og.selectedColors.length == 0) {
-            scppError.style.display = 'block'
-        }else{
-            scppError.style.display = 'none'
-            let id = og.orderDetails.length == 0 ? 1 : Math.max(...og.orderDetails.map(element => element.id)) + 1
-
-            og.selectedColors.forEach((color) => {
-
-                const product = og.products.filter( p => p.description == selectProduct.value && p.size == selectSize.value && p.color == color.color)[0]
-                
-                const unitPrice = product.unit_price
-                const id_products = product.id
-                const requiredInput = document.getElementById('required_' + color.i)
-                const confirmedInput = document.getElementById('confirmed_' + color.i)
-                
-                og.orderDetails.push({
-                    id: id,
-                    id_products: id_products,
-                    description: selectProduct.value,
-                    size: selectSize.value,
-                    color: color.color,
-                    unit_price: parseFloat(unitPrice,2),
-                    required_quantity: requiredInput.value,
-                    confirmed_quantity: confirmedInput.value,
-                    extended_price: confirmedInput.value == '' ? 0 : confirmedInput.value * unitPrice,
-                    row_status: confirmedInput.value == '' ? 'Incompleto' : 'Completo'
-                })
-                id += 1
-            })
-
-            console.log(og.orderDetails)
-            selectProduct.value = ''
-            selectSize.value = ''
-            scpp.style.display = 'none'
-            updateOrderData()
-            printTableCreateEdit(og.orderDetails)
-        }
-
-    })
-    
-    //createEdit order - edit discount
-    cdppAccept.addEventListener("click", async() => {
-        og.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
-        og.orderData.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
-        updateOrderData()
-        cdpp.style.display = 'none'
-    })
-
-    //change discount with enter
-    acceptWithEnter(cdppNewDiscount,cdppAccept)
-
-    //createEdit order - edit order detals
-    eodppAccept.addEventListener("click", async() => {
-
-        const errors = inputsValidation([eodppPrice])
-        
-        if (errors == 0) {
-
-            const unitPrice = eodppPrice.value
-            const quantityR = eodppQtyR.value
-            const quantityC = eodppQtyC.value
-            const extendedPrice = unitPrice * quantityC            
-            const id = og.idOrderDetailsToEdit
-
-            og.orderDetails = og.orderDetails.map(element => {
-                if (element.id == id) {
-                  return {...element, unit_price: unitPrice, required_quantity: quantityR, confirmed_quantity: quantityC, extended_price: extendedPrice}
-                }
-                return element
-            })
-
-            updateOrderData()
-            printTableCreateEdit()
-
-            //close popup
-           eodpp.style.display = 'none'
-        }
-    })
-
-    //createEdit order - save order
-    DGAsaveOrder.addEventListener("click", async() => {
-
-        let incompleteRows = 0
-        
-        og.orderDetails.forEach(element => {
-            if (element.row_status == 'Incompleto') {
-                console.log(element)
-                incompleteRows +=1
-            }
-        })
-
-        if (incompleteRows > 0 || og.orderDetails.length == 0) {
-            og.orderData.id_orders_status = 1
-        }else{
-            og.orderData.id_orders_status = 2
-        }
-
-        const data = og.orderData
-        data.order_details = og.orderDetails
-
-        if (og.action == 'create') {
-            await fetch(dominio + 'apis/sales/save-order',{
-                method:'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
-        }else{
-            await fetch(dominio + 'apis/sales/edit-order',{
-                method:'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
-        }
-        
-        window.location.href = '/sales/in-progress-orders'
-
+        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
+        const customerMovements = await (await fetch(dominio + 'apis/sales/customers/customer-movements/' + findCustomer[0].id)).json()
+        cmppSubtitle.innerText = findCustomer[0].customer_name
+        printCustomerMovements(customerMovements)
+        selectChannelError.style.display = 'none'
+        cmpp.style.display = 'block'
     })
 
     //customer notes

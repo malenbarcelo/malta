@@ -193,22 +193,35 @@ function addOrdersEventListeners(dataToPrint) {
         //payment verification
         if (paymentV) {
             paymentV.addEventListener('click',async()=>{
-                const data = {
-                    orderId:element.id
+
+                let data = {
+                    orderId:element.id,
+                    id_payments_status: element.amountPaid == 0 ? 3 : (element.balance > 0 ? 4 : 5)
                 }
-    
-                //set payment verification
-                await fetch(dominio + 'apis/sales/set-payment-verification',{
-                    method:'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
-                })
+
+                if (paymentV.checked) {
+
+                    //set payment verification
+                    await fetch(dominio + 'apis/sales/set-payment-verification',{
+                        method:'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                }else{
+
+                    //update payment status
+                    await fetch(dominio + 'apis/sales/orders/update-payment-status',{
+                        method:'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                }
 
                 og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-                og.ordersPayments = await (await fetch(dominio + 'apis/sales/in-progress-orders/payments')).json()
                 filterOrders()
                 printTableOrders(og.ordersFiltered)
-                })
+
+            })  
 
         }
 
@@ -410,8 +423,18 @@ function selectFocusedProduct(e) {
 async function changeSizesOptions() {
 
     selectSize.innerHTML = '<option value="default" id="selectSizeDefault"></option>'
+
+    const data = {productDescription:selectProduct.value}
         
-    const productOptions = await (await fetch(dominio + 'apis/cuttings/product-options/' + selectProduct.value)).json()
+    const productOptions = await (
+        await fetch(dominio + 'apis/cuttings/product-options/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    ).json()
 
     if (productOptions.sizes.length == 1 && productOptions.sizes[0] == 'U') {
         selectSize.innerHTML += '<option value=' + 'U' + '>' + 'U' +'</option>'
@@ -517,40 +540,6 @@ function addCreateEditEventListeners() {
     })
 }
     
-async function updateCustomerData() {
 
-    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
 
-    if (filterCustomer.value != '') {
-        og.customerData = og.customersSummary.filter(c => c.customer_name == filterCustomer.value)
-        const customerPositiveBalance = og.customerData.length > 0 ? og.customerData[0].positiveBalance : 0
-        const customerNotes = og.customerData.length > 0 ? og.customerData[0].notes : null
-    
-        //balance
-        if (customerPositiveBalance > 0) {
-            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(customerPositiveBalance)
-            positiveBalance.style.display = 'block'
-        }else{
-            positiveBalance.style.display = 'none'
-        }
-
-        //comments
-        if (customerNotes == null || customerNotes =='') {
-            notes.innerHTML = '<i class="fa-regular fa-comment"></i>'
-        }else{
-            notes.innerHTML = '<i class="fa-regular fa-comment-dots"></i>'
-        }
-        
-        if (og.customerData.length > 0) {
-            notes.style.display = 'block'
-        }else{
-            notes.style.display = 'none'
-        }        
-    }else{
-        positiveBalance.style.display = 'none'
-        notes.style.display = 'none'
-    }
-    
-}
-
-export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions,updateCustomerData}
+export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions}

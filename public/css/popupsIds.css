@@ -1,5 +1,5 @@
 /*---popups contents---*/
-#coppContent,#roppContent,#doppContent,#amppContent,#dsppContent{
+#coppContent,#roppContent,#doppContent,#amppContent{
     top: 35%;
     width: 400px;
     left: calc(50vw - 200px);
@@ -11,17 +11,8 @@
     left: calc(50vw - 300px);
 }
 
-#cdppContent{
-    top: 25%;
-    width: 250px;
-    left: calc(500px - 125px);
-}
 
-#eodppContent{
-    top: 25%;
-    width: 400px;
-    left: 500px;
-}
+
 
 #dlppContent{
     top: 30%;
@@ -30,16 +21,12 @@
 }
 
 #scppContent{
-    top: 26%;
-    width: 500px;
-    left: calc(700px - 250px);
+    top: 8%;
+    width: 600px;
+    left: calc(500px - 310px);
 }
 
-#chyppContent{
-    top: 26%;
-    width: 300px;
-    left: calc(50vw - 160px);
-}
+
 
 #elppContent{
     top: 26%;
@@ -60,14 +47,7 @@
     z-index: 10;
 }
 
-#scppContent{
-    top: 20%;
-    width: 400px;
-    left: calc(500px - 200px);
-    z-index: 10;
-}
-
-/*-----orers.ejs-----*/
+/*-----orders.ejs-----*/
 #rcpppContent{
     top: 20%;
     width: 400px;
@@ -83,8 +63,65 @@
 
 
 /*---ok popups content---*/
-#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent,#apppOkContent,#rcpppOkContent{
+/*#coppOkContent,#roppOkContent,#doppOkContent, #amppOkContent,#dsppOkContent,#rpppOkContent,#obppOkContent,#loppOkContent,#apppOkContent,#rcpppOkContent{
     top: 40%;
     left: calc(50vw - 150px);
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*POPUPS*/
+/* orders.ejs --> cdpp, eodpp
+/* ordersDetails.ejs --> sscpp
+/* sales.ejs --> dspp,chypp
+
+/*-----------------------orders.ejs-----------------------*/
+/*change discount popup (cdpp)*/
+#cdppContent{
+    top: 25%;
+    width: 300px;
+    left: calc(500px - 165px);
 }
+
+/*edit order details popup (eodpp)*/
+#eodppContent{
+    top: 25%;
+    width: 400px;
+    left: calc(500px - 220px);
+}
+
+
+
+/*-----------------------ordersDetails.ejs-----------------------*/
+/*select sales channel popup (sscpp)*/
+#sscppContent{
+    top: 30%;
+    width: 400px;
+    left: calc(50vw - 200px);
+}
+
+
+/*-----------------------sales.ejs-----------------------*/
+/*delete sale popup (dspp)*/
+#dsppContent{
+    top: 35%;
+    width: 400px;
+    left: calc(50vw - 220px);
+}
+
+#chyppContent{
+    top: 26%;
+    width: 300px;
+    left: calc(50vw - 160px);
+}
+
 

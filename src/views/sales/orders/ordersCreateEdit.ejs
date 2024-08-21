@@ -21,7 +21,7 @@
         <div class="divInputsRow">
             <div class="divInput" id="inputProduct">
                 <label class="label1" id="selectProductLabel">Producto</label>
-                <input type="text" class="input1 inputXXXL" id="selectProduct">
+                <input type="text" class="input1 inputXXXL" id="selectProduct" autocomplete="off">
                 <ul class="predictedElements" id="ulPredictedProducts"></ul>
             </div>
 
@@ -35,7 +35,7 @@
 
         <div class="divTableSummary mtl mbm" id="orderInfo"></div>
 
-        <div class="divTable mtl">
+        <div class="divTable mtl" id="ceoppTable">
             <table>
                 <thead>
                     <tr>
@@ -54,7 +54,15 @@
             </table>
         </div>
     </div>
+</div>
 
+<div class="okPopup" id="ceoppOk">    
+    <div class="okContent" id="ceoppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Orden editada con éxito</div>
+        </div>
+    </div>
 </div>
 
 

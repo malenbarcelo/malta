@@ -14,12 +14,7 @@ const bottomHeaderMenu = [
         href:'/sales/consolidated',
         subitems:[]
     },
-    {
-        id:3,
-        name:'CLIENTES',
-        href:'/sales/customers',
-        subitems:[]
-    },
+    
     // {
     //     id:4,
     //     name:'ESTADÍSTICAS',

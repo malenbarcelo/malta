@@ -21,6 +21,9 @@ router.post('/post-notes',ordersController.postNotes)
 //payments
 router.post('/register-customer-payment',ordersController.saveCustomerPayment)
 
+//orders
+router.post('/update-payment-status',ordersController.updatePaymentStatus)
+
 
 
 

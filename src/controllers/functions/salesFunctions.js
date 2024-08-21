@@ -1,6 +1,6 @@
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../dbQueries/sales/ordersDetailsQueries')
-const paymentsQueries = require('../dbQueries/sales/paymentsQueries')
+const paymentsAssignationsQueries = require('../dbQueries/sales/paymentsAssignationsQueries')
 
 async function updateOrderData(idOrders) {
     let orderData = await ordersQueries.findOrder(idOrders)
@@ -47,39 +47,35 @@ async function updatePaymentStatus(idOrders,idPaymentsStatus,total,newTotal) {
     let newIdPaymentsStatus = idPaymentsStatus
     let paymentAmount = 0
     let orderData = await ordersQueries.findOrder(idOrders)
-    orderPayments = orderData.get({ plain: true }).orders_payments
+    orderPayments = orderData.get({ plain: true }).orders_assignations
     const totalPayment = orderPayments.reduce((sum, payment) => sum + parseFloat(payment.amount,2), 0)
 
-    if (idPaymentsStatus == 4) {
-        if (totalPayment == newTotal) {
-            newIdPaymentsStatus = 5
-        }
-        if (totalPayment > newTotal) {
-            newIdPaymentsStatus = 5
-            paymentAmount = totalPayment - newTotal
-        }        
+    if (totalPayment == newTotal) {
+        newIdPaymentsStatus = 5
     }
 
-    if (idPaymentsStatus == 5 || idPaymentsStatus == 6) {
-        if (newTotal > total) {
-            
-            newIdPaymentsStatus = 4
-        }
-        if (newTotal < total) {
-            paymentAmount = total - newTotal
-            console.log(total)
-            console.log(newTotal)
-            console.log(paymentAmount)
-            
-        } 
+    if (totalPayment > newTotal) {
+        newIdPaymentsStatus = 5
+        paymentAmount = totalPayment - newTotal
+    }
+
+    if (totalPayment < newTotal) {
+        newIdPaymentsStatus = 4
     }
 
     await ordersQueries.updatePaymentsStatusById(idOrders,newIdPaymentsStatus)
 
     //register order payment if necessary
     if (paymentAmount != 0) {
-        await paymentsQueries.registerOrderPayment(idOrders,orderData.id_customers,-paymentAmount,5)
-        await paymentsQueries.registerOrderPayment(null,orderData.id_customers,paymentAmount,5)
+        const assignation = {
+            date: new Date(),
+            type: 'ASSIGNACIÓN',
+            id_customers:orderData.id_customers,
+            id_orders:idOrders,
+            amount:-paymentAmount
+        }
+
+        await paymentsAssignationsQueries.create(assignation)
     }
 
     

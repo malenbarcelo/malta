@@ -5,9 +5,9 @@ const apisCuttingsController = {
   productOptions: async(req,res) =>{
     try{
 
-      const productDescription = req.params.productDescription
+      const productDescription = req.body.productDescription
 
-      const productOptions = await productsQueries.productOptions(productDescription)      
+      const productOptions = await productsQueries.productOptions(productDescription)
 
       res.status(200).json(productOptions)
 
@@ -19,8 +19,8 @@ const apisCuttingsController = {
   sizeOptions: async(req,res) =>{
     try{
 
-      const productDescription = req.params.productDescription
-      const color = req.params.color
+      const productDescription = req.body.productDescription
+      const color = req.body.color
 
       const sizesOptions = await productsQueries.sizesOptions(productDescription,color)      
 
@@ -34,8 +34,10 @@ const apisCuttingsController = {
   colorOptions: async(req,res) =>{
     try{
 
-      const productDescription = req.params.productDescription
-      const size = req.params.size
+      console.log(req.body)
+
+      const productDescription = req.body.selectedProduct
+      const size = req.body.size
 
       const colorsOptions = await productsQueries.colorsOptions(productDescription,size)      
 

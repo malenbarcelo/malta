@@ -102,8 +102,18 @@ window.addEventListener('load',async()=>{
     })
 
     //table info events listeners
-    const tableIcons = [vsppIcon,dsppIcon]
-    showTableInfo(tableIcons,38.5,100)
+    const tableIcons = [
+        {
+            icon:vsppIcon,
+            right:'21.5%'
+        },
+        {
+            icon:dsppIcon,
+            right:'16.5%'
+        }
+    ]
+
+    showTableInfo(tableIcons,270,150)
 
     //close popups
     const closePopups = [chyppClose,chyppCancel,dsppCancel,dsppClose]

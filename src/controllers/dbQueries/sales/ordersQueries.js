@@ -60,8 +60,7 @@ const ordersQueries = {
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
                 {association: 'orders_orders_managers'},
-                {association: 'orders_payments'},
-                {association: 'orders_accounts_movements'},
+                {association: 'orders_assignations'},
                 {association: 'orders_sales_channels'},
                 {association: 'orders_orders_details'}
 

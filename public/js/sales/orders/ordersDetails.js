@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./ordersDetailsGlobals.js"
 import { printTableOrdersDetails,filterOrdersDetails,printTableAddProducts } from "./ordersDetailsFunctions.js"
-import { acceptWithEnter, predictElements, selectFocusedElement,selectWithClick,showOkPopup } from "../../generalFunctions.js"
+import { acceptWithEnter, predictElements, selectFocusedElement,selectWithClick,showOkPopup,showTableInfo } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -17,18 +17,22 @@ window.addEventListener('load',async()=>{
     printTableOrdersDetails(odg.ordersDetails)
 
     //table info events listeners
-    const tableIcons = [elppIcon,dlppIcon,loppIcon]
-    tableIcons.forEach(element => {
-        const info = document.getElementById(element.id.replace('Icon','Info'))
-        element.addEventListener("mouseover", async(e) => {
-            const mouseX = e.clientX
-            info.style.left = (mouseX - 30) + 'px'
-            info.style.display = 'block'
-        })
-        element.addEventListener("mouseout", async(e) => {
-            info.style.display = 'none'
-        })
-    })
+    const tableIcons = [
+        {
+            icon:elppIcon,
+            right:'11.5%'
+        },        
+        {
+            icon:loppIcon,
+            right:'8.5%'
+        },
+        {
+            icon:dlppIcon,
+            right:'5.5%'
+        }
+    ]
+        
+    showTableInfo(tableIcons,250,100)
 
     //filters event listeners
     const filters = [filterOrder,filterProduct,filterCustomer,filterOrderStatus,filterOrderManager]
@@ -84,7 +88,7 @@ window.addEventListener('load',async()=>{
     })
 
     //close popups
-    const closePopups = [apppClose, apppCancel,dlppClose,dlppCancel,elppClose,loppClose,scppClose]
+    const closePopups = [apppClose, apppCancel,dlppClose,dlppCancel,elppClose,loppClose,sscppClose]
     closePopups.forEach(element => {
         element.addEventListener("click", async() => {
             let popupToClose = document.getElementById(element.id.replace('Close',''))
@@ -162,14 +166,14 @@ window.addEventListener('load',async()=>{
         const list = ulPredictedProducts2
         const apiUrl = 'apis/data/products/predict-products/'
         const name = 'description'
-        const elementName = 'product'
+        const elementName = 'product2'
         predictElements(input,list,apiUrl,name,elementName)
     })
 
     apppProduct.addEventListener("keydown", async(e) => {
         const input = apppProduct
         const list = ulPredictedProducts2
-        const elementName = 'product'
+        const elementName = 'product2'
         selectFocusedElement(e,input,list,elementName)
     })
 
@@ -179,14 +183,14 @@ window.addEventListener('load',async()=>{
         const list = ulPredictedCustomers2
         const apiUrl = 'apis/data/customers/predict-customers/'
         const name = 'customer_name'
-        const elementName = 'customer'
+        const elementName = 'customer2'
         predictElements(input,list,apiUrl,name,elementName)
     })
 
     apppCustomer.addEventListener("keydown", async(e) => {
         const input = apppCustomer
         const list = ulPredictedCustomers2
-        const elementName = 'customer'
+        const elementName = 'customer2'
         selectFocusedElement(e,input,list,elementName)
     })
 
@@ -270,7 +274,7 @@ window.addEventListener('load',async()=>{
         })
 
         if (ordersToCreate > 0 && odg.salesChannel == 0) {
-            scpp.style.display = 'block'
+            sscpp.style.display = 'block'
         }else{
             
             data.forEach(element => {
@@ -301,9 +305,9 @@ window.addEventListener('load',async()=>{
         
     })
 
-    scppAccept.addEventListener("click", async(e) => {
-        odg.salesChannel = scppSalesChannel.value
-        scpp.style.display = 'none'
+    sscppAccept.addEventListener("click", async(e) => {
+        odg.salesChannel = sscppSalesChannel.value
+        sscpp.style.display = 'none'
         apppAccept.click()
     })
 

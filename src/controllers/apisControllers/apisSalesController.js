@@ -111,8 +111,8 @@ const apisSalesController = {
       await ordersQueries.createOrderDetails(data,data.id)
 
       //update order status
-      updateOrderStatus(data.id)
-
+      await updateOrderStatus(data.id)
+      
       //get order data
       const orderData = await ordersQueries.findOrder(data.id)
       
@@ -121,8 +121,8 @@ const apisSalesController = {
 
       //update payment status      
       const idPaymentsStatus = orderData.id_payments_status
-      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
-        updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
+      if (idPaymentsStatus == 4 || idPaymentsStatus == 5) {
+        await updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
       }
 
       res.status(200).json()

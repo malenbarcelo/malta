@@ -70,4 +70,5 @@ app.use('/sales',salesRoutes)
 /*---APIS---*/
 app.use('/apis/sales/customers',salesRoutes) //customers
 app.use('/apis/sales/payments',salesRoutes) //payments
+app.use('/apis/sales/orders',salesRoutes) //orders
 
