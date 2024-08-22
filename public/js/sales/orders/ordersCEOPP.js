@@ -104,7 +104,7 @@ function ceoppEventListeners() {
             }
         })
 
-        //gert new order status
+        //get new order status
         if (incompleteRows > 0 || og.orderDetails.length == 0) {
             og.orderData.id_orders_status = 1
         }else{
@@ -120,12 +120,14 @@ function ceoppEventListeners() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
+            ceoppOkText.innerText = 'Orden creada con éxito'
         }else{
             await fetch(dominio + 'apis/sales/edit-order',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
+            ceoppOkText.innerText = 'Orden editada con éxito'
         }
 
         updateData()
