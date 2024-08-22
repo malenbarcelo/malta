@@ -44,8 +44,17 @@ const ordersController = {
           let customersData = await customersQueries.customers(dateFrom)
           customersData = customersData.map(cd => cd.get({ plain: true }))
 
-          //in progress orders
-          let inProgressOrders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+          //get in progress orders
+          //let inProgressOrders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
+          const orders = await ordersQueries.inProgressOrders()
+          const inProgressOrders = orders.map(order => order.get({ plain: true }))
+
+          inProgressOrders.forEach(order => {
+            const amountPaid = order.orders_assignations.reduce((sum, oa) => sum +parseFloat(oa.amount,2), 0)
+            const balance = parseFloat(order.total) - amountPaid
+            order.amountPaid = amountPaid
+            order.balance = balance
+          })
 
           //complete customers data
           customersData.forEach(c => {
