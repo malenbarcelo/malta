@@ -69,7 +69,7 @@ async function updatePaymentStatus(idOrders,idPaymentsStatus,total,newTotal) {
     if (paymentAmount != 0) {
         const assignation = {
             date: new Date(),
-            type: 'ASSIGNACIÓN',
+            type: 'ASIGNACION',
             id_customers:orderData.id_customers,
             id_orders:idOrders,
             amount:-paymentAmount

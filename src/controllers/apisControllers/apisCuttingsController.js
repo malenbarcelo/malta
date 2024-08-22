@@ -34,12 +34,10 @@ const apisCuttingsController = {
   colorOptions: async(req,res) =>{
     try{
 
-      console.log(req.body)
-
       const productDescription = req.body.selectedProduct
       const size = req.body.size
 
-      const colorsOptions = await productsQueries.colorsOptions(productDescription,size)      
+      const colorsOptions = await productsQueries.colorsOptions(productDescription,size)
 
       res.status(200).json(colorsOptions)
 

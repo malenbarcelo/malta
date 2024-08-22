@@ -87,9 +87,15 @@ const productsQueries = {
 
         //eliminate duplicates
         colors = [...new Set(colors)]
+        colors = colors.sort()
+
+        //order by colors
+        const specialColors = ['Blanco', 'Negro']
+        const otherColors = colors.filter(color => !specialColors.includes(color))
+        colors = [...specialColors, ...otherColors]
 
         const colorsOptions = {
-            colors:colors.sort()
+            colors:colors
         }
 
         return colorsOptions
