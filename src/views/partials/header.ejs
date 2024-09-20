@@ -1,30 +1,30 @@
 <div class="header">
 
     <div class="topHeader">
-        
+
         <div class="divCompanyLogo">
             <img src="/images/companyLogo.png" alt="Malta" class="companyLogo">
         </div>
-        
+
             <div class="divUserLogged">
-                <% if (locals.userLogged) { %>    
+                <% if (locals.userLogged) { %>
                     <div class="userLogged">
-                        <i class="fa-regular fa-user iconUser"></i>
+                        <i class="fa-solid fa-user iconUser"></i>
                         <div class="userLoggedName">
                             <%= userLogged.first_name + ' ' + userLogged.last_name %>
                             <div class=""><a href="/logout" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></div>
                         </div>
                     </div>
-    
+
                 <% } %>
             </div>
     </div>
 
-    <div class="bottomHeader <%= locals.bottomHeaderMenu ? 'bottomHeaderBorder' : null %>">
+    <div class="bottomHeader bottomHeaderBorder">
 
         <%= %>
 
-        <% if (locals.bottomHeaderMenu) { %>            
+        <% if (locals.bottomHeaderMenu) { %>
             <% bottomHeaderMenu.forEach(itemMenu => { %>
                 <div class="itemsMenu" id="<%= 'itemsMenu_' + itemMenu.id %>">
                     <div class="<%= locals.selectedItem == itemMenu.name ? 'itemHeaderMenu selectedItem' : 'itemHeaderMenu' %>">
@@ -35,17 +35,20 @@
                             <% itemMenu.subitems.forEach(subitem => { %>
                                 <a href="<%= subitem.href %>" class="subitemHeaderMenu"><%= subitem.subitem %></a>
                             <% }) %>
-                        </div>                        
+                        </div>
                     <% } %>
                 </div>
-            <% }) %>            
+            <% }) %>
 
-            <a href="/main-menu">
-                <div class="goToMainMenu">
-                    <i class="fa-solid fa-house"></i>
-                    Home
-                </div>
-            </a>            
+            <!-- Go to main menu -->
+            <div class="goToMainMenu">
+                <a class="mainMenuHref" href="/main-menu"><i class="fa-solid fa-house"></i></a>
+                <a class="mainMenuHref" href="/main-menu">Home</a>
+            </div>
+
+            <!-- Season -->
+            <div class="headerSeason">SS25</div>
+
         <% } %>
 
     </div>

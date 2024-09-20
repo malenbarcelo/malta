@@ -9,6 +9,7 @@ npm install express-session
 npm install bcryptjs
 npm install node-cron
 npm install moment-timezone
+npm install session-file-store
 
 /*---Sequelize---*/
 1. npm install --save sequelize-cli
@@ -21,20 +22,13 @@ npm install read-excel-file
 
 Resumed --->
 npm init -y
-npm install express ejs method-override multer express-validator express-session bcryptjs sequelize-cli sequelize mysql2 exceljs read-excel-file node-cron moment-timezone
+npm install express ejs method-override multer express-validator express-session bcryptjs sequelize-cli sequelize mysql2 exceljs read-excel-file node-cron moment-timezone session-file-store
 npx sequelize-cli init
 
-/*---SEQUELIZE IMPORTANT!!!---*/
-Para poder usar dos bases de datos se hicieron algunos cambios en la configuración de selquelize.
+/*---POPUPS---*/
+CHSPP --> 'Change season popup'
 
-1. Generar archivo sequelizeConfig.js
-2. index.js --> copiar la parte del código no comentada
-3. archivos dbQueries.js -->
-ejemplo:
-const db = require('../../../database/models')
-const { localDB } = require('../../../database/config/sequelizeConfig')
-const sequelize = require('sequelize')
-const Orders = db.local.Orders
+
 
 
 

@@ -5,11 +5,47 @@
     <div class="titleL">MENÚ</div>
 </div>
 
-<div class="mainMenu mtl">        
+<div id="divSeason">
+    <div id="season"><%= currentSeason.season %></div>
+    <% if (userLogged.user_category.category_permissions.filter(cp => cp.id_tasks == 1).length > 0) { %>
+        <i class="fa-solid fa-pencil pointer" id="changeSeason"></i>
+    <% } %>
+</div>
+    
+<div class="mainMenu mtm">        
     <a class="itemMainMenu" href="/sales/in-progress-orders">VENTAS</a>
-    <a class="itemMainMenu" href="">CORTES</a>
+    <a class="itemMainMenu" href="/cuttings/products">CORTES</a>
     <a class="itemMainMenu" href="">FINANZAS</a>
     <a class="itemMainMenu" href="/data/sales/customers">DATOS</a>
     <a class="itemMainMenu" href="">USUARIOS</a>
-            
 </div>
+
+<!---------Change season popup (CHSPP)---------->
+<div class="popup" id="chspp">
+    
+    <div class="popupContent" id="chsppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon2"><i class="fa-solid fa-pencil"></i></div>
+            <div class="popupClose2" id="chsppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="chsppTitle">CAMBIAR TEMPORADA</div>
+
+        <div class="divInputsColumn mtm mbm">
+            <div class="divInput">
+                <label class="label1" id="chsppSeasonLabel">Temporada</label>
+                <input type="text" class="input1 im ipl" id="chsppSeason">
+                <div class="divError" id="chsppSeasonError">Debe ingresar la temporada</div>
+            </div>
+        </div>
+
+        <div class="divButtonsRow mtm mbs">
+            <div id="chsppAccept" class="button1 bxs">Aceptar</div>
+        </div>
+    </div>
+</div>
+
+<!----------SCRIPTS---------->
+<script type="module" src="/js/mainMenu.js"></script>
+

@@ -59,6 +59,14 @@ ul {
     display: none;
 }
 
+.divErrorBE{ /*for backend validations*/
+    color: var(--errorColor);
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2px;
+}
+
 .errorColor{
     color:rgb(206, 10, 10);
     font-weight: bold;
@@ -168,6 +176,11 @@ ul {
 
 #ordersLoader,#ordersDetailsLoader,#salesLoader,#customersLoader{
     left: calc(50vw - 20px);
+}
+
+#productsTypesLoader,#fabricsLoader,#colorsLoader,#sizesLoader{
+    top: 100px;
+    left: calc(50% - 30px);
 }
 
 /*---------------------fonts---------------------*/

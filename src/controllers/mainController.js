@@ -1,6 +1,9 @@
+const {validationResult} = require('express-validator')
+const usersQueries = require('../controllers/dbQueries/users/usersQueries')
+const seasonsQueries = require('../controllers/dbQueries/main/seasonsQueries')
 
 const mainController = {
-    index: (req,res) => {
+    login: (req,res) => {
         try{
 
             req.session.destroy()
@@ -12,21 +15,10 @@ const mainController = {
             return res.send('Ha ocurrido un error')
         }
     },
-    mainMenu: (req,res) => {
-        try{
-
-            return res.render('mainMenu',{title:'Menu principal'})
-
-        }catch(error){
-
-            console.log(error)
-            return res.send('Ha ocurrido un error')
-        }
-    },
     loginProcess: async(req,res) => {
         try{
 
-            /*const resultValidation = validationResult(req)
+            const resultValidation = validationResult(req)
 
             if (resultValidation.errors.length > 0){
                 return res.render('login',{
@@ -37,10 +29,10 @@ const mainController = {
             }
 
             //login
-            const userToLogin = await usersQueries.findUser(req.body.userName)
-
-            delete userToLogin.password
-            req.session.userLogged = userToLogin*/
+            let userToLogin = await usersQueries.findUser(req.body.user)
+            
+            userToLogin.password = ''
+            req.session.userLogged = userToLogin
 
             return res.redirect('/main-menu')
 
@@ -49,6 +41,25 @@ const mainController = {
             res.send('Ha ocurrido un error')
         }
     },
+    logoutProcess: (req,res) => {
+
+        req.session.destroy()
+
+        return res.redirect('/')
+    },
+    mainMenu: async(req,res) => {
+        try{
+
+            const currentSeason = await seasonsQueries.currentSeason()
+
+            return res.render('mainMenu',{title:'Menu principal',currentSeason})
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    }
 }
 
 module.exports = mainController

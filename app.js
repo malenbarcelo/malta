@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const publicPath =  path.resolve('./public')
 const session = require('express-session')
+const FileStore = require('session-file-store')(session);
 const bcrypt = require('bcryptjs')
 const userLoggedMiddleware = require('./src/middlewares/userLoggedMiddleware.js')
 const bodyParser = require("body-parser")
@@ -12,7 +13,7 @@ const cron = require('node-cron')
 const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
 const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
-//const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
+const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
 const mainRoutes = require('./src/routes/mainRoutes.js')
 const salesRoutes = require('./src/routes/salesRoutes.js')
@@ -40,10 +41,15 @@ app.set('view engine','ejs')
 
 //configure session
 app.use(session({
+    store: new FileStore(),
     secret:'secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false } // Change to true in PRD to use HTTPS
 }))
+
+//middlewares
+app.use(userLoggedMiddleware)
 
 //middlewares
 app.use(userLoggedMiddleware)
@@ -66,9 +72,20 @@ app.use('/apis/data',apisDataRoutes)
 app.use('/apis/sales',apisSalesRoutes)
 app.use('/data',dataRoutes)
 app.use('/sales',salesRoutes)
+app.use('/cuttings',cuttingsRoutes)
 
 /*---APIS---*/
+//main
+app.use('/apis/main',mainRoutes) //main
+
+//sales
 app.use('/apis/sales/customers',salesRoutes) //customers
 app.use('/apis/sales/payments',salesRoutes) //payments
 app.use('/apis/sales/orders',salesRoutes) //orders
+
+//cuttings
+app.use('/apis/cuttings',cuttingsRoutes) //orders
+
+
+//console.log(bcrypt.hashSync('psiservices@psiservices.com.ar',10))
 

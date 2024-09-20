@@ -1,0 +1,66 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">
+    PRODUCTOS
+</div>
+
+<!------GENERAL ACTIONS------>
+<div class="divGeneralActions" id="DGAproducts">
+    <div class="divGeneralAction" id="DGAcreateProduct">
+        <i class="fa-solid fa-plus"></i>
+        <div class="showActionPopup">
+            Crear producto
+        </div>        
+    </div>
+</div>
+
+<!--------GENERAL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1" id="filterCustomerLabel">Código</label>
+            <input type="text" id="filterCustomer" class="input1 inputL" autocomplete="off">
+            <ul class="predictedElements" id="ulPredictedCustomers"></ul>
+        </div>
+        <div class="divInput">
+            <label for="selectOrder" class="label1">Tipo</label>
+            <select name="selectOrder" id="filterOrder" class="input1 inputS">
+                <option value="default"></option>
+            </select>
+        </div>
+        <div class="unfilterIcon" id="unfilterProducts">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
+</div>
+
+<!---------PRODUCTS TABLE--------->
+<div class="mtl">
+    <div class="divTable" id="productsTable">
+        <div class="tableInfo" id="vcppInfo">Colores</div>
+        <div class="tableInfo" id="vsppInfo">Talles</div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss wXS thLeftBorder thTall">Código</th>
+                    <th class="theadCss wXL thTall">Descripción</th>
+                    <th class="theadCss wM thTall">Tipo</th>
+                    <th class="theadCss wL thTall">Tela</th>
+                    <th class="theadCss wXL thTall">Producto</th>
+                    <th class="theadCss wXS thTall">Colores</th>
+                    <th class="theadCss wXS thTall thRightBorder">Talles</th>
+                </tr>
+            </thead>
+            <tbody id="bodyOrders"></tbody>
+        </table>
+        
+    </div>
+    
+</div>
+
+<!----------LOADER---------->
+<div class="loader" id="ordersLoader" ></div>
+

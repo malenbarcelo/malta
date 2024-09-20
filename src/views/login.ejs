@@ -11,18 +11,18 @@
 
         <div class="divInputsColumn mtxl mbxl">
 
-            <div class="">
-                <input type="text" name="userName" placeholder="Usuario" class="input1 inputXXL<%= locals.errors && errors.userName ? 'isInvalid' : null %>" value="<%= locals.oldData ? oldData.userName : null %>" autocomplete="off">
-                <div class="divError">
-                    <% if (locals.errors && errors.userName) { %>
-                        <%= errors.userName.msg %>
+            <div class="divInput">
+                <input type="text" name="user" placeholder="Usuario" class="input1 inputXXL <%= locals.errors && errors.user ? 'isInvalid' : null %>" value="<%= locals.oldData ? oldData.user : null %>" autocomplete="off">
+                <div class="divErrorBE">
+                    <% if (locals.errors && errors.user) { %>
+                        <%= errors.user.msg %>
                     <% } %>
                 </div>        
             </div>
 
             <div class="">
-                <input type="password" name="password" placeholder="Contraseña" class="input1 inputXXL<%= locals.errors && errors.password ? 'isInvalid' : null %>" autocomplete="off">
-                <div class="divError">
+                <input type="password" name="password" placeholder="Contraseña" class="input1 inputXXL <%= locals.errors && errors.password ? 'isInvalid' : null %>" autocomplete="off">
+                <div class="divErrorBE">
                     <% if (locals.errors && errors.password) { %>
                         <%= errors.password.msg %>
                     <% } %>

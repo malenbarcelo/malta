@@ -55,8 +55,8 @@
 /*----------------bottom header----------------*/
 .bottomHeader{
     display: flex;
-    justify-content: center;
-    column-gap: 55px;
+    justify-content:center;
+    column-gap: 50px;
     height: 25%;
     border-bottom: var(--color3) 1px solid;
     position: relative;
@@ -70,9 +70,8 @@
 .itemsMenu{
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: center;    
     justify-content: center;
-    column-gap: 50px;
     width: 100px;
 }
 
@@ -134,5 +133,19 @@
 
 .goToMainMenu:hover{
     font-weight: bold;
+}
+
+.mainMenuHref{
+    color:var(--color2)
+}
+
+.headerSeason{
+    color: var(--color2);
+    position: absolute;
+    height: 100%;
+    left: 30px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 

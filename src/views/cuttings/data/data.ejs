@@ -1,0 +1,118 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">
+    DATOS
+</div>
+
+<!---------DIV TABLES--------->
+<div class="divTablesRow">
+    <div class="divTableRow">
+        <div class="tableTitle mbm">TIPOS DE PRODUCTOS</div>
+    
+        <div class="divTable" id="productsTypesTable">
+            <div class="tableInfo" id="eptppInfo">Editar</div>
+            <div class="tableInfo" id="dptppInfo">Eliminar</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thTall thLeftBorder">Tipo</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square icon pointer" id="eptppIcon"></i></th>
+                        <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can pointer" id="dptppIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="productsTypesBody"></tbody>
+            </table>
+
+            <!----------LOADER---------->
+            <div class="loader" id="productsTypesLoader"></div>
+            
+        </div>
+    
+    </div>
+    <div class="divTableRow">
+        <div class="tableTitle mbm">TELAS</div>
+    
+        <div class="divTable" id="fabricsTable">
+            <div class="tableInfo" id="efppInfo">Editar</div>
+            <div class="tableInfo" id="dfppInfo">Eliminar</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thTall thLeftBorder">Tela</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square icon pointer" id="efppIcon"></i></th>
+                        <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can pointer" id="dfppIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="fabricsBody"></tbody>
+            </table>
+
+            <!----------LOADER---------->
+            <div class="loader" id="fabricsLoader"></div>
+            
+        </div>
+    
+    </div>
+    <div class="divTableRow">
+        <div class="tableTitle mbm">COLORES</div>
+    
+        <div class="divTable" id="colorsTable">
+            <div class="tableInfo" id="ecppInfo">Editar</div>
+            <div class="tableInfo" id="dcppInfo">Eliminar</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thTall thLeftBorder">Color</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square icon pointer" id="ecppIcon"></i></th>
+                        <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can pointer" id="dcppIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="colorsBody"></tbody>
+            </table>
+
+            <!----------LOADER---------->
+            <div class="loader" id="colorsLoader"></div>
+            
+        </div>
+    
+    </div>
+    <div class="divTableRow">
+        <div class="tableTitle mbm">TALLES</div>
+    
+        <div class="divTable" id="sizesTable">
+            <div class="tableInfo" id="esppInfo">Editar</div>
+            <div class="tableInfo" id="dsppInfo">Eliminar</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wS thTall thLeftBorder">Talle</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square icon pointer" id="esppIcon"></i></th>
+                        <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can pointer" id="dsppIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="sizesBody"></tbody>
+            </table>
+
+            <!----------LOADER---------->
+            <div class="loader" id="sizesLoader"></div>
+            
+        </div>
+    
+    </div>
+
+</div>
+
+<!----------POPUPS---------->
+<%- include('./popupsCDDPP') %>
+
+
+
+
+<!----------SCRIPTS---------->
+<script type="module" src="/js/cuttings/data/data.js"></script>
+

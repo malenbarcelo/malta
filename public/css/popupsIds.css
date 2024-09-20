@@ -83,6 +83,7 @@
 /* orders.ejs --> cdpp, eodpp
 /* ordersDetails.ejs --> sscpp
 /* sales.ejs --> dspp,chypp
+/* data.ejs --> cddpp
 
 /*-----------------------orders.ejs-----------------------*/
 /*change discount popup (cdpp)*/
@@ -98,8 +99,6 @@
     width: 400px;
     left: calc(500px - 220px);
 }
-
-
 
 /*-----------------------ordersDetails.ejs-----------------------*/
 /*select sales channel popup (sscpp)*/
@@ -121,6 +120,20 @@
 #chyppContent{
     top: 26%;
     width: 300px;
+    left: calc(50vw - 160px);
+}
+
+/*-----------------------data.ejs-----------------------*/
+/*confirm delete data popup (cddpp)*/
+#cddppContent{
+    top: 35%;
+    width: 400px;
+    left: calc(50vw - 220px);
+}
+
+#cddppOkContent{
+    width: 300px;
+    top: 40%;
     left: calc(50vw - 160px);
 }
 

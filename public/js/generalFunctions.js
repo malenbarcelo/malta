@@ -125,7 +125,6 @@ async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
     }
 }
 
-
 function selectWithClick(e,dataToSelect) {
     let clickPredictedElement = false
     let inputToClick

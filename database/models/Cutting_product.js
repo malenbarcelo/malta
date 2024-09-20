@@ -12,29 +12,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      product_type:{
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      product:{
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      fabric:{
-        type: DataTypes.STRING,
-        allowNull: true,
+      id_products_types:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       description:{
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      color:{
-        type: DataTypes.STRING,
-        allowNull: false
+      id_fabrics:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
-      size:{
+      full_description:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       unit_price:{
         type: DataTypes.DECIMAL,
@@ -57,11 +49,33 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
     }
+
     const config = {
-    tableName : 'cuttings_products',
-    timestamps : false
+      tableName : 'cuttings_products',
+      timestamps : false
     }
+
     const Cutting_product = sequelize.define(alias, cols, config)
+
+    Cutting_product.associate = (models) => {
+      Cutting_product.belongsTo(models.Cuttings_fabrics,{
+         as:'product_fabric',
+         foreignKey: 'id_fabrics'
+      }),
+      Cutting_product.belongsTo(models.Cuttings_products_types,{
+        as:'product_type',
+        foreignKey: 'id_products_types'
+      })
+      // Cutting_product.hasMany(models.Cuttings_products_colors,{
+      //   as:'product_colors',
+      //   foreignKey: 'id_products'
+      // }),
+      // Cutting_product.hasMany(models.Cuttings_products_sizes,{
+      //   as:'product_sizes',
+      //   foreignKey: 'id_products'
+      // })
+    }
     
     return Cutting_product
+    
  }

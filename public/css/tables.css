@@ -9,6 +9,16 @@ thead{
     top:0;
 }/*to leave titles fixed*/ 
 
+.divTablesRow{
+    display: flex;
+    justify-content: center;
+    column-gap: 50px;
+}
+
+.divTableRow{
+    position: relative;
+}
+
 .divTable{
     overflow-y: auto;
     width: fit-content;
@@ -91,6 +101,12 @@ border-top-right-radius: 15px;
     justify-content: center;
     align-items: center;
     height: 4vh;
+}
+
+/*Table title*/
+.tableTitle{
+    font-weight: bold;
+    text-align: center;
 }
 
 
