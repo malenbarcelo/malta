@@ -105,10 +105,38 @@ border-top-right-radius: 15px;
 
 /*Table title*/
 .tableTitle{
+    display: flex;
+    column-gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableTitleText{
     font-weight: bold;
     text-align: center;
 }
 
+.tableTitleIcon{
+    font-size: 20px;
+    position: relative;
+    width: 30px;
+    text-align: center;
+}
+
+.tableTitleInfo{
+    display: none;
+    width: 200px;
+    text-align: center;
+    position: absolute;
+    font-size: 12px;
+    top: -75%;
+    right: -85px;
+}
+
+.tableTitleIcon:hover .tableTitleInfo{
+    display: block;
+
+}
 
 
 

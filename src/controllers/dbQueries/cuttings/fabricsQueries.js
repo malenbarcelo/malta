@@ -25,6 +25,14 @@ const fabrics = {
             }
         )
     },
+    create: async(data) => {
+        await model.create(
+            {
+                fabric:data,
+                enabled:1,
+            },
+        )
+    },
 }       
 
 module.exports = fabrics

@@ -54,7 +54,7 @@
                     <th class="theadCss wXS thTall thRightBorder">Talles</th>
                 </tr>
             </thead>
-            <tbody id="bodyOrders"></tbody>
+            <tbody id="bodyProducts"></tbody>
         </table>
         
     </div>
@@ -62,5 +62,13 @@
 </div>
 
 <!----------LOADER---------->
-<div class="loader" id="ordersLoader" ></div>
+<div class="loader" id="productsLoader" ></div>
+
+<!----------POPUPS---------->
+<%- include('./productsCPPP') %>
+<%- include('./productsESPP') %>
+<%- include('./productsECPP') %>
+
+<!----------SCRIPTS---------->
+<script type="module" src="/js/cuttings/products/products.js"></script>
 

@@ -25,6 +25,14 @@ const colors = {
             }
         )
     },
+    create: async(data) => {
+        await model.create(
+            {
+                color:data,
+                enabled:1,
+            },
+        )
+    },
 }       
 
 module.exports = colors

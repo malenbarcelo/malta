@@ -100,6 +100,9 @@ const productsQueries = {
 
         return colorsOptions
     },
+    create: async(data) => {
+        await model.create(data)
+    },
 }       
 
 module.exports = productsQueries

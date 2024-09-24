@@ -98,6 +98,10 @@ accent-color: black
 
 /*----------INPUTS AND SELECTS SIZES----------*/
 
+.ixxl{
+    width: 350px;
+}
+
 .selectS{
     width: 120px;
     padding: 7px 0px 4px 0px;

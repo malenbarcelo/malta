@@ -25,6 +25,14 @@ const productsTypesQueries = {
             }
         )
     },
+    create: async(data) => {
+        await model.create(
+            {
+                product_type:data,
+                enabled:1,
+            },
+        )
+    },
 }       
 
 module.exports = productsTypesQueries

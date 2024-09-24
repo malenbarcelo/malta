@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
+      season:{
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      enabled:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
     }
 
     const config = {
@@ -66,14 +74,14 @@ module.exports = (sequelize, DataTypes) => {
         as:'product_type',
         foreignKey: 'id_products_types'
       })
-      // Cutting_product.hasMany(models.Cuttings_products_colors,{
-      //   as:'product_colors',
-      //   foreignKey: 'id_products'
-      // }),
-      // Cutting_product.hasMany(models.Cuttings_products_sizes,{
-      //   as:'product_sizes',
-      //   foreignKey: 'id_products'
-      // })
+      Cutting_product.hasMany(models.Cuttings_products_colors,{
+        as:'product_colors',
+        foreignKey: 'id_products'
+      }),
+      Cutting_product.hasMany(models.Cuttings_products_sizes,{
+        as:'product_sizes',
+        foreignKey: 'id_products'
+      })
     }
     
     return Cutting_product

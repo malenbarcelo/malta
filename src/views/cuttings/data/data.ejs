@@ -9,7 +9,13 @@
 <!---------DIV TABLES--------->
 <div class="divTablesRow">
     <div class="divTableRow">
-        <div class="tableTitle mbm">TIPOS DE PRODUCTOS</div>
+        <div class="tableTitle mbm">
+            <div class="tableTitleText">TIPOS DE PRODUCTOS</div>
+            <div class="tableTitleIcon">
+                <i class="fa-solid fa-square-plus pointer" id="createType"></i>
+                <div class="tableTitleInfo">Crear tipo</div>
+            </div>
+        </div>
     
         <div class="divTable" id="productsTypesTable">
             <div class="tableInfo" id="eptppInfo">Editar</div>
@@ -33,7 +39,14 @@
     
     </div>
     <div class="divTableRow">
-        <div class="tableTitle mbm">TELAS</div>
+        <div class="tableTitle mbm">
+            <div class="tableTitleText">TELAS</div>
+            <div class="tableTitleIcon">
+                <i class="fa-solid fa-square-plus pointer" id="createFabric"></i>
+                <div class="tableTitleInfo">Crear tela</div>
+            </div>
+        </div>
+        
     
         <div class="divTable" id="fabricsTable">
             <div class="tableInfo" id="efppInfo">Editar</div>
@@ -57,7 +70,13 @@
     
     </div>
     <div class="divTableRow">
-        <div class="tableTitle mbm">COLORES</div>
+        <div class="tableTitle mbm">
+            <div class="tableTitleText">COLORES</div>
+            <div class="tableTitleIcon">
+                <i class="fa-solid fa-square-plus pointer" id="createColor"></i>
+                <div class="tableTitleInfo">Crear color</div>
+            </div>
+        </div>
     
         <div class="divTable" id="colorsTable">
             <div class="tableInfo" id="ecppInfo">Editar</div>
@@ -81,7 +100,13 @@
     
     </div>
     <div class="divTableRow">
-        <div class="tableTitle mbm">TALLES</div>
+        <div class="tableTitle mbm">
+            <div class="tableTitleText">TALLES</div>
+            <div class="tableTitleIcon">
+                <i class="fa-solid fa-square-plus pointer" id="createSize"></i>
+                <div class="tableTitleInfo">Crear talle</div>
+            </div>
+        </div>
     
         <div class="divTable" id="sizesTable">
             <div class="tableInfo" id="esppInfo">Editar</div>
@@ -108,10 +133,8 @@
 </div>
 
 <!----------POPUPS---------->
-<%- include('./popupsCDDPP') %>
-
-
-
+<%- include('./dataCDDPP') %>
+<%- include('./dataCDPP') %>
 
 <!----------SCRIPTS---------->
 <script type="module" src="/js/cuttings/data/data.js"></script>

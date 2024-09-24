@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import dg from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { showLoaders, uploadData } from "./functions.js"
+import { showLoaders, uploadData,hideBodys } from "./functions.js"
 //CONFIRM DELETE DATA POPUP (CDDPP)
 async function cddppEventListeners() {
     
@@ -18,13 +18,8 @@ async function cddppEventListeners() {
             body: JSON.stringify(data)
         })
 
-        productsTypesBody.innerHTML = ''
-        productsTypesLoader.style.display = 'block'
-        fabricsBody.innerHTML = ''
-        colorsBody.innerHTML = ''
-        sizesBody.innerHTML = ''
-
-        showLoaders(dg.loaders)
+        hideBodys()
+        showLoaders()
         uploadData()
         
         cddpp.style.display = 'none'

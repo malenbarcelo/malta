@@ -1,0 +1,90 @@
+<!---------Create product popup (CPPP)---------->
+<div class="popup" id="cppp">
+    
+    <div class="popupContent" id="cpppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon3"><i class="fa-solid fa-square-plus"></i></div>
+            <div class="popupClose1" id="cpppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="cpppTitle">CREAR PRODUCTO</div>
+
+        <div class="divInputsColumn mtm mbm">
+            <div class="divInput">
+                <label class="label1" id="cpppCodeLabel">Código</label>
+                <input type="text" class="input1 ixxl ipl" id="cpppCode" autocomplete="off">
+                <div class="divError" id="cpppCodeError">Debe ingresar un código</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="cpppDescriptionLabel">Descripción</label>
+                <input type="text" class="input1 ixxl ipl" id="cpppDescription" autocomplete="off">
+                <div class="divError" id="cpppDescriptionError">Debe ingresar una descripción</div>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="cpppTypeLabel">Tipo de producto</label>
+                <input type="text" class="input1 ixxl ipl" id="cpppType" autocomplete="off">
+                <div class="divError" id="cpppTypeError">Debe ingresar el tipo de producto</div>
+                <div class="createAttribute">
+                    <i class="fa-solid fa-square-plus pointer createAttributeIcon"></i>
+                    <div class="createAttributeInfo">Crear tipo</div>
+                </div>
+                <ul class="predictedElements" id="cpppPredictedTypes"></ul>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="cpppFabricLabel">Tela</label>
+                <input type="text" class="input1 ixxl ipl" id="cpppFabric" autocomplete="off">
+                <div class="divError" id="cpppFabricError">Debe ingresar la tela</div>
+                <div class="createAttribute">
+                    <i class="fa-solid fa-square-plus pointer createAttributeIcon"></i>
+                    <div class="createAttributeInfo">Crear tela</div>
+                </div>
+                <ul class="predictedElements" id="cpppPredictedFabrics"></ul>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="cpppFullDescriptionLabel">Producto</label>
+                <input type="text" class="input1 ixxl ipl" id="cpppFullDescription" readonly>
+            </div>
+            <div class="divInput">
+                <label class="label1" id="cpppPriceLabel">Precio</label>
+                <input type="number" step="0.01" class="input1 ixxl ipl" id="cpppPrice">
+                <div class="divError" id="cpppPriceError">Debe ingresar un precio</div>
+            </div>
+            <div class="divInput">
+                <label class="label1">Talles</label>
+                <input type="text" id="cpppSizes" class="input1 ixxl ipl" autocomplete="off" readonly>
+                <div class="divError"></div>
+                <div class="createAttribute">
+                    <i class="fa-solid fa-pencil pointer createAttributeIcon" id="cpppSizesIcon"></i>
+                    <div class="createAttributeInfo">Editar talles</div>
+                </div>
+                <ul class="predictedElements"></ul>
+            </div>
+            <div class="divInput">
+                <label class="label1">Colores</label>
+                <textarea  id="cpppColors" class="input1 ixxl ipl" autocomplete="off" readonly></textarea>
+                <div class="divError"></div>
+                <div class="createAttribute">
+                    <i class="fa-solid fa-pencil pointer createAttributeIcon" id="cpppColorsIcon"></i>
+                    <div class="createAttributeInfo">Editar colores</div>
+                </div>
+                <ul class="predictedElements"></ul>
+            </div>
+            
+        </div>
+
+        <div class="divButtonsRow mtm mbs">
+            <div id="cpppAccept" class="button1 bxs">Aceptar</div>
+            <div id="cpppCancel" class="button1 bxs">Cancelar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="cpppOk">    
+    <div class="okContent" id="cpppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText" id="cpppOkText">Dato creado con éxito</div>
+        </div>
+    </div>
+</div>

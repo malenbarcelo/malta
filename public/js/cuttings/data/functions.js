@@ -16,12 +16,18 @@ async function uploadData() {
     
 }
 
-function showLoaders(loaders) {
-    loaders.forEach(loader => {
+function showLoaders() {
+    dg.loaders.forEach(loader => {
         loader.style.display = 'block'
+    })
+}
+
+function hideBodys() {
+    dg.bodys.forEach(body => {
+        body.innerHTML = ''
     })
 }
 
 
 
-export {uploadData,showLoaders}
+export {uploadData,showLoaders,hideBodys}

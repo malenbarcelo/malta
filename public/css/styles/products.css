@@ -1,0 +1,73 @@
+/*productsCPPP.ejs*/
+.createAttribute{
+    position: absolute;
+    right: -23px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.createAttributeIcon{
+    font-size: 18px;
+}
+
+.createAttributeInfo{
+    position: absolute;
+    right: -85px;
+    height: 100%;
+    font-size: 12px;
+    align-items: center;
+    height: 100%;
+    display:none;
+    width: 80px;
+}
+
+.createAttribute:hover .createAttributeInfo{
+    display: flex;
+}
+
+.divSizes{
+    padding: 10px;
+    border: grey solid 1px;
+    border-radius: 4px;
+    width: 300px;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap:20px;
+    column-gap: 20px;
+    max-height: 60px;
+    overflow-y: auto;
+}
+
+.divColors{
+    padding: 10px;
+    border: grey solid 1px;
+    border-radius: 4px;
+    width: 450px;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap:10px;
+    column-gap: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.divColor{
+    border: rgb(200, 198, 198) solid 1px;
+    width: 100px;
+    justify-content: flex-start;
+}
+
+#cpppColors{
+    height: 100px;
+    overflow-y: auto;
+    white-space: normal; /* Permite el ajuste del texto */
+  word-wrap: break-word; /* Ajusta las palabras largas */
+  overflow-wrap: break-word; /* Asegura que las palabras se ajusten */
+}

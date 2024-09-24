@@ -24,6 +24,14 @@ const sizes = {
             }
         )
     },
+    create: async(data) => {
+        await model.create(
+            {
+                size:data,
+                enabled:1,
+            },
+        )
+    },
 }       
 
 module.exports = sizes

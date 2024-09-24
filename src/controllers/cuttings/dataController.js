@@ -30,6 +30,21 @@ const productsController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    predictProductsTypes: async(req,res) =>{
+        try{
+          const string = req.params.string.toLowerCase()
+    
+          const productsTypes = await productsTypesQueries.allData()
+    
+          const predictedProductsTypes = productsTypes.filter(pt => pt.product_type.toLowerCase().includes(string))
+    
+          res.status(200).json(predictedProductsTypes)
+    
+        }catch(error){
+          console.log(error)
+          return res.send('Ha ocurrido un error')
+        }
+      },
     fabrics: async(req,res) => {
         try{
             const data = await fabricsQueries.allData()
@@ -42,6 +57,21 @@ const productsController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    predictFabrics: async(req,res) =>{
+        try{
+          const string = req.params.string.toLowerCase()
+    
+          const fabrics = await fabricsQueries.allData()
+    
+          const predictedFabrics = fabrics.filter(f => f.fabric.toLowerCase().includes(string))
+    
+          res.status(200).json(predictedFabrics)
+    
+        }catch(error){
+          console.log(error)
+          return res.send('Ha ocurrido un error')
+        }
+      },
     colors: async(req,res) => {
         try{
             const data = await colorsQueries.allData()
@@ -95,6 +125,35 @@ const productsController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    createData: async(req,res) => {
+        try{
+            const data = req.body
+
+            if (data.table == 'cuttings_products_types') {
+                await productsTypesQueries.create(data.data)
+            }
+
+            if (data.table == 'cuttings_fabrics') {
+                await fabricsQueries.create(data.data)
+            }
+
+            if (data.table == 'cuttings_colors') {
+                await colorsQueries.create(data.data)
+            }
+
+            if (data.table == 'cuttings_sizes') {
+                await sizesQueries.create(data.data)
+            }
+
+            res.status(200).json()
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    
 }
 
 module.exports = productsController

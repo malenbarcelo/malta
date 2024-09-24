@@ -49,6 +49,21 @@ function isValid(inputs) {
     })    
 }
 
+function isInvalid(inputs) {
+    inputs.forEach(input => {
+        const label = document.getElementById(input.id + 'Label')
+        const error = document.getElementById(input.id + 'Error')
+        input.classList.add('invalidInput')
+        if (label) {
+            label.classList.add('invalidLabel')
+        }
+        if (error) {
+            error.style.display = 'block'
+        }
+        
+    })    
+}
+
 function dateToString(date) {
 
     const dateAsArray = date.split('-')
@@ -236,4 +251,4 @@ function clearFilters(filters) {
 
 
 
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick}
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick,isInvalid}

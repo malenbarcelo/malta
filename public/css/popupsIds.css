@@ -134,7 +134,50 @@
 #cddppOkContent{
     width: 300px;
     top: 40%;
-    left: calc(50vw - 160px);
+    left: calc(50vw - 168px);
+}
+
+/*create data popup (cdpp)*/
+#cdppContent{
+    top: 35%;
+    width: 400px;
+    left: calc(50vw - 220px);
+}
+
+#cdppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 168px);
+}
+
+/*-----------------------products.ejs-----------------------*/
+/*create product popup (cppp)*/
+#cpppContent{
+    top: 10%;
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    left: calc(50vw - 310px);
+}
+
+#cpppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 168px);
+}
+
+/*edit sizes popup (espp)*/
+#esppContent{
+    top: 28%;
+    width: 400px;
+    left: calc(50vw - 210px);
+}
+
+/*edit colores popup (ecpp)*/
+#ecppContent{
+    top: 20%;
+    width: 550px;
+    left: calc(50vw - 285px);
 }
 
 
