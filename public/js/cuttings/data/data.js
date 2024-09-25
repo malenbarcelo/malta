@@ -23,39 +23,39 @@ window.addEventListener('load',async()=>{
     const tableIcons = [
         {
             icon:eptppIcon,
-            right:'71%'
+            right:'-4%'
         },
         {
             icon:dptppIcon,
-            right:'68%'
+            right:'-19%'
         },
         {
             icon:efppIcon,
-            right:'49%'
+            right:'2%'
         },
         {
             icon:dfppIcon,
-            right:'46%'
+            right:'-12%'
         },
         {
             icon:ecppIcon,
-            right:'25.5%'
+            right:'2%'
         },
         {
             icon:dcppIcon,
-            right:'22.5%'
+            right:'-12%'
         },
         {
             icon:esppIcon,
-            right:'8.5%'
+            right:'-2%'
         },
         {
             icon:dsppIcon,
-            right:'5.5%'
+            right:'-25%'
         }
     ]
 
-    showTableInfo(tableIcons,224,150)
+    showTableInfo(tableIcons,24,150)
 
     //close popups event listener
     const closePopups = [cddppClose,cddppCancel,cdppClose]

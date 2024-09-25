@@ -44,8 +44,13 @@ function isValid(inputs) {
         const label = document.getElementById(input.id + 'Label')
         const error = document.getElementById(input.id + 'Error')
         input.classList.remove('invalidInput')
-        label.classList.remove('invalidLabel')
-        error.style.display = 'none'
+        if (label) {
+            label.classList.remove('invalidLabel')
+        }
+        if (error) {
+            error.style.display = 'none'
+        }
+        
     })    
 }
 
@@ -88,7 +93,27 @@ function showOkPopup(popupToShow) {
     
 }
 
+async function applyPredictElement(elementsToPredict) {
+
+    for (let i = 0; i < elementsToPredict.length; i++) {
+        const input = elementsToPredict[i].input
+        const list = elementsToPredict[i].list
+        const apiUrl = elementsToPredict[i].apiUrl
+        const name = elementsToPredict[i].name
+        const elementName = elementsToPredict[i].elementName
+
+        input.addEventListener("input", async(e) => {
+            predictElements(input,list,apiUrl,name,elementName)
+        })
+
+        input.addEventListener("keydown", async(e) => {
+            selectFocusedElement(e,input,list,elementName)
+        })
+    }
+}
+
 async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
+
     if (input.value.length >= 3) {
 
         let id = 0
@@ -251,4 +276,4 @@ function clearFilters(filters) {
 
 
 
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick,isInvalid}
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement}

@@ -153,17 +153,17 @@
 /*-----------------------products.ejs-----------------------*/
 /*create product popup (cppp)*/
 #cpppContent{
-    top: 10%;
-    width: 600px;
+    top: 8%;
+    width: 700px;
     max-height: 80vh;
     overflow-y: auto;
-    left: calc(50vw - 310px);
+    left: calc(50vw - 360px);
 }
 
 #cpppOkContent{
     width: 300px;
     top: 40%;
-    left: calc(50vw - 168px);
+    left: calc(50vw - 183px);
 }
 
 /*edit sizes popup (espp)*/

@@ -8,8 +8,13 @@ async function ecppEventListeners() {
             ecppError.style.display = 'block'
         }else{
             ecppError.style.display = 'none'
-            pg.newProductColors = [...pg.selectedColors]
-            cpppColors.value =  pg.newProductColors.map(color => color.color).join(", ")
+            if (pg.action == 'create') {
+                pg.newProductColors = [...pg.selectedColors]
+                cpppColors.value =  pg.newProductColors.map(color => color.color).join(", ")
+            }else{
+                cpppColors.value =  pg.productColors.map(color => color.color_data.color).join(", ")
+            }
+            
             ecpp.style.display = 'none'
         }
     })

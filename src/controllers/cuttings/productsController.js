@@ -1,7 +1,7 @@
 const bottomHeaderMenu = require("./bottomHeaderMenu")
 const productsQueries = require("../dbQueries/cuttings/productsQueries")
 const productsSizesQueries = require("../dbQueries/cuttings/productsSizesQueries")
-//const productsColorsQueries = require("../dbQueries/cuttings/productsColorsQueries")
+const productsColorsQueries = require("../dbQueries/cuttings/productsColorsQueries")
 
 const productsController = {
     products: (req,res) => {
@@ -32,9 +32,8 @@ const productsController = {
             await productsSizesQueries.bulkCreate(sizes)
 
             //create products colors
-            //await productsColorsQueries.create(data)
-
-
+            colors = colors.map(color => ({id_products: newProduct.id,id_colors: color.id}))
+            await productsColorsQueries.bulkCreate(colors)
             
             res.status(200).json()
 
@@ -44,6 +43,67 @@ const productsController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    editProduct: async(req,res) => {
+        try{
+
+            const newData = req.body.productData
+            const idProduct = req.body.idProduct
+            const sizes = req.body.sizes
+            const colors = req.body.colors
+
+            //update products
+            await productsQueries.update(newData,idProduct)
+
+            // //create products sizes
+            // sizes = sizes.map(size => ({id_products: newProduct.id,id_sizes: size.id}))
+            // await productsSizesQueries.bulkCreate(sizes)
+
+            // //create products colors
+            // colors = colors.map(color => ({id_products: newProduct.id,id_colors: color.id}))
+            // await productsColorsQueries.bulkCreate(colors)
+            
+            res.status(200).json()
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    seasonProducts: async(req,res) => {
+        try{
+            
+            const season = req.params.season
+
+            //get products
+            const products = await productsQueries.seasonProducts(season)
+
+            res.status(200).json(products)
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    predictSeasonDescriptions: async(req,res) =>{
+        try{
+
+            const season = req.params.season
+            const string = req.params.string.toLowerCase()
+        
+            //get products
+            const products = await productsQueries.seasonProducts(season)
+        
+            const predictedDescriptions = products.filter(p => p.description.toLowerCase().includes(string))
+        
+            res.status(200).json(predictedDescriptions)
+    
+        }catch(error){
+          console.log(error)
+          return res.send('Ha ocurrido un error')
+        }
+      },
 }
 
 module.exports = productsController

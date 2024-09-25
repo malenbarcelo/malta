@@ -10,6 +10,28 @@ const productsQueries = {
         })
         return products
     },
+    seasonProducts: async(season) => {
+        const products = await model.findAll({
+            where:{
+                season:season
+            },
+            include: [
+                {association: 'product_fabric'},
+                {association: 'product_type'},
+                {
+                    association: 'product_colors',
+                    include: [{association: 'color_data'}]
+                },
+                {
+                    association: 'product_sizes',
+                    include: [{association: 'size_data'}]
+                }
+            ],
+            order:[['product_code','ASC']],
+            nest:true
+        })
+        return products
+    },
     distinctProducts: async() => {
         const distinctProducts = await model.findAll({
             attributes: [[sequelize.fn('DISTINCT', sequelize.col('description')), 'description']],
@@ -101,7 +123,18 @@ const productsQueries = {
         return colorsOptions
     },
     create: async(data) => {
-        await model.create(data)
+        const newProduct = await model.create(data)
+        return newProduct
+    },
+    update: async(data,idProduct) => {
+        await model.update(
+            data,
+            {
+                where:{
+                    id:idProduct
+                }
+            }
+        )
     },
 }       
 

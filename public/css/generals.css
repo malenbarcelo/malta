@@ -174,8 +174,8 @@ ul {
     100% { transform: rotate(360deg); }
 }
 
-#ordersLoader,#ordersDetailsLoader,#salesLoader,#customersLoader{
-    left: calc(50vw - 20px);
+#ordersLoader,#ordersDetailsLoader,#salesLoader,#customersLoader,#productsLoader{
+    left: calc(50vw - 30px);
 }
 
 #productsTypesLoader,#fabricsLoader,#colorsLoader,#sizesLoader{

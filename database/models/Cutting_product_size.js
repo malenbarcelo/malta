@@ -25,6 +25,13 @@ module.exports = (sequelize, DataTypes) => {
 
     const Cutting_product_size = sequelize.define(alias, cols, config)
 
+    Cutting_product_size.associate = (models) => {
+      Cutting_product_size.belongsTo(models.Cuttings_sizes,{
+         as:'size_data',
+         foreignKey: 'id_sizes'
+      })
+    }
+
     return Cutting_product_size
     
  }

@@ -98,9 +98,47 @@ accent-color: black
 
 /*----------INPUTS AND SELECTS SIZES----------*/
 
-.ixxl{
+.ixs{
+    width: 150px;
+}
+
+.is{
+    width: 200px;
+}
+
+.im{
+    width: 250px;
+}
+
+.il{
+    width: 300px;
+}
+
+.ixl{
     width: 350px;
 }
+
+.ixxl{
+    width: 400px;
+}
+
+.ixxxl{
+    width: 450px;
+}
+
+/*----------PADDINGS----------*/
+.ipm{
+    padding: 11px 0px 6px 0px
+}
+
+
+
+
+
+
+
+
+
 
 .selectS{
     width: 120px;
@@ -191,14 +229,10 @@ accent-color: black
 }
 
 /*----------INPUTS WIDTH----------*/
-.il{
-    width: 250px;
-}
+
 
 /*----------INPUTS PADDING----------*/
-.ipm{
-    padding: 8px 0px 3px 0px;
-}
+
 
 .ipl{
     padding: 10px 0px 5px 0px;

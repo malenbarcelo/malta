@@ -1,45 +1,12 @@
 import pg from "./globals.js"
 import { dominio } from "../../dominio.js"
-import { predictElements, selectFocusedElement,inputsValidation } from "../../generalFunctions.js"
-import { completeESPPsizes,completeECPPcolors } from "./functions.js"
-
+import { inputsValidation, showOkPopup } from "../../generalFunctions.js"
+import { completeESPPsizes,completeECPPcolors, getData } from "./functions.js"
+import { printProducts } from "./printProducts.js"
+import { applyFilters } from "./filters.js"
 
 //CREATE PRODUCTS POPUP (CPPP)
 async function cpppEventListeners() {
-
-    //predicts products types
-    cpppType.addEventListener("input", async(e) => {
-        const input = cpppType
-        const list = cpppPredictedTypes
-        const apiUrl = 'apis/cuttings/data/predict-products-types/'
-        const name = 'product_type'
-        const elementName = 'productType'
-        predictElements(input,list,apiUrl,name,elementName)
-    })
-
-    cpppType.addEventListener("keydown", async(e) => {
-        const input = cpppType
-        const list = cpppPredictedTypes
-        const elementName = 'productType'
-        selectFocusedElement(e,input,list,elementName)
-    })
-
-    //predicts fabrics
-    cpppFabric.addEventListener("input", async(e) => {
-        const input = cpppFabric
-        const list = cpppPredictedFabrics
-        const apiUrl = 'apis/cuttings/data/predict-fabrics/'
-        const name = 'fabric'
-        const elementName = 'fabric'
-        predictElements(input,list,apiUrl,name,elementName)
-    })
-
-    cpppFabric.addEventListener("keydown", async(e) => {
-        const input = cpppFabric
-        const list = cpppPredictedFabrics
-        const elementName = 'fabric'
-        selectFocusedElement(e,input,list,elementName)
-    })
 
     //complete full description
     const inputs = [cpppCode, cpppDescription, cpppFabric]
@@ -67,8 +34,8 @@ async function cpppEventListeners() {
         ecpp.style.display = 'block'
     })
 
-    //edit colors
-    cpppAccept.addEventListener("click", async() => {
+    //create product
+    cpppCreate.addEventListener("click", async() => {
         const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppPrice]
         let errors = inputsValidation(inputs)
 
@@ -97,14 +64,57 @@ async function cpppEventListeners() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
+
+            productsLoader.style.display = 'block'
+            bodyProducts.innerHTML = ''
+            cppp.style.display = 'none'
+            await getData()
+            printProducts()
+            applyFilters()
+
+            cpppOkText.innerText = 'Producto creado con éxito'
+            showOkPopup(cpppOk)
             
         }
     })
-    
 
-    
-    
-     
+    //edit product
+    cpppEdit.addEventListener("click", async() => {
+        const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppPrice]
+        let errors = inputsValidation(inputs)
+
+        if (errors == 0) {
+            const data = {
+                idProduct: pg.idProductToEdit,
+                productData:{
+                    id_products_types:pg.productsTypes.filter(pt => pt.product_type == cpppType.value)[0].id,
+                    description:cpppDescription.value,
+                    id_fabrics:pg.fabrics.filter(f => f.fabric == cpppFabric.value)[0].id,
+                    full_description:cpppFullDescription.value,
+                    unit_price:parseFloat(cpppPrice.value,2)
+                },
+                sizes:pg.productSizes,
+                colors:pg.productColors
+            }
+
+            await fetch(dominio + 'apis/cuttings/products/edit-product',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            productsLoader.style.display = 'block'
+            bodyProducts.innerHTML = ''
+            cppp.style.display = 'none'
+            await getData()
+            printProducts()
+            applyFilters()
+            
+            cpppOkText.innerText = 'Producto editado con éxito'
+            showOkPopup(cpppOk)
+            
+        }
+    })
 }
 
 export {cpppEventListeners}

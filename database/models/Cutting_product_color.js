@@ -25,6 +25,13 @@ module.exports = (sequelize, DataTypes) => {
 
     const Cutting_product_color = sequelize.define(alias, cols, config)
 
+    Cutting_product_color.associate = (models) => {
+      Cutting_product_color.belongsTo(models.Cuttings_colors,{
+         as:'color_data',
+         foreignKey: 'id_colors'
+      })
+    }
+
     return Cutting_product_color
     
  }

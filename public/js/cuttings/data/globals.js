@@ -3,7 +3,7 @@ let dg = {
     createDataType:[
         {
             icon:'createType',
-            popupTitle:'CREAR TIPO DE PRODUCTOS',
+            popupTitle:'CREAR TIPO DE PRODUCTO',
             popupLabel:'Producto',
             data:'productsTypes',
             attributeName:'products_type',
