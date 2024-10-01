@@ -9,6 +9,7 @@ import { applyFilters } from "./filters.js"
 import { cpppEventListeners } from "./productsCPPP.js"
 import { esppEventListeners } from "./productsESPP.js"
 import { ecppEventListeners } from "./productsECPP.js"
+import { cdppEventListeners } from "./productsCDPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -42,12 +43,13 @@ window.addEventListener('load',async()=>{
     cpppEventListeners() //CREATE PRODUCT POPUP (CPPP)
     esppEventListeners() //EDIT SIZES POPUP (ESPP)
     ecppEventListeners() //EDIT COLORS POPUP (ECPP)
+    cdppEventListeners() //CREATE DATA POPUP (CDPP) --> popup from data.ejs
 
     //close popups event listener
-    const closePopups = [cpppClose,cpppCancel,esppClose,ecppClose]
+    const closePopups = [cpppClose,cpppCancel,esppClose,ecppClose,cdppClose]
     closePopupsEventListeners(closePopups)
 
-    //filter customer event listener - predict elements
+    //predicts elements
     applyPredictElement(pg.elementsToPredict)
 
     //crate product event listener

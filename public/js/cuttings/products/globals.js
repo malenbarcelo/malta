@@ -31,6 +31,48 @@ let pg = {
         }
         
     ],
+    createDataType:[
+        {
+            icon:'cpppNewType',
+            popupTitle:'CREAR TIPO DE PRODUCTO',
+            popupLabel:'Producto',
+            data:'productsTypes',
+            attributeName:'product_type',
+            table:'cuttings_products_types',
+            error:'El tipo de producto ingresado ya existe',
+            input:cpppType
+        },
+        {
+            icon:'cpppNewFabric',
+            popupTitle:'CREAR TELA',
+            popupLabel:'Tela',
+            data:'fabrics',
+            attributeName:'fabric',
+            table:'cuttings_fabrics',
+            error:'La tela ingresada ya existe',
+            input:cpppFabric
+
+        },
+        {
+            icon:'ecppNewColor',
+            popupTitle:'CREAR COLOR',
+            popupLabel:'Color',
+            data:'colors',
+            attributeName:'color',
+            table:'cuttings_colors',
+            error:'El color ingresado ya existe'
+        },
+        {
+            icon:'esppNewSize',
+            popupTitle:'CREAR TALLE',
+            popupLabel:'Talle',
+            data:'sizes',
+            attributeName:'size',
+            table:'cuttings_sizes',
+            error:'El talle ingresado ya existe'
+        }
+    ],
+    createDataTypeSelected:{},
     products:[],
     productsFiltered:[],
     productsTypes:[],

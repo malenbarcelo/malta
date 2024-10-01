@@ -41,11 +41,11 @@ app.set('view engine','ejs')
 
 //configure session
 app.use(session({
-    store: new FileStore(),
+    //store: new FileStore(),
     secret:'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Change to true in PRD to use HTTPS
+    //cookie: { secure: false } // Change to true in PRD to use HTTPS
 }))
 
 //middlewares
@@ -87,5 +87,5 @@ app.use('/apis/sales/orders',salesRoutes) //orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-//console.log(bcrypt.hashSync('psiservices@psiservices.com.ar',10))
+console.log(bcrypt.hashSync('pedro',10))
 

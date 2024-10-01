@@ -13,10 +13,10 @@ async function cdppEventListeners() {
         
         if (errors == 0) {
             const allData = dg[dg.createDataTypeSelected.data]
-            const findData = allData.filter( d => d[dg.createDataTypeSelected.attributeName] == cdppData.value)
+            const findData = allData.filter( d => (d[dg.createDataTypeSelected.attributeName]).toLowerCase() == (cdppData.value).toLowerCase())
             if (findData.length > 0) {
                 errors += 1
-                cdppDataError.innerText = 'El color ingresado ya existe'
+                cdppDataError.innerText = dg.createDataTypeSelected.error
                 isInvalid([cdppData])
                 cdppDataError.style.display = 'block'
             }
@@ -41,7 +41,7 @@ async function cdppEventListeners() {
     
             hideBodys(dg.bodys)
             showLoaders(dg.loaders)
-            uploadData()
+            await uploadData()
             
             cdpp.style.display = 'none'
             showOkPopup(cdppOk)

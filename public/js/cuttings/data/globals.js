@@ -6,8 +6,9 @@ let dg = {
             popupTitle:'CREAR TIPO DE PRODUCTO',
             popupLabel:'Producto',
             data:'productsTypes',
-            attributeName:'products_type',
-            table:'cuttings_products_types'
+            attributeName:'product_type',
+            table:'cuttings_products_types',
+            error:'El tipo de producto ingresado ya existe'
         },
         {
             icon:'createFabric',
@@ -15,7 +16,8 @@ let dg = {
             popupLabel:'Tela',
             data:'fabrics',
             attributeName:'fabric',
-            table:'cuttings_fabrics'
+            table:'cuttings_fabrics',
+            error:'La tela ingresada ya existe'
         },
         {
             icon:'createColor',
@@ -23,7 +25,8 @@ let dg = {
             popupLabel:'Color',
             data:'colors',
             attributeName:'color',
-            table:'cuttings_colors'
+            table:'cuttings_colors',
+            error:'El color ingresado ya existe'
         },
         {
             icon:'createSize',
@@ -31,7 +34,8 @@ let dg = {
             popupLabel:'Talle',
             data:'sizes',
             attributeName:'size',
-            table:'cuttings_sizes'
+            table:'cuttings_sizes',
+            error:'El talle ingresado ya existe'
         }
     ],
     createDataTypeSelected:{},

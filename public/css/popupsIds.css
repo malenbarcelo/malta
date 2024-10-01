@@ -139,9 +139,9 @@
 
 /*create data popup (cdpp)*/
 #cdppContent{
-    top: 35%;
+    top: 30%;
     width: 400px;
-    left: calc(50vw - 220px);
+    left: calc(50vw - 210px);
 }
 
 #cdppOkContent{

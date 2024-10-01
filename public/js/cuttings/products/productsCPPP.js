@@ -1,6 +1,6 @@
 import pg from "./globals.js"
 import { dominio } from "../../dominio.js"
-import { inputsValidation, showOkPopup } from "../../generalFunctions.js"
+import { inputsValidation, showOkPopup,isValid, clearInputs } from "../../generalFunctions.js"
 import { completeESPPsizes,completeECPPcolors, getData } from "./functions.js"
 import { printProducts } from "./printProducts.js"
 import { applyFilters } from "./filters.js"
@@ -114,6 +114,19 @@ async function cpppEventListeners() {
             showOkPopup(cpppOk)
             
         }
+    })
+
+    //create data popup events listeners
+    const createIcons = [cpppNewType, cpppNewFabric, esppNewSize, ecppNewColor]
+    createIcons.forEach(icon => {
+        icon.addEventListener("click", async() => {
+            pg.createDataTypeSelected = pg.createDataType.filter(dt => dt.icon == icon.id)[0]
+            cdppTitle.innerText = pg.createDataTypeSelected.popupTitle
+            cdppDataLabel.innerText = pg.createDataTypeSelected.popupLabel
+            isValid([cdppData])
+            clearInputs([cdppData])
+            cdpp.style.display = 'block'
+        })
     })
 }
 
