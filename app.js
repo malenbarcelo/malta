@@ -87,5 +87,5 @@ app.use('/apis/sales/orders',salesRoutes) //orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-console.log(bcrypt.hashSync('pedro',10))
+//console.log(bcrypt.hashSync('pedro',10))
 

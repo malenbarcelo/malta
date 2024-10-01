@@ -57,8 +57,8 @@ window.addEventListener('load',async()=>{
         const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppFullDescription,cpppPrice]
         clearInputs(inputs)
         isValid(inputs)
-        pg.newProductColors = [{id:1,color:'Blanco'},{id:2,color:'Negro'}]
-        pg.newProductSizes = [{id:1,size:'U'}]
+        pg.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
+        pg.newProductSizes = [{id:26,size:'U'}]
         pg.action = 'create'
         cpppTitle.innerText = 'CREAR PRODUCTO'
         cpppCode.removeAttribute('readonly')
