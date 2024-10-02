@@ -1,7 +1,7 @@
 import pg from "./globals.js"
 import { dominio } from "../../dominio.js"
-import { inputsValidation, showOkPopup,isValid, clearInputs } from "../../generalFunctions.js"
-import { completeESPPsizes,completeECPPcolors, getData } from "./functions.js"
+import { inputsValidation, showOkPopup,isValid, clearInputs, isInvalid } from "../../generalFunctions.js"
+import { completeESPPsizes,completeECPPcolors, getData,cpppValidations } from "./functions.js"
 import { printProducts } from "./printProducts.js"
 import { applyFilters } from "./filters.js"
 
@@ -30,7 +30,6 @@ async function cpppEventListeners() {
         pg.selectedColors = [...pg.newProductColors]
         //complete colors
         completeECPPcolors()
-        ecppError.style.display = 'none'
         ecpp.style.display = 'block'
     })
 
@@ -38,6 +37,10 @@ async function cpppEventListeners() {
     cpppCreate.addEventListener("click", async() => {
         const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppPrice]
         let errors = inputsValidation(inputs)
+
+        if (errors == 0) {
+            errors = cpppValidations()
+        }
 
         if (errors == 0) {
             const data = {
@@ -84,9 +87,14 @@ async function cpppEventListeners() {
         let errors = inputsValidation(inputs)
 
         if (errors == 0) {
+            errors = cpppValidations()
+        }
+
+        if (errors == 0) {
             const data = {
                 idProduct: pg.idProductToEdit,
                 productData:{
+                    product_code: cpppCode.value,
                     id_products_types:pg.productsTypes.filter(pt => pt.product_type == cpppType.value)[0].id,
                     description:cpppDescription.value,
                     id_fabrics:pg.fabrics.filter(f => f.fabric == cpppFabric.value)[0].id,
@@ -113,6 +121,16 @@ async function cpppEventListeners() {
             cpppOkText.innerText = 'Producto editado con éxito'
             showOkPopup(cpppOk)
             
+        }
+    })
+
+    //remove colors
+    cpppRemoveColor.addEventListener("click", async() => {
+        if (cpppRemoveColor.checked) {
+            pg.newProductColors = [],
+            pg.productColors = []
+            pg.selectedColors = [],
+            cpppColors.value = ''
         }
     })
 

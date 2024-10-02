@@ -25,6 +25,7 @@
                 <label class="label1" id="cpppTypeLabel">Tipo de producto</label>
                 <input type="text" class="input1 ixxxl ipl" id="cpppType" autocomplete="off">
                 <div class="divError" id="cpppTypeError">Debe ingresar el tipo de producto</div>
+                <div class="divError" id="cpppTypeError2">Tipo de producto inexistente</div>
                 <div class="createAttribute">
                     <i class="fa-solid fa-square-plus pointer createAttributeIcon" id="cpppNewType"></i>
                     <div class="createAttributeInfo">Crear tipo</div>
@@ -35,6 +36,7 @@
                 <label class="label1" id="cpppFabricLabel">Tela</label>
                 <input type="text" class="input1 ixxxl ipl" id="cpppFabric" autocomplete="off">
                 <div class="divError" id="cpppFabricError">Debe ingresar la tela</div>
+                <div class="divError" id="cpppFabricError2">Tela inexistente</div>
                 <div class="createAttribute">
                     <i class="fa-solid fa-square-plus pointer createAttributeIcon" id="cpppNewFabric"></i>
                     <div class="createAttributeInfo">Crear tela</div>
@@ -58,7 +60,6 @@
                     <i class="fa-solid fa-pencil pointer createAttributeIcon" id="cpppSizesIcon"></i>
                     <div class="createAttributeInfo">Editar talles</div>
                 </div>
-                <ul class="predictedElements"></ul>
             </div>
             <div class="divInput">
                 <label class="label1">Colores</label>
@@ -68,9 +69,11 @@
                     <i class="fa-solid fa-pencil pointer createAttributeIcon" id="cpppColorsIcon"></i>
                     <div class="createAttributeInfo">Editar colores</div>
                 </div>
-                <ul class="predictedElements"></ul>
+                <div class="divCheckbox2">
+                    <input type="checkbox" id="cpppRemoveColor">
+                    <label for="">Color único</label>
+                </div>
             </div>
-            
         </div>
 
         <div class="divButtonsRow mtm mbs">

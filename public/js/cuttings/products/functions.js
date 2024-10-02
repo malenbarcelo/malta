@@ -1,5 +1,6 @@
 import { dominio } from "../../dominio.js"
 import pg from "./globals.js"
+import {isValid, isInvalid } from "../../generalFunctions.js"
 
 async function getData() {
 
@@ -76,5 +77,36 @@ function completeECPPcolors() {
 
 }
 
+function cpppValidations() {
+    let errors = 0
+    const findType = pg.productsTypes.filter(pt => pt.product_type == cpppType.value)
+    const findFabric = pg.fabrics.filter(f => f.fabric == cpppFabric.value)
+    
+    if (findType.length == 0) {
+        errors += 1
+        isInvalid([cpppType])
+        cpppTypeError.style.display = 'none'
+        cpppTypeError2.style.display = 'block'
+    }else{
+        isValid([cpppType])
+        cpppTypeError.style.display = 'none'
+        cpppTypeError2.style.display = 'none'
+    }
 
-export {getData,completeESPPsizes,completeECPPcolors}
+    if (findFabric.length == 0) {
+        errors += 1
+        isInvalid([cpppFabric])
+        cpppFabricError.style.display = 'none'
+        cpppFabricError2.style.display = 'block'
+    }else{
+        isValid([cpppFabric])
+        cpppFabricError.style.display = 'none'
+        cpppFabricError2.style.display = 'none'
+    }
+
+    return errors
+    
+}
+
+
+export {getData,completeESPPsizes,completeECPPcolors,cpppValidations}

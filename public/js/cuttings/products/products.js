@@ -57,18 +57,17 @@ window.addEventListener('load',async()=>{
         const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppFullDescription,cpppPrice]
         clearInputs(inputs)
         isValid(inputs)
+        cpppTypeError2.style.display = 'none'
+        cpppFabricError2.style.display = 'none'
         pg.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
         pg.newProductSizes = [{id:26,size:'U'}]
         pg.action = 'create'
         cpppTitle.innerText = 'CREAR PRODUCTO'
-        cpppCode.removeAttribute('readonly')
         cpppEdit.classList.add('notVisible')
         cpppCreate.classList.remove('notVisible')
         cpppSizes.value =  pg.newProductSizes.map(size => size.size).join(", ")
         cpppColors.value =  pg.newProductColors.map(color => color.color).join(", ")
+        cpppRemoveColor.checked = false
         cppp.style.display = 'block'
     })
-
-
-    
 })

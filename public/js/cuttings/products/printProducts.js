@@ -57,6 +57,8 @@ function addEventListeners(dataToPrint) {
             const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppFullDescription,cpppPrice]
             clearInputs(inputs)
             isValid(inputs)
+            cpppTypeError2.style.display = 'none'
+            cpppFabricError2.style.display = 'none'
             pg.productColors = element.product_colors
             pg.productSizes = element.product_sizes
             pg.idProductToEdit = element.id
@@ -64,7 +66,6 @@ function addEventListeners(dataToPrint) {
             cpppTitle.innerText = 'EDITAR PRODUCTO'
             cpppEdit.classList.remove('notVisible')
             cpppCreate.classList.add('notVisible')
-            cpppCode.setAttribute('readonly', true)
             cpppCode.value = element.product_code
             cpppDescription.value = element.description
             cpppType.value = element.product_type.product_type
@@ -73,6 +74,7 @@ function addEventListeners(dataToPrint) {
             cpppPrice.value = element.unit_price
             cpppSizes.value =  pg.productSizes.map(size => size.size_data.size).join(", ")
             cpppColors.value =  pg.productColors.map(color => color.color_data.color).join(", ")
+            cpppRemoveColor.checked = false
             cppp.style.display = 'block'
         })
         

@@ -6,6 +6,13 @@ const productsColorsQueries = {
     bulkCreate: async(data) => {
         await model.bulkCreate(data)
     },
+    delete: async(id) => {
+        await model.destroy({
+            where:{
+                id_products:id
+            }
+        })
+    },
 }       
 
 module.exports = productsColorsQueries

@@ -48,19 +48,25 @@ const productsController = {
 
             const newData = req.body.productData
             const idProduct = req.body.idProduct
-            const sizes = req.body.sizes
-            const colors = req.body.colors
+            let sizes = req.body.sizes
+            let colors = req.body.colors
 
             //update products
             await productsQueries.update(newData,idProduct)
 
-            // //create products sizes
-            // sizes = sizes.map(size => ({id_products: newProduct.id,id_sizes: size.id}))
-            // await productsSizesQueries.bulkCreate(sizes)
+            //delete products sizes
+            await productsSizesQueries.delete(idProduct)
 
-            // //create products colors
-            // colors = colors.map(color => ({id_products: newProduct.id,id_colors: color.id}))
-            // await productsColorsQueries.bulkCreate(colors)
+            //create products sizes
+            sizes = sizes.map(size => ({id_products: idProduct,id_sizes: size.size_data.id}))
+            await productsSizesQueries.bulkCreate(sizes)
+
+            //delete products colors
+            await productsColorsQueries.delete(idProduct)
+
+            //create products colors
+            colors = colors.map(color => ({id_products: idProduct,id_colors: color.color_data.id}))
+            await productsColorsQueries.bulkCreate(colors)
             
             res.status(200).json()
 
