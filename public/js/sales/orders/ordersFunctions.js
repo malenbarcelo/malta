@@ -1,5 +1,5 @@
 import { dominio } from "../../dominio.js"
-import og from "./ordersGlobals.js"
+import og from "./globals.js"
 import g from "../../globals.js"
 import { clearInputs, dateToString } from "../../generalFunctions.js"
 
@@ -273,53 +273,9 @@ function addOrdersEventListeners(dataToPrint) {
 
 }
 
-function updateData(dataToPrint) {
-    const total = dataToPrint.reduce((acc, i) => acc + parseFloat(i.total,2), 0)
-    const amountPaid = dataToPrint.reduce((acc, i) => acc + parseFloat(i.amountPaid,2), 0)
-    const balance = dataToPrint.reduce((acc, i) => acc + parseFloat(i.balance,2), 0)
-    
-    orderTotal.innerHTML = '<div><b>TOTAL:</b> $ ' + og.formatter.format(total) + '</div>'
-    ordersAmountPaid.innerHTML = '<div><b>PAGADO:</b> $ ' + og.formatter.format(amountPaid) + '</div>'
-    ordersBalance.innerHTML = '<div><b>SALDO:</b> $ ' + og.formatter.format(balance) + '</div>'
-}
 
-function filterOrders() {
 
-    og.ordersFiltered = og.orders
 
-    //customer
-    let idCustomer = filterCustomer.value == '' ? '' : og.customers.filter(c => c.customer_name == filterCustomer.value)
-    idCustomer = idCustomer.length == 0 ? 0 : idCustomer[0].id
-    og.ordersFiltered = filterCustomer.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_customers == idCustomer)
-
-    //order
-    og.ordersFiltered = filterOrder.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.order_number == filterOrder.value)
-
-    //order_manager
-    og.ordersFiltered = filterOrderManager.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_managers == filterOrderManager.value)
-
-    //order_status
-    og.ordersFiltered = filterOrderStatus.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_status == filterOrderStatus.value)
-
-    //order_status
-    og.ordersFiltered = filterPaymentStatus.value == 'default' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_payments_status == filterPaymentStatus.value)
-
-    //sales channels
-    if (og.checkedElements.length == 0) {
-        og.ordersFiltered = og.ordersFiltered
-    }else{
-        const selectedChannels = og.checkedElements.map(input => input.id)
-        const channels = []
-        
-        selectedChannels.forEach(channel => {
-            const channelId = parseInt(channel.split('_')[1])
-            channels.push(channelId)
-        })
-
-        og.ordersFiltered  = og.ordersFiltered.filter(o => channels.includes(o.id_sales_channels))
-    }
-
-}
 
 async function predictProducts() {    
 
@@ -449,97 +405,10 @@ async function changeSizesOptions() {
     
 }
 
-function updateOrderData() {
 
-    og.orderData.subtotal = 0
 
-    og.orderDetails.forEach(element => {
-        og.orderData.subtotal += element.enabled == 0 ? 0 : parseFloat(element.extended_price,2)
-    })
 
-    og.orderData.total = og.orderData.subtotal * (1-og.orderData.discount)
-
-    orderInfo.innerHTML = ''
-    orderInfo.innerHTML += '<div class="orderInfoElement"><b>Subtotal:</b> $' + og.formatter.format(og.orderData.subtotal) +'</div>'
-    orderInfo.innerHTML += '<div class="orderInfoElement orderInfoWithIcon"><b>Descuento:</b> ' + og.formatter.format(og.orderData.discount * 100) + '%<div><i class="fa-solid fa-pencil pointer" id="cdppDiscount"></i></idv></div>'
-    orderInfo.innerHTML += '<div class="orderInfoElement"><b>Total:</b> $' +og.formatter.format( og.orderData.total) + '</div>'
-
-    //createEdit order - change discount
-    cdppDiscount.addEventListener("click", async() => {
-        cdppNewDiscount.value = og.discount * 100
-        cdpp.style.display = 'block'
-    })
-
-}
-
-function printTableCreateEdit() {
-
-    bodyCreateEdit.innerHTML = ''
-
-    let counter = 0
-
-    //printTable
-    og.orderDetails.forEach(element => {
-
-        const rowClass = counter % 2 == 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
-
-        //print table
-        const line1 = '<th class="' + rowClass + '">' + element.description + '</th>'
-        const line2 = '<th class="' + rowClass + '">' + element.color + '</th>'
-        const line3 = '<th class="' + rowClass + '">' + element.size + '</th>'        
-        const line4 = '<th class="' + rowClass + '">' + og.formatter.format(element.unit_price) + '</th>'
-        const line5 = '<th class="' + rowClass + '">' + (element.required_quantity == null ? '' : element.required_quantity) + '</th>'
-        const line6 = '<th class="' + rowClass + '">' + (element.confirmed_quantity == null ? '' : element.confirmed_quantity) + '</th>'
-        const line7 = '<th class="' + rowClass + '">' + og.formatter.format(element.extended_price) + '</th>'
-        const line8 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></th>'
-        const line9 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></th>'
-
-        bodyCreateEdit.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + '</tr>'
-
-        counter += 1
-        
-
-    })
-
-    addCreateEditEventListeners()
-    
-}
-
-function addCreateEditEventListeners() {
-
-    og.orderDetails.forEach(element => {
-
-        const deleteRow = document.getElementById('delete_' + element.id)
-        const editRow = document.getElementById('edit_' + element.id)
-        
-        //delete
-        if (deleteRow) {
-            deleteRow.addEventListener('click',async()=>{
-                og.orderDetails = og.orderDetails.filter(data => data.id !== element.id)
-                updateOrderData()
-                printTableCreateEdit()
-            })
-        }
-        
-
-        //edit
-        if (editRow) {
-            editRow.addEventListener('click',async()=>{
-                const productData = og.orderDetails.filter(product => product.id == element.id)[0]    
-                eodppTitle.innerText = productData.description + ' - ' + productData.color + ' - ' + productData.size    
-                //clear errors
-                clearInputs([eodppPrice])    
-                eodppPrice.value = element.unit_price
-                eodppQtyR.value = element.required_quantity
-                eodppQtyC.value = element.confirmed_quantity                
-                og.idOrderDetailsToEdit = productData.id    
-                //show popup
-                eodpp.style.display = 'block'    
-            })
-        }
-    })
-}
     
 
 
-export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printTableCreateEdit,printColorsOptions,changeSizesOptions}
+export {printTableOrders, filterOrders, predictProducts, selectFocusedProduct, updateOrderData, printColorsOptions,changeSizesOptions}

@@ -1,4 +1,4 @@
-import og from "./ordersGlobals.js"
+import og from "./globals.js"
 import { dateToString } from "../../generalFunctions.js"
 
 async function printCustomerMovements(dataToPrint) {

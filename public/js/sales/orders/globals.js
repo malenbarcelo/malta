@@ -4,16 +4,36 @@ let og = {
         minimumFractionDigits: 0,
         useGrouping: true
     }),
-    filters1:[],
-    checks1:[],
-    closeSidePopups:[],
+    season:'',
     customers:[],
     products:[],
     orders:[],
-    ordersManagers:[],
     ordersFiltered:[],
+    ordersManagers:[],
     customersSummary:[],
-    checkedElements:[],
+    channelsChecks:[channel_1, channel_2, channel_3, channel_4],
+    channelsChecked:[],
+    //CREATE ORDER
+    orderDetails: [],
+    orderData: {
+        id:'',
+        order_number:'',
+        id_sales_channels:'',
+        id_customers:0,
+        subtotal:0,
+        discount:0,
+        total:0,
+        id_orders_status:1,
+        observations:''
+    },
+
+
+
+
+
+
+
+    
     idOrderToCancel:0,
     idOrderToRestore:0,
     idOrderToDeliver:0,
@@ -29,18 +49,8 @@ let og = {
     },
     rpppValidate:[],
     rpppPaymentInputs:[],
-    orderData: {
-        id:'',
-        order_number:'',
-        id_sales_channels:'',
-        id_customers:0,
-        subtotal:0,
-        discount:0,
-        total:0,
-        id_orders_status:1,
-        observations:''
-    },
-    orderDetails: [],
+    
+    
     colorsOptions:[],
     selectedColors:[],   
     discount:0,

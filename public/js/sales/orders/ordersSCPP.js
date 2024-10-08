@@ -1,4 +1,4 @@
-import og from "./ordersGlobals.js"
+import og from "./globals.js"
 import { updateOrderData,printTableCreateEdit } from "./ordersFunctions.js"
 
 //SELECT COLOR POPUP (SCPP)

@@ -54,7 +54,7 @@
         <div class="divInput">
             <label for="selectOrder" class="label1"># Pedido</label>
             <select name="selectOrder" id="filterOrder" class="input1 inputS">
-                <option value="default"></option>
+                <option value=""></option>
                 <% orders.forEach(order => { %>
                     <option value="<%= order.order_number %>">
                         <%= order.order_number %>
@@ -65,7 +65,7 @@
         <div class="divInput">
             <label for="selectOrderManager" class="label1">Encargado</label>
             <select name="selectOrderManager" id="filterOrderManager" class="input1 inputS">
-                <option value="default"></option>
+                <option value=""></option>
                 <% ordersManagers.forEach(manager => { %>
                     <option value="<%= manager.id %>">
                         <%= manager.order_manager_name %>
@@ -76,7 +76,7 @@
         <div class="divInput">
             <label for="selectOrderStatus" class="label1">Estado</label>
             <select name="selectOrderStatus" id="filterOrderStatus" class="input1 inputS">
-                <option value="default"></option>
+                <option value=""></option>
                 <% ordersStatus.forEach(status => { %>
                     <option value="<%= status.id %>">
                         <%= status.order_status %>
@@ -87,7 +87,7 @@
         <div class="divInput">
             <label for="selectPaymentStatus" class="label1">Estado del pago</label>
             <select name="selectPaymentStatus" id="filterPaymentStatus" class="input1 inputM">
-                <option value="default"></option>
+                <option value=""></option>
                 <% paymentsStatus.forEach(status => { %>
                     <option value="<%= status.id %>">
                         <%= status.payment_status %>
@@ -148,6 +148,7 @@
             <thead>
                 <tr>
                     <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
+                    <th class="theadCss wXS thTall">Temporada</th>
                     <th class="theadCss wXS thTall">Fecha</th>
                     <th class="theadCss wXS thTall">Canal</th>
                     <th class="theadCss wS thTall">Cliente</th>
@@ -158,6 +159,7 @@
                     <th class="theadCss wS thTall">Saldo</th>                    
                     <th class="theadCss wXS thTall">Estado</th>
                     <th class="theadCss wS thTall">Pago</th>
+                    <th class="theadCss wS thTall">Encargado</th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="eoppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-credit-card tableIcon" id="rpppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-square-check tableIcon" id="pvppIcon"></i></th>

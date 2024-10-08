@@ -56,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      season:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
 
     }
     const config = {

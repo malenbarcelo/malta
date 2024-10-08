@@ -1,5 +1,5 @@
 import { dominio } from "../../dominio.js"
-import og from "./ordersGlobals.js"
+import og from "./globals.js"
 import { inputsValidation, clearInputs, showOkPopup,acceptWithEnter,selectFocusedElement,predictElements} from "../../generalFunctions.js"
 import { filterOrders,printTableOrders, changeSizesOptions,printColorsOptions,updateOrderData,printTableCreateEdit } from "./ordersFunctions.js"
 import { updateData } from "./functions.js"
