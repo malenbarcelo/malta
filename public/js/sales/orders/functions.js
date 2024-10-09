@@ -4,13 +4,15 @@ import { printOrders } from "./printOrders.js"
 
 async function getData() {
 
+    og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
     og.customers = await (await fetch(dominio + 'apis/data/customers')).json()
-    og.products = await (await fetch(dominio + 'apis/data/products')).json()
+    og.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + og.season.season)).json()
     og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
     og.ordersFiltered = og.orders
     og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
-    og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
+
+    og.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + og.season.season + '/'
 
     applyFilters()
     printOrders()
@@ -125,4 +127,54 @@ function updateOrderData() {
 
 }
 
-export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters}
+function completeEPSPPsizes() {
+    
+    epsppSizes.innerHTML = ''
+    
+    og.productSizes.forEach(size => {
+        const checked = (og.selectedSizes.filter( s => s.id_sizes == size.id_sizes)).length == 0 ? '' : 'checked'
+        epsppSizes.innerHTML += '<div class="divCheckbox1"><input type="checkbox" id="size_' + size.id_sizes + '" ' + checked + '><label>' + size.size_data.size + '</label></div>'
+    })
+
+    //add event listeners
+    og.productSizes.forEach(size => {
+        const check = document.getElementById('size_' + size.id_sizes)
+        check.addEventListener("click", () => {
+            if (check.checked) {
+                og.selectedSizes.push(size)
+                
+            }else{
+                og.selectedSizes = og.selectedSizes.filter( s => s != size)
+                
+            }
+        })
+        
+    })
+}
+
+function completeEPCPPcolors() {
+    
+    epcppColors.innerHTML = ''
+    
+    og.productColors.forEach(color => {
+        const checked = (og.selectedColors.filter( c => c.id_colors == color.id_colors)).length == 0 ? '' : 'checked'
+        epcppColors.innerHTML += '<div class="divCheckbox1"><input type="checkbox" id="color_' + color.id_colors + '" ' + checked + '><label>' + color.color_data.color + '</label></div>'
+    })
+
+    //add event listeners
+    og.productColors.forEach(color => {
+        const check = document.getElementById('color_' + color.id_colors)
+        check.addEventListener("click", () => {
+            if (check.checked) {
+                og.selectedColors.push(color)
+                
+            }else{
+                og.selectedColors = og.selectedColors.filter( c => c != color)
+                
+            }
+        })
+        
+    })
+}
+
+export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors}

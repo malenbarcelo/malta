@@ -1,5 +1,5 @@
-const wpPostsQueries = require('../dbQueries/sales/wpPostsQueries')
-const {getNewPosts,getNewPostmeta,getNewOrderItems,getNewOrderItemmeta} = require('../functions/salesWpFuntions')
+//const wpPostsQueries = require('../dbQueries/sales/wpPostsQueries')
+//const {getNewPosts,getNewPostmeta,getNewOrderItems,getNewOrderItemmeta} = require('../functions/salesWpFuntions')
 
 const apisWordpressController = {
   newOrdersData: async(req,res) => {

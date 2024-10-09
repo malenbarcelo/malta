@@ -1,5 +1,5 @@
 const {validationResult} = require('express-validator')
-const seasonsQueries = require('./dbQueries/main/seasonsQueries')
+const seasonsQueries = require('../dbQueries/main/seasonsQueries')
 
 const mainController = {
     currentSeason: async(req,res) => {

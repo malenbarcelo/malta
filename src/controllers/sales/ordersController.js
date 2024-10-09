@@ -1,8 +1,8 @@
 const dominio = require("../dominio")
-const ordersQueries = require("../dbQueries/sales/ordersQueries")
-const paymentsQueries = require("../dbQueries/sales/paymentsQueries")
-const paymentsAssignationsQueries = require("../dbQueries/sales/paymentsAssignationsQueries")
-const customersQueries = require("../dbQueries/data/customersQueries")
+const ordersQueries = require("../../dbQueries/sales/ordersQueries")
+const paymentsQueries = require("../../dbQueries/sales/paymentsQueries")
+const paymentsAssignationsQueries = require("../../dbQueries/sales/paymentsAssignationsQueries")
+const customersQueries = require("../../dbQueries/data/customersQueries")
 
 const ordersController = {
     //////APIS//////

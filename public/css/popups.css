@@ -193,6 +193,7 @@
 
 .sppSubtitle{
     font-size: 17px;
+    font-weight: bold;
 }
 
 .sppText{
@@ -222,7 +223,6 @@
     text-align: center;
     width: 90%;
     margin: auto;
-    margin-top: 30px;
 }
 
 
@@ -233,7 +233,7 @@
 
 /*sizes*/
 .sppxl{
-    width: 1000px;
+    width: 1200px;
 }
 
 

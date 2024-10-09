@@ -1,6 +1,6 @@
 const {body} = require('express-validator')
 const bcrypt = require('bcryptjs')
-const usersQueries = require('../controllers/dbQueries/users/usersQueries')
+const usersQueries = require('../dbQueries/users/usersQueries')
 
 const loginValidations = {
     login: [

@@ -1,13 +1,12 @@
-const customersQueries = require('./dbQueries/data/customersQueries')
-const ordersManagersQueries = require('./dbQueries/data/ordersManagersQueries')
-const salesChannelsQueries = require('./dbQueries/data/salesChannelsQueries')
-const ordersStatusQueries = require('./dbQueries/data/ordersStatusQueries')
-const paymentsStatusQueries = require('./dbQueries/data/paymentsStatusQueries')
-const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
-const productsQueries = require('./dbQueries/cuttings/productsQueries')
-const ordersQueries = require('./dbQueries/sales/ordersQueries')
+const customersQueries = require('../dbQueries/data/customersQueries')
+const ordersManagersQueries = require('../dbQueries/data/ordersManagersQueries')
+const salesChannelsQueries = require('../dbQueries/data/salesChannelsQueries')
+const ordersStatusQueries = require('../dbQueries/data/ordersStatusQueries')
+const paymentsStatusQueries = require('../dbQueries/data/paymentsStatusQueries')
+const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
+const productsQueries = require('../dbQueries/cuttings/productsQueries')
+const ordersQueries = require('../dbQueries/sales/ordersQueries')
 const bottomHeaderMenu = require("./sales/bottomHeaderMenu")
-const { datesToGet } = require('./functions/ninoxCronFunctions')
 
 const salesController = {
     inProgressOrders: async(req,res) => {

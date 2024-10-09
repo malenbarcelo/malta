@@ -3,12 +3,14 @@ import og from "./globals.js"
 import { getData, applyFilters,updateCustomerData,updateOrderData } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
-import { closePopupsEventListeners,clearInputs, showTableInfo } from "../../generalFunctions.js"
+import { closePopupsEventListeners,clearInputs, showTableInfo, applyPredictElement } from "../../generalFunctions.js"
 
 //popups events listeners
 import { coppEventListeners } from "./ordersCOPP.js"
+import { ceoppEventListeners } from "./ordersCEOPP.js"
+import { epsppEventListeners } from "./ordersEPSPP.js"
+import { epcppEventListeners } from "./ordersEPCPP.js"
 
-// import { ceoppEventListeners } from "./ordersCEOPP.js"
 // import { eodppEventListeners } from "./ordersEODPP.js"
 // import { obppEventListeners } from "./ordersOBPP.js"
 // import { rcpppEventListeners } from "./ordersRCPPP.js"
@@ -22,7 +24,9 @@ window.addEventListener('load',async()=>{
 
     //popups event listeners
     coppEventListeners() //CANCEL ORDER POPUP
-    // ceoppEventListeners() //CREATE EDIT ORDER POPUP
+    ceoppEventListeners() //CREATE EDIT ORDER POPUP
+    epsppEventListeners() //EDIT PRODUCT SIZES POPUP
+    epcppEventListeners() //EDIT PRODUCT COLORS POPUP
     // eodppEventListeners() //EDIT ORDER DETAILS POPUP
     // rpppEventListeners() //REGISTER PAYMENT POPUP
     // rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
@@ -30,8 +34,13 @@ window.addEventListener('load',async()=>{
     // scppEventListeners() //SELECT COLOR POPUP
 
     //close popups event listener
-    const closePopups = [coppClose,coppCancel]
+    const closePopups = [coppClose,coppCancel,epsppClose, epcppClose]
     closePopupsEventListeners(closePopups)
+
+    //close side popup
+    ceoppClose.addEventListener("click", async() => {
+        ceopp.classList.remove('slideIn')
+    })
 
     //table info events listeners
     const tableIcons = [
@@ -82,6 +91,9 @@ window.addEventListener('load',async()=>{
             selectChannelError.style.display = 'none'
         })
     })
+
+    //predicts elements
+    applyPredictElement(og.elementsToPredict)
 
     //filters event listeners
     const filters = [showCanceled,filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
@@ -161,7 +173,8 @@ window.addEventListener('load',async()=>{
             og.orderData.id_sales_channels = salesChannel
             og.orderData.order_number = orderNumber
             og.orderData.id = 'NA'
-            og.action = 'create'
+            ceoppSave.style.display = 'none'
+            ceoppCreate.style.display = 'flex'
             ceoppTitle.innerText = 'CREAR PEDIDO'
             updateOrderData()
             customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
@@ -170,63 +183,6 @@ window.addEventListener('load',async()=>{
             ceopp.classList.add('slideIn')
         }
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    // //filter customer event listener - predict elements
-    // filterCustomer.addEventListener("input", async(e) => {
-    //     const input = filterCustomer
-    //     const list = ulPredictedCustomers
-    //     const apiUrl = 'apis/data/customers/predict-customers/'
-    //     const name = 'customer_name'
-    //     const elementName = 'customer'
-    //     predictElements(input,list,apiUrl,name,elementName)
-    // })
-
-    // filterCustomer.addEventListener("keydown", async(e) => {
-    //     const input = filterCustomer
-    //     const list = ulPredictedCustomers
-    //     const elementName = 'customer'
-    //     selectFocusedElement(e,input,list,elementName)
-    // })
-
-    // //close side popups event listener
-    // og.closeSidePopups.forEach(element => {
-    //     element.addEventListener("click", async() => {
-    //         let popupToClose = document.getElementById(element.id.replace('Close',''))
-    //         popupToClose = document.getElementById(popupToClose.id.replace('Cancel',''))
-    //         popupToClose.classList.remove('slideIn')
-    //     })
-    // })
-
-    
-
-    
-
-
-
-
-
-
-
-
-
 
 
 

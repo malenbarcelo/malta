@@ -1,11 +1,9 @@
-const customersQueries = require('./dbQueries/data/customersQueries')
-const productsQueries = require('./dbQueries/cuttings/productsQueries')
-const paymentMethodsQueries = require('./dbQueries/data/paymentMethodsQueries')
-const ordersNinoxQueries = require('./dbQueries/sales/ordersNinoxQueries')
-const ordersNinoxDetailsQueries = require('./dbQueries/sales/ordersNinoxDetailsQueries')
-const paymentsNinoxQueries = require('./dbQueries/sales/paymentsNinoxQueries')
-const { datesToGet } = require('./functions/ninoxCronFunctions')
-//const data = require('./apisControllers/apisSalesData')
+const customersQueries = require('../dbQueries/data/customersQueries')
+const productsQueries = require('../dbQueries/cuttings/productsQueries')
+const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
+const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
+const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
+const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
 
 const cronController = {
     getNinoxData: async(req,res) => {

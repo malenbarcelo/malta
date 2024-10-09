@@ -1,9 +1,10 @@
 const bottomHeaderMenu = require("./bottomHeaderMenu")
-const productsQueries = require("../dbQueries/cuttings/productsQueries")
-const productsSizesQueries = require("../dbQueries/cuttings/productsSizesQueries")
-const productsColorsQueries = require("../dbQueries/cuttings/productsColorsQueries")
+const productsQueries = require("../../dbQueries/cuttings/productsQueries")
+const productsSizesQueries = require("../../dbQueries/cuttings/productsSizesQueries")
+const productsColorsQueries = require("../../dbQueries/cuttings/productsColorsQueries")
 
 const productsController = {
+    ////BACKEND
     products: (req,res) => {
         try{
             const selectedItem = 'PRODUCTOS'
@@ -109,7 +110,25 @@ const productsController = {
           console.log(error)
           return res.send('Ha ocurrido un error')
         }
-      },
+    },
+    predictSeasonProducts: async(req,res) =>{
+        try{
+
+            const season = req.params.season
+            const string = req.params.string.toLowerCase()
+        
+            //get products
+            const products = await productsQueries.seasonProducts(season)
+        
+            const predictedProducts = products.filter(p => p.full_description.toLowerCase().includes(string))
+        
+            res.status(200).json(predictedProducts)
+    
+        }catch(error){
+          console.log(error)
+          return res.send('Ha ocurrido un error')
+        }
+    },
 }
 
 module.exports = productsController

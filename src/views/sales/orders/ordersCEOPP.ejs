@@ -1,0 +1,93 @@
+<!----------create / Edit order popup (ceopp)---------->
+
+<div class="sidePopup sppxl" id="ceopp">
+
+    <div class="sidePopupMain">
+        <div class="closeSidePopup" id="ceoppClose">X</div>
+        <div class="sppTitle" id="customerOrder"></div>
+        <div class="sppSubtitle mtm" id="ceoppTitle"></div>
+    </div>
+
+    <div class="sidePopupContent">
+        
+        <div class="divGeneralActions" id="DGAordersCreateEdit">
+            <div class="divGeneralAction" id="ceoppCreate">
+                <i class="fa-regular fa-floppy-disk"></i>
+                <div class="showActionPopup">
+                    Crear pedido
+                </div>
+            </div>
+            <div class="divGeneralAction" id="ceoppSave">
+                <i class="fa-regular fa-floppy-disk"></i>
+                <div class="showActionPopup">
+                    Guardar cambios
+                </div>
+            </div>
+        </div>
+        
+        <div class="divInputsColumn mtm">
+            <div class="divInputsRow mtm">
+                <div class="divInput">
+                    <label class="label1" id="selectProductLabel">Producto</label>
+                    <input type="text" class="input1 ixxxl ipl" id="selectProduct" autocomplete="off">
+                    <ul class="predictedElements" id="ulPredictedProducts"></ul>
+                </div>
+                <div class="divInput">
+                    <label class="label1" id="ceoppReqQtyLabel">Cant. requerida</label>
+                    <input type="text" class="input1 ixs ipl" id="ceoppReqQty" autocomplete="off">
+                </div>
+                <div class="divInput">
+                    <label class="label1" id="ceoppConfQtyLabel">Cant. confirmada</label>
+                    <input type="text" class="input1 ixs ipl" id="ceoppConfQty" autocomplete="off">
+                </div>
+            </div>
+            
+            <div id="ceoppAttributes">
+                <div class="productAttribute mbs">
+                    <div id="ceoppSizes"></div>
+                    <i class="fa-solid fa-pencil pointer" id="ceoppChangeSizes"></i>
+                </div>
+                <div class="productAttribute">
+                    <div id="ceoppColors"></div>
+                    <i class="fa-solid fa-pencil pointer" id="ceoppChangeColors"></i>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="divTableSummary mtm mbm" id="orderInfo"></div>
+
+        <div class="divTable mtl" id="ceoppTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXXL thLeftBorder thTall">Producto</th>
+                        <th class="theadCss wS thTall">Color</th>
+                        <th class="theadCss wXS thTall">Talle</th>
+                        <th class="theadCss wS thTall">Precio unitario</th>    
+                        <th class="theadCss wXS thTall">Cantidad requerida</th>
+                        <th class="theadCss wXS thTall">Cantidad confirmada</th>                        
+                        <th class="theadCss wS thTall">Total</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
+                        <th class="theadCss wXXS thRightBorder thTall"><i class="fa-regular fa-trash-can"></i></i></th>
+                    </tr>
+                </thead>
+                <tbody id="ceoppBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="ceoppOk">    
+    <div class="okContent" id="ceoppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText" id="ceoppOkText"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

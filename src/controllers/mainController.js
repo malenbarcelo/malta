@@ -1,6 +1,6 @@
 const {validationResult} = require('express-validator')
-const usersQueries = require('../controllers/dbQueries/users/usersQueries')
-const seasonsQueries = require('../controllers/dbQueries/main/seasonsQueries')
+const usersQueries = require('../dbQueries/users/usersQueries')
+const seasonsQueries = require('../dbQueries/main/seasonsQueries')
 
 const mainController = {
     login: (req,res) => {

@@ -23,6 +23,7 @@ router.post('/products/create-product',productsController.createProduct)
 router.post('/products/edit-product',productsController.editProduct)
 router.get('/products/season-products/:season',productsController.seasonProducts)
 router.get('/products/predict-season-descriptions/:season/:string',productsController.predictSeasonDescriptions)
+router.get('/products/predict-season-products/:season/:string',productsController.predictSeasonProducts)
 
 
 

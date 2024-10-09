@@ -1,8 +1,8 @@
 const bottomHeaderMenu = require("./bottomHeaderMenu")
-const productsTypesQueries = require("../dbQueries/cuttings/productsTypesQueries")
-const fabricsQueries = require("../dbQueries/cuttings/fabricsQueries")
-const colorsQueries = require("../dbQueries/cuttings/colorsQueries")
-const sizesQueries = require("../dbQueries/cuttings/sizesQueries")
+const productsTypesQueries = require("../../dbQueries/cuttings/productsTypesQueries")
+const fabricsQueries = require("../../dbQueries/cuttings/fabricsQueries")
+const colorsQueries = require("../../dbQueries/cuttings/colorsQueries")
+const sizesQueries = require("../../dbQueries/cuttings/sizesQueries")
 
 const productsController = {
     data: (req,res) => {

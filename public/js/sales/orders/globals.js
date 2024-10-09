@@ -4,6 +4,22 @@ let og = {
         minimumFractionDigits: 0,
         useGrouping: true
     }),
+    elementsToPredict:[
+        {
+            input: filterCustomer,
+            list: ulPredictedCustomers,
+            apiUrl: 'apis/data/customers/predict-customers/',
+            name: 'customer_name',
+            elementName: 'customer'
+        },
+        {
+            input: selectProduct,
+            list: ulPredictedProducts,
+            apiUrl: '',
+            name: 'full_description',
+            elementName: 'product'
+        }
+    ],
     season:'',
     customers:[],
     products:[],
@@ -14,6 +30,10 @@ let og = {
     channelsChecks:[channel_1, channel_2, channel_3, channel_4],
     channelsChecked:[],
     //CREATE ORDER
+    productSizes:[],
+    selectedSizes:[],
+    productColors:[],
+    selectedColors:[],
     orderDetails: [],
     orderData: {
         id:'',
@@ -49,17 +69,10 @@ let og = {
     },
     rpppValidate:[],
     rpppPaymentInputs:[],
-    
-    
     colorsOptions:[],
     selectedColors:[],   
     discount:0,
     errorsQty:0,
-    predictedProducts:[],
-    productFocused:-1,
-    elementToFocus:'',
-    elementToUnfocus:'',
-    action:'',
     customerData:[]
 
 }

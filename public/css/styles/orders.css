@@ -7,3 +7,17 @@
     cursor: pointer;
     display: none;
 }
+
+/*-----ordersCEOPP.ejs-----*/
+#ceoppAttributes{
+    font-size: 13px;
+    display: none;
+}
+
+.productAttribute{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7px;
+
+}
