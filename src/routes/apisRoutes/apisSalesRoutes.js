@@ -11,7 +11,7 @@ router.get('/in-progress-orders/details',apisSalesController.inProgressOrdersDet
 router.get('/new-order',apisSalesController.newOrder)
 
 router.get('/consolidated-sales/:year',apisSalesController.consolidatedSales)
-router.post('/save-order',apisSalesController.saveOrder)
+router.post('/create-order',apisSalesController.createOrder)
 router.post('/edit-order',apisSalesController.editOrder)
 router.post('/register-payment',apisSalesController.registerPayment)
 router.post('/set-payment-verification',apisSalesController.setPaymentVerification)

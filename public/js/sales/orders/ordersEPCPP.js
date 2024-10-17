@@ -8,7 +8,7 @@ function epcppEventListeners() {
         og.selectedColors = [...og.productColors]
     })
 
-    //accept change sizes
+    //accept change colors
     epcppAccept.addEventListener("click", async() => {
 
         if (og.selectedColors.length == 0) {
@@ -17,6 +17,7 @@ function epcppEventListeners() {
             epcppError.style.display = 'none'
             const colors = (og.selectedColors.map(c => c.color_data.color)).join(', ')
             ceoppColors.innerHTML = '<b>COLORES: </b>' + colors
+            eodppColors.innerText = colors
             epcpp.style.display = 'none'
         }
     })

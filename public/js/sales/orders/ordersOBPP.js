@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { inputsValidation, clearInputs, showOkPopup } from "../../generalFunctions.js"
-import { updateData } from "./functions.js"
+import { showOkPopup } from "../../generalFunctions.js"
+import { getData, updateCustomerData } from "./functions.js"
 
 //OBSERVATIONS POPUP (OBPP)
 function obppEventListeners() {
@@ -32,10 +32,13 @@ function obppEventListeners() {
             })
 
         }
-
-        updateData()
         
         obpp.style.display = 'none'
+
+        bodyOrders.innerHTML = ''
+        ordersLoader.style.display = 'block'
+        await getData()
+        updateCustomerData()
 
         showOkPopup(obppOk)
 

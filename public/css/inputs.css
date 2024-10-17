@@ -31,7 +31,6 @@ accent-color: black
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 15px;
 }
 
 /*----------INPUTS ADN LABELS----------*/
@@ -60,6 +59,14 @@ accent-color: black
     width: 45px;
 }
 
+.input3{
+    text-align: center;
+    border:black solid 2px;
+    background-color: var(--color2);
+    border-radius: 4px;
+    font-size: 13px;
+}
+
 .label1{
     position: absolute;
     font-size: 13px;
@@ -76,6 +83,16 @@ accent-color: black
     top: -8px;
     padding: 0px 5px;
     background-color: var(--color2);
+}
+
+.label3{
+    position: absolute;
+    font-size: 13px;
+    left: 8px;
+    top: -8px;
+    padding: 0px 5px;
+    background-color: var(--color2);
+    font-weight: bold;
 }
 
 .unabledInput{
@@ -127,8 +144,13 @@ accent-color: black
 }
 
 /*----------PADDINGS----------*/
+
+.ips{
+    padding: 7px 0px 6px 0px
+}
+
 .ipm{
-    padding: 11px 0px 6px 0px
+    padding: 9px 0px 8px 0px
 }
 
 

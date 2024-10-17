@@ -17,6 +17,8 @@ function coppEventListeners() {
 
         copp.style.display = 'none'
 
+        bodyOrders.innerHTML = ''
+        ordersLoader.style.display = 'block'
         await getData()
 
         showOkPopup(coppOk)

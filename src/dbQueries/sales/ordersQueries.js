@@ -38,7 +38,33 @@ const ordersQueries = {
                 {association: 'orders_payments_status'},
                 {association: 'orders_orders_managers'},
                 {association: 'orders_sales_channels'},
-                {association: 'orders_orders_details'},
+                {
+                    association: 'orders_orders_details',
+                    include: [
+                        {
+                            association: 'product_data',
+                            include: [
+                                {
+                                    association: 'product_colors',
+                                    include: [{association: 'color_data'}]
+                                },
+                                {
+                                    association: 'product_sizes',
+                                    include: [{association: 'size_data'}]
+                                }
+                            ]
+                        },
+                        {
+                            association: 'colors',
+                            include: [{association: 'color_data'}]
+                        },
+                        {
+                            association: 'sizes',
+                            include: [{association: 'size_data'}]
+                        }
+                    ]
+
+                },
                 {association: 'orders_assignations'}
 
             ],
@@ -114,7 +140,7 @@ const ordersQueries = {
         const date = new Date()
 
         //create order
-        await model.create({
+        const newOrder = await model.create({
             date:date,
             order_number:data.order_number,
             id_sales_channels:data.id_sales_channels,
@@ -126,33 +152,15 @@ const ordersQueries = {
             id_payments_status:3,
             id_orders_managers:1,            
             observations:data.observations,
+            season:data.season,
             enabled:1
         })
+
+        return newOrder
     },
     createOrders: async(ordersToreate) => {
         model.bulkCreate(ordersToreate)
     },
-    createOrderDetails: async(data,orderId) => {
-
-        const orderDetails = data.order_details
-
-        for (let i = 0; i < orderDetails.length; i++) {
-            //create row
-            await Sales_orders_details.create({
-                id_orders:orderId,
-                id_products:orderDetails[i].id_products,
-                description:orderDetails[i].description,
-                color:orderDetails[i].color,
-                size:orderDetails[i].size,
-                unit_price: orderDetails[i].unit_price,
-                required_quantity:orderDetails[i].required_quantity == '' ? null : orderDetails[i].required_quantity,
-                confirmed_quantity:orderDetails[i].confirmed_quantity == '' ? null : orderDetails[i].confirmed_quantity,
-                extended_price:orderDetails[i].extended_price,
-                enabled:1
-            })            
-        }        
-    },
-    
     lastId: async() => {
         const lastId = await model.findOne({
             attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']]

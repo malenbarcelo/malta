@@ -1,0 +1,60 @@
+<!----------Edit line popup details---------->
+<div class="popup" id="elpp">
+    
+    <div class="popupContent" id="elppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon2"><i class="fa-solid fa-pencil"></i></div>
+            <div class="popupClose2" id="elppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="popupTitle2 mts" id="elppTitle"></div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <label class="label1" id="elppPriceLabel">Precio unitario</label>
+                <input type="number" step="0.01" class="input1 ixl ipl" id="elppPrice">
+                <div class="divError"  id="elppPriceError">Debe completar el precio</div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="elppQtyLabel">Cantidad requerida</label>
+                <input type="number" class="input1 ixl ipl" id="elppQtyR">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="elppQtyLabel">Cantidad confirmada</label>
+                <input type="number" class="input1 ixl ipl" id="elppQtyC">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Talles</label>
+                <input type="text" id="elppSizes" class="input1 ixl ipl" autocomplete="off" readonly>
+                <div class="divError"></div>
+                <div class="createAttribute" id="elppChangeSizes">
+                    <i class="fa-solid fa-pencil pointer editAttributeIcon" id="elppSizesIcon"></i>
+                    <div class="createAttributeInfo">Editar talles</div>
+                </div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Colores</label>
+                <textarea  id="elppColors" class="input1 ixl ipl" autocomplete="off" readonly></textarea>
+                <div class="divError"></div>
+                <div class="createAttribute" id="elppChangeColors">
+                    <i class="fa-solid fa-pencil pointer editAttributeIcon" id="elppColorsIcon"></i>
+                    <div class="createAttributeInfo">Editar colores</div>
+                </div>
+            </div>            
+        </div>
+
+        <div class="divButtonsRow mbs">
+            <div id="elppAccept" class="button1 bxs">Aceptar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="elppOk">    
+    <div class="okContent" id="elppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText">Línea editada con éxito</div>
+        </div>
+    </div>
+</div>

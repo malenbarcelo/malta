@@ -1,13 +1,15 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { inputsValidation, clearInputs, showOkPopup } from "../../generalFunctions.js"
-import { updateData } from "./functions.js"
+import { isInvalid, clearInputs, showOkPopup } from "../../generalFunctions.js"
+import { getData, updateCustomerData } from "./functions.js"
 
 //REGISTER PAYMENT POPUP (RPPP)
 function rpppEventListeners() {
 
+    const inputs = [rpppPayment,rpppBalanceUsed]
+
     //change amount paid
-    og.rpppPaymentInputs.forEach(input => {
+    inputs.forEach(input => {
 
         input.addEventListener("change", async() => {
 
@@ -24,15 +26,13 @@ function rpppEventListeners() {
             if (og.orderToPay.balance < totalPayment) {
                 rpppBalanceAlert.style.color = 'green'
                 rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo a favor de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>'
-            }
-
-            if (og.orderToPay.balance > totalPayment) {
-                rpppBalanceAlert.style.color = 'rgb(206, 10, 10)'
-                rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>'
-            }
-
-            if (og.orderToPay.balance == totalPayment || rpppPayment.value == '') {
-                rpppBalanceAlert.innerHTML = ''
+            }else if (og.orderToPay.balance > totalPayment) {
+                console.log(og.orderToPay.balance)
+                console.log(totalPayment)
+                rpppBalanceAlert.style.color = 'rgb(206, 10, 10)';
+                rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>';
+            } else {
+                rpppBalanceAlert.innerHTML = '';  // Sin alertas si es igual
             }
 
             rpppNewBalance.value = og.formatter.format(og.orderToPay.balance - totalPayment)
@@ -66,12 +66,26 @@ function rpppEventListeners() {
             rpppBalanceUsed.value = 0
         }
 
+        rpppBalanceUsed.dispatchEvent(new Event('change'))
+
     })
 
     
     rpppAccept.addEventListener("click", async() => {
 
-        const errors = inputsValidation(og.rpppValidate)
+        let errors = 0
+
+        if (rpppBalanceUsed.value == 0 && rpppPayment.value == '') {
+            errors += 1
+            isInvalid([rpppPayment])
+        }
+
+        if (rpppBalanceUsed.value == 0 && rpppPaymentMethod.value == '') {
+            errors += 1
+            isInvalid([rpppPaymentMethod])
+        }
+
+        
 
         if (errors == 0) {
 
@@ -91,8 +105,15 @@ function rpppEventListeners() {
                 })
             }
 
-            updateData()
+            updateCustomerData()
+
             rppp.style.display = 'none'
+
+            bodyOrders.innerHTML = ''
+            ordersLoader.style.display = 'block'
+            await getData()
+            
+
             showOkPopup(rpppOk)
 
         }

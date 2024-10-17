@@ -1,8 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { inputsValidation, clearInputs, showOkPopup, acceptWithEnter,isValid, dateToString } from "../../generalFunctions.js"
-import { filterOrders,printTableOrders } from "./ordersFunctions.js"
-import { updateData } from "./functions.js"
+import { inputsValidation, showOkPopup, acceptWithEnter,isValid } from "../../generalFunctions.js"
+import { updateCustomerData, getData } from "./functions.js"
 
 //REGISTER CUSTOMER PAYMENT POPUP (RCPPP)
 function rcpppEventListeners() {
@@ -48,12 +47,13 @@ function rcpppEventListeners() {
                 })
             }
 
+            updateCustomerData()
             rcppp.style.display = 'none'
-            updateData()
+            bodyOrders.innerHTML = ''
+            ordersLoader.style.display = 'block'
+            await getData()
             showOkPopup(rcpppOk)
-
         }
-        
     })
 
     acceptWithEnter(rcpppAmount,rcpppAccept)

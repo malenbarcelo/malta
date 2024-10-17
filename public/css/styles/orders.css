@@ -19,5 +19,17 @@
     align-items: center;
     justify-content: center;
     column-gap: 7px;
+}
 
+#ceoppAddItem{
+    font-size: 20px;
+}
+
+#ceoppAddItem:hover{
+    color: grey
+}
+
+/*-----ordersEODPP.ejs-----*/
+.editAttributeIcon{
+    font-size: 15px;
 }

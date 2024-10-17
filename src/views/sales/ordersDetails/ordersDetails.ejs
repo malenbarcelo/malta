@@ -58,7 +58,7 @@
 </div>
 
 <!---------ORDERS DETAILS TABLE--------->
-<div class="mtl">
+<div class="mtm">
     <div class="divTable">
 
         <div class="tableInfo" id="elppInfo">Editar línea</div>
@@ -74,9 +74,9 @@
                         <th class="theadCss wXS thTall">Canal</th>
                         <th class="theadCss wM thTall">Cliente</th>
                         <th class="theadCss wXXL thTall">Producto</th>
-                        <th class="theadCss wXXS thTall">Talle</th>
-                        <th class="theadCss wM thTall">Color</th>
-                        <th class="theadCss wXS thTall">Precio</th>
+                        <th class="theadCss wS thTall">Talles</th>
+                        <th class="theadCss wL thTall">Colores</th>
+                        <th class="theadCss wS thTall">Precio</th>
                         <th class="theadCss wXS thTall">Cantidad solicitada</th>
                         <th class="theadCss wXS thTall">Cantidad confirmada</th>  
                         <th class="theadCss wS thTall">Estado</th>                 
@@ -97,6 +97,12 @@
 <!----------LOADER---------->
 <div class="loader" id="ordersDetailsLoader" ></div>
 
+<!----------POPUPS---------->
 <%- include('./ordersDetailsPopups') %>
-<script type="module" src="/js/sales/orders/ordersDetails.js"></script>
+<%- include('./ordersDetailsLOPP') %>
+<%- include('./ordersDetailsELPP') %>
+<%- include('./ordersDetailsELCPP') %>
+<%- include('./ordersDetailsELSPP') %>
+
+<script type="module" src="/js/sales/ordersDetails/ordersDetails.js"></script>
 

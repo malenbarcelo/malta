@@ -39,7 +39,7 @@ const salesController = {
             const distinctProducts = await productsQueries.distinctProducts()
             const orders = await ordersQueries.inProgressOrders()
 
-            return res.render('sales/orders/ordersDetails',{title:'Detalle de pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts,orders})
+            return res.render('sales/ordersDetails/ordersDetails',{title:'Detalle de pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts,orders})
 
         }catch(error){
 

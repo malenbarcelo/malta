@@ -1,9 +1,9 @@
 const ordersQueries = require('../../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../../dbQueries/sales/ordersDetailsQueries')
+const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsColorsQueries')
+const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
 const paymentsQueries = require('../../dbQueries/sales/paymentsQueries')
 const paymentsAssignationsQueries = require('../../dbQueries/sales/paymentsAssignationsQueries')
-const customersQueries = require('../../dbQueries/data/customersQueries')
-const paymentMethodsQueries = require('../../dbQueries/data/paymentMethodsQueries')
 const accountsMovementsQueries = require('../../dbQueries/sales/accountsMovementsQueries')
 const ordersNinoxQueries = require('../../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../../dbQueries/sales/ordersNinoxDetailsQueries')
@@ -78,16 +78,32 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
-  saveOrder: async(req,res) =>{
+  createOrder: async(req,res) =>{
     try{
 
       const data = req.body
 
-      await ordersQueries.createOrder(data)
-      orderId = await ordersQueries.lastId()        
+      //create order
+      const newOrder = await ordersQueries.createOrder(data)
+      const orderId = newOrder.id      
       
       //create order details
-      await ordersQueries.createOrderDetails(data,orderId)
+      for (let i = 0; i < data.order_details.length; i++) {
+        const newDetail = await ordersDetailsQueries.createOrderDetail(data.order_details[i],orderId)
+        //create orders details colors
+        const colors = data.order_details[i].colors.map(obj => ({
+          id_orders_details: newDetail.id,
+          id_colors: obj.id_colors
+        }))
+        await ordersDetailsColorsQueries.create(colors)
+
+        //create orders details sizes
+        const sizes = data.order_details[i].sizes.map(obj => ({
+          id_orders_details: newDetail.id,
+          id_sizes: obj.id_sizes
+        }))
+        await ordersDetailsSizesQueries.create(sizes)        
+      }      
 
       res.status(200).json()
 
@@ -104,11 +120,36 @@ const apisSalesController = {
       //update order
       await ordersQueries.updateOrder(data.id, data)
 
+      //get orders details ids
+      const orderDetails = await ordersDetailsQueries.findOrderDetails(data.id)
+      const orderDetailsIds = orderDetails.map(od => od.id)
+
+      //delete colors
+      await ordersDetailsColorsQueries.delete(orderDetailsIds)
+
+      //delete sizes
+      await ordersDetailsSizesQueries.delete(orderDetailsIds)
+
       //delete order details
       await ordersDetailsQueries.delete(data.id)
 
       //create order details
-      await ordersQueries.createOrderDetails(data,data.id)
+      for (let i = 0; i < data.order_details.length; i++) {
+        const newDetail = await ordersDetailsQueries.createOrderDetail(data.order_details[i],data.id)
+        //create orders details colors
+        const colors = data.order_details[i].colors.map(obj => ({
+          id_orders_details: newDetail.id,
+          id_colors: obj.id_colors
+        }))
+        await ordersDetailsColorsQueries.create(colors)
+
+        //create orders details sizes
+        const sizes = data.order_details[i].sizes.map(obj => ({
+          id_orders_details: newDetail.id,
+          id_sizes: obj.id_sizes
+        }))
+        await ordersDetailsSizesQueries.create(sizes)        
+      }      
 
       //update order status
       await updateOrderStatus(data.id)
@@ -455,18 +496,34 @@ const apisSalesController = {
       //update line
       await ordersDetailsQueries.editOrderDetail(data.lineToEdit.id,data,observations)
 
-      //update order data
-      const newTotal = await updateOrderData(data.lineToEdit.id_orders)
-      
-      //update order status
-      updateOrderStatus(data.lineToEdit.id_orders)
-
-      //update payment status
-      const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
-      const total = data.lineToEdit.orders_details_orders.total
-      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
-        updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
+      //delete and create colors
+      if (JSON.stringify(data.colors) != JSON.stringify(data.lineToEdit.colors)) {
+        const colorsToCreate = data.colors.map(({ id, ...rest }) => rest)
+        await ordersDetailsColorsQueries.delete([data.lineToEdit.id])
+        await ordersDetailsColorsQueries.create(colorsToCreate)
       }
+
+      //delete and create sizes
+      if (JSON.stringify(data.sizes) != JSON.stringify(data.lineToEdit.sizes)) {
+        const sizesToCreate = data.sizes.map(({ id, ...rest }) => rest)
+        await ordersDetailsSizesQueries.delete([data.lineToEdit.id])
+        await ordersDetailsSizesQueries.create(sizesToCreate)
+      }
+
+      //update order data
+      // const newTotal = await updateOrderData(data.lineToEdit.id_orders)
+      
+      // //update order status
+      // updateOrderStatus(data.lineToEdit.id_orders)
+
+      // //update payment status
+      // const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
+      // const total = data.lineToEdit.orders_details_orders.total
+      // if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+      //   updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
+      // }
+
+      console.log(356000)
 
       res.status(200).json()
 
@@ -505,7 +562,6 @@ const apisSalesController = {
       return res.send('Ha ocurrido un error')
     }
   },
-  
   consolidatedSales: async(req,res) => {
     try{
 

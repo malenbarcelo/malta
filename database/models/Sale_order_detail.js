@@ -20,14 +20,6 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.STRING,
          allowNull: true,
        },
-       color:{
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      size:{
-        type: DataTypes.STRING,
-        allowNull: true,
-      },        
        unit_price:{
         type: DataTypes.DECIMAL,
         allowNull: true,
@@ -73,8 +65,21 @@ module.exports = (sequelize, DataTypes) => {
       Sale_order_detail.belongsTo(models.Sales_orders,{
          as:'orders_details_orders',
          foreignKey: 'id_orders'
-      })
-    }
-    
-    return Sale_order_detail
- }
+      }),
+      Sale_order_detail.belongsTo(models.Cuttings_products,{
+        as:'product_data',
+        foreignKey: 'id_products'
+     }),
+      Sale_order_detail.hasMany(models.Sales_orders_details_colors,{
+        as:'colors',
+        foreignKey: 'id_orders_details'
+     }),
+     Sale_order_detail.hasMany(models.Sales_orders_details_sizes,{
+        as:'sizes',
+        foreignKey: 'id_orders_details'
+    })
+  }
+  
+  return Sale_order_detail
+ 
+}

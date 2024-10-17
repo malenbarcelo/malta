@@ -1,23 +1,28 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { getData, applyFilters,updateCustomerData,updateOrderData } from "./functions.js"
+import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
-import { closePopupsEventListeners,clearInputs, showTableInfo, applyPredictElement } from "../../generalFunctions.js"
+import { closePopupsEventListeners,clearInputs, showTableInfo, applyPredictElement, acceptWithEnter } from "../../generalFunctions.js"
 
 //popups events listeners
 import { coppEventListeners } from "./ordersCOPP.js"
 import { ceoppEventListeners } from "./ordersCEOPP.js"
 import { epsppEventListeners } from "./ordersEPSPP.js"
 import { epcppEventListeners } from "./ordersEPCPP.js"
-
-// import { eodppEventListeners } from "./ordersEODPP.js"
-// import { obppEventListeners } from "./ordersOBPP.js"
-// import { rcpppEventListeners } from "./ordersRCPPP.js"
-// import { rpppEventListeners } from "./ordersRPPP.js"
-// import { scppEventListeners } from "./ordersSCPP.js"
+import { chdppEventListeners } from "./ordersCHDPP.js"
+import { eodppEventListeners } from "./ordersEODPP.js"
+import { oloppEventListeners } from "./ordersOLOPP.js"
+import { amppEventListeners } from "./ordersAMPP.js"
+import { obppEventListeners } from "./ordersOBPP.js"
+import { doppEventListeners } from "./ordersDOPP.js"
+import { roppEventListeners } from "./ordersROPP.js"
+import { rpppEventListeners } from "./ordersRPPP.js"
+import { rcpppEventListeners } from "./ordersRCPPP.js"
 
 window.addEventListener('load',async()=>{
+
+    ordersLoader.style.display = 'block'
 
     //get elements
     await getData()
@@ -27,14 +32,18 @@ window.addEventListener('load',async()=>{
     ceoppEventListeners() //CREATE EDIT ORDER POPUP
     epsppEventListeners() //EDIT PRODUCT SIZES POPUP
     epcppEventListeners() //EDIT PRODUCT COLORS POPUP
-    // eodppEventListeners() //EDIT ORDER DETAILS POPUP
-    // rpppEventListeners() //REGISTER PAYMENT POPUP
-    // rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
-    // obppEventListeners() //OBSERVATIONS POPUP
-    // scppEventListeners() //SELECT COLOR POPUP
+    chdppEventListeners() //CHANGE DISCOUNT POPUP
+    eodppEventListeners() //EDIT ORDER DETAILS POPUP
+    oloppEventListeners() //ORDERS LINE OBSERVATIONS POPUP
+    amppEventListeners() //ASSIGN MANAGER POPUP
+    obppEventListeners() //OBSERVATIONS POPUP
+    doppEventListeners() //DELIVER ORDER POPUP
+    roppEventListeners() //RESTORE ORDER POPUP
+    rpppEventListeners() //REGISTER PAYMENT POPUP
+    rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
 
     //close popups event listener
-    const closePopups = [coppClose,coppCancel,epsppClose, epcppClose]
+    const closePopups = [coppClose,epsppClose, epcppClose, chdppClose, eodppClose, oloppClose, amppClose, obppClose, doppClose, roppClose, rpppClose, rcpppClose, cmppClose]
     closePopupsEventListeners(closePopups)
 
     //close side popup
@@ -46,35 +55,35 @@ window.addEventListener('load',async()=>{
     const tableIcons = [
         {
             icon:eoppIcon,
-            right:'23.5%'
+            right:'16%'
         },
         {
             icon:rpppIcon,
-            right:'20.5%'
+            right:'13.5%'
         },
         {
             icon:pvppIcon,
-            right:'17.5%'
+            right:'10.5%'
         },
         {
             icon:doppIcon,
-            right:'14.5%'
+            right:'7.5%'
         },
         {
             icon:amppIcon,
-            right:'12%'
+            right:'5%'
         },
         {
             icon:obppIcon,
-            right:'9.5%'
+            right:'2.5%'
         },
         {
             icon:coppIcon,
-            right:'6.5%'
+            right:'-0.5%'
         }
     ]
 
-    showTableInfo(tableIcons,305,150)
+    showTableInfo(tableIcons,310,150)
 
     //select channels
     og.channelsChecks.forEach(element => {
@@ -116,6 +125,8 @@ window.addEventListener('load',async()=>{
         og.channelsChecked = []
         printOrders()
         updateCustomerData()
+        DGAcreateOrderError.style.display = 'none'
+        selectChannelError.style.display = 'none'
         DGAregisterPayment.classList.add('notVisible')
         DGAmovementsDetails.classList.add('notVisible')
     })
@@ -158,6 +169,8 @@ window.addEventListener('load',async()=>{
             //clear data
             og.orderDetails = []
             printOrderDetails()
+            clearInputs([selectProduct, ceoppReqQty, ceoppConfQty])
+            ceoppAddError.style.display = 'none'
 
             //complete popup info
             const salesChannel = channel_1.checked ? 1 : 2
@@ -166,14 +179,16 @@ window.addEventListener('load',async()=>{
             const customerData = og.customers.filter(c => c.customer_name == customer)[0]
             og.discount = customerData.discount
             const idCustomers = customerData.id
+            og.orderData.season = og.season.season
             og.orderData.discount = parseFloat(og.discount,2)
             og.orderData.subtotal = 0
             og.orderData.total = 0
+            ceoppAttributes.style.display = 'none'
             og.orderData.id_customers = idCustomers
             og.orderData.id_sales_channels = salesChannel
             og.orderData.order_number = orderNumber
             og.orderData.id = 'NA'
-            ceoppSave.style.display = 'none'
+            ceoppEdit.style.display = 'none'
             ceoppCreate.style.display = 'flex'
             ceoppTitle.innerText = 'CREAR PEDIDO'
             updateOrderData()
@@ -184,127 +199,42 @@ window.addEventListener('load',async()=>{
         }
     })
 
+    //customer notes
+    const notes = document.getElementById('notes')
+    notes.addEventListener("click", async() => {
+        og.notesFrom = 'customers'
+        obppTitle.innerText = og.customerData[0].customer_name + ' - OBSERVACIONES'
+        obppObs.innerText = og.customerData[0].notes
+        obpp.style.display = 'block'
+    })
 
+    acceptWithEnter(obppObs,obppAccept)
 
+    //register customer payment
+    DGAregisterPayment.addEventListener("click", async() => {
+        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
+        if (filterCustomer.value == '' || findCustomer.length == 0) {
+            filterCustomerLabel.classList.add('errorColor')
+            filterCustomer.classList.add('isInvalid')
+            DGAordersErrors.style.display = 'flex'
+            DGAcreateOrderError.style.display = 'block'
+            selectChannelError.style.display = 'none'
+        }else{
+            rcpppSubtitle.innerText = og.customerData[0].customer_name
+            clearInputs([rcpppType,rcpppPaymentMethod,rcpppAmount])
+            selectChannelError.style.display = 'none'
+            rcppp.style.display = 'block'
 
+        }
+    })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // //accept deliver order
-    // doppAccept.addEventListener("click", async() => {
-
-    //     const data = {idOrder:og.idOrderToDeliver}
-
-    //     await fetch(dominio + 'apis/sales/deliver-order',{
-    //         method:'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(data)
-    //     })
-
-    //     dopp.style.display = 'none'
-
-    //     og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-    //     filterOrders()
-    //     printTableOrders(og.ordersFiltered)
-
-    //     showOkPopup(doppOk)
-
-    // })
-
-    // //accept assign order manager
-    // amppAccept.addEventListener("click", async() => {
-
-    //     const data = {
-    //         idOrder:og.idOrderToAssign,
-    //         orderManagerId:amppSelectOM.value
-    //     }
-
-    //     await fetch(dominio + 'apis/sales/assign-order-manager',{
-    //         method:'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(data)
-    //     })
-
-    //     ampp.style.display = 'none'
-
-    //     og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-    //     filterOrders()
-    //     printTableOrders(og.ordersFiltered)
-
-    //     showOkPopup(amppOk)
-
-    // })
-
-    // //accept restore order
-    // roppAccept.addEventListener("click", async() => {
-
-    //     const data = {idOrder:og.idOrderToRestore}
-
-    //     await fetch(dominio + 'apis/sales/restore-order',{
-    //         method:'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(data)
-    //     })
-
-    //     ropp.style.display = 'none'
-
-    //     og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-    //     filterOrders()
-    //     printTableOrders(og.ordersFiltered)
-
-    //     showOkPopup(roppOk)
-
-    // })
-
-    
-
-    // //register customer payment
-    // DGAregisterPayment.addEventListener("click", async() => {
-    //     const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
-    //     if (filterCustomer.value == '' || findCustomer.length == 0) {
-    //         filterCustomerLabel.classList.add('errorColor')
-    //         filterCustomer.classList.add('isInvalid')
-    //         DGAordersErrors.style.display = 'flex'
-    //         DGAcreateOrderError.style.display = 'block'
-    //         selectChannelError.style.display = 'none'
-    //     }else{
-    //         rcpppSubtitle.innerText = og.customerData[0].customer_name
-    //         clearInputs([rcpppType,rcpppPaymentMethod,rcpppAmount])
-    //         selectChannelError.style.display = 'none'
-    //         rcppp.style.display = 'block'
-
-    //     }
-    // })
-
-    // //view customer movements
-    // DGAmovementsDetails.addEventListener("click", async() => {
-    //     const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
-    //     const customerMovements = await (await fetch(dominio + 'apis/sales/customers/customer-movements/' + findCustomer[0].id)).json()
-    //     cmppSubtitle.innerText = findCustomer[0].customer_name
-    //     printCustomerMovements(customerMovements)
-    //     selectChannelError.style.display = 'none'
-    //     cmpp.style.display = 'block'
-    // })
-
-    // //customer notes
-    // const notes = document.getElementById('notes')
-    // notes.addEventListener("click", async() => {
-    //     og.notesFrom = 'customers'
-    //     obppTitle.innerText = og.customerData[0].customer_name + ' - OBSERVACIONES'
-    //     obppObs.innerText = og.customerData[0].notes
-    //     obpp.style.display = 'block'
-    // })
-
-    // acceptWithEnter(obppObs,obppAccept)
+    //view customer movements
+    DGAmovementsDetails.addEventListener("click", async() => {
+        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
+        const customerMovements = await (await fetch(dominio + 'apis/sales/customers/customer-movements/' + findCustomer[0].id)).json()
+        cmppSubtitle.innerText = findCustomer[0].customer_name
+        printCustomerMovements(customerMovements)
+        selectChannelError.style.display = 'none'
+        cmpp.style.display = 'block'
+    })    
 })

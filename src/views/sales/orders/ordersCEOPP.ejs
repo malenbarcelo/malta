@@ -17,7 +17,7 @@
                     Crear pedido
                 </div>
             </div>
-            <div class="divGeneralAction" id="ceoppSave">
+            <div class="divGeneralAction" id="ceoppEdit">
                 <i class="fa-regular fa-floppy-disk"></i>
                 <div class="showActionPopup">
                     Guardar cambios
@@ -34,15 +34,19 @@
                 </div>
                 <div class="divInput">
                     <label class="label1" id="ceoppReqQtyLabel">Cant. requerida</label>
-                    <input type="text" class="input1 ixs ipl" id="ceoppReqQty" autocomplete="off">
+                    <input type="number" class="input1 ixs ipl" id="ceoppReqQty" autocomplete="off">
                 </div>
                 <div class="divInput">
-                    <label class="label1" id="ceoppConfQtyLabel">Cant. confirmada</label>
-                    <input type="text" class="input1 ixs ipl" id="ceoppConfQty" autocomplete="off">
+                    <label class="label3" id="ceoppConfQtyLabel">Cant. confirmada</label>
+                    <input type="number" class="input3 ixs ipl" id="ceoppConfQty" autocomplete="off">
+                </div>
+                <div class="divInput">
+                    <i class="fa-solid fa-square-plus pointer" id="ceoppAddItem"></i>
                 </div>
             </div>
+            <div class="divError" id="ceoppAddError"></div>
             
-            <div id="ceoppAttributes">
+            <div class="mtm" id="ceoppAttributes">
                 <div class="productAttribute mbs">
                     <div id="ceoppSizes"></div>
                     <i class="fa-solid fa-pencil pointer" id="ceoppChangeSizes"></i>
@@ -62,12 +66,13 @@
                 <thead>
                     <tr>
                         <th class="theadCss wXXL thLeftBorder thTall">Producto</th>
-                        <th class="theadCss wS thTall">Color</th>
-                        <th class="theadCss wXS thTall">Talle</th>
-                        <th class="theadCss wS thTall">Precio unitario</th>    
+                        <th class="theadCss wXS thTall">Precio unitario</th>    
                         <th class="theadCss wXS thTall">Cantidad requerida</th>
                         <th class="theadCss wXS thTall">Cantidad confirmada</th>                        
                         <th class="theadCss wS thTall">Total</th>
+                        <th class="theadCss wM thTall">Talles</th>
+                        <th class="theadCss wM thTall">Colores</th>
+                        <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment"></i></th>
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
                         <th class="theadCss wXXS thRightBorder thTall"><i class="fa-regular fa-trash-can"></i></i></th>
                     </tr>

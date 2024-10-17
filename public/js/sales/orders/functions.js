@@ -1,6 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { printOrders } from "./printOrders.js"
+import { dateToString } from "../../generalFunctions.js"
 
 async function getData() {
 
@@ -11,7 +12,6 @@ async function getData() {
     og.ordersFiltered = og.orders
     og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
-
     og.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + og.season.season + '/'
 
     applyFilters()
@@ -116,15 +116,14 @@ function updateOrderData() {
 
     orderInfo.innerHTML = ''
     orderInfo.innerHTML += '<div class="orderInfoElement"><b>Subtotal:</b> $' + og.formatter.format(og.orderData.subtotal) +'</div>'
-    orderInfo.innerHTML += '<div class="orderInfoElement orderInfoWithIcon"><b>Descuento:</b> ' + og.formatter.format(og.orderData.discount * 100) + '%<div><i class="fa-solid fa-pencil pointer" id="cdppDiscount"></i></idv></div>'
-    orderInfo.innerHTML += '<div class="orderInfoElement"><b>Total:</b> $' +og.formatter.format( og.orderData.total) + '</div>'
+    orderInfo.innerHTML += '<div class="orderInfoElement orderInfoWithIcon"><b>Descuento:</b> ' + og.formatter.format(og.orderData.discount * 100) + '%<div><i class="fa-solid fa-pencil pointer" id="chdppDiscount"></i></idv></div>'
+    orderInfo.innerHTML += '<div class="orderInfoElement"><b>Total:</b> $' + og.formatter.format( og.orderData.total) + '</div>'
 
     //createEdit order - change discount
-    cdppDiscount.addEventListener("click", async() => {
-        cdppNewDiscount.value = og.discount * 100
-        cdpp.style.display = 'block'
+    chdppDiscount.addEventListener("click", async() => {
+        chdppNewDiscount.value = og.orderData.discount * 100
+        chdpp.style.display = 'block'
     })
-
 }
 
 function completeEPSPPsizes() {
@@ -144,7 +143,7 @@ function completeEPSPPsizes() {
                 og.selectedSizes.push(size)
                 
             }else{
-                og.selectedSizes = og.selectedSizes.filter( s => s != size)
+                og.selectedSizes = og.selectedSizes.filter(s => s.id_sizes != size.id_sizes)
                 
             }
         })
@@ -167,14 +166,42 @@ function completeEPCPPcolors() {
         check.addEventListener("click", () => {
             if (check.checked) {
                 og.selectedColors.push(color)
-                
             }else{
-                og.selectedColors = og.selectedColors.filter( c => c != color)
-                
+                og.selectedColors = og.selectedColors.filter( c => c.id_colors != color.id_colors)
             }
         })
         
     })
 }
 
-export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors}
+async function printCustomerMovements(dataToPrint) {
+
+    ordersLoader.style.display = 'block'
+    cmppBody.innerHTML = ''
+    let counter = 0
+    const fragment = document.createDocumentFragment()  
+
+    //printTable
+    dataToPrint.forEach(element => {
+        const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        const date = dateToString(element.date)
+        
+        const row = document.createElement('tr')
+        row.innerHTML = `
+            <th class="${rowClass}">${date}</th>
+            <th class="${rowClass}">${element.type}</th>
+            <th class="${rowClass}">${element.order_number}</th>
+            <th class="${rowClass}">${og.formatter.format(element.total)}</th>            
+            <th class="${rowClass}">${og.formatter.format(element.balance)}</th>
+        `
+        fragment.appendChild(row)
+
+        counter += 1
+    })
+
+    cmppBody.appendChild(fragment)
+
+    ordersLoader.style.display = 'none'
+}
+
+export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements}

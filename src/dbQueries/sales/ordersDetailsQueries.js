@@ -22,7 +22,28 @@ const ordersDetailsQueries = {
                         {association: 'orders_orders_managers'},
                         {association: 'orders_payments_status'}
                     ]
-                }
+                },
+                {
+                    association: 'colors',
+                    include: [{association: 'color_data'}]
+                },
+                {
+                    association: 'sizes',
+                    include: [{association: 'size_data'}]
+                },
+                {
+                    association: 'product_data',
+                    include: [
+                        {
+                            association: 'product_colors',
+                            include: [{association: 'color_data'}]
+                        },
+                        {
+                            association: 'product_sizes',
+                            include: [{association: 'size_data'}]
+                        }
+                    ]
+                },
             ],
             where:{enabled:1},
             order:[['id_orders','ASC']],
@@ -73,6 +94,25 @@ const ordersDetailsQueries = {
             { where: { id: orderDetailId } }
         )
     },
+    createOrderDetail: async(detail,orderId) => {
+
+        const newDetail = await model.create({
+            id_orders:orderId,
+            id_products:detail.id_products,
+            description:detail.description,
+            color:detail.color,
+            size:detail.size,
+            unit_price: detail.unit_price,
+            required_quantity:detail.required_quantity == '' ? null : detail.required_quantity,
+            confirmed_quantity:detail.confirmed_quantity == '' ? null : detail.confirmed_quantity,
+            extended_price:detail.extended_price,
+            observations2:detail.observations2,
+            enabled:1
+        })
+
+        return newDetail
+    },
+
     createOrdersDetails: async(ordersDetailsToCreate) => {
         model.bulkCreate(ordersDetailsToCreate)
     },

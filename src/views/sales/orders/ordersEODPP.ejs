@@ -1,0 +1,51 @@
+<!----------Edit order details---------->
+<div class="popup" id="eodpp">
+    
+    <div class="popupContent" id="eodppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon2"><i class="fa-solid fa-pencil"></i></div>
+            <div class="popupClose2" id="eodppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div class="popupTitle2 mts" id="eodppTitle"></div>
+
+        <div class="divInputsColumn mtl mbl">
+            <div class="divInput">
+                <label class="label1" id="eodppPriceLabel">Precio unitario</label>
+                <input type="number" step="0.01" class="input1 ixl ipl" id="eodppPrice">
+                <div class="divError"  id="eodppPriceError">Debe completar el precio</div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="eodppQtyLabel">Cantidad requerida</label>
+                <input type="number" class="input1 ixl ipl" id="eodppQtyR">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="eodppQtyLabel">Cantidad confirmada</label>
+                <input type="number" class="input1 ixl ipl" id="eodppQtyC">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Talles</label>
+                <input type="text" id="eodppSizes" class="input1 ixl ipl" autocomplete="off" readonly>
+                <div class="divError"></div>
+                <div class="createAttribute" id="eodppChangeSizes">
+                    <i class="fa-solid fa-pencil pointer editAttributeIcon" id="eodppSizesIcon"></i>
+                    <div class="createAttributeInfo">Editar talles</div>
+                </div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Colores</label>
+                <textarea  id="eodppColors" class="input1 ixl ipl" autocomplete="off" readonly></textarea>
+                <div class="divError"></div>
+                <div class="createAttribute" id="eodppChangeColors">
+                    <i class="fa-solid fa-pencil pointer editAttributeIcon" id="eodppColorsIcon"></i>
+                    <div class="createAttributeInfo">Editar colores</div>
+                </div>
+            </div>            
+        </div>
+
+        <div class="divButtonsRow mbs">
+            <div id="eodppAccept" class="button1 bxs">Aceptar</div>
+        </div>
+    </div>
+</div>

@@ -11,7 +11,23 @@
     left: calc(50vw - 300px);
 }
 
+#rpppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
 
+#doppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
+#amppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
 
 
 #dlppContent{
@@ -26,12 +42,24 @@
     left: calc(500px - 310px);
 }
 
-
-
 #elppContent{
-    top: 26%;
-    width: 300px;
-    left: calc(50vw - 160px);
+    top: 25%;
+    width: 580px;
+    left: calc(50vw - 300px);
+}
+
+/*edit line sizes popup (elspp)*/
+#elsppContent{
+    top: 35%;
+    width: 400px;
+    left: calc(50vw - 210px);
+}
+
+/*edit line colors popup (elcpp)*/
+#elcppContent{
+    top: 35%;
+    width: 530px;
+    left: calc(50vw - 275px);
 }
 
 #apppContent{
@@ -47,11 +75,29 @@
     z-index: 10;
 }
 
+#loppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
+#elppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
 /*-----orders.ejs-----*/
 #rcpppContent{
     top: 20%;
     width: 400px;
     left: calc(50vw - 200px);
+}
+
+#rcpppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
 }
 
 #cmppContent{
@@ -60,6 +106,20 @@
     left: calc(50vw - 300px);
     padding-bottom: 30px;
 }
+
+#obppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
+#ceoppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
+
 
 
 /*---ok popups content---*/
@@ -86,32 +146,39 @@
 /* data.ejs --> cddpp
 
 /*-----------------------orders.ejs-----------------------*/
-/*change discount popup (cdpp)*/
-#cdppContent{
+/*change discount popup (chdpp)*/
+#chdppContent{
     top: 25%;
     width: 300px;
-    left: calc(500px - 165px);
+    left: calc(600px - 160px);
 }
 
 /*edit order details popup (eodpp)*/
 #eodppContent{
-    top: 25%;
-    width: 400px;
-    left: calc(500px - 220px);
+    top: 18%;
+    width: 580px;
+    left: calc(600px - 300px);
 }
 
 /*edit product sizes popup (epspp)*/
 #epsppContent{
-    top: 28%;
+    top: 35%;
     width: 400px;
     left: calc(600px - 210px);
 }
 
 /*edit product colors popup (epcpp)*/
 #epcppContent{
-    top: 20%;
-    width: 550px;
-    left: calc(600px - 285px);
+    top: 30%;
+    width: 530px;
+    left: calc(600px - 275px);
+}
+
+/*orders lines observations popup (olopp)*/
+#oloppContent{
+    top: 30%;
+    width: 400px;
+    left: calc(600px - 210px);
 }
 
 /*-----------------------ordersDetails.ejs-----------------------*/
@@ -122,6 +189,11 @@
     left: calc(50vw - 200px);
 }
 
+#dlppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
 
 /*-----------------------sales.ejs-----------------------*/
 /*delete sale popup (dspp)*/

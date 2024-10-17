@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { clearInputs, dateToString } from "../../generalFunctions.js"
-import { updateOrdersData } from "./functions.js"
+import { updateOrdersData, updateOrderData, getData } from "./functions.js"
+import { printOrderDetails } from "./printOrderDetails.js"
 
 async function printOrders() {
 
@@ -64,18 +65,15 @@ function ordersEventListeners() {
 
     og.ordersFiltered.forEach(element => {
 
-        const cancelOrder = document.getElementById('cancel_' + element.id)
-
         const customer = element.orders_customers.customer_name
-
-        // const edit = document.getElementById('edit_' + element.id)
-        // const payment = document.getElementById('payment_' + element.id)
-        // const paymentV = document.getElementById('paymentV_' + element.id)
-        // const deliverOrder = document.getElementById('deliver_' + element.id)
-        // const assignOrder = document.getElementById('assign_' + element.id)
-        // const obs = document.getElementById('obs_' + element.id)
-        // const restoreOrder = document.getElementById('restore_' + element.id)
-        
+        const cancelOrder = document.getElementById('cancel_' + element.id)
+        const edit = document.getElementById('edit_' + element.id)
+        const assignOrder = document.getElementById('assign_' + element.id)
+        const obs = document.getElementById('obs_' + element.id)
+        const deliverOrder = document.getElementById('deliver_' + element.id)
+        const restoreOrder = document.getElementById('restore_' + element.id)
+        const payment = document.getElementById('payment_' + element.id)
+        const paymentV = document.getElementById('paymentV_' + element.id)        
 
         //cancel order
         if (cancelOrder) {
@@ -86,142 +84,146 @@ function ordersEventListeners() {
             })
         }
 
-    //     //edit
-    //     edit.addEventListener("click", async() => {
+        //edit
+        edit.addEventListener("click", async() => {
+
+            //clear data
+            og.orderDetails = element.orders_orders_details
+            printOrderDetails()
+            clearInputs([selectProduct, ceoppReqQty, ceoppConfQty])
+            ceoppAddError.style.display = 'none'
+            ceoppAttributes.style.display = 'none'
                 
-    //         //clear data
-    //         og.orderDetails = element.orders_orders_details
-    //         printTableCreateEdit(og.orderDetails)
+            //complete popup info
+            const salesChannel = element.id_sales_channels
+            const orderNumber = element.order_number
+            og.discount = element.discount
+            const idCustomers = element.id_customers
+            const customer = element.orders_customers.customer_name
+            og.orderData.discount = parseFloat(og.discount,2)
+            og.orderData.subtotal = parseFloat(element.subtotal,2)
+            og.orderData.total = parseFloat(element.total,2)
+            og.orderData.id_customers = idCustomers
+            og.orderData.id_sales_channels = salesChannel
+            og.orderData.order_number = orderNumber
+            og.orderDetails = element.orders_orders_details
+            og.orderData.id = element.id
+            ceoppTitle.innerText = 'EDITAR PEDIDO'
+            ceoppEdit.style.display = 'flex'
+            ceoppCreate.style.display = 'none'
     
-    //         //complete popup info
-    //         const salesChannel = element.id_sales_channels
-    //         const orderNumber = element.order_number
-    //         og.discount = element.discount
-    //         const idCustomers = element.id_customers
-    //         const customer = element.orders_customers.customer_name
-    //         og.orderData.discount = parseFloat(og.discount,2)
-    //         og.orderData.subtotal = parseFloat(element.subtotal,2)
-    //         og.orderData.total = parseFloat(element.total,2)
-    //         og.orderData.id_customers = idCustomers
-    //         og.orderData.id_sales_channels = salesChannel
-    //         og.orderData.order_number = orderNumber
-    //         og.orderDetails = element.orders_orders_details
-    //         og.action = 'edit'
-    //         og.orderData.id = element.id
-    //         ceoppTitle.innerText = 'EDITAR PEDIDO'
-    
-    //         updateOrderData()
+            updateOrderData()
 
-    //         customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
+            customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
 
-    //         //show popup
-    //         ceopp.classList.add('slideIn')
-    //     })
+            //show popup
+            ceopp.classList.add('slideIn')
+        })
 
-    //     //payment
-    //     if (payment) {
-    //         payment.addEventListener('click',async()=>{
+        //payment
+        if (payment) {
+            payment.addEventListener('click',async()=>{
 
-    //             //find customer positive balance and show checkbox if applies
-    //             let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
+                //find customer positive balance and show checkbox if applies
+                let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
 
-    //             if (positiveBalance > 0) {
-    //                 og.orderToPayCustomerBalance = positiveBalance
-    //                 rpppUseBalanceLabel.innerText = 'Usar saldo a favor (ARS ' + og.formatter.format(positiveBalance) + ')'
-    //                 rpppUseBalance.classList.remove('notVisible')
-    //             }else{
-    //                 rpppUseBalance.classList.add('notVisible')
-    //                 og.orderToPayCustomerBalance = 0
-    //             }
+                if (positiveBalance > 0) {
+                    og.orderToPayCustomerBalance = positiveBalance
+                    rpppUseBalanceLabel.innerText = 'Usar saldo a favor (ARS ' + og.formatter.format(positiveBalance) + ')'
+                    rpppUseBalance.classList.remove('notVisible')
+                }else{
+                    rpppUseBalance.classList.add('notVisible')
+                    og.orderToPayCustomerBalance = 0
+                }
 
-    //             //complete elements and globals data
-    //             og.orderToPay = element
-    //             rpppSubtotal.value = og.formatter.format(element.subtotal)
-    //             rpppDiscount.value = og.formatter.format(element.discount * 100) + '%'
-    //             rpppTotal.value = og.formatter.format(element.total)
-    //             rpppPaid.value = og.formatter.format(element.amountPaid)
-    //             rpppBalance.value = og.formatter.format(element.balance)
-    //             rpppBalanceUsed.value = og.formatter.format(0)
-    //             rpppNewBalance.value = og.formatter.format(element.balance)
-    //             rpppBalanceAlert.innerHTML = ''
-    //             rpppUseBalanceCheck.checked = false
-    //             clearInputs(og.rpppValidate)
-    //             rppp.style.display = 'block'
-    //         })
-    //     }
+                //complete elements and globals data
+                og.orderToPay = element
+                og.orderToPayPayment.balanceUsed = 0
+                rpppSubtotal.value = og.formatter.format(element.subtotal)
+                rpppDiscount.value = og.formatter.format(element.discount * 100) + '%'
+                rpppTotal.value = og.formatter.format(element.total)
+                rpppPaid.value = og.formatter.format(element.amountPaid)
+                rpppBalance.value = og.formatter.format(element.balance)
+                rpppBalanceUsed.value = og.formatter.format(0)
+                rpppNewBalance.value = og.formatter.format(element.balance)
+                rpppBalanceAlert.innerHTML = ''
+                rpppUseBalanceCheck.checked = false
+                rpppTitle.innerText = 'PEDIDO #' + element.order_number
+                clearInputs([rpppPayment,rpppPaymentMethod])
+                rppp.style.display = 'block'
+            })
+        }
 
-    //     //payment verification
-    //     if (paymentV) {
-    //         paymentV.addEventListener('click',async()=>{
+        //payment verification
+        if (paymentV) {
+            paymentV.addEventListener('click',async()=>{
 
-    //             let data = {
-    //                 orderId:element.id,
-    //                 id_payments_status: element.amountPaid == 0 ? 3 : (element.balance > 0 ? 4 : 5)
-    //             }
+                let data = {
+                    orderId:element.id,
+                    id_payments_status: element.amountPaid == 0 ? 3 : (element.balance > 0 ? 4 : 5)
+                }
 
-    //             if (paymentV.checked) {
+                if (paymentV.checked) {
 
-    //                 //set payment verification
-    //                 await fetch(dominio + 'apis/sales/set-payment-verification',{
-    //                     method:'POST',
-    //                     headers: {'Content-Type': 'application/json'},
-    //                     body: JSON.stringify(data)
-    //                 })
-    //             }else{
+                    //set payment verification
+                    await fetch(dominio + 'apis/sales/set-payment-verification',{
+                        method:'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                }else{
 
-    //                 //update payment status
-    //                 await fetch(dominio + 'apis/sales/orders/update-payment-status',{
-    //                     method:'POST',
-    //                     headers: {'Content-Type': 'application/json'},
-    //                     body: JSON.stringify(data)
-    //                 })
-    //             }
+                    //update payment status
+                    await fetch(dominio + 'apis/sales/orders/update-payment-status',{
+                        method:'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                }
 
-    //             og.orders = showCanceled.checked ? await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json() : await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-    //             filterOrders()
-    //             printTableOrders(og.ordersFiltered)
+                bodyOrders.innerHTML = ''
+                ordersLoader.style.display = 'block'
+                await getData()
 
-    //         })  
+            })  
 
-    //     }
+        }
 
-    //     //deliver order
-    //     if (deliverOrder) {
-    //         deliverOrder.addEventListener('click',async()=>{
-    //             og.idOrderToDeliver = element.id
-    //             doppQuestion.innerHTML = '¿Confirma que desea entregar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-    //             dopp.style.display = 'block'
-    //         })
-    //     }
+        //deliver order
+        if (deliverOrder) {
+            deliverOrder.addEventListener('click',async()=>{
+                og.idOrderToDeliver = element.id
+                doppQuestion.innerHTML = '¿Confirma que desea entregar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
+                dopp.style.display = 'block'
+            })
+        }
 
-    //     //assign manager
-    //     if (assignOrder) {
-    //         assignOrder.addEventListener('click',async()=>{
-    //             amppSelectOM.value = element.id_orders_managers
-    //             og.idOrderToAssign = element.id
-    //             ampp.style.display = 'block'
-    //         })
-    //     }
+        //assign manager
+        if (assignOrder) {
+            assignOrder.addEventListener('click',async()=>{
+                amppSelectOM.value = element.id_orders_managers
+                og.idOrderToAssign = element.id
+                ampp.style.display = 'block'
+            })
+        }
 
-        
+        //restore order
+        if (restoreOrder) {
+            restoreOrder.addEventListener('click',async()=>{
+                og.idOrderToRestore = element.id
+                roppQuestion.innerHTML = '¿Confirma que desea reflotar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
+                ropp.style.display = 'block'
+            })
+        }
 
-    //     //restore order
-    //     if (restoreOrder) {
-    //         restoreOrder.addEventListener('click',async()=>{
-    //             og.idOrderToRestore = element.id
-    //             roppQuestion.innerHTML = '¿Confirma que desea reflotar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-    //             ropp.style.display = 'block'
-    //         })
-    //     }
-
-    //     //observations
-    //     obs.addEventListener('click',async()=>{
-    //         og.notesFrom = 'orders'
-    //         obppTitle.innerText = 'Pedido #' + element.order_number + ' - OBSERVACIONES' 
-    //         og.idOrderObservations = element.id
-    //         obppObs.value = element.observations
-    //         obpp.style.display = 'block'
-    //     })
+        //observations
+        obs.addEventListener('click',async()=>{
+            og.notesFrom = 'orders'
+            obppTitle.innerText = 'Pedido #' + element.order_number + ' - OBSERVACIONES' 
+            og.idOrderObservations = element.id
+            obppObs.value = element.observations
+            obpp.style.display = 'block'
+        })
     })
 
 }

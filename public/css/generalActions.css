@@ -39,7 +39,7 @@
 
 #DGAorders{
     right: 15vh;
-    top: 23vh;
+    top: 22vh;
 }
 
 #DGAordersDetails{
@@ -48,8 +48,8 @@
 }
 
 #DGAordersErrors{
-    right: 7vh;
-    top: 34vh;
+    right: 18vw;
+    top: 37vh;
     width: 230px;
 }
 

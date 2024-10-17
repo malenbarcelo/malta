@@ -1,5 +1,5 @@
 import { dominio } from "../../dominio.js"
-import odg from "./ordersDetailsGlobals.js"
+import odg from "./globals.js"
 import { dateToString } from "../../generalFunctions.js"
 
 async function printTableOrdersDetails(dataToPrint) {

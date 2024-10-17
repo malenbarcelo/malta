@@ -17,6 +17,7 @@ function epsppEventListeners() {
             epsppError.style.display = 'none'
             const sizes = (og.selectedSizes.map(s => s.size_data.size)).join(', ')
             ceoppSizes.innerHTML = '<b>TALLES: </b>' + sizes
+            eodppSizes.value = sizes
             epspp.style.display = 'none'
         }
     })

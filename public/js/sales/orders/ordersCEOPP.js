@@ -1,7 +1,9 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { acceptWithEnter} from "../../generalFunctions.js"
-import { completeEPSPPsizes, completeEPCPPcolors} from "./functions.js"
+import { clearInputs, showOkPopup} from "../../generalFunctions.js"
+import { completeEPSPPsizes, completeEPCPPcolors, updateOrderData, getData} from "./functions.js"
+import { printOrderDetails } from "./printOrderDetails.js"
+import { printOrders } from "./printOrders.js"
 
 
 //CREATE EDIT ORDER POPUP (CEOPP)
@@ -9,6 +11,8 @@ function ceoppEventListeners() {
 
     //change select products
     selectProduct.addEventListener("change", async() => {
+
+        ceoppAddError.style.display = 'none'
 
         if (selectProduct.value == '') {
             ceoppAttributes.style.display = 'none'
@@ -53,7 +57,7 @@ function ceoppEventListeners() {
         })
     }
 
-    //edit sizes
+    //edit colors
     const ceoppChangeColors = document.getElementById('ceoppChangeColors')
     if (ceoppChangeColors) {
         ceoppChangeColors.addEventListener("click", async() => {
@@ -62,62 +66,134 @@ function ceoppEventListeners() {
             epcpp.style.display = 'block'
         })
     }
-    
 
+    //add item
+    ceoppAddItem.addEventListener("click", async() => {
+        
+        let errors = 0
 
-    //createEdit order - edit discount
-    cdppAccept.addEventListener("click", async() => {
-        og.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
-        og.orderData.discount = cdppNewDiscount.value == '' ? 0 : cdppNewDiscount.value / 100
-        updateOrderData()
-        cdpp.style.display = 'none'
+        const itemToAdd = og.products.filter(p => p.full_description == selectProduct.value)
+        const findItem = og.orderDetails.filter(d => d.description == selectProduct.value)
+
+        if (itemToAdd.length == 0) {
+            errors += 1
+            ceoppAddError.innerText = 'Debe seleccionar un producto'
+            ceoppAddError.style.display = 'block'
+        }
+
+        if (findItem.length > 0) {
+            errors += 1
+            ceoppAddError.innerText = 'El producto seleccionado ya se encuentra en el pedido'
+            ceoppAddError.style.display = 'block'
+        }
+        
+        if (errors == 0 ) {
+            ceoppAddError.style.display = 'none'
+            const inputs = [selectProduct, ceoppReqQty, ceoppConfQty]
+            const id = og.orderDetails.length == 0 ? 0 : (og.orderDetails.reduce((max, obj) => (obj.id > max ? obj.id : max), -Infinity) + 1)
+            og.orderDetails.push({
+                id: id,
+                id_products: itemToAdd[0].id,
+                description: itemToAdd[0].full_description,
+                unit_price:itemToAdd[0].unit_price,
+                required_quantity: ceoppReqQty.value,
+                confirmed_quantity: ceoppConfQty.value,
+                extended_price: ceoppConfQty.value == '' ? 0 : parseFloat(ceoppConfQty.value,2) * parseFloat(itemToAdd[0].unit_price,2),
+                enabled:1,
+                observations2:'',
+                colors:og.selectedColors,
+                sizes:og.selectedSizes,
+                product_data: itemToAdd[0]
+            })
+
+            ceoppAttributes.style.display = 'none'
+            printOrderDetails()
+            updateOrderData()
+            clearInputs(inputs)
+            
+        }
     })
 
-    //change discount with enter
-    acceptWithEnter(cdppNewDiscount,cdppAccept)
+    //save order
+    ceoppCreate.addEventListener("click", async() => {
 
-    //createEdit order - save order
-    // ceoppCreate.addEventListener("click", async() => {
-
-    //     let incompleteRows = 0
+        let incompleteRows = 0
         
-    //     og.orderDetails.forEach(element => {
-    //         if (element.row_status == 'Incompleto') {
-    //             incompleteRows +=1
-    //         }
-    //     })
+        og.orderDetails.forEach(element => {
+            if (element.confirmed_quantity == '') {
+                incompleteRows +=1
+            }
+        })
 
-    //     //get new order status
-    //     if (incompleteRows > 0 || og.orderDetails.length == 0) {
-    //         og.orderData.id_orders_status = 1
-    //     }else{
-    //         og.orderData.id_orders_status = 2
-    //     }
+        //get new order status
+        if (incompleteRows > 0 || og.orderDetails.length == 0) {
+            og.orderData.id_orders_status = 1
+        }else{
+            og.orderData.id_orders_status = 2
+        }
 
-    //     const data = og.orderData
-    //     data.order_details = og.orderDetails
+        const data = og.orderData
+        data.order_details = og.orderDetails
+        
+        await fetch(dominio + 'apis/sales/create-order',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
 
-    //     if (og.action == 'create') {
-    //         await fetch(dominio + 'apis/sales/save-order',{
-    //             method:'POST',
-    //             headers: {'Content-Type': 'application/json'},
-    //             body: JSON.stringify(data)
-    //         })
-    //         ceoppOkText.innerText = 'Orden creada con éxito'
-    //     }else{
-    //         await fetch(dominio + 'apis/sales/edit-order',{
-    //             method:'POST',
-    //             headers: {'Content-Type': 'application/json'},
-    //             body: JSON.stringify(data)
-    //         })
-    //         ceoppOkText.innerText = 'Orden editada con éxito'
-    //     }
+        ceoppOkText.innerText = 'Orden creada con éxito'
+        
+        unfilterOrders.click()
 
-    //     updateData()
-    //     ceopp.classList.remove('slideIn')
-    //     showOkPopup(ceoppOk)
+        bodyOrders.innerHTML = ''
+        ordersLoader.style.display = 'block'
+        ceopp.classList.remove('slideIn')
+        await getData()
+        await printOrders()
+        showOkPopup(ceoppOk)
 
-    // })
+    })
+
+    //edit order
+    ceoppEdit.addEventListener("click", async() => {
+
+        let incompleteRows = 0
+        
+        og.orderDetails.forEach(element => {
+            if (element.confirmed_quantity == '') {
+                incompleteRows +=1
+            }
+        })
+
+        //get order status
+        if (incompleteRows > 0 || og.orderDetails.length == 0) {
+            og.orderData.id_orders_status = 1
+        }else{
+            og.orderData.id_orders_status = 2
+        }
+
+        const data = og.orderData
+        data.season = og.season.season
+        data.order_details = og.orderDetails
+        
+        await fetch(dominio + 'apis/sales/edit-order',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        ceoppOkText.innerText = 'Orden editada con éxito'
+        
+        unfilterOrders.click()
+
+        bodyOrders.innerHTML = ''
+        ordersLoader.style.display = 'block'
+        ceopp.classList.remove('slideIn')
+        await getData()
+        await printOrders()
+        showOkPopup(ceoppOk)
+
+    })
 
     
 }
