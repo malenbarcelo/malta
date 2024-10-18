@@ -13,7 +13,8 @@ const productsQueries = {
     seasonProducts: async(season) => {
         const products = await model.findAll({
             where:{
-                season:season
+                season:season,
+                enabled:1
             },
             include: [
                 {association: 'product_fabric'},
@@ -132,6 +133,19 @@ const productsQueries = {
             {
                 where:{
                     id:idProduct
+                }
+            }
+        )
+    },
+    delete: async(id) => {
+        await model.update(
+            {
+                enabled:0
+
+            },
+            {
+                where:{
+                    id:id
                 }
             }
         )

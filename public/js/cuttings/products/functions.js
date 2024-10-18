@@ -81,8 +81,20 @@ function cpppValidations() {
     let errors = 0
     const findType = pg.productsTypes.filter(pt => pt.product_type == cpppType.value)
     const findFabric = pg.fabrics.filter(f => f.fabric == cpppFabric.value)
+    const findCode = pg.products.filter(p => p.product_code == cpppCode.value && p.season == pg.season.season)
+
+    if (findCode.length > 0 && pg.codeToEdit != cpppCode.value) {
+        errors += 1
+        isInvalid([cpppCode])
+        cpppCodeError.style.display = 'none'
+        cpppCodeError2.style.display = 'block'
+    }else{
+        isValid([cpppCode])
+        cpppCodeError.style.display = 'none'
+        cpppCodeError2.style.display = 'none'
+    }
     
-    if (findType.length == 0) {
+    if (findType.length === 0) {
         errors += 1
         isInvalid([cpppType])
         cpppTypeError.style.display = 'none'
@@ -93,7 +105,7 @@ function cpppValidations() {
         cpppTypeError2.style.display = 'none'
     }
 
-    if (findFabric.length == 0) {
+    if (findFabric.length === 0) {
         errors += 1
         isInvalid([cpppFabric])
         cpppFabricError.style.display = 'none'

@@ -10,6 +10,7 @@ import { cpppEventListeners } from "./productsCPPP.js"
 import { esppEventListeners } from "./productsESPP.js"
 import { ecppEventListeners } from "./productsECPP.js"
 import { cdppEventListeners } from "./productsCDPP.js"
+import { dpppEventListeners } from "./productsDPPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -23,7 +24,7 @@ window.addEventListener('load',async()=>{
     printProducts()
 
     //filters
-    const filters = [filterType,filterCode,filterDescription]
+    const filters = [filterType,filterDescription]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             applyFilters()
@@ -38,15 +39,15 @@ window.addEventListener('load',async()=>{
         printProducts()
     })
 
-
     //POPUPS EVENTS LISTENERS
     cpppEventListeners() //CREATE PRODUCT POPUP (CPPP)
     esppEventListeners() //EDIT SIZES POPUP (ESPP)
     ecppEventListeners() //EDIT COLORS POPUP (ECPP)
     cdppEventListeners() //CREATE DATA POPUP (CDPP) --> popup from data.ejs
-
+    dpppEventListeners() //DELETE PRODUCT POPUP (DPPP)
+    
     //close popups event listener
-    const closePopups = [cpppClose,cpppCancel,esppClose,ecppClose,cdppClose]
+    const closePopups = [cpppClose,cpppCancel,esppClose,ecppClose,cdppClose,dpppClose]
     closePopupsEventListeners(closePopups)
 
     //predicts elements
@@ -59,9 +60,11 @@ window.addEventListener('load',async()=>{
         isValid(inputs)
         cpppTypeError2.style.display = 'none'
         cpppFabricError2.style.display = 'none'
+        cpppCodeError2.style.display = 'none'
         pg.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
         pg.newProductSizes = [{id:26,size:'U'}]
         pg.action = 'create'
+        pg.codeToEdit = ''
         cpppTitle.innerText = 'CREAR PRODUCTO'
         cpppEdit.classList.add('notVisible')
         cpppCreate.classList.remove('notVisible')

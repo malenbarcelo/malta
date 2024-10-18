@@ -216,19 +216,31 @@ function selectFocusedElement(e,input,list,elementName) {
         
     }else if(e.key === 'Enter'){
 
-        if (list.style.display == 'block') {
-            if (g.productFocused == -1) {
-                input.value = ''
-            }else{
-                input.value = g.elementToFocus.innerText
-            }
-            
-            list.style.display = 'none'
-        }
+        handleEnter(input,list)
 
     }else if(e.key === 'Escape'){
         g.focusedElement = -1
         input.value = ''
+        list.style.display = 'none'
+    }
+
+    input.addEventListener('blur', function() {
+        handleEnter(input, list)
+    })
+
+}
+
+function handleEnter(input, list) {
+    console.log(g.elementToFocus)
+    console.log(g.focusedElement)
+    if (list.style.display == 'block') {
+        if (g.focusedElement == -1) {
+            console.log('hola')
+            
+        } else {
+            input.value = g.elementToFocus ? g.elementToFocus.innerText : input.value
+
+        }
         list.style.display = 'none'
     }
 }

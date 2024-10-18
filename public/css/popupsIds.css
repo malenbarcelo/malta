@@ -1,5 +1,5 @@
 /*---popups contents---*/
-#coppContent,#roppContent,#doppContent,#amppContent{
+#coppContent,#roppContent,#doppContent,#amppContent,#dpppContent{
     top: 35%;
     width: 400px;
     left: calc(50vw - 200px);
@@ -12,6 +12,12 @@
 }
 
 #rpppOkContent{
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+
+#dpppOkContent{
     width: 300px;
     top: 40%;
     left: calc(50vw - 183px);

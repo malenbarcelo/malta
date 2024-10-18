@@ -5,7 +5,7 @@ let pg = {
             input: filterDescription,
             list: filterDescriptionPredicted,
             apiUrl: '',
-            name: 'description',
+            name: 'full_description',
             elementName: 'productDescription'
         },
         {
@@ -87,7 +87,9 @@ let pg = {
     productColors:[],
     selectedColors:[],
     action:'',
-    idProductToEdit:0
+    idProductToEdit:0,
+    codeToEdit:'',
+    idProductToDelete:0
     
 }
 

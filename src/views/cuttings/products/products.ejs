@@ -25,12 +25,8 @@
             <ul class="predictedElements" id="filterTypePredicted"></ul>
         </div>
         <div class="divInput">
-            <label class="label1">Código</label>
-            <input type="text" id="filterCode" class="input1 ixs ipm" autocomplete="off">
-        </div>
-        <div class="divInput">
-            <label class="label1">Descripción</label>
-            <input type="text" id="filterDescription" class="input1 il ipm" autocomplete="off">
+            <label class="label1">Producto</label>
+            <input type="text" id="filterDescription" class="input1 ixxl ipm" autocomplete="off">
             <ul class="predictedElements" id="filterDescriptionPredicted"></ul>
         </div>
         
@@ -55,9 +51,10 @@
                     <th class="theadCss wL thTall">Tela</th>
                     <th class="theadCss wXXL thTall">Producto</th>
                     <th class="theadCss wM thTall">Precio</th>
-                    <th class="theadCss wL thTall">Colores</th>
-                    <th class="theadCss wM thTall">Talles</th>
-                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-pen-to-square"></i></th>
+                    <th class="theadCss wM thTall">Colores</th>
+                    <th class="theadCss wS thTall">Talles</th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square"></i></th>
+                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-trash-can"></i></th>
                 </tr>
             </thead>
             <tbody id="bodyProducts"></tbody>
@@ -75,6 +72,7 @@
 <%- include('./productsESPP') %>
 <%- include('./productsECPP') %>
 <%- include('../data/dataCDPP') %>
+<%- include('./productsDPPP') %>
 
 
 <!----------SCRIPTS---------->

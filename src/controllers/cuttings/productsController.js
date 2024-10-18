@@ -77,6 +77,24 @@ const productsController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    deleteProduct: async(req,res) => {
+        try{
+
+            const id = req.body.id
+
+            console.log(req.body)
+
+            //delete product
+            await productsQueries.delete(id)
+
+            res.status(200).json()
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
     seasonProducts: async(req,res) => {
         try{
             
@@ -102,7 +120,7 @@ const productsController = {
             //get products
             const products = await productsQueries.seasonProducts(season)
         
-            const predictedDescriptions = products.filter(p => p.description.toLowerCase().includes(string))
+            const predictedDescriptions = products.filter(p => p.full_description.toLowerCase().includes(string))
         
             res.status(200).json(predictedDescriptions)
     

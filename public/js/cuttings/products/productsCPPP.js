@@ -8,6 +8,11 @@ import { applyFilters } from "./filters.js"
 //CREATE PRODUCTS POPUP (CPPP)
 async function cpppEventListeners() {
 
+    //delete spaces from code
+    cpppCode.addEventListener("change", () => {
+        cpppCode.value = cpppCode.value.replace(/\s+/g, '')
+    })
+
     //complete full description
     const inputs = [cpppCode, cpppDescription, cpppFabric]
     inputs.forEach(input => {
@@ -72,8 +77,8 @@ async function cpppEventListeners() {
             bodyProducts.innerHTML = ''
             cppp.style.display = 'none'
             await getData()
+            unfilter.click()
             printProducts()
-            applyFilters()
 
             cpppOkText.innerText = 'Producto creado con éxito'
             showOkPopup(cpppOk)
@@ -115,8 +120,8 @@ async function cpppEventListeners() {
             bodyProducts.innerHTML = ''
             cppp.style.display = 'none'
             await getData()
-            printProducts()
             applyFilters()
+            printProducts()
             
             cpppOkText.innerText = 'Producto editado con éxito'
             showOkPopup(cpppOk)
