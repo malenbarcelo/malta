@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import pg from "./globals.js"
-import { acceptWithEnter, inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
+import { acceptWithEnterInputs, inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
 import { getData,completeESPPsizes,completeECPPcolors } from "./functions.js"
 
 //CREATE DATA POPUP (CDPP)
@@ -66,7 +66,7 @@ async function cdppEventListeners() {
 
     })
     
-    acceptWithEnter(cdppData,cdppAccept)
+    acceptWithEnterInputs(cdppData,cdppAccept)
      
 }
 

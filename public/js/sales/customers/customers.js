@@ -2,7 +2,7 @@ import { dominio } from "../../dominio.js"
 import cg from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printCustomers } from "./printCustomers.js"
-import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape, acceptWithEnter } from "../../generalFunctions.js"
+import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape, acceptWithEnterInputs } from "../../generalFunctions.js"
 
 //popups events listeners
 import { ccppEventListeners } from "./customersCCPP.js"
@@ -56,10 +56,6 @@ window.addEventListener('load',async()=>{
     //close with escape
     const popups = [ccpp,copp]
     closeWithEscape(popups,[])
-
-    //accept with enter
-    acceptWithEnter(cg.ccppInputs,ccppCreate)
-    acceptWithEnter(cg.ccppInputs,ccppEdit)
 
     //DGAcreateCustomer    
     DGAcreateCustomer.addEventListener("click", async() => {
