@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import sg from "./salesGlobals.js"
 import { printTableSales,filterSales } from "./salesFunctions.js"
-import { closePopupsEventListeners,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters,selectWithClick } from "../../generalFunctions.js"
+import { closePopups,closeWithEscape,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters,selectWithClick } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -112,9 +112,11 @@ window.addEventListener('load',async()=>{
 
     showTableInfo(tableIcons,270,150)
 
-    //close popups
-    const closePopups = [chyppClose,chyppCancel,dsppCancel,dsppClose]
-    closePopupsEventListeners(closePopups)
+    //close popups event listener
+    closePopups(sg.popups)
+
+    //close with escape
+    closeWithEscape(sg.popups)
 
     //accept delete sale
     dsppAccept.addEventListener("click", async() => {

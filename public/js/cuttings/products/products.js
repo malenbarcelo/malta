@@ -1,6 +1,6 @@
 
 import pg from "./globals.js"
-import { showTableInfo, closePopupsEventListeners, clearInputs, isValid, applyPredictElement } from "../../generalFunctions.js"
+import { showTableInfo, closePopups, clearInputs, isValid, applyPredictElement,closeWithEscape } from "../../generalFunctions.js"
 import { getData } from "./functions.js"
 import { printProducts } from "./printProducts.js"
 import { applyFilters } from "./filters.js"
@@ -47,8 +47,10 @@ window.addEventListener('load',async()=>{
     dpppEventListeners() //DELETE PRODUCT POPUP (DPPP)
     
     //close popups event listener
-    const closePopups = [cpppClose,cpppCancel,esppClose,ecppClose,cdppClose,dpppClose]
-    closePopupsEventListeners(closePopups)
+    closePopups(pg.popups)
+
+    //close with escape
+    closeWithEscape(pg.popups)
 
     //predicts elements
     applyPredictElement(pg.elementsToPredict)

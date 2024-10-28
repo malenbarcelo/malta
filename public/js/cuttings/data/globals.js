@@ -1,5 +1,6 @@
 
 let dg = {
+    popups: [cdpp,cddpp],
     createDataType:[
         {
             icon:'createType',

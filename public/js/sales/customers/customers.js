@@ -2,7 +2,7 @@ import { dominio } from "../../dominio.js"
 import cg from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printCustomers } from "./printCustomers.js"
-import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { showOkPopup, closePopups, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
 
 //popups events listeners
 import { ccppEventListeners } from "./customersCCPP.js"
@@ -49,13 +49,11 @@ window.addEventListener('load',async()=>{
     //predicts elements
     applyPredictElement(cg.elementsToPredict)
 
-    //close popups
-    const closePopups = [ccppClose,coppClose]
-    closePopupsEventListeners(closePopups)
+    //close popups event listener
+    closePopups(cg.popups)
 
     //close with escape
-    const popups = [ccpp,copp]
-    closeWithEscape(popups,[])
+    closeWithEscape(cg.popups)
 
     //DGAcreateCustomer    
     DGAcreateCustomer.addEventListener("click", async() => {

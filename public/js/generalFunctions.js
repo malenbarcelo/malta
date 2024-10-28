@@ -254,15 +254,6 @@ function closePopupsEventListeners(closePopups) {
     })
 }
 
-function closePopups(popups) {
-    popups.forEach(element => {       
-        const closeIcon = document.getElementById(element.popup.id + 'Close')
-        closeIcon.addEventListener("click", async() => {
-            element.popup.style.display = 'none'
-        })
-    })
-}
-
 // function acceptWithEnter(popups) {
 //     document.addEventListener('keydown', function(event) {
         
@@ -328,20 +319,45 @@ function clearFilters(filters) {
     })
 }
 
+function closePopups(popups) {
+    popups.forEach(popup => {
+        const closeIcon = document.getElementById(popup.id + 'Close')
+        closeIcon.addEventListener("click", async() => {
+            popup.style.display = 'none'
+        })
+    })
+}
+
 function closeWithEscape(popups) {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            popups.forEach(element => {
-                if (element.popup.style.display !== 'none') {
-                    const isInputFocused = element.inputsToAvoidClosing.some(i => document.activeElement === i)
-                    const popupsDisplayed = element.popupsToAvoidClosing.some(pp => pp.style.display === 'block')
-                    if (!isInputFocused && !popupsDisplayed) {
-                        element.popup.style.display = 'none'
-                    }
-                }
-            })
+            const displayedPopups = popups.filter(p => p.style.display == 'block')
+            if (displayedPopups.length > 0) {
+                displayedPopups[0].style.display = 'none'
+                
+            }
         }
     })
 }
+
+// function closeWithEscape(popups) {
+//     document.addEventListener('keydown', function(e) {
+//         if (e.key === 'Escape') {
+//             const displayedrPopups = popups.filter(p => p.popup.style.display == 'block')
+//             popups.forEach(element => {
+//                 if (element.popup.style.display !== 'none') {
+//                     const isInputFocused = element.inputsToAvoidClosing.some(i => document.activeElement === i)
+//                     const popupsDisplayed = element.popupsToAvoidClosing.some(pp => pp.style.display === 'block')
+                    
+//                     if (!isInputFocused && !popupsDisplayed) {
+//                         element.popup.style.display = 'none'
+//                     }
+//                 }
+//             })
+//         }
+//     })
+// }
+
+
 
 export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups}

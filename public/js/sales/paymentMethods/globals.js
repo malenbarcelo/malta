@@ -1,4 +1,5 @@
 let pmg = {
+    popups:[cpmpp,copp],
     elementsToPredict:[
         {
             input: filterMethod,

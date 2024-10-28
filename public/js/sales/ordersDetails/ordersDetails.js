@@ -3,7 +3,7 @@ import odg from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printOrdersDetails } from "./printOrdersDetails.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { closePopupsEventListeners, applyPredictElement, selectFocusedElement,selectWithClick,showOkPopup,showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { closePopups, applyPredictElement, selectFocusedElement,selectWithClick,showOkPopup,showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
 
 //popups events listeners
 import { dlppEventListeners } from "./ordersDetailsDLPP.js"
@@ -68,9 +68,11 @@ window.addEventListener('load',async()=>{
     //predicts elements
     applyPredictElement(odg.elementsToPredict)
 
-    //close popups
-    const closePopups = [dlppClose, loppClose, elppClose, elcppClose, elsppClose, apppClose]
-    closePopupsEventListeners(closePopups)
+    //close popups event listener
+    closePopups(odg.popups)
+
+    //close with escape
+    closeWithEscape(odg.popups)
 
     //DGAaddProduct    
     DGAaddProduct.addEventListener("click", async() => {

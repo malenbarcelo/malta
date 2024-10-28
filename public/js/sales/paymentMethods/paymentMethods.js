@@ -2,7 +2,7 @@ import { dominio } from "../../dominio.js"
 import pmg from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printPaymentMethods } from "./printPaymentMethods.js"
-import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { showOkPopup, closePopups, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
 
 //popups events listeners
 import { cpmppEventListeners } from "./paymentMethodsCPMPP.js"
@@ -49,13 +49,11 @@ window.addEventListener('load',async()=>{
     // //predicts elements
     // applyPredictElement(pmg.elementsToPredict)
 
-    //close popups
-    const closePopups = [cpmppClose,coppClose]
-    closePopupsEventListeners(closePopups)
+    //close popups event listener
+    closePopups(pmg.popups)
 
     //close with escape
-    const popups = [cpmpp,copp]
-    closeWithEscape(popups,[])
+    closeWithEscape(pmg.popups)
 
     //DGAcreatePamymentMethod    
     DGAcreatePM.addEventListener("click", async() => {

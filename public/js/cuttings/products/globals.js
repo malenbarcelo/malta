@@ -1,5 +1,6 @@
 
 let pg = {
+    popups: [cdpp,ecpp,espp,cppp,dppp],
     elementsToPredict:[
         {
             input: filterDescription,

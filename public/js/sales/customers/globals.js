@@ -1,4 +1,5 @@
 let cg = {
+    popups:[ccpp,copp],
     elementsToPredict:[
         {
             input: filterCustomer,

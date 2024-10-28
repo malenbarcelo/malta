@@ -34,21 +34,7 @@ let og = {
             right:'-0.5%'
         }
     ],
-    popups: [
-        { popup:copp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[coppAccept] },
-        { popup:epspp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:epcpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:chdpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:eodpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:olopp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:ampp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[amppAccept] },
-        { popup:obpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:dopp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:ropp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
-        { popup:rcppp,inputsToAvoidClosing:[],popupsToAvoidClosing:[cpmpp],acceptButtons:[] },
-        { popup:rppp,inputsToAvoidClosing:[],popupsToAvoidClosing:[cpmpp],acceptButtons:[rpppAccept] },
-        { popup:cpmpp, inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[cpmppCreate]}
-    ],
+    popups:[cpmpp,copp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp],
     elementsToPredict:[
         {
             input: filterCustomer,

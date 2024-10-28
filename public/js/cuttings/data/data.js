@@ -1,7 +1,7 @@
 
 import dg from "./globals.js"
 import { showLoaders, uploadData } from "./functions.js"
-import { showTableInfo, closePopupsEventListeners,isValid,clearInputs } from "../../generalFunctions.js"
+import { showTableInfo, closePopups,closeWithEscape,isValid,clearInputs } from "../../generalFunctions.js"
 
 //popups events listeners
 import { cddppEventListeners } from "./dataCDDPP.js"
@@ -58,8 +58,10 @@ window.addEventListener('load',async()=>{
     showTableInfo(tableIcons,24,150)
 
     //close popups event listener
-    const closePopups = [cddppClose,cddppCancel,cdppClose]
-    closePopupsEventListeners(closePopups)
+    closePopups(dg.popups)
+
+    //close with escape
+    closeWithEscape(dg.popups)
 
     //create data popup events listeners
     const createIcons = [createType, createFabric, createColor, createSize]

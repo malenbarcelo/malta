@@ -1,6 +1,7 @@
 
 let odg = {
     season:'',
+    popups: [appp,dlpp,elcpp,elpp,elspp,lopp],
     elementsToPredict:[
         {
             input: filterCustomer,
