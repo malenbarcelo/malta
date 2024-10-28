@@ -1,4 +1,4 @@
-import {acceptWithEnter, closePopupsEventListeners, inputsValidation} from "./generalFunctions.js"
+import {acceptWithEnterInput, closePopupsEventListeners, inputsValidation} from "./generalFunctions.js"
 import { dominio } from "./dominio.js"
 
 window.addEventListener('load',async()=>{
@@ -42,7 +42,7 @@ window.addEventListener('load',async()=>{
         })
 
         //accept with enter
-        acceptWithEnter(chsppSeason,chsppAccept)
+        acceptWithEnterInput(chsppSeason,chsppAccept)
     }
 })
 

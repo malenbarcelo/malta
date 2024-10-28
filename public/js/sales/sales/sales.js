@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import sg from "./salesGlobals.js"
 import { printTableSales,filterSales } from "./salesFunctions.js"
-import { closePopupsEventListeners,acceptWithEnter,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters,selectWithClick } from "../../generalFunctions.js"
+import { closePopupsEventListeners,predictElements,selectFocusedElement,showTableInfo,showOkPopup,clearFilters,selectWithClick } from "../../generalFunctions.js"
 
 window.addEventListener('load',async()=>{
 
@@ -39,9 +39,6 @@ window.addEventListener('load',async()=>{
         salesTitle.innerText = 'CONSOLIDADO DE VENTAS ' + year
         chypp.style.display = 'none'
     })
-
-    //change year accept with enter
-    acceptWithEnter(chyppYear,chyppAccept)
     
     //predict elements
     filterCustomer.addEventListener("input", async(e) => {

@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import dg from "./globals.js"
-import { acceptWithEnter, inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
+import { inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
 import { showLoaders, uploadData,hideBodys } from "./functions.js"
 
 //CREATE DATA POPUP (CDPP)
@@ -52,8 +52,6 @@ async function cdppEventListeners() {
         
 
     })
-    
-    acceptWithEnter(cdppData,cdppAccept)
      
 }
 

@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import pg from "./globals.js"
-import { acceptWithEnterInputs, inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
+import {inputsValidation, showOkPopup,isInvalid} from "../../generalFunctions.js"
 import { getData,completeESPPsizes,completeECPPcolors } from "./functions.js"
 import { printProducts } from "./printProducts.js"
 

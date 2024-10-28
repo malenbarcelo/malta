@@ -2,7 +2,7 @@ import { dominio } from "../../dominio.js"
 import cg from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printCustomers } from "./printCustomers.js"
-import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape, acceptWithEnterInputs } from "../../generalFunctions.js"
+import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
 
 //popups events listeners
 import { ccppEventListeners } from "./customersCCPP.js"
