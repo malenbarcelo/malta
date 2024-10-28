@@ -1,7 +1,7 @@
 <!----------Register customer payment popup (RCPPP)---------->
 <div class="popup" id="rcppp">
     
-    <div class="popupContent" id="rcpppContent">
+    <div class="popupContent ppContentHmWl" id="rcpppContent">
 
         <div class="popupIcons">
             <div class="popupIcon2"><i class="fa-regular fa-credit-card"></i></div>
@@ -14,7 +14,7 @@
         <div class="divInputsColumn mtm mbm">
             <div class="divInput">
                 <label class="label1" id="rcpppTypeLabel">Tipo</label>
-                <select id="rcpppType" class="input1 il ipl">
+                <select id="rcpppType" class="input1 im ipl">
                     <option value=""></option>
                     <option value="PAGO">PAGO</option>
                     <option value="REINTEGRO">REINTENGRO</option>
@@ -23,7 +23,7 @@
             </div>
             <div class="divInput mtm">
                 <label class="label1" id="rcpppPaymentMethodLabel">Forma de pago</label>
-                <select class="input1 il ipl" id="rcpppPaymentMethod">
+                <select class="input1 im ipl" id="rcpppPaymentMethod">
                     <option value=""></option>
                     <% paymentMethods.forEach(pm => { %>
                         <% if (pm.enabled == 1) { %>
@@ -33,11 +33,15 @@
                         <% } %>
                     <% }) %>
                 </select>
+                <div class="createAttribute">
+                    <i class="fa-solid fa-square-plus pointer createAttributeIcon" id="rcpppNewPaymentMethod"></i>
+                    <div class="createAttributeInfo">Crear forma de pago</div>
+                </div>
                 <div class="divError" id="rcpppPaymentMethodError">Debe seleccionar una forma de pago</div>
             </div>
             <div class="divInput mtm">
                 <label class="label1" id="rcpppAmountLabel">Importe $</label>
-                <input type="number" step="0.01" class="input1 il ipl" id="rcpppAmount">
+                <input type="number" step="0.01" class="input1 im ipl" id="rcpppAmount">
                 <div class="divError" id="rcpppAmountError">Debe ingresar un importe</div>
             </div>
         </div>
@@ -50,7 +54,7 @@
 </div>
 
 <div class="okPopup" id="rcpppOk">    
-    <div class="okContent" id="rcpppOkContent">
+    <div class="okContent okContentWmTm" id="rcpppOkContent">
         <div class="okDiv">
             <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
             <div class="okText">Pago registrado con éxito</div>

@@ -1,6 +1,5 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { acceptWithEnter} from "../../generalFunctions.js"
 import { updateOrderData} from "./functions.js"
 import { printOrderDetails} from "./printOrderDetails.js"
 
@@ -23,9 +22,6 @@ function oloppEventListeners() {
 
         olopp.style.display = 'none'
     })
-
-    //change discount with enter
-    acceptWithEnter(oloppObs,oloppAccept)
 
 }
 

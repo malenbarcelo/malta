@@ -22,6 +22,19 @@ const customersQueries = {
         })
         return customers
     },
+    create: async(data) => {
+        await model.create(data)
+    },
+    update: async(newData,id) => {
+        await model.update(newData, {
+            where: { id: id }
+        });
+    },
+    destroy: async(id) => {
+        await model.destroy({
+            where: { id }
+        });
+    },
     postNotes: async(notes,id) => {
         await model.update(
             {

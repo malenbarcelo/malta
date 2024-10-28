@@ -1,68 +1,92 @@
 import { dominio } from "../../dominio.js"
 import cg from "./globals.js"
-import { printCustomersSummary } from "./printTables.js"
-import { applyFilters } from "./functions.js"
-import { showTableInfo, predictElements,selectFocusedElement,clearFilters, closePopupsEventListeners  } from "../../generalFunctions.js"
+import { getData, applyFilters } from "./functions.js"
+import { printCustomers } from "./printCustomers.js"
+import { showOkPopup, closePopupsEventListeners, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape, acceptWithEnter } from "../../generalFunctions.js"
+
+//popups events listeners
+import { ccppEventListeners } from "./customersCCPP.js"
 
 window.addEventListener('load',async()=>{
 
+    //get data
     customersLoader.style.display = 'block'
+    await getData()
 
-    cg.customersSummary = await (await fetch(dominio + 'sales/customers/apis/customers-summary')).json()
-    cg.customersSummaryFiltered = cg.customersSummary
+    //popups event listeners
+    ccppEventListeners() //CREATE CUSTOMER POPUP
     
     //table info events listeners
-    const tableIcons = [vdppIcon]
-    showTableInfo(tableIcons,37.5,100)
+    const tableIcons = [
+        {
+            icon:ecppIcon,
+            right:'11%'
+        },        
+        {
+            icon:dcppIcon,
+            right:'8%'
+        }
+    ]
+        
+    showTableInfo(tableIcons,240,100)
 
-    //print tables
-    printCustomersSummary(cg.customersSummaryFiltered)
-    
-    //filter customer event listener - predict elements
-    filterCustomer.addEventListener("input", async(e) => {
-        const input = filterCustomer
-        const list = filterCustomerUl
-        const apiUrl = 'apis/data/customers/predict-customers/'
-        const name = 'customer_name'
-        const elementName = 'customer'
-        predictElements(input,list,apiUrl,name,elementName)
-    })
-
-    filterCustomer.addEventListener("keydown", async(e) => {
-        const input = filterCustomer
-        const list = filterCustomerUl
-        const elementName = 'customer'
-        selectFocusedElement(e,input,list,elementName)
-    })
-
-    //filters
+    //filters event listeners
     const filters = [filterCustomer]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             applyFilters()
-            printCustomersSummary(cg.customersSummaryFiltered)
+            printCustomers()
         })
     })
 
     //unfilter event listener
     unfilter.addEventListener("click", async() => {
-        cg.customersSummaryFiltered = cg.customersSummary
-        clearFilters(filters)
-        printCustomersSummary(cg.customersSummaryFiltered)
+        clearInputs(filters)
+        applyFilters()
+        printCustomers()
     })
 
-    // //table info events listeners
-    // const tableIcons = [vsppIcon,dsppIcon]
-    // showTableInfo(tableIcons,38.5,100)
+    //predicts elements
+    applyPredictElement(cg.elementsToPredict)
 
     //close popups
-    const closePopups = []
+    const closePopups = [ccppClose,coppClose]
     closePopupsEventListeners(closePopups)
 
-    //close side popup
-    csppClose.addEventListener("click", async() => {
-        csppCustomer.innerText = 
-        cspp.classList.remove('slideIn')
+    //close with escape
+    const popups = [ccpp,copp]
+    closeWithEscape(popups,[])
+
+    //accept with enter
+    acceptWithEnter(cg.ccppInputs,ccppCreate)
+    acceptWithEnter(cg.ccppInputs,ccppEdit)
+
+    //DGAcreateCustomer    
+    DGAcreateCustomer.addEventListener("click", async() => {
+        clearInputs(cg.ccppInputs)
+        isValid(cg.ccppInputs)
+        filterCustomer.value = ''
+        ccppTitle.innerText = 'CREAR CLIENTE'
+        ccppCreate.style.display = 'block'
+        ccppEdit.style.display = 'none'
+        ccpp.style.display = 'block'
     })
 
+    //CONFIRM POPUPS
+    coppAccept.addEventListener("click", async() => {
+        const data = {id: cg.idCustomer}
+
+        await fetch(dominio + 'apis/sales/customers/delete-customer',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+
+        //get and print data
+        copp.style.display = 'none'
+        customersLoader.style.display = 'block'
+        await getData()
+        coppOkText.innerText = 'Cliente dado de baja con éxito'
+        showOkPopup(coppOk)
+    })
 })

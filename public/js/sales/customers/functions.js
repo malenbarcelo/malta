@@ -1,12 +1,26 @@
+import { dominio } from "../../dominio.js"
 import cg from "./globals.js"
+import { printCustomers } from "./printCustomers.js"
+
+async function getData() {
+
+    //get data and complete globals
+    cg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
+    cg.customersFiltered = cg.customers
+
+    applyFilters()
+    printCustomers()
+}
 
 function applyFilters() {
-    cg.customersSummaryFiltered = cg.customersSummary
+
+    cg.customersFiltered = cg.customers
 
     //customer
-    cg.customersSummaryFiltered = filterCustomer.value == '' ? cg.customersSummaryFiltered : cg.customersSummaryFiltered.filter(c => c.customer_name == filterCustomer.value)
+    cg.customersFiltered = filterCustomer.value == '' ? cg.customersFiltered : cg.customersFiltered.filter(c => c.customer_name == filterCustomer.value)
+
 }
 
 
 
-export {applyFilters}
+export {getData, applyFilters}

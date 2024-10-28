@@ -215,9 +215,13 @@ function selectFocusedElement(e,input,list,elementName) {
         }
         
     }else if(e.key === 'Enter'){
-
-        handleEnter(input,list)
-
+        if (g.focusedElement != -1 && g.elementToFocus != null) {
+            input.value = g.elementToFocus.innerText
+        }
+        list.style.display = 'none'
+        g.focusedElement = -1
+        
+        //handleEnter(input,list)
     }else if(e.key === 'Escape'){
         g.focusedElement = -1
         input.value = ''
@@ -225,18 +229,13 @@ function selectFocusedElement(e,input,list,elementName) {
     }
 
     input.addEventListener('blur', function() {
-        handleEnter(input, list)
+        //handleEnter(input, list)
     })
-
 }
 
 function handleEnter(input, list) {
-    console.log(g.elementToFocus)
-    console.log(g.focusedElement)
     if (list.style.display == 'block') {
         if (g.focusedElement == -1) {
-            console.log('hola')
-            
         } else {
             input.value = g.elementToFocus ? g.elementToFocus.innerText : input.value
 
@@ -255,10 +254,53 @@ function closePopupsEventListeners(closePopups) {
     })
 }
 
-function acceptWithEnter(input,button) {
+function closePopups(popups) {
+    popups.forEach(element => {       
+        const closeIcon = document.getElementById(element.popup.id + 'Close')
+        closeIcon.addEventListener("click", async() => {
+            element.popup.style.display = 'none'
+        })
+    })
+}
 
+// function acceptWithEnter(popups) {
+//     document.addEventListener('keydown', function(event) {
+        
+//         if (event.key === 'Enter') {
+//             const displayedPopups = popups.filter(p => p.popup.style.display === 'block')
+            
+//             displayedPopups.forEach(dp => {
+//                 let otherPopupsDisplayed = 0
+//                 dp.popupsToAvoidClosing.forEach(pp => {
+//                     if (pp.style.display == 'block') {
+//                         otherPopupsDisplayed += 1
+//                     }
+//                 })
+//                 if (otherPopupsDisplayed == 0) {
+//                     dp.acceptButtons.forEach(button => {
+//                         if (button.style.display == 'block') {
+//                             console.log('hola')
+//                             button.click()
+//                         }
+//                     })
+//                 }
+//             })
+            
+//         }
+//       })
+// }
+
+function acceptWithEnterInput(input,button) {
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
+            button.click()
+        }
+    })
+}
+
+function acceptWithEnterPopup(popup,button) {
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && popup.style.display == 'block') {
             button.click()
         }
     })
@@ -286,6 +328,20 @@ function clearFilters(filters) {
     })
 }
 
+function closeWithEscape(popups) {
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            popups.forEach(element => {
+                if (element.popup.style.display !== 'none') {
+                    const isInputFocused = element.inputsToAvoidClosing.some(i => document.activeElement === i)
+                    const popupsDisplayed = element.popupsToAvoidClosing.some(pp => pp.style.display === 'block')
+                    if (!isInputFocused && !popupsDisplayed) {
+                        element.popup.style.display = 'none'
+                    }
+                }
+            })
+        }
+    })
+}
 
-
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnter,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement}
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups}

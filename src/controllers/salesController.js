@@ -79,6 +79,30 @@ const salesController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    customers: async(req,res) => {
+        try{
+            const selectedItem = 'DATOS'
+            
+            return res.render('sales/customers/customers',{title:'Clientes',bottomHeaderMenu,selectedItem})
+            
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    paymentMethods: async(req,res) => {
+        try{
+            const selectedItem = 'DATOS'
+            
+            return res.render('sales/paymentMethods/paymentMethods',{title:'Métodos de pago',bottomHeaderMenu,selectedItem})
+            
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
     salesStatistics: (req,res) => {
         try{
 

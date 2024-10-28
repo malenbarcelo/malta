@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { isInvalid, clearInputs, showOkPopup } from "../../generalFunctions.js"
+import { isInvalid, clearInputs, showOkPopup,isValid } from "../../generalFunctions.js"
 import { getData, updateCustomerData } from "./functions.js"
 
 //REGISTER PAYMENT POPUP (RPPP)
@@ -68,6 +68,17 @@ function rpppEventListeners() {
 
         rpppBalanceUsed.dispatchEvent(new Event('change'))
 
+    })
+
+    //create payment method
+    rpppNewPaymentMethod.addEventListener("click", async() => {
+        clearInputs([cpmppPaymentMethod])
+        isValid([cpmppPaymentMethod])
+        og.createPaymentMethodFrom = 'orderPayment'
+        cpmppEdit.style.display = 'none'
+        cpmppCreate.style.display = 'block'
+        cpmppTitle.innerText = 'CREAR FORMA DE PAGO'
+        cpmpp.style.display = 'block'
     })
 
     

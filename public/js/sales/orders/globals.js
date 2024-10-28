@@ -4,6 +4,51 @@ let og = {
         minimumFractionDigits: 0,
         useGrouping: true
     }),
+    tableIcons: [
+        {
+            icon:eoppIcon,
+            right:'16%'
+        },
+        {
+            icon:rpppIcon,
+            right:'13.5%'
+        },
+        {
+            icon:pvppIcon,
+            right:'10.5%'
+        },
+        {
+            icon:doppIcon,
+            right:'7.5%'
+        },
+        {
+            icon:amppIcon,
+            right:'5%'
+        },
+        {
+            icon:obppIcon,
+            right:'2.5%'
+        },
+        {
+            icon:coppIcon,
+            right:'-0.5%'
+        }
+    ],
+    popups: [
+        { popup:copp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[coppAccept] },
+        { popup:epspp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:epcpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:chdpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:eodpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:olopp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:ampp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[amppAccept] },
+        { popup:obpp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:dopp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:ropp,inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[] },
+        { popup:rcppp,inputsToAvoidClosing:[],popupsToAvoidClosing:[cpmpp],acceptButtons:[] },
+        { popup:rppp,inputsToAvoidClosing:[],popupsToAvoidClosing:[cpmpp],acceptButtons:[rpppAccept] },
+        { popup:cpmpp, inputsToAvoidClosing:[],popupsToAvoidClosing:[],acceptButtons:[cpmppCreate]}
+    ],
     elementsToPredict:[
         {
             input: filterCustomer,
@@ -26,6 +71,7 @@ let og = {
     orders:[],
     ordersFiltered:[],
     ordersManagers:[],
+    paymentMethods:[],
     customersSummary:[],
     channelsChecks:[channel_1, channel_2, channel_3, channel_4],
     channelsChecked:[],
@@ -59,7 +105,8 @@ let og = {
         balanceUsed:0
     },
     errorsQty:0,
-    customerData:[]
+    customerData:[],
+    createPaymentMethodFrom:''
 }
 
 export default og

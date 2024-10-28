@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
 import { getData, completeELCPPcolors, completeELSPPsizes } from "./functions.js"
-import { showOkPopup, inputsValidation } from "../../generalFunctions.js"
+import { showOkPopup, inputsValidation,acceptWithEnterInput } from "../../generalFunctions.js"
 
 //EDIT LINE POPUP (ELPP)
 function elppEventListeners() {
@@ -34,16 +34,12 @@ function elppEventListeners() {
                 colors:odg.selectedColors,
                 sizes:odg.selectedSizes
             }
-
-            console.log(data)
             
             await fetch(dominio + 'apis/sales/edit-order-detail',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
-
-            
     
             elpp.style.display = 'none'
 
@@ -55,6 +51,11 @@ function elppEventListeners() {
             
         }
     })
+
+    //elpp accept with enter
+    acceptWithEnterInput(elppPrice,elppAccept)
+    acceptWithEnterInput(elppQtyR,elppAccept)
+    acceptWithEnterInput(elppQtyC,elppAccept)
 }
 
 export {elppEventListeners}

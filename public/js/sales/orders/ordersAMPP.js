@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { acceptWithEnter, showOkPopup } from "../../generalFunctions.js"
+import { showOkPopup } from "../../generalFunctions.js"
 import { getData } from "./functions.js"
 
 //ASSIGN MANAGER POPUP (AMPP)
@@ -29,9 +29,6 @@ function amppEventListeners() {
         showOkPopup(amppOk)
 
     })
-
-    //change discount with enter
-    acceptWithEnter(amppSelectOM,amppAccept)
 
 }
 

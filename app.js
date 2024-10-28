@@ -80,6 +80,7 @@ app.use('/apis/main',mainRoutes) //main
 
 //sales
 app.use('/apis/sales/customers',salesRoutes) //customers
+app.use('/apis/sales/payment-methods',salesRoutes) //payment_methods
 app.use('/apis/sales/payments',salesRoutes) //payments
 app.use('/apis/sales/orders',salesRoutes) //orders
 

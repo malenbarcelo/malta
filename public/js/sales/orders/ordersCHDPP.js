@@ -1,6 +1,5 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { acceptWithEnter} from "../../generalFunctions.js"
 import { updateOrderData} from "./functions.js"
 
 //CHANGE DISCOUNT POPUP (CHDPP)
@@ -11,9 +10,6 @@ function chdppEventListeners() {
         updateOrderData()
         chdpp.style.display = 'none'
     })
-
-    //change discount with enter
-    acceptWithEnter(chdppNewDiscount,chdppAccept)
 
 }
 

@@ -1,0 +1,64 @@
+<!---------Create customer popup (CCPP)---------->
+<div class="popup" id="ccpp">
+    
+    <div class="popupContent ppContentHlWxl" id="ccppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon3"><i class="fa-solid fa-square-plus"></i></div>
+            <div class="popupClose1" id="ccppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="ccppTitle"></div>
+
+        <div class="divInputsColumn mtl mbm">
+            <div class="divInput">
+                <label class="label1" id="ccppCustomerLabel">Nombre</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppCustomer" autocomplete="off">
+                <div class="divError" id="ccppCustomerError">Debe ingresar un cliente</div>
+                <div class="divError" id="ccppCustomerError2">El cliente ingresado ya existe</div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppEmailLabel">Email</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppEmail" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppAddressLabel">Domicilio</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppAddress" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppCityLabel">Localidad</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppCity" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppCountryLabel">Pais</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppCountry" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppMobileLabel">Teléfono</label>
+                <input type="number" class="input1 ixxxl ipl" id="ccppMobile" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppDicountLabel">Discount %</label>
+                <input type="number" class="input1 ixxxl ipl" id="ccppDiscount" autocomplete="off">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="ccppNotesLabel">Observaciones</label>
+                <input type="text" class="input1 ixxxl ipl" id="ccppNotes" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="divButtonsRow mtl mbs">
+            <div id="ccppCreate" class="button1 bs">Crear</div>
+            <div id="ccppEdit" class="button1 bs">Editar</div>
+        </div>
+    </div>
+</div>
+
+<div class="okPopup" id="ccppOk">    
+    <div class="okContent okContentWmTm" id="ccppOkContent">
+        <div class="okDiv">
+            <div class="okIcon1"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="okText" id="ccppOkText"></div>
+        </div>
+    </div>
+</div>

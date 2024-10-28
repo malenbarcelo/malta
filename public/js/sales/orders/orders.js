@@ -3,7 +3,7 @@ import og from "./globals.js"
 import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
-import { closePopupsEventListeners,clearInputs, showTableInfo, applyPredictElement, acceptWithEnter } from "../../generalFunctions.js"
+import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup } from "../../generalFunctions.js"
 
 //popups events listeners
 import { coppEventListeners } from "./ordersCOPP.js"
@@ -19,6 +19,7 @@ import { doppEventListeners } from "./ordersDOPP.js"
 import { roppEventListeners } from "./ordersROPP.js"
 import { rpppEventListeners } from "./ordersRPPP.js"
 import { rcpppEventListeners } from "./ordersRCPPP.js"
+import { cpmppEventListeners } from "./ordersCPMPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -41,10 +42,24 @@ window.addEventListener('load',async()=>{
     roppEventListeners() //RESTORE ORDER POPUP
     rpppEventListeners() //REGISTER PAYMENT POPUP
     rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
+    cpmppEventListeners() //CREATE PAYMET METHOD POPUP
 
     //close popups event listener
-    const closePopups = [coppClose,epsppClose, epcppClose, chdppClose, eodppClose, oloppClose, amppClose, obppClose, doppClose, roppClose, rpppClose, rcpppClose, cmppClose]
-    closePopupsEventListeners(closePopups)
+    closePopups(og.popups)
+
+    //close with escape
+    closeWithEscape(og.popups)
+
+    //accept with enter inputs
+    acceptWithEnterInput(selectProduct,ceoppAddItem) //add product
+    acceptWithEnterInput(ceoppReqQty,ceoppAddItem) //add product
+    acceptWithEnterInput(ceoppConfQty,ceoppAddItem) //add product
+    acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product
+
+    //accept with enter popups
+    acceptWithEnterPopup(copp,coppAccept) //cancel order
+    acceptWithEnterPopup(ropp,roppAccept) //restore order
+    
 
     //close side popup
     ceoppClose.addEventListener("click", async() => {
@@ -52,38 +67,7 @@ window.addEventListener('load',async()=>{
     })
 
     //table info events listeners
-    const tableIcons = [
-        {
-            icon:eoppIcon,
-            right:'16%'
-        },
-        {
-            icon:rpppIcon,
-            right:'13.5%'
-        },
-        {
-            icon:pvppIcon,
-            right:'10.5%'
-        },
-        {
-            icon:doppIcon,
-            right:'7.5%'
-        },
-        {
-            icon:amppIcon,
-            right:'5%'
-        },
-        {
-            icon:obppIcon,
-            right:'2.5%'
-        },
-        {
-            icon:coppIcon,
-            right:'-0.5%'
-        }
-    ]
-
-    showTableInfo(tableIcons,310,150)
+    showTableInfo(og.tableIcons,310,150)
 
     //select channels
     og.channelsChecks.forEach(element => {
@@ -207,8 +191,6 @@ window.addEventListener('load',async()=>{
         obppObs.innerText = og.customerData[0].notes
         obpp.style.display = 'block'
     })
-
-    acceptWithEnter(obppObs,obppAccept)
 
     //register customer payment
     DGAregisterPayment.addEventListener("click", async() => {

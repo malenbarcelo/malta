@@ -12,6 +12,7 @@ async function getData() {
     odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
     odg.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     odg.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
+    odg.elementsToPredict[2].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
     odg.ordersDetailsFiltered = odg.ordersDetails
     
     applyFilters()

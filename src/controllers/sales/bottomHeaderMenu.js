@@ -2,7 +2,7 @@ const bottomHeaderMenu = [
     {
         id:1,
         name:'PEDIDOS',
-        href:'/sales/in-progress-orders',
+        href:'',
         subitems:[
             {'subitem':'Resumen de pedidos', 'href':'/sales/in-progress-orders'},
             {'subitem':'Detalle de pedidos', 'href':'/sales/in-progress-orders/details'}
@@ -13,6 +13,15 @@ const bottomHeaderMenu = [
         name:'VENTAS',
         href:'/sales/consolidated',
         subitems:[]
+    },
+    {
+        id:3,
+        name:'DATOS',
+        href:'',
+        subitems:[
+            {'subitem':'Clientes', 'href':'/sales/customers'},
+            {'subitem':'Formas de pago', 'href':'/sales/payment-methods'}
+        ]
     },
     
     // {

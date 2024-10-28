@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { inputsValidation, showOkPopup, acceptWithEnter,isValid } from "../../generalFunctions.js"
+import { inputsValidation, showOkPopup, isValid, clearInputs } from "../../generalFunctions.js"
 import { updateCustomerData, getData } from "./functions.js"
 
 //REGISTER CUSTOMER PAYMENT POPUP (RCPPP)
@@ -22,6 +22,17 @@ function rcpppEventListeners() {
         if (rcpppAmount.value != '') {
             isValid([rcpppAmount])           
         }
+    })
+
+    //create payment method
+    rcpppNewPaymentMethod.addEventListener("click", async() => {
+        clearInputs([cpmppPaymentMethod])
+        isValid([cpmppPaymentMethod])
+        cpmppEdit.style.display = 'none'
+        cpmppCreate.style.display = 'block'
+        og.createPaymentMethodFrom = 'customerPayment'
+        cpmppTitle.innerText = 'CREAR FORMA DE PAGO'
+        cpmpp.style.display = 'block'
     })
 
     rcpppAccept.addEventListener("click", async() => {
@@ -55,8 +66,6 @@ function rcpppEventListeners() {
             showOkPopup(rcpppOk)
         }
     })
-
-    acceptWithEnter(rcpppAmount,rcpppAccept)
         
 }
 

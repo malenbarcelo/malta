@@ -13,6 +13,7 @@ async function getData() {
     og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
     og.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + og.season.season + '/'
+    og.paymentMethods = await (await fetch(dominio + 'apis/data/payment-methods')).json()
 
     applyFilters()
     printOrders()

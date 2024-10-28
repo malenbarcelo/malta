@@ -200,6 +200,7 @@ const apisSalesController = {
             id_payments_status:3,
             id_orders_managers:1,
             observations:null,
+            season:data[i].season,
             enabled:1
           })
           orderNumber += 1
@@ -208,58 +209,56 @@ const apisSalesController = {
 
       //create orders if necessary
       if (ordersToCreate.length > 0) {
-        for (let i = 0; i < ordersToCreate.length; i++) {
-          await ordersQueries.createOrder(ordersToCreate[i])          
-        }
+        await ordersQueries.createOrders(ordersToCreate)          
       }
 
-      //get order to create details data
-      let ordersToUpdate = []      
-      let inProgressOrders = await ordersQueries.inProgressOrders()
-      inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
+      // //get order to create details data
+      // let ordersToUpdate = []      
+      // let inProgressOrders = await ordersQueries.inProgressOrders()
+      // inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
 
-      for (let i = 0; i < data.length; i++) {
+      // for (let i = 0; i < data.length; i++) {
         
-        let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)        
-        const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
+      //   let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)        
+      //   const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
         
-        for (let j = 0; j < data[i].products.length; j++) {
+      //   for (let j = 0; j < data[i].products.length; j++) {
 
-          if (!ordersToUpdate.includes(orderId)) {
-            ordersToUpdate.push(orderId)
-          }
+      //     if (!ordersToUpdate.includes(orderId)) {
+      //       ordersToUpdate.push(orderId)
+      //     }
 
-          ordersDetailsToCreate.push({
-            id_orders: orderId,
-            id_products:data[i].products[j].id,
-            description:data[i].products[j].description,
-            color:data[i].products[j].color,
-            size:data[i].products[j].size,
-            unit_price:data[i].products[j].unit_price,
-            required_quantity:null,
-            confirmed_quantity:null,
-            extended_price:0,
-            enabled:1,
-            observations:null,
-            observations2:null
-          })
-        }        
-      }
+      //     ordersDetailsToCreate.push({
+      //       id_orders: orderId,
+      //       id_products:data[i].products[j].id,
+      //       description:data[i].products[j].description,
+      //       color:data[i].products[j].color,
+      //       size:data[i].products[j].size,
+      //       unit_price:data[i].products[j].unit_price,
+      //       required_quantity:null,
+      //       confirmed_quantity:null,
+      //       extended_price:0,
+      //       enabled:1,
+      //       observations:null,
+      //       observations2:null
+      //     })
+      //   }        
+      // }
 
-      //create orders details
-      await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)
+      // //create orders details
+      // await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)
       
-      //update order_status
-      await ordersQueries.updateOrderStatus(ordersToUpdate,1)
+      // //update order_status
+      // await ordersQueries.updateOrderStatus(ordersToUpdate,1)
 
-      //update payment_status
-      for (let i = 0; i < ordersToUpdate.length; i++) {
-        const orderData = await ordersQueries.findOrder(ordersToUpdate[i])
-        console.log(orderData)
-        if (orderData.id_payments_status == 5) {
-          await ordersQueries.updatePaymentsStatus(ordersToUpdate[i],4)
-        }
-      }
+      // //update payment_status
+      // for (let i = 0; i < ordersToUpdate.length; i++) {
+      //   const orderData = await ordersQueries.findOrder(ordersToUpdate[i])
+      //   console.log(orderData)
+      //   if (orderData.id_payments_status == 5) {
+      //     await ordersQueries.updatePaymentsStatus(ordersToUpdate[i],4)
+      //   }
+      // }
       
       res.status(200).json()
 
@@ -511,19 +510,17 @@ const apisSalesController = {
       }
 
       //update order data
-      // const newTotal = await updateOrderData(data.lineToEdit.id_orders)
+      const newTotal = await updateOrderData(data.lineToEdit.id_orders)
       
-      // //update order status
-      // updateOrderStatus(data.lineToEdit.id_orders)
+      //update order status
+      updateOrderStatus(data.lineToEdit.id_orders)
 
-      // //update payment status
-      // const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
-      // const total = data.lineToEdit.orders_details_orders.total
-      // if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
-      //   updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
-      // }
-
-      console.log(356000)
+      //update payment status
+      const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
+      const total = data.lineToEdit.orders_details_orders.total
+      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+        updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
+      }
 
       res.status(200).json()
 

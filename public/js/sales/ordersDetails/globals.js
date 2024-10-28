@@ -15,7 +15,22 @@ let odg = {
             apiUrl: '',
             name: 'full_description',
             elementName: 'product'
-        }
+        },
+        {
+            input: apppProduct,
+            list: ulPredictedProducts2,
+            apiUrl: '',
+            name: 'full_description',
+            elementName: 'product'
+        },
+        {
+            input: apppCustomer,
+            list: ulPredictedCustomers2,
+            apiUrl: 'apis/data/customers/predict-customers/',
+            name: 'customer_name',
+            elementName: 'customer'
+        },
+
     ],
     customers:[],
     products:[],
@@ -32,7 +47,7 @@ let odg = {
     productSizes:[],
     selectedSizes:[],
     productColors:[],
-    selectedColors:[],
+    selectedColors:[]
 
 }
 

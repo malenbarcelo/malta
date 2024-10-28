@@ -120,7 +120,8 @@
     padding: 15px 30px;
     color: green;
     top: 40%;
-    left: calc(50vw - 150px)
+    left: calc(50vw - 150px);
+    text-align: center;
 }
 
 .okDiv{
@@ -282,3 +283,45 @@
     font-size: 13px;
     margin-bottom: 20px;
 }
+
+
+
+
+/*----------POPUPS CONTENTS SIZES AND POSITIONS----------*/
+.ppContentHsWs{ /*height medium with small*/
+    top: 40%;
+    width: 300px;
+    left: calc(50vw - 160px);
+}
+
+.ppContentHmWm{ /*height medium with medium*/
+    top: 20%;
+    width: 400px;
+    max-height: 500px;
+    overflow-y: auto;
+    left: calc(50vw - 210px);
+}
+
+.ppContentHmWl{ /*height medium with medium*/
+    top: 20%;
+    width: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    left: calc(50vw - 260px);
+}
+
+.ppContentHlWxl{ /*height large with extra large*/
+    top: 8%;
+    width: 600px;
+    max-height: 600px;
+    overflow-y: auto;
+    left: calc(50vw - 310px);
+}
+
+/*----------OK POPUPS SIZES AND POSITIONS----------*/
+.okContentWmTm{ /*width medium top medium*/
+    width: 300px;
+    top: 40%;
+    left: calc(50vw - 183px);
+}
+

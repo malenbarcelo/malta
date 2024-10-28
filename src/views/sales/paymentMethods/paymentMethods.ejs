@@ -1,0 +1,67 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+    <!------MAIN TITLE------>
+    <div class="mainTitle">MÉTODOS DE PAGO</div>
+
+    <!------GENERAL ACTIONS------>
+    <div class="divGeneralActions" id="DGApaymentMethods">
+        <div class="divGeneralAction" id="DGAcreatePM">
+            <i class="fa-solid fa-plus"></i>
+            <div class="showActionPopup">
+                Crear método de pago
+            </div>        
+        </div>
+    </div>
+
+    <!------MAIN FILTERS------>
+    <div class="mainFilters">
+        <div class="divInputsRow">            
+            <div class="divInput">
+                <label class="label1" id="filterMethodLabel" >Método de pago</label>
+                <input type="text" class="input1 il ipl" autocomplete="off" id="filterMethod">
+                <ul class="predictedElements" id="ulPredictedMethods"></ul>
+            </div>
+            <div id="unfilter" class="unfilter" >
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </div>
+        </div>
+    </div>
+
+    <!---------PAYMENTS METHODS TABLE--------->
+    <div class="mtl">
+        <div class="divTable" id="paymentMethodsTable">
+
+            <div class="tableInfo" id="epmppInfo">Editar</div>
+            <div class="tableInfo" id="dpmppInfo">Eliminar</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="theadCss wXL thLeftBorder thTall">Método de pago</th>
+                        <th class="theadCss wXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="epmppIcon"></i></th>
+                        <th class="theadCss wXS thTall thRightBorder"><i class="fa-regular fa-trash-can tableIcon" id="dpmppIcon"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="bodyPaymentMethods"></tbody>
+            </table>
+            
+        </div>
+        
+    </div>
+
+    <!----------LOADER---------->
+    <div class="loader middleLoader" id="paymentMethodsLoader" ></div>
+
+    <!----------POPUPS---------->
+    <%- include('./paymentMethodsCPMPP') %>
+    <%- include('../../partials/confirmPopup') %>
+
+    <!----------SCRIPTS---------->
+    <script type="module" src="/js/sales/paymentMethods/paymentMethods.js"></script>
+
+
+
+    
+
+
