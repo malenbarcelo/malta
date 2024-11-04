@@ -25,7 +25,8 @@ function loppEventListeners() {
         ordersDetailsLoader.style.display = 'block'
         await getData()
 
-        showOkPopup(loppOk)
+        okppText.innerText = 'Observaciones editadas con éxito'
+        showOkPopup(okpp)
 
     })
 

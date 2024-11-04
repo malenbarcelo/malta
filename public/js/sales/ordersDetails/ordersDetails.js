@@ -19,6 +19,24 @@ window.addEventListener('load',async()=>{
     ordersDetailsLoader.style.display = 'block'
     await getData()
 
+    //select order manager
+    if (odg.userLogged == 'Esteban') {
+        filterOrderManager.value = 4
+        //channel_2.checked = true
+        //og.channelsChecked.push(channel_2)
+    }
+    if (odg.userLogged == 'Pedro') {
+        filterOrderManager.value = 5
+        //og.channelsChecked.push(channel_1)
+        //channel_1.checked = true
+    }
+
+    //apply filters
+    applyFilters()
+
+    //print orders
+    printOrdersDetails()
+
     //popups event listeners
     dlppEventListeners() //DELET LINE POPUP
     loppEventListeners() //LINE OBSERVATIONS POPUP

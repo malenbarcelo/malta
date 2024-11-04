@@ -24,7 +24,8 @@ function dlppEventListeners() {
         ordersDetailsLoader.style.display = 'block'
         await getData()
 
-        showOkPopup(dlppOk)
+        okppText.innerText = 'Linea eliminada con éxito'
+        showOkPopup(okpp)
 
     })
 }

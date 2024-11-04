@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { getData } from "./functions.js"
+import { applyFilters, getData } from "./functions.js"
 import { showOkPopup} from "../../generalFunctions.js"
+import { printOrders } from "./printOrders.js"
 
 //CANCEL ORDER POPUP (COPP)
 function coppEventListeners() {
@@ -21,8 +22,11 @@ function coppEventListeners() {
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrders()
 
-        showOkPopup(coppOk)
+        okppText.innerText = 'Orden cancelada con éxito'
+        showOkPopup(okpp)
 
     })
 }

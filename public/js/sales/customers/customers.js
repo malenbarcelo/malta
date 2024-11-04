@@ -80,7 +80,7 @@ window.addEventListener('load',async()=>{
         copp.style.display = 'none'
         customersLoader.style.display = 'block'
         await getData()
-        coppOkText.innerText = 'Cliente dado de baja con éxito'
-        showOkPopup(coppOk)
+        okppText.innerText = 'Cliente dado de baja con éxito'
+        showOkPopup(okpp)
     })
 })

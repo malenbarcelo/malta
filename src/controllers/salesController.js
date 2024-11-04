@@ -32,7 +32,7 @@ const salesController = {
     inProgressOrdersDetails: async(req,res) => {
         try{
 
-            const selectedItem = 'PEDIDOS'
+            const selectedItem = 'DETALLE DE PEDIDOS'
             const customers = await customersQueries.customers()
             const ordersManagers = await ordersManagersQueries.ordersManagers()
             const ordersStatus = await ordersStatusQueries.ordersStatus()

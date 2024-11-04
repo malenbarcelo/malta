@@ -4,7 +4,11 @@
 }
 
 #customersTable{
-    max-height: 400px;
+    max-height: 420px;
+}
+
+#paymentMethodsTable{
+    max-height: 420px;
 }
 
 #productsClientsTable{

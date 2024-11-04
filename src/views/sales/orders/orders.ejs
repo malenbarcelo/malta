@@ -1,6 +1,8 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
 
+<div class="notVisible" id="userLogged"><%= userLogged.first_name %></div>
+
 <!------MAIN TITLE------>
 <div class="mainTitle mbm">
     RESUMEN DE PEDIDOS EN CURSO
@@ -191,6 +193,11 @@
 <%- include('./ordersOLOPP') %>
 <%- include('./ordersRPPP') %>
 <%- include('../paymentMethods/paymentMethodsCPMPP') %>
+<%- include('../../cuttings/products/productsCPPP') %>
+<%- include('../../cuttings/products/productsESPP') %>
+<%- include('../../cuttings/products/productsECPP') %>
+<%- include('../../cuttings/data/dataCDPP') %>
+<%- include('../../partials/okPopup') %>
 
 <!----------SCRIPTS---------->
 <script type="module" src="/js/sales/orders/orders.js"></script>

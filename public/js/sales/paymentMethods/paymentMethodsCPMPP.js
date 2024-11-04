@@ -40,8 +40,8 @@ async function cpmppEventListeners() {
             cpmpp.style.display = 'none'
             paymentMethodsLoader.style.display = 'block'
             await getData()
-            cpmppOkContent.innerText = 'Forma de pago creada con éxito'
-            showOkPopup(cpmppOk)
+            okppText.innerText = 'Forma de pago creada con éxito'
+            showOkPopup(okpp)
         }
 
     })
@@ -90,8 +90,8 @@ async function cpmppEventListeners() {
             ccpp.style.display = 'none'
             customersLoader.style.display = 'block'
             await getData()
-            ccppOkContent.innerText = 'Cliente editado con éxito'
-            showOkPopup(ccppOk)
+            okppText.innerText = 'Forma de pago editada con éxito'
+            showOkPopup(okpp)
         }
 
     })

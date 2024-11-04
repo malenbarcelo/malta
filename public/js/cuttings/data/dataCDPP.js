@@ -44,7 +44,8 @@ async function cdppEventListeners() {
             await uploadData()
             
             cdpp.style.display = 'none'
-            showOkPopup(cdppOk)
+            okppText.innerText = 'Dato creado con éxito'
+            showOkPopup(okpp)
         }
 
 

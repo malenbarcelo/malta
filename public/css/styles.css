@@ -38,11 +38,7 @@
     background-color: var(--color1);
 }
 
-#DGAordersCreateEdit{
-    right: 60px;
-    top: -90px;
-    z-index: 2;
-}
+
 
 #inputProduct{
     position: relative;

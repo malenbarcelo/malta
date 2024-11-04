@@ -48,8 +48,8 @@ async function ccppEventListeners() {
             ccpp.style.display = 'none'
             customersLoader.style.display = 'block'
             await getData()
-            ccppOkContent.innerText = 'Cliente editado con éxito'
-            showOkPopup(ccppOk)
+            okppText.innerText = 'Cliente creado con éxito'
+            showOkPopup(okpp)
         }
 
     })
@@ -98,8 +98,8 @@ async function ccppEventListeners() {
             ccpp.style.display = 'none'
             customersLoader.style.display = 'block'
             await getData()
-            ccppOkContent.innerText = 'Cliente editado con éxito'
-            showOkPopup(ccppOk)
+            okppText.innerText = 'Cliente editado con éxito'
+            showOkPopup(okpp)
         }
 
     })

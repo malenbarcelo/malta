@@ -82,20 +82,10 @@ function dateToString(date) {
     return stringDate    
 }
 
-function showOkPopup(popupToShow) {
-
-    popupToShow.style.display = 'block'
-
-    //hide okPopup after one second
-    setTimeout(function() {
-        popupToShow.style.display = 'none'
-    }, 1500)
-    
-}
-
 async function applyPredictElement(elementsToPredict) {
 
     for (let i = 0; i < elementsToPredict.length; i++) {
+        
         const input = elementsToPredict[i].input
         const list = elementsToPredict[i].list
         const apiUrl = elementsToPredict[i].apiUrl
@@ -319,11 +309,26 @@ function clearFilters(filters) {
     })
 }
 
+function showOkPopup(popupToShow) {
+
+    popupToShow.classList.add('okSlideIn')
+
+    //hide okPopup after one second
+    setTimeout(function() {
+        popupToShow.classList.remove('okSlideIn')
+    }, 2000)
+    
+}
+
 function closePopups(popups) {
     popups.forEach(popup => {
         const closeIcon = document.getElementById(popup.id + 'Close')
         closeIcon.addEventListener("click", async() => {
-            popup.style.display = 'none'
+            if (popup.style.display == 'block') {
+                popup.style.display = 'none'
+            }else{
+                popup.classList.remove('slideIn')
+            }
         })
     })
 }
@@ -331,10 +336,13 @@ function closePopups(popups) {
 function closeWithEscape(popups) {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const displayedPopups = popups.filter(p => p.style.display == 'block')
+            const displayedPopups = popups.filter(p => p.style.display == 'block' || p.classList.contains('slideIn'))
             if (displayedPopups.length > 0) {
-                displayedPopups[0].style.display = 'none'
-                
+                if (displayedPopups[0].style.display == 'block') {
+                    displayedPopups[0].style.display = 'none'
+                }else{
+                    displayedPopups[0].classList.remove('slideIn')
+                }
             }
         }
     })

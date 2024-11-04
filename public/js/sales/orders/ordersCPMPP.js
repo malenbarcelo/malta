@@ -1,7 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { inputsValidation, isInvalid, showOkPopup } from "../../generalFunctions.js"
-import { getData } from "./functions.js"
 
 //CREATE PAYMENT METHOD POPUP (CPMPP)
 async function cpmppEventListeners() {

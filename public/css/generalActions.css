@@ -79,3 +79,9 @@
     right: 30vw;
     top: 23vh;
 }
+
+#DGAordersCreateEdit{
+    right: 70px;
+    top: -80px;
+    z-index: 2;
+}

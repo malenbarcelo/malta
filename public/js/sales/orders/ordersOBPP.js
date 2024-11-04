@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { getData, updateCustomerData } from "./functions.js"
+import { applyFilters, getData, updateCustomerData } from "./functions.js"
+import { printOrders } from "./printOrders.js"
 
 //OBSERVATIONS POPUP (OBPP)
 function obppEventListeners() {
@@ -38,9 +39,12 @@ function obppEventListeners() {
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrders()
         updateCustomerData()
 
-        showOkPopup(obppOk)
+        okppText.innerText = 'Observaciones editadas con éxito'
+        showOkPopup(okpp)
 
     })
 }

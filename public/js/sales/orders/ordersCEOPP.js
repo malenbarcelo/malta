@@ -1,10 +1,9 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { clearInputs, showOkPopup} from "../../generalFunctions.js"
-import { completeEPSPPsizes, completeEPCPPcolors, updateOrderData, getData} from "./functions.js"
+import { clearInputs, showOkPopup,isValid} from "../../generalFunctions.js"
+import { completeEPSPPsizes, completeEPCPPcolors, updateOrderData, getData, applyFilters} from "./functions.js"
 import { printOrderDetails } from "./printOrderDetails.js"
 import { printOrders } from "./printOrders.js"
-
 
 //CREATE EDIT ORDER POPUP (CEOPP)
 function ceoppEventListeners() {
@@ -114,6 +113,34 @@ function ceoppEventListeners() {
         }
     })
 
+    //create product
+    ceoppCreateProduct.addEventListener("click", async() => {
+        const inputs = [cpppCode,cpppDescription,cpppType,cpppFabric,cpppFullDescription,cpppPrice]
+        clearInputs(inputs)
+        isValid(inputs)
+        cpppTypeError2.style.display = 'none'
+        cpppFabricError2.style.display = 'none'
+        cpppCodeError2.style.display = 'none'
+        og.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
+        og.newProductSizes = [{id:26,size:'U'}]
+        cpppTitle.innerText = 'CREAR PRODUCTO'
+        cpppEdit.classList.add('notVisible')
+        cpppCreate.classList.remove('notVisible')
+        cpppSizes.value =  og.newProductSizes.map(size => size.size).join(", ")
+        cpppColors.value =  og.newProductColors.map(color => color.color).join(", ")
+        cpppRemoveColor.checked = false
+        cppp.style.display = 'block'
+        cpppCode.focus()
+
+    })
+
+    //create product with enter
+    selectProduct.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && selectProduct.value == '') {
+            ceoppCreateProduct.click()
+        }
+    })
+
     //save order
     ceoppCreate.addEventListener("click", async() => {
 
@@ -141,16 +168,13 @@ function ceoppEventListeners() {
             body: JSON.stringify(data)
         })
 
-        ceoppOkText.innerText = 'Orden creada con éxito'
-        
-        unfilterOrders.click()
-
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         ceopp.classList.remove('slideIn')
         await getData()
         await printOrders()
-        showOkPopup(ceoppOk)
+        okppText.innerText = 'Orden creada con éxito'
+        showOkPopup(okpp)
 
     })
 
@@ -182,16 +206,14 @@ function ceoppEventListeners() {
             body: JSON.stringify(data)
         })
 
-        ceoppOkText.innerText = 'Orden editada con éxito'
-        
-        unfilterOrders.click()
-
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         ceopp.classList.remove('slideIn')
         await getData()
+        applyFilters()
         await printOrders()
-        showOkPopup(ceoppOk)
+        okppText.innerText = 'Orden editada con éxito'
+        showOkPopup(okpp)
 
     })
 

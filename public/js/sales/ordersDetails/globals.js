@@ -1,6 +1,7 @@
 
 let odg = {
     season:'',
+    userLogged:'',
     popups: [appp,dlpp,elcpp,elpp,elspp,lopp],
     elementsToPredict:[
         {

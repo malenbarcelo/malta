@@ -1,6 +1,8 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
 
+<div class="notVisible" id="userLogged"><%= userLogged.first_name %></div>
+
 <!------MAIN TITLE------>
 <div class="mainTitle">DETALLE DE PEDIDOS EN CURSO</div>
 
@@ -104,6 +106,7 @@
 <%- include('./ordersDetailsELCPP') %>
 <%- include('./ordersDetailsELSPP') %>
 <%- include('./ordersDetailsPopups') %>
+<%- include('../../partials/okPopup') %>
 
 <script type="module" src="/js/sales/ordersDetails/ordersDetails.js"></script>
 

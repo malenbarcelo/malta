@@ -20,13 +20,35 @@ import { roppEventListeners } from "./ordersROPP.js"
 import { rpppEventListeners } from "./ordersRPPP.js"
 import { rcpppEventListeners } from "./ordersRCPPP.js"
 import { cpmppEventListeners } from "./ordersCPMPP.js"
+import { cpppEventListeners } from "./ordersCPPP.js"
+import { esppEventListeners } from "./ordersESPP.js"
+import { ecppEventListeners } from "./ordersECPP.js"
+import { cdppEventListeners } from "./ordersCDPP.js"
 
 window.addEventListener('load',async()=>{
 
     ordersLoader.style.display = 'block'
 
-    //get elements
+    //get data
     await getData()
+
+    //select order manager
+    if (og.userLogged == 'Esteban') {
+        filterOrderManager.value = 4
+        channel_2.checked = true
+        og.channelsChecked.push(channel_2)
+    }
+    if (og.userLogged == 'Pedro') {
+        filterOrderManager.value = 5
+        og.channelsChecked.push(channel_1)
+        channel_1.checked = true
+    }
+
+    //apply filters
+    applyFilters()
+
+    //print orders
+    printOrders()
 
     //popups event listeners
     coppEventListeners() //CANCEL ORDER POPUP
@@ -43,6 +65,10 @@ window.addEventListener('load',async()=>{
     rpppEventListeners() //REGISTER PAYMENT POPUP
     rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
     cpmppEventListeners() //CREATE PAYMET METHOD POPUP
+    cpppEventListeners() //CREATE PRODUCT POPUP
+    esppEventListeners() //EDIT SIZES POPUP (from create product)
+    ecppEventListeners() //EDIT COLORS POPUP (from create product)
+    cdppEventListeners() //CREATE DATA POPUP (from create data)
 
     //close popups event listener
     closePopups(og.popups)
@@ -51,7 +77,6 @@ window.addEventListener('load',async()=>{
     closeWithEscape(og.popups)
 
     //accept with enter inputs
-    acceptWithEnterInput(selectProduct,ceoppAddItem) //add product
     acceptWithEnterInput(ceoppReqQty,ceoppAddItem) //add product
     acceptWithEnterInput(ceoppConfQty,ceoppAddItem) //add product
     acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product
@@ -60,12 +85,6 @@ window.addEventListener('load',async()=>{
     acceptWithEnterPopup(copp,coppAccept) //cancel order
     acceptWithEnterPopup(ropp,roppAccept) //restore order
     
-
-    //close side popup
-    ceoppClose.addEventListener("click", async() => {
-        ceopp.classList.remove('slideIn')
-    })
-
     //table info events listeners
     showTableInfo(og.tableIcons,310,150)
 
@@ -107,6 +126,7 @@ window.addEventListener('load',async()=>{
         })
 
         og.channelsChecked = []
+        applyFilters()
         printOrders()
         updateCustomerData()
         DGAcreateOrderError.style.display = 'none'

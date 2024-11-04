@@ -1,5 +1,4 @@
 #positiveBalance{
-    color: green;
     display: none;
 }
 
@@ -32,4 +31,28 @@
 /*-----ordersEODPP.ejs-----*/
 .editAttributeIcon{
     font-size: 15px;
+}
+
+/*-----ordersRPPP.ejs-----*/
+#rpppUseBalance{
+    border-radius: 3px;
+    border: green solid 2px;
+    background-color: rgb(180, 241, 180);
+    width: 80%;
+    margin: auto;
+    margin-top: 3px;
+    justify-content: center;
+}
+
+#rpppNegativeBalance{
+    position: absolute;
+    color: var(--errorColor);
+    width: 100px;
+    font-size: 12px;
+    padding: 3px;
+    border: var(--errorColor) solid 2px;
+    background-color: rgb(251, 203, 203);
+    right: 30px;
+    top: 50px;
+    border-radius: 3px;
 }

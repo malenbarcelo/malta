@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { getData } from "./functions.js"
+import { applyFilters, getData } from "./functions.js"
+import { printOrders } from "./printOrders.js"
 
 //ASSIGN MANAGER POPUP (AMPP)
 function amppEventListeners() {
@@ -25,8 +26,11 @@ function amppEventListeners() {
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrders()
 
-        showOkPopup(amppOk)
+        okppText.innerText = 'Encargado editado con éxito'
+        showOkPopup(okpp)
 
     })
 

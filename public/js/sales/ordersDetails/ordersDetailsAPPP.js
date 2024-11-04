@@ -5,7 +5,7 @@ import { showOkPopup } from "../../generalFunctions.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
 
 
-//ADD PRODUCT POPUP (DLPP)
+//ADD PRODUCT POPUP (APPP)
 function apppEventListeners() {
     
     const inputs = [apppProduct, apppCustomer]
@@ -74,8 +74,6 @@ function apppEventListeners() {
                 }
             })
 
-            console.log(data)
-
             await fetch(dominio + 'apis/sales/add-products',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -87,8 +85,8 @@ function apppEventListeners() {
             await getData()
 
             appp.style.display = 'none'
-            
-            showOkPopup(apppOk)
+            okppText.innerText = 'Producto agregado con éxito'
+            showOkPopup(okpp)
         }
     })
 

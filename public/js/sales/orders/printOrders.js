@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { clearInputs, dateToString } from "../../generalFunctions.js"
-import { updateOrdersData, updateOrderData, getData } from "./functions.js"
+import { updateOrdersData, updateOrderData, getData, applyFilters } from "./functions.js"
 import { printOrderDetails } from "./printOrderDetails.js"
 
 async function printOrders() {
@@ -11,21 +11,21 @@ async function printOrders() {
 
     //printTable
     const rows = og.ordersFiltered.map((element, index) => {
-        const date = dateToString(element.date);
-        const rowClass = index % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
-        const color = element.enabled === 0 ? 'errorColor' : '';
-        const status = element.enabled === 0 ? 'Cancelado' : element.orders_orders_status.order_status;
+    const date = dateToString(element.date);
+    const rowClass = index % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
+    const color = element.enabled === 0 ? 'errorColor' : '';
+    const status = element.enabled === 0 ? 'Cancelado' : element.orders_orders_status.order_status;
     
-        const paymentClass = 'allowedIcon';
-        const paymentVStatus = (element.enabled === 1 && element.id_orders_status !== 1 && element.id_payments_status !== 5) ? '' : 'disabled';
-        const paymentVchequed = element.id_payments_status === 6 ? 'checked' : '';
-    
-        const deliverClass = (element.enabled === 1 && element.id_orders_status === 2) ? 'allowedIcon' : 'notAllowedIcon';
-        const cancelClass = ((element.id_orders_status === 1 || element.id_orders_status === 2) && 
-                             [1, 2, 3].includes(element.id_payments_status)) ? 'allowedIcon' : 'notAllowedIcon';
-        const cancelIcon = element.enabled === 1 ? 'fa-circle-xmark' : 'fa-circle-check';
-        const cancelId = element.enabled === 1 ? 'cancel_' : 'restore_';
-        const commentIcon = element.observations ? 'fa-comment-dots' : 'fa-comment';
+    const paymentClass = 'allowedIcon';
+    const paymentVStatus = (element.enabled === 1 && element.id_orders_status !== 1 && element.id_payments_status !== 5) ? '' : 'disabled';
+    const paymentVchequed = element.id_payments_status === 6 ? 'checked' : '';
+
+    const deliverClass = (element.enabled === 1 && element.id_orders_status === 2) ? 'allowedIcon' : 'notAllowedIcon';
+    const cancelClass = ((element.id_orders_status === 1 || element.id_orders_status === 2) && 
+                            [1, 2, 3].includes(element.id_payments_status)) ? 'allowedIcon' : 'notAllowedIcon';
+    const cancelIcon = element.enabled === 1 ? 'fa-circle-xmark' : 'fa-circle-check';
+    const cancelId = element.enabled === 1 ? 'cancel_' : 'restore_';
+    const commentIcon = element.observations ? 'fa-comment-dots' : 'fa-comment';
     
         return `
             <tr>
@@ -131,8 +131,16 @@ function ordersEventListeners() {
                     og.orderToPayCustomerBalance = positiveBalance
                     rpppUseBalanceLabel.innerText = 'Usar saldo a favor (ARS ' + og.formatter.format(positiveBalance) + ')'
                     rpppUseBalance.classList.remove('notVisible')
+                    rpppNegativeBalance.classList.add('notVisible')
+
+                }else if(positiveBalance < 0){
+                    og.orderToPayCustomerBalance = positiveBalance
+                    rpppNegativeBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> El cliente tiene en saldo en contra de $ ' + og.formatter.format(positiveBalance)
+                    rpppUseBalance.classList.add('notVisible')
+                    rpppNegativeBalance.classList.remove('notVisible')
                 }else{
                     rpppUseBalance.classList.add('notVisible')
+                    rpppNegativeBalance.classList.add('notVisible')
                     og.orderToPayCustomerBalance = 0
                 }
 
@@ -184,6 +192,8 @@ function ordersEventListeners() {
                 bodyOrders.innerHTML = ''
                 ordersLoader.style.display = 'block'
                 await getData()
+                applyFilters()
+                printOrders()
 
             })  
 

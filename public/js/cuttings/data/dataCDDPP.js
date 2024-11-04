@@ -23,7 +23,8 @@ async function cddppEventListeners() {
         uploadData()
         
         cddpp.style.display = 'none'
-        showOkPopup(cddppOk)
+        okppText.innerText = 'Dato eliminado con éxito'
+        showOkPopup(okpp)
 
     })     
      

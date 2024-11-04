@@ -23,7 +23,8 @@ async function dpppEventListeners() {
             productsLoader.style.display = 'block'
             await getData()
             printProducts()
-            showOkPopup(dpppOk)
+            okppText.innerText = 'Producto eliminado con éxito'
+            showOkPopup(okpp)
 
     })
 

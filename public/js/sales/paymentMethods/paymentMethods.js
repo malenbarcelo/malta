@@ -80,7 +80,7 @@ window.addEventListener('load',async()=>{
         copp.style.display = 'none'
         paymentMethodsLoader.style.display = 'block'
         await getData()
-        coppOkText.innerText = 'Forma de pago dada de baja con éxito'
-        showOkPopup(coppOk)
+        okppText.innerText = 'Forma de pago dada de baja con éxito'
+        showOkPopup(okpp)
     })
 })

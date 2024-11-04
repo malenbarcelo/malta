@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { getData } from "./functions.js"
+import { getData,applyFilters } from "./functions.js"
+import { printOrders } from "./printOrders.js"
 
 //RESTORE ORDER POPUP (ROPP)
 function roppEventListeners() {
@@ -21,8 +22,10 @@ function roppEventListeners() {
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         await getData()
-
-        showOkPopup(roppOk)
+        applyFilters()
+        printOrders()
+        okppText.innerText = 'Orden reflotada con éxito'
+        showOkPopup(okpp)
 
     })
 

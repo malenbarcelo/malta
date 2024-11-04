@@ -6,6 +6,7 @@ async function getData() {
 
     //get data and complete globals
     odg.season = await (await fetch(dominio + 'apis/main/current-season')).json()
+    odg.userLogged = userLogged.innerText
     odg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
     odg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + odg.season.season)).json()
     odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
@@ -14,9 +15,6 @@ async function getData() {
     odg.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
     odg.elementsToPredict[2].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
     odg.ordersDetailsFiltered = odg.ordersDetails
-    
-    applyFilters()
-    printOrdersDetails()
 }
 
 function applyFilters() {

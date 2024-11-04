@@ -311,9 +311,9 @@
 }
 
 .ppContentHlWxl{ /*height large with extra large*/
-    top: 8%;
+    top: 7%;
     width: 600px;
-    max-height: 600px;
+    max-height: 620px;
     overflow-y: auto;
     left: calc(50vw - 310px);
 }
@@ -324,4 +324,6 @@
     top: 40%;
     left: calc(50vw - 183px);
 }
+
+
 

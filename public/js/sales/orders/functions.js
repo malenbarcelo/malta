@@ -1,22 +1,26 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { printOrders } from "./printOrders.js"
-import { dateToString } from "../../generalFunctions.js"
+import { dateToString,isValid,isInvalid } from "../../generalFunctions.js"
+
 
 async function getData() {
-
     og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
+    og.userLogged = userLogged.innerText
     og.customers = await (await fetch(dominio + 'apis/data/customers')).json()
-    og.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + og.season.season)).json()
-    og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
-    og.ordersFiltered = og.orders
     og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
-    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
     og.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + og.season.season + '/'
+    og.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + og.season.season)).json()
+    og.productsTypes = await (await fetch(dominio + 'apis/cuttings/data/products-types')).json()
+    og.fabrics = await (await fetch(dominio + 'apis/cuttings/data/fabrics')).json()
+    og.colors = await (await fetch(dominio + 'apis/cuttings/data/colors')).json()
+    og.sizes = await (await fetch(dominio + 'apis/cuttings/data/sizes')).json()
+    og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
+    og.ordersFiltered = og.orders   
+    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
     og.paymentMethods = await (await fetch(dominio + 'apis/data/payment-methods')).json()
-
-    applyFilters()
-    printOrders()
+    
+    
 }
 
 function applyFilters() {
@@ -25,6 +29,7 @@ function applyFilters() {
 
     //show canceled
     og.ordersFiltered = showCanceled.checked ? og.ordersFiltered : og.ordersFiltered.filter(o => o.enabled != 0)
+    
 
     //customer
     let idCustomer = filterCustomer.value == '' ? '' : og.customers.filter(c => c.customer_name == filterCustomer.value)
@@ -77,13 +82,18 @@ async function updateCustomerData() {
         og.customerData = og.customersSummary.filter(c => c.customer_name == filterCustomer.value)
         const customerPositiveBalance = og.customerData.length > 0 ? og.customerData[0].positiveBalance : 0
         const customerNotes = og.customerData.length > 0 ? og.customerData[0].notes : null
-    
+
         //balance
         if (customerPositiveBalance > 0) {
-            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(customerPositiveBalance)
-            positiveBalance.style.display = 'block'
-        }else{
-            positiveBalance.style.display = 'none'
+            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(customerPositiveBalance);
+            positiveBalance.style.color = 'green'
+            positiveBalance.style.display = 'block';
+        } else if (customerPositiveBalance < 0) {
+            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO EN CONTRA: </b>$' + og.formatter.format(customerPositiveBalance);
+            positiveBalance.style.color = 'var(--errorColor)'
+            positiveBalance.style.display = 'block';
+        } else {
+            positiveBalance.style.display = 'none';
         }
 
         //comments
@@ -205,4 +215,92 @@ async function printCustomerMovements(dataToPrint) {
     ordersLoader.style.display = 'none'
 }
 
-export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements}
+function completeESPPsizes() {
+    
+    esppSizes.innerHTML = ''
+    
+    og.sizes.forEach(size => {        
+        const checked = og.newProductSizes.filter(ps => ps.id == size.id).length == 0 ? '' : 'checked'
+        esppSizes.innerHTML += '<div class="divCheckbox1"><input type="checkbox" id="size_' + size.id + '" ' + checked + '><label>' + size.size + '</label></div>'
+    })
+
+    //add event listeners
+    og.sizes.forEach(size => {
+        const check = document.getElementById('size_' + size.id)
+        check.addEventListener("click", () => {
+            if (check.checked) {
+                og.selectedSizes.push({id:size.id,size:size.size})
+            }else{
+                og.selectedSizes = og.selectedSizes.filter( ss => ss.id != size.id)
+            }
+        })
+    })
+}
+
+function completeECPPcolors() {
+    
+    ecppColors.innerHTML = ''
+    
+    og.colors.forEach(color => {
+        const checked = og.newProductColors.filter(nps => nps.id == color.id).length == 0 ? '' : 'checked'
+        ecppColors.innerHTML += '<div class="divCheckbox1 divColor"><input type="checkbox" id="color_' + color.id + '" ' + checked + '><label>' + color.color + '</label></div>'
+    })
+
+    //add event listeners
+    og.colors.forEach(color => {
+        const check = document.getElementById('color_' + color.id)
+        check.addEventListener("click", () => {
+            if (check.checked) {
+                og.selectedColors.push({id:color.id,color:color.color})
+            }else{
+                og.selectedColors = og.selectedColors.filter( sc => sc.id != color.id)
+            }
+        })
+    })
+
+}
+
+function cpppValidations() {
+    let errors = 0
+    const findType = og.productsTypes.filter(pt => pt.product_type.toLowerCase() == cpppType.value.toLowerCase())
+    const findFabric = og.fabrics.filter(f => f.fabric.toLowerCase() == cpppFabric.value.toLowerCase())
+    const findCode = og.products.filter(p => (p.product_code).toLowerCase() == cpppCode.value.toLowerCase() && p.season == og.season.season)
+
+    if (findCode.length > 0 && og.codeToEdit != cpppCode.value) {
+        errors += 1
+        isInvalid([cpppCode])
+        cpppCodeError.style.display = 'none'
+        cpppCodeError2.style.display = 'block'
+    }else{
+        isValid([cpppCode])
+        cpppCodeError.style.display = 'none'
+        cpppCodeError2.style.display = 'none'
+    }
+    
+    if (findType.length === 0) {
+        errors += 1
+        isInvalid([cpppType])
+        cpppTypeError.style.display = 'none'
+        cpppTypeError2.style.display = 'block'
+    }else{
+        isValid([cpppType])
+        cpppTypeError.style.display = 'none'
+        cpppTypeError2.style.display = 'none'
+    }
+
+    if (findFabric.length === 0) {
+        errors += 1
+        isInvalid([cpppFabric])
+        cpppFabricError.style.display = 'none'
+        cpppFabricError2.style.display = 'block'
+    }else{
+        isValid([cpppFabric])
+        cpppFabricError.style.display = 'none'
+        cpppFabricError2.style.display = 'none'
+    }
+
+    return errors
+    
+}
+
+export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements,completeESPPsizes,completeECPPcolors,cpppValidations}

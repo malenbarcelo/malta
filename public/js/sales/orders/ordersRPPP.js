@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { isInvalid, clearInputs, showOkPopup,isValid } from "../../generalFunctions.js"
-import { getData, updateCustomerData } from "./functions.js"
+import { applyFilters, getData, updateCustomerData } from "./functions.js"
+import { printOrders } from "./printOrders.js"
 
 //REGISTER PAYMENT POPUP (RPPP)
 function rpppEventListeners() {
@@ -123,9 +124,10 @@ function rpppEventListeners() {
             bodyOrders.innerHTML = ''
             ordersLoader.style.display = 'block'
             await getData()
-            
-
-            showOkPopup(rpppOk)
+            applyFilters()
+            printOrders()
+            okppText.innerText = 'Pago registrado con éxito'
+            showOkPopup(okpp)
 
         }
         

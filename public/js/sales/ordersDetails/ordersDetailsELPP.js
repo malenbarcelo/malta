@@ -47,7 +47,8 @@ function elppEventListeners() {
             ordersDetailsLoader.style.display = 'block'
             await getData()
 
-            showOkPopup(elppOk)
+            okppText.innerText = 'Linea editada con éxito'
+            showOkPopup(okpp)
             
         }
     })

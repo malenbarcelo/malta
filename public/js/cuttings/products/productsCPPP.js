@@ -80,8 +80,8 @@ async function cpppEventListeners() {
             unfilter.click()
             printProducts()
 
-            cpppOkText.innerText = 'Producto creado con éxito'
-            showOkPopup(cpppOk)
+            okppText.innerText = 'Producto creado con éxito'
+            showOkPopup(okpp)
             
         }
     })
@@ -123,8 +123,8 @@ async function cpppEventListeners() {
             applyFilters()
             printProducts()
             
-            cpppOkText.innerText = 'Producto editado con éxito'
-            showOkPopup(cpppOk)
+            okppText.innerText = 'Producto editado con éxito'
+            showOkPopup(okpp)
             
         }
     })

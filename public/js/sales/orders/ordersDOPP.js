@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { getData } from "./functions.js"
+import { applyFilters, getData } from "./functions.js"
+import { printOrders } from "./printOrders.js"
 
 //DELIVER ORDER POPUP (DOPP)
 function doppEventListeners() {
@@ -22,8 +23,11 @@ function doppEventListeners() {
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrders()
 
-        showOkPopup(doppOk)
+        okppText.innerText = 'Orden entregada con éxito'
+        showOkPopup(okpp)
 
     })
 
