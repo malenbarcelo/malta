@@ -2,6 +2,7 @@ const ordersQueries = require('../../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../../dbQueries/sales/ordersDetailsQueries')
 const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsColorsQueries')
 const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
+const ordersManagersQueries = require('../../dbQueries/data/ordersManagersQueries')
 const paymentsQueries = require('../../dbQueries/sales/paymentsQueries')
 const paymentsAssignationsQueries = require('../../dbQueries/sales/paymentsAssignationsQueries')
 const accountsMovementsQueries = require('../../dbQueries/sales/accountsMovementsQueries')
@@ -82,6 +83,14 @@ const apisSalesController = {
     try{
 
       const data = req.body
+      const userLogged = req.session.userLogged
+      const orderManager = await ordersManagersQueries.findOrderManager(userLogged.id)
+
+      if (orderManager.length > 0) {
+        data.id_orders_managers = orderManager[0].id        
+      }else{
+        data.id_orders_managers = 1
+      }
 
       //create order
       const newOrder = await ordersQueries.createOrder(data)

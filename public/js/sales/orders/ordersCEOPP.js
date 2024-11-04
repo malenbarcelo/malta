@@ -172,6 +172,7 @@ function ceoppEventListeners() {
         ordersLoader.style.display = 'block'
         ceopp.classList.remove('slideIn')
         await getData()
+        await applyFilters()
         await printOrders()
         okppText.innerText = 'Orden creada con éxito'
         showOkPopup(okpp)

@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.STRING,
          allowNull: false,
        },
-       enabled:{
+       id_users:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      enabled:{
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -22,6 +26,12 @@ module.exports = (sequelize, DataTypes) => {
     timestamps : false
     }
     const Data_order_manager = sequelize.define(alias, cols, config)
-    
+
+    Data_order_manager.associate = (models) => {
+      Data_order_manager.belongsTo(models.Users,{
+          as:'user_data',
+          foreignKey: 'id_users'
+      })
+    }
     return Data_order_manager
  }

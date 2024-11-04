@@ -19,8 +19,6 @@ async function getData() {
     og.ordersFiltered = og.orders   
     og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
     og.paymentMethods = await (await fetch(dominio + 'apis/data/payment-methods')).json()
-    
-    
 }
 
 function applyFilters() {

@@ -1,6 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
-import { getData, completeELCPPcolors, completeELSPPsizes } from "./functions.js"
+import { getData, completeELCPPcolors, completeELSPPsizes,applyFilters } from "./functions.js"
+import { printOrdersDetails } from "./printOrdersDetails.js"
 import { showOkPopup, inputsValidation,acceptWithEnterInput } from "../../generalFunctions.js"
 
 //EDIT LINE POPUP (ELPP)
@@ -46,6 +47,8 @@ function elppEventListeners() {
             bodyOrdersDetails.innerHTML = ''
             ordersDetailsLoader.style.display = 'block'
             await getData()
+            applyFilters()
+            printOrdersDetails()
 
             okppText.innerText = 'Linea editada con éxito'
             showOkPopup(okpp)

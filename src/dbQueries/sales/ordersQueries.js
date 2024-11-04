@@ -150,7 +150,7 @@ const ordersQueries = {
             total:data.total,
             id_orders_status:data.id_orders_status,
             id_payments_status:3,
-            id_orders_managers:1,            
+            id_orders_managers:data.id_orders_managers,            
             observations:data.observations,
             season:data.season,
             enabled:1
