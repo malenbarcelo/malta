@@ -81,6 +81,20 @@ const ordersDetailsQueries = {
             { where: { id: lineId } }
         )
     },
+    editUnitPrice: async(unitPrice,observations,ordersToEdit,idProduct) => {        
+        await model.update({ 
+                unit_price:unitPrice,
+                extended_price: sequelize.literal(`COALESCE(confirmed_quantity, 0) * ${unitPrice}`), 
+                observations:observations
+            },
+            { 
+                where: { 
+                id_orders: ordersToEdit,
+                id_products: idProduct
+            }
+        })
+    },
+
     delete: async(orderId) => {        
         await model.destroy(
             { where: { id_orders: orderId } }

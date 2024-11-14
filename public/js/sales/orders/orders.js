@@ -3,7 +3,7 @@ import og from "./globals.js"
 import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
-import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup } from "../../generalFunctions.js"
+import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup,dateToString } from "../../generalFunctions.js"
 
 //popups events listeners
 import { coppEventListeners } from "./ordersCOPP.js"
@@ -24,6 +24,7 @@ import { cpppEventListeners } from "./ordersCPPP.js"
 import { esppEventListeners } from "./ordersESPP.js"
 import { ecppEventListeners } from "./ordersECPP.js"
 import { cdppEventListeners } from "./ordersCDPP.js"
+import { cbppEventListeners } from "./ordersCBPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -69,6 +70,7 @@ window.addEventListener('load',async()=>{
     esppEventListeners() //EDIT SIZES POPUP (from create product)
     ecppEventListeners() //EDIT COLORS POPUP (from create product)
     cdppEventListeners() //CREATE DATA POPUP (from create data)
+    cbppEventListeners() //CUSTOMER BALANCE POPUP
 
     //close popups event listener
     closePopups(og.popups)
@@ -145,11 +147,13 @@ window.addEventListener('load',async()=>{
             DGAcreateOrderError.style.display = 'none'
             DGAregisterPayment.classList.remove('notVisible')
             DGAmovementsDetails.classList.remove('notVisible')
+            DGAbalance.classList.remove('notVisible')
 
             updateCustomerData()
         }else{
             DGAregisterPayment.classList.add('notVisible')
             DGAmovementsDetails.classList.add('notVisible')
+            DGAbalance.classList.add('notVisible')
         }
     })
 
@@ -238,5 +242,31 @@ window.addEventListener('load',async()=>{
         printCustomerMovements(customerMovements)
         selectChannelError.style.display = 'none'
         cmpp.style.display = 'block'
-    })    
+    })
+    
+    //view customer balance
+    DGAbalance.addEventListener("click", async() => {
+
+        cbppBody.innerHTML = ''
+        clearInputs([cbppSubtotal, cbppDiscount, cbppTotal, cbppPaid, cbppBalance])
+        
+        //customer orders
+        og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value)
+        
+        //complete select
+        if (og.customerOrders.length == 1) {
+            cbppOrder.innerHTML = '<option value="' + og.customerOrders[0].id + '">#' + og.customerOrders[0].order_number.toString().padStart(5, '0') + ' (' + dateToString(og.customerOrders[0].date) + ')</option>'
+            const event = new Event('change')
+            cbppOrder.dispatchEvent(event)
+        }else{
+            cbppOrder.innerHTML = '<option value=""></option>'
+            og.customerOrders.forEach(order => {
+                cbppOrder.innerHTML += '<option value="' + order.id + '">#' + order.order_number.toString().padStart(5, '0') + ' (' + dateToString(order.date) + ')</option>'
+            })
+        }
+
+        cbppTitle.innerText = filterCustomer.value
+        selectChannelError.style.display = 'none'
+        cbpp.style.display = 'block'
+    })  
 })

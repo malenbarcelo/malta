@@ -66,6 +66,12 @@ border-top-right-radius: 15px;
     font-size: 13px;
 }
 
+.tBody3{
+    font-weight: lighter;
+    padding: 3px 0px;
+    font-size: 12px;
+}
+
 .tBodyEven{
     background-color: var(--color2);
 }/*background when row number is even*/

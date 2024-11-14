@@ -110,11 +110,30 @@ async function cpppEventListeners() {
                 colors:pg.productColors
             }
 
+            //edit product
             await fetch(dominio + 'apis/cuttings/products/edit-product',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
+
+            //update orders data if appliers
+            const oldPrice = parseFloat(pg.products.filter(p => p.id == pg.idProductToEdit)[0].unit_price,2)
+            const newPrice = parseFloat(data.productData.unit_price,2)
+
+            if (oldPrice != newPrice) {
+                const data = {
+                    id_product: pg.idProductToEdit,
+                    unit_price: newPrice
+                }
+
+                //edit orders details
+                await fetch(dominio + 'apis/sales/orders/edit-orders-details/unit-price',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+            }
 
             productsLoader.style.display = 'block'
             bodyProducts.innerHTML = ''

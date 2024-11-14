@@ -28,6 +28,7 @@ router.get('/payments-assignations/customer-assignations/:idCustomer',ordersCont
 
 //orders
 router.post('/edit-order-observations',apisSalesController.editOrderObs)
+router.get('/not-shipped-orders',ordersController.notShippedOrders)
 
 //orders-details
 router.post('/cancel-order-detail',apisSalesController.cancelOrderDetail)

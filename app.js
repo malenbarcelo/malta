@@ -17,7 +17,6 @@ const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
 const mainRoutes = require('./src/routes/mainRoutes.js')
 const salesRoutes = require('./src/routes/salesRoutes.js')
-//const usersRoutes = require('./src/routes/usersRoutes.js')
 
 //Controllers
 const cronController = require('./src/controllers/cronController.js')

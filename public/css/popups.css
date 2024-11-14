@@ -318,6 +318,15 @@
     left: calc(50vw - 310px);
 }
 
+.ppContentHlWxxl{ /*height large with xxlarge*/
+    top: 7%;
+    width: 700px;
+    max-height: 620px;
+    overflow-y: auto;
+    left: calc(50vw - 310px);
+}
+
+
 /*----------OK POPUPS SIZES AND POSITIONS----------*/
 .okContentWmTm{ /*width medium top medium*/
     width: 300px;

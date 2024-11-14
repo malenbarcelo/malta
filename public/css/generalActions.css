@@ -7,9 +7,9 @@
 
 .divGeneralAction{
     border: var(--color1) dashed 3px;
-    font-size: 25px;
-    height: 40px;
-    width: 40px;
+    font-size: 23px;
+    height: 37px;
+    width: 37px;
     display: flex;
     justify-content: center;
     align-items: center;

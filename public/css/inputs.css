@@ -114,6 +114,9 @@ accent-color: black
 }
 
 /*----------INPUTS AND SELECTS SIZES----------*/
+.ixxs{
+    width: 100px;
+}
 
 .ixs{
     width: 150px;

@@ -1,0 +1,66 @@
+<div class="popup" id="cbpp">
+    
+    <div class="popupContent ppContentHlWxxl" id="cbppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon1"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+            <div class="popupClose1" id="cbppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+
+        <div id="cbppDiv">
+
+            <div id="cbppOrderStatus">Pedido incompleto</div>
+
+            <div class="popupTitle1 mtm mbm" id="cbppTitle"></div>
+
+            <div class="divInputsColumn">
+                <div class="divInput">
+                    <label class="label1">Pedido</label>
+                    <select id="cbppOrder" class="input1 il ips"></select>
+                </div>
+            </div>
+            <div class="divInputsRow mtm">
+                <div class="divInput">
+                    <label class="label1">Subtotal</label>
+                    <input type="number" id="cbppSubtotal" class="input1 ixs ips" step="0.01" readonly>
+                </div>
+                <div class="divInput">
+                    <label class="label1">Desc. %</label>
+                    <input type="number" id="cbppDiscount" class="input1 ixxs ips" step="0.01" readonly>
+                </div>
+                <div class="divInput">
+                    <label class="label1">Total</label>
+                    <input type="number" id="cbppTotal" class="input1 ixs ips" step="0.01" readonly>
+                </div>
+                <div class="divInput">
+                    <label class="label1">Abonado</label>
+                    <input type="number" id="cbppPaid" class="input1 ixs ips" step="0.01" readonly>
+                </div>
+            </div>
+            <div class="divInputsRow mtm mbm">
+                <div class="divInput">
+                    <label class="label1 fwb" id="cbppBalanceLabel">Saldo actual</label>
+                    <input type="number" id="cbppBalance" class="input1 ixs ips" step="0.01" readonly>
+                </div>
+            </div>
+
+
+            <div class="divTable" id="cbppTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="theadCss wS thLeftBorder">Cantidad</th>
+                            <th class="theadCss wXXL">Producto</th>   
+                            <th class="theadCss wS thRightBorder">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cbppBody"></tbody>
+                </table>
+            </div>
+
+        </div>
+        
+        
+
+    </div>
+</div>

@@ -12,13 +12,19 @@ const bottomHeaderMenu = [
         subitems:[]
     },
     // {
+    //     id:3,
+    //     name:'SEGUIMIENTO',
+    //     href:'/sales/shipping',
+    //     subitems:[]
+    // },
+    // {
     //     id:2,
     //     name:'VENTAS',
     //     href:'/sales/consolidated',
     //     subitems:[]
     // },
     {
-        id:3,
+        id:4,
         name:'DATOS',
         href:'/sales/customers',
         subitems:[

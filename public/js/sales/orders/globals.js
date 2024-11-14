@@ -34,7 +34,7 @@ let og = {
             right:'-0.5%'
         }
     ],
-    popups:[cdpp,espp,ecpp,cppp,cpmpp,copp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp],
+    popups:[cdpp,espp,ecpp,cppp,cpmpp,copp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
     elementsToPredict:[
         {
             input: filterCustomer,
@@ -74,6 +74,7 @@ let og = {
     ordersManagers:[],
     paymentMethods:[],
     customersSummary:[],
+    customerOrders:[],
     channelsChecks:[channel_1, channel_2, channel_3, channel_4],
     channelsChecked:[],
     //CREATE PRODUCT

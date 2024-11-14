@@ -98,6 +98,27 @@ const ordersQueries = {
         })
         return orders
     },
+    findOrdersByProducts: async (idProduct) => {
+        const orders = await model.findAll({
+            attributes:[['id','id']],
+            include: [
+                { 
+                    association: 'orders_orders_details',
+                    where:{
+                        id_products: idProduct
+                    }
+                }
+            ],
+            where: {
+                [Op.and]: [
+                    { id_orders_status: { [Op.ne]: 3 } },
+                    { id_payments_status: { [Op.ne]: 5 } }
+                ]
+            },
+            nest: true,
+        });
+        return orders;
+    },
     findCustomerOrders: async(idCustomer,dateFrom) => {
         const orders = await model.findAll({
             attributes: ['date','total','order_number',[sequelize.literal("'PEDIDO'"), 'type'],[sequelize.literal("1"), 'type_number']],            
@@ -278,6 +299,21 @@ const ordersQueries = {
             raw:true,
             nest:true,
             group: ['id_customers']
+        })
+
+        return orders
+    },
+    notShippedOrders: async() => {
+        const orders = await model.findAll({
+            where:{
+                enabled:1,
+                id_orders_status: 2
+            },
+            include: [
+                {association: 'orders_customers'},
+            ],
+            raw:true,
+            nest:true,
         })
 
         return orders

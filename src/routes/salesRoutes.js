@@ -11,6 +11,7 @@ router.get('/in-progress-orders',salesController.inProgressOrders)
 router.get('/consolidated',salesController.sales)
 router.get('/customers',salesController.customers)
 router.get('/payment-methods',salesController.paymentMethods)
+router.get('/shipping',salesController.shipping)
 
 
 //---APIS---//
@@ -30,6 +31,8 @@ router.post('/register-customer-payment',ordersController.saveCustomerPayment)
 
 //orders
 router.post('/update-payment-status',ordersController.updatePaymentStatus)
+router.post('/edit-orders-details/unit-price',ordersController.editOrdersUnitPrice)
+
 
 
 

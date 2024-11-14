@@ -26,8 +26,7 @@ function applyFilters() {
     og.ordersFiltered = og.orders
 
     //show canceled
-    og.ordersFiltered = showCanceled.checked ? og.ordersFiltered : og.ordersFiltered.filter(o => o.enabled != 0)
-    
+    og.ordersFiltered = showCanceled.checked ? og.ordersFiltered : og.ordersFiltered.filter(o => o.enabled != 0)    
 
     //customer
     let idCustomer = filterCustomer.value == '' ? '' : og.customers.filter(c => c.customer_name == filterCustomer.value)

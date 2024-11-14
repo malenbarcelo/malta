@@ -1,8 +1,11 @@
 const dominio = require("../dominio")
 const ordersQueries = require("../../dbQueries/sales/ordersQueries")
+const ordersDetailsQueries = require("../../dbQueries/sales/ordersDetailsQueries")
 const paymentsQueries = require("../../dbQueries/sales/paymentsQueries")
 const paymentsAssignationsQueries = require("../../dbQueries/sales/paymentsAssignationsQueries")
 const customersQueries = require("../../dbQueries/data/customersQueries")
+const {updateOrderData} = require('../../functions/salesFunctions')
+const moment = require('moment-timezone')
 
 const ordersController = {
     //////APIS//////
@@ -179,6 +182,51 @@ const ordersController = {
         await ordersQueries.updatePaymentsStatusById(data.orderId,data.id_payments_status)
 
         res.status(200).json()
+  
+      }catch(error){
+        console.group(error)
+        return res.send('Ha ocurrido un error')
+      }
+    },
+    editOrdersUnitPrice: async(req,res) =>{
+      try{
+  
+        const data = req.body
+        
+        const date = new Date()
+        const argDate = moment(date).tz('America/Argentina/Buenos_Aires').format();
+  
+        const observations = 'Precio de producto editado el ' + argDate
+
+        //get orders to edit
+        let ordersToEdit = await ordersQueries.findOrdersByProducts(data.id_product)
+        ordersToEdit = ordersToEdit.map(o => o.get({ plain: true }))
+        ordersToEdit = ordersToEdit.map(o => o.id)
+  
+        //update unit prices
+        await ordersDetailsQueries.editUnitPrice(data.unit_price,observations,ordersToEdit,data.id_product)
+  
+        //update order data
+        for (let i = 0; i < ordersToEdit.length; i++) {
+          await updateOrderData(ordersToEdit[i])
+        }
+        
+        
+  
+        res.status(200).json()
+  
+      }catch(error){
+        console.group(error)
+        return res.send('Ha ocurrido un error')
+      }
+    },
+    notShippedOrders: async(req,res) =>{
+      try{
+  
+        //get not shipped orders
+        const notShippedOrders = await ordersQueries.notShippedOrders()        
+  
+        res.status(200).json(notShippedOrders)
   
       }catch(error){
         console.group(error)
