@@ -1,0 +1,51 @@
+<!----------Edit shipping popup---------->
+<div class="popup" id="eshpp">
+    
+    <div class="popupContent ppContentHmWxl" id="eshppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon1"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="popupClose1" id="eshppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="eshppCustomer"></div>
+        <div class="popupSubitle1" id="eshppOrderNumber"></div>
+
+        <div class="divInputsColumn mtm mbl">
+            <div class="divInput">
+                <label class="label1">Teléfono</label>
+                <input type="text" class="input1 il ipm" id="eshppMobile">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="eshppMethodLabel">Forma de envío</label>
+                <select class="input1 il ipm" id="eshppMethod">
+                    <option value="default" id="0"></option>
+                    <% shippingMethods.forEach(shm => { %>
+                        <option id="<%= 'method_' + shm.id %>" value="<%= shm.id %>"><%= shm.shipping_method %></option>
+                    <% }) %>
+                </select>
+                
+                <div class="createAttribute">
+                    <i class="fa-solid fa-square-plus pointer createAttributeIcon" id="eshppNewMethod"></i>
+                    <div class="createAttributeInfo">Crear forma de envío</div>
+                </div>
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Remito</label>
+                <input type="text" class="input1 il ipm" id="eshppNumber">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Empresa de transporte</label>
+                <input type="text" class="input1 il ipm" id="eshppCompany">
+            </div>
+            <div class="divInput mtm">
+                <label class="label1">Observaciones</label>
+                <input type="text" class="input1 il ipm" id="eshppObservations">
+            </div>
+           
+        </div>
+        <div class="divButtonsRow mbs">
+            <div id="eshppAccept" class="button1 bs">Guardar</div>
+        </div>
+    </div>
+</div>

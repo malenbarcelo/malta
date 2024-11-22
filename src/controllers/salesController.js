@@ -6,6 +6,7 @@ const paymentsStatusQueries = require('../dbQueries/data/paymentsStatusQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const productsQueries = require('../dbQueries/cuttings/productsQueries')
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
+const shippingMethodsQueries = require("../dbQueries/data/shippingMethodsQueries")
 const bottomHeaderMenu = require("./sales/bottomHeaderMenu")
 
 const salesController = {
@@ -106,8 +107,9 @@ const salesController = {
     shipping: async(req,res) => {
         try{
             const selectedItem = 'SEGUIMIENTO'
+            const shippingMethods = await shippingMethodsQueries.getData()
             
-            return res.render('sales/shipping/shipping',{title:'Seguimiento',bottomHeaderMenu,selectedItem})
+            return res.render('sales/shipping/shipping',{title:'Seguimiento',bottomHeaderMenu,selectedItem,shippingMethods})
             
         }catch(error){
 

@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
-import { getData } from "./functions.js"
+import { applyFilters, getData } from "./functions.js"
 import { showOkPopup } from "../../generalFunctions.js"
+import { printOrdersDetails } from "./printOrdersDetails.js"
 
 //DELETE LINE POPUP (DLPP)
 function dlppEventListeners() {
@@ -23,6 +24,8 @@ function dlppEventListeners() {
         bodyOrdersDetails.innerHTML = ''
         ordersDetailsLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrdersDetails()
 
         okppText.innerText = 'Linea eliminada con éxito'
         showOkPopup(okpp)

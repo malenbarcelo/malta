@@ -11,6 +11,7 @@ const ordersNinoxDetailsQueries = require('../../dbQueries/sales/ordersNinoxDeta
 const paymentsNinoxQueries = require('../../dbQueries/sales/paymentsNinoxQueries')
 const {updateOrderData,updateOrderStatus,updatePaymentStatus} = require('../../functions/salesFunctions')
 const moment = require('moment-timezone')
+const sequelize = require('sequelize')
 
 const apisSalesController = {
   inProgressOrders: async(req,res) =>{
@@ -183,19 +184,20 @@ const apisSalesController = {
     }
   },
   addProducts: async(req,res) =>{
-
     try{
 
       let data = req.body
       let ordersToCreate = []
-      let ordersDetailsToCreate = []
+      const userLogged = req.session.userLogged
+      const orderManager = await ordersManagersQueries.findOrderManager(userLogged.id)
 
       //get orders to create data
       const newOrderNumber = await ordersQueries.newOrder()
       let orderNumber = newOrderNumber
       for (let i = 0; i < data.length; i++) {
         if (data[i].createOrder == true) {
-          const date = new Date()
+          if (ordersToCreate.filter(o => o.id_customers == data[i].customer.id).length == 0) {
+            const date = new Date()
           date.setHours(date.getHours() - 3)
           ordersToCreate.push({
             date:date,
@@ -207,67 +209,74 @@ const apisSalesController = {
             total:0,
             id_orders_status:1,
             id_payments_status:3,
-            id_orders_managers:1,
+            id_orders_managers:orderManager.length > 0 ? orderManager[0].id : 1,
             observations:null,
             season:data[i].season,
             enabled:1
           })
           orderNumber += 1
+          }
         }
       }
 
-      //create orders if necessary
+      //create orders if necessary and get new orders data
+      let orders = []
+
+      let newOrders = []
       if (ordersToCreate.length > 0) {
-        await ordersQueries.createOrders(ordersToCreate)          
+        newOrders = await ordersQueries.createOrders(ordersToCreate)
+        newOrders = newOrders.map(no => no.get({ plain: true }))
+        newOrders = newOrders.map(no => ({ id: no.id, id_customers: no.id_customers }))
+        newOrders.forEach(no => {
+          orders.push(no)
+        })        
       }
-
-      // //get order to create details data
-      // let ordersToUpdate = []      
-      // let inProgressOrders = await ordersQueries.inProgressOrders()
-      // inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
-
-      // for (let i = 0; i < data.length; i++) {
-        
-      //   let customerOrders = inProgressOrders.filter(o => o.id_customers == data[i].customer.id)        
-      //   const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
-        
-      //   for (let j = 0; j < data[i].products.length; j++) {
-
-      //     if (!ordersToUpdate.includes(orderId)) {
-      //       ordersToUpdate.push(orderId)
-      //     }
-
-      //     ordersDetailsToCreate.push({
-      //       id_orders: orderId,
-      //       id_products:data[i].products[j].id,
-      //       description:data[i].products[j].description,
-      //       color:data[i].products[j].color,
-      //       size:data[i].products[j].size,
-      //       unit_price:data[i].products[j].unit_price,
-      //       required_quantity:null,
-      //       confirmed_quantity:null,
-      //       extended_price:0,
-      //       enabled:1,
-      //       observations:null,
-      //       observations2:null
-      //     })
-      //   }        
-      // }
-
-      // //create orders details
-      // await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)
       
-      // //update order_status
-      // await ordersQueries.updateOrderStatus(ordersToUpdate,1)
+      //get oldOrders data
+      let oldOrders = data.filter(d => d.createOrder == false)
+      let inProgressOrders = await ordersQueries.inProgressOrders()
+      inProgressOrders = inProgressOrders.map(ipo => ipo.get({ plain: true }))
+      oldOrders.forEach(oo => {
+        let customerOrders = inProgressOrders.filter(o => o.id_customers == oo.customer.id)
+        const orderId = customerOrders.reduce((max, obj) => (obj.id > max.id ? obj : max), customerOrders[0]).id
+        if (orders.filter(o => o.id == orderId).length == 0) {
+          orders.push({id:orderId,id_customers:oo.customer.id})
+        }
+      })
 
-      // //update payment_status
-      // for (let i = 0; i < ordersToUpdate.length; i++) {
-      //   const orderData = await ordersQueries.findOrder(ordersToUpdate[i])
-      //   console.log(orderData)
-      //   if (orderData.id_payments_status == 5) {
-      //     await ordersQueries.updatePaymentsStatus(ordersToUpdate[i],4)
-      //   }
-      // }
+      //complete orders details to create
+      let ordersDetailsToCreate = []
+      orders.forEach(o => {
+        o.details = []
+        const detailsToCreate = data.filter( d => d.customer.id == o.id_customers)
+        detailsToCreate.forEach(d => {
+          d.products.forEach(p => {
+            ordersDetailsToCreate.push({
+              id_orders: o.id,
+              id_products: p.id, 
+              description: p.full_description, 
+              unit_price: parseFloat(p.unit_price,2),
+              extended_price: 0,
+              enabled:1
+            })
+          })
+        })
+      })
+
+      //create orders details
+      await ordersDetailsQueries.createOrdersDetails(ordersDetailsToCreate)
+      
+      //update order_status
+      const ordersIds = orders.map(o => (o.id))
+      await ordersQueries.updateOrderStatus(ordersIds,1)
+
+      //update payment_status
+      for (let i = 0; i < ordersIds.length; i++) {
+        const orderData = await ordersQueries.findOrder(ordersIds[i])
+        if (orderData.id_payments_status == 5) {
+          await ordersQueries.updatePaymentsStatusById(ordersIds[i],4)
+        }
+      }
       
       res.status(200).json()
 
@@ -419,8 +428,10 @@ const apisSalesController = {
     try{
 
       const orderId = req.body.idOrder
+      const date = new Date()
+      date.setHours(date.getHours() - 3) //Arg time
 
-      await ordersQueries.deliverOrder(orderId)
+      await ordersQueries.deliverOrder(orderId, date)
 
       res.status(200).json()
 

@@ -1,6 +1,7 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
 import { dateToString, clearInputs } from "../../generalFunctions.js"
+import { updateTableData } from "./functions.js"
 
 async function printOrdersDetails() {
 
@@ -18,7 +19,7 @@ async function printOrdersDetails() {
             const sizes = (element.sizes.map(s => s.size_data.size)).join(', ')
             const requiredQuantity = element.required_quantity == null ? '' : element.required_quantity
             const confirmedQuantity = element.confirmed_quantity == null ? '' : element.confirmed_quantity
-            const commentIcon = (element.observations2 == '' || element.observations2 == null) ? 'fa-comment' : 'fa-comment-dots'
+            const commentIcon = (element.observations2 == '' || element.observations2 == null || element.observations2.trim() === '') ? 'fa-comment' : 'fa-comment-dots'
 
             //print table
             const line1 = '<th class="' + rowClass + '">' + orderData.order_number + '</th>'
@@ -31,20 +32,22 @@ async function printOrdersDetails() {
             const line8 = '<th class="' + rowClass + '">' + element.unit_price + '</th>'
             const line9 = '<th class="' + rowClass + '">' + requiredQuantity + '</th>'
             const line10 = '<th class="' + rowClass + '">' + confirmedQuantity + '</th>'
-            const line11 = '<th class="' + rowClass + ' ' + (orderData.id_orders_status == 1 ? 'errorColor': null) + '">' + orderData.orders_orders_status.order_status + '</th>'
+            const line11 = '<th class="' + rowClass + '">' + odg.formatter.format(parseFloat(element.extended_price,2)) + '</th>'
+            const line12 = '<th class="' + rowClass + ' ' + (orderData.id_orders_status == 1 ? 'errorColor': null) + '">' + orderData.orders_orders_status.order_status + '</th>'
             //const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'
             const line13 = '<th class="' + rowClass + '"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_' + element.id + '"></i></th>'
             const line14 = '<th class="' + rowClass + '"><i class="fa-regular ' + commentIcon + ' allowedIcon" id="obs_' + element.id + '"></i></th>'
             const line15 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
             
 
-            bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line13 + line14 + line15 + '</tr>'
+            bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + '</tr>'
 
             counter += 1
 
         })
 
     ordersDetailsEventListeners()
+    updateTableData()
 
     ordersDetailsLoader.style.display = 'none'
 }

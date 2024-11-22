@@ -1,9 +1,9 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
-import { getData } from "./functions.js"
+import { applyFilters, getData } from "./functions.js"
 import { showOkPopup } from "../../generalFunctions.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-
+import { printOrdersDetails } from "./printOrdersDetails.js"
 
 //ADD PRODUCT POPUP (APPP)
 function apppEventListeners() {
@@ -42,7 +42,6 @@ function apppEventListeners() {
                 }
             }
         }
-        
     })
 
     //save
@@ -54,7 +53,7 @@ function apppEventListeners() {
         //find out if there are orders to create
         let ordersToCreate = 0
         data.forEach(element => {
-            const customerOrders = odg.orders.filter( o => o.id_customers == element.customer.id)
+            const customerOrders = odg.orders.filter( o => o.id_customers == element.customer.id && o.enabled == 1)
             if (customerOrders.length == 0) {
                 ordersToCreate +=1
                 odg.createOrder = true
@@ -83,10 +82,12 @@ function apppEventListeners() {
             //get data
             ordersDetailsLoader.style.display = 'block'
             await getData()
-
+            printOrdersDetails()
+            applyFilters()
             appp.style.display = 'none'
-            okppText.innerText = 'Producto agregado con éxito'
+            okppText.innerText = 'Productos agregado con éxito'
             showOkPopup(okpp)
+            
         }
     })
 

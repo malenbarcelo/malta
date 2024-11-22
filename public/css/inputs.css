@@ -148,9 +148,22 @@ accent-color: black
 
 /*----------PADDINGS----------*/
 
-.ips{
-    padding: 7px 0px 6px 0px
+/* .ips{
+    padding: 7px 0px 8px 0px
 }
+
+.sps{
+    padding: 7px 0px 6px 0px
+} */
+
+.ips{
+    height: 30px;
+}
+
+.sps{
+    height: 30px;
+}
+
 
 .ipm{
     padding: 9px 0px 8px 0px

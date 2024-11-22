@@ -1,9 +1,9 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
-import { getData, applyFilters } from "./functions.js"
+import { getData, applyFilters, updateTableData } from "./functions.js"
 import { printOrdersDetails } from "./printOrdersDetails.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { closePopups, applyPredictElement, selectFocusedElement,selectWithClick,showOkPopup,showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { closePopups, applyPredictElement, acceptWithEnterInput, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
 
 //popups events listeners
 import { dlppEventListeners } from "./ordersDetailsDLPP.js"
@@ -64,7 +64,7 @@ window.addEventListener('load',async()=>{
     showTableInfo(tableIcons,240,100)
 
     //filters event listeners
-    const filters = [filterOrder,filterProduct,filterCustomer,filterOrderStatus,filterOrderManager]
+    const filters = [filterOrder,filterProduct,filterCustomer,filterFrom, filterUntil, filterOrderStatus,filterOrderManager]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             applyFilters()
@@ -80,6 +80,8 @@ window.addEventListener('load',async()=>{
         filterCustomer.value = ''
         filterOrderStatus.value = 'default'
         filterOrderManager.value = 'default'
+        filterFrom.value = ''
+        filterUntil.value = ''
         printOrdersDetails()
     })
 
@@ -91,6 +93,9 @@ window.addEventListener('load',async()=>{
 
     //close with escape
     closeWithEscape(odg.popups)
+
+    //accept with enter inputs
+    acceptWithEnterInput(apppCustomer,apppAddLine) //add product
 
     //DGAaddProduct    
     DGAaddProduct.addEventListener("click", async() => {

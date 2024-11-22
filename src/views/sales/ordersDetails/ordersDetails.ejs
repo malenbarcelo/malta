@@ -20,23 +20,31 @@
 <div class="mainFilters">
     <div class="divInputsRow">
         <div class="divInput">
-            <label class="label1" id="filterOrderLabel">Pedido</label>
-            <input type="text" class="input1 inputS" id="filterOrder" autocomplete="off">
+            <label class="label1" id="filterOrderLabel">#Pedido</label>
+            <input type="text" class="input1 ixxs ips" id="filterOrder" autocomplete="off">
             <ul class="predictedElements" id="ulPredictedOrders"></ul>
         </div>
         <div class="divInput">
             <label class="label1" id="filterCustomerLabel">Cliente</label>
-            <input type="text" class="input1 inputXL" id="filterCustomer" autocomplete="off">
+            <input type="text" class="input1 im ips" id="filterCustomer" autocomplete="off">
             <ul class="predictedElements" id="ulPredictedCustomers"></ul>
         </div>
         <div class="divInput">
             <label class="label1" id="filterProductLabel">Producto</label>
-            <input type="text" class="input1 inputXXXL" id="filterProduct" autocomplete="off">
+            <input type="text" class="input1 il ips" id="filterProduct" autocomplete="off">
             <ul class="predictedElements" id="ulPredictedProducts"></ul>
+        </div>
+        <div class="divInput">
+            <label class="label1">Desde</label>
+            <input type="date" class="input1 ixxs sps" id="filterFrom">
+        </div>
+        <div class="divInput">
+            <label class="label1">Hasta</label>
+            <input type="date" class="input1 ixxs sps" id="filterUntil">
         </div>        
         <div class="divInput">
             <label class="label1">Estado</label>
-            <select id="filterOrderStatus" class="input1 inputM">
+            <select id="filterOrderStatus" class="input1 ixxs sps">
                 <option value="default"></option>
                 <option value="complete">Completo</option>
                 <option value="incomplete">Incompleto</option>
@@ -44,7 +52,7 @@
         </div>
         <div class="divInput">
             <label class="label1">Encargado</label>
-            <select id="filterOrderManager" class="input1 sxl">
+            <select id="filterOrderManager" class="input1 ixxs sps">
                 <option value="default"></option>
                 <% ordersManagers.forEach(manager => { %>
                     <option value="<%= manager.id %>">
@@ -53,14 +61,21 @@
                 <% }) %>
             </select>
         </div>
+
         <div id="unfilterOrdersDetails" class="unfilterIcon" >
             <i class="fa-solid fa-filter-circle-xmark"></i>
         </div>
     </div>    
 </div>
 
+<!--------TABLE DATA-------->
+<div class="tableSummary mts">    
+    <div id="totalAmount"></div>
+    <div id="itemsQuantity"></div>
+</div>
+
 <!---------ORDERS DETAILS TABLE--------->
-<div class="mtm">
+<div class="mts">
     <div class="divTable">
 
         <div class="tableInfo" id="elppInfo">Editar línea</div>
@@ -75,13 +90,14 @@
                         <th class="theadCss wXS thTall">Fecha</th>
                         <th class="theadCss wXS thTall">Canal</th>
                         <th class="theadCss wM thTall">Cliente</th>
-                        <th class="theadCss wXXL thTall">Producto</th>
-                        <th class="theadCss wS thTall">Talles</th>
+                        <th class="theadCss wXL thTall">Producto</th>
+                        <th class="theadCss wXS thTall">Talles</th>
                         <th class="theadCss wL thTall">Colores</th>
-                        <th class="theadCss wS thTall">Precio</th>
+                        <th class="theadCss wXS thTall">Precio</th>
                         <th class="theadCss wXS thTall">Cantidad solicitada</th>
-                        <th class="theadCss wXS thTall">Cantidad confirmada</th>  
-                        <th class="theadCss wS thTall">Estado</th>                 
+                        <th class="theadCss wXS thTall">Cantidad confirmada</th>
+                        <th class="theadCss wS thTall">Total</th>
+                        <th class="theadCss wXS thTall">Estado del pedido</th>                 
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="elppIcon"></i></th>
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment tableIcon" id="loppIcon"></i></th>
     

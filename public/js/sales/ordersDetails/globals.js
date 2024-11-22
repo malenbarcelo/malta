@@ -1,5 +1,9 @@
 
 let odg = {
+    formatter:new Intl.NumberFormat('es-ES', {
+        minimumFractionDigits: 0,
+        useGrouping: true
+    }),
     season:'',
     userLogged:'',
     popups: [appp,dlpp,elcpp,elpp,elspp,lopp],

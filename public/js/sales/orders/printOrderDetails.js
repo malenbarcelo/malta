@@ -1,8 +1,9 @@
 import og from "./globals.js"
+import { dominio } from "../../dominio.js"
 import { updateOrderData} from "./functions.js"
 import { clearInputs } from "../../generalFunctions.js"
 
-function printOrderDetails() {
+async function printOrderDetails() {
 
     ceoppBody.innerHTML = ''; 
 

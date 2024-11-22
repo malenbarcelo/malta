@@ -2,10 +2,12 @@ import { dominio } from "../../dominio.js"
 import g from "./globals.js"
 import { getData, applyFilters } from "./functions.js"
 import { printTable } from "./printTable.js"
-//import { showOkPopup, closePopups, applyPredictElement, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { closePopups, showTableInfo, closeWithEscape, acceptWithEnterInput, clearInputs, applyPredictElement } from "../../generalFunctions.js"
 
 //popups events listeners
-//import { ccppEventListeners } from "./customersCCPP.js"
+import { eshppEventListeners } from "./shippingESHPP.js"
+import { oippEventListeners } from "./shippingOIPP.js"
+import { coppEventListeners } from "./shippingCOPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -17,74 +19,40 @@ window.addEventListener('load',async()=>{
     //print table
     printTable()
 
-    // //popups event listeners
-    // ccppEventListeners() //CREATE CUSTOMER POPUP
+    //table info events listeners
+    showTableInfo(g.tableIcons,250,150)
+
+    //close popups event listener
+    closePopups(g.popups)
+
+    //close with escape
+    closeWithEscape(g.popups)
+
+    //popups event listeners
+    eshppEventListeners() //EDIT SHIPPING POPUP
+    oippEventListeners() //ONE INPUT POPUP
+    coppEventListeners() //CONFIRM POPUP
     
-    // //table info events listeners
-    // const tableIcons = [
-    //     {
-    //         icon:ecppIcon,
-    //         right:'11%'
-    //     },        
-    //     {
-    //         icon:dcppIcon,
-    //         right:'8%'
-    //     }
-    // ]
-        
-    // showTableInfo(tableIcons,240,100)
+    //accept with enter popups
+    acceptWithEnterInput(oipp,oippAccept) //create shipping method
 
-    // //filters event listeners
-    // const filters = [filterCustomer]
-    // filters.forEach(filter => {
-    //     filter.addEventListener("change", async() => {
-    //         applyFilters()
-    //         printCustomers()
-    //     })
-    // })
+    //filters event listeners
+    const filters = [orderNumber, customer]
+    filters.forEach(filter => {
+        filter.addEventListener("change", async() => {
+            applyFilters()
+            printTable()
+        })
+    })
 
-    // //unfilter event listener
-    // unfilter.addEventListener("click", async() => {
-    //     clearInputs(filters)
-    //     applyFilters()
-    //     printCustomers()
-    // })
+    //unfilter event listener
+    unfilter.addEventListener("click", async() => {
+        clearInputs(filters)
+        applyFilters()
+        printTable()
+    })
 
-    // //predicts elements
-    // applyPredictElement(cg.elementsToPredict)
+    //predicts elements
+    applyPredictElement(g.elementsToPredict)
 
-    // //close popups event listener
-    // closePopups(cg.popups)
-
-    // //close with escape
-    // closeWithEscape(cg.popups)
-
-    // //DGAcreateCustomer    
-    // DGAcreateCustomer.addEventListener("click", async() => {
-    //     clearInputs(cg.ccppInputs)
-    //     isValid(cg.ccppInputs)
-    //     filterCustomer.value = ''
-    //     ccppTitle.innerText = 'CREAR CLIENTE'
-    //     ccppCreate.style.display = 'block'
-    //     ccppEdit.style.display = 'none'
-    //     ccpp.style.display = 'block'
-    // })
-
-    // //CONFIRM POPUPS
-    // coppAccept.addEventListener("click", async() => {
-    //     const data = {id: cg.idCustomer}
-
-    //     await fetch(dominio + 'apis/sales/customers/delete-customer',{
-    //         method:'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(data)
-    //     })
-
-    //     //get and print data
-    //     copp.style.display = 'none'
-    //     customersLoader.style.display = 'block'
-    //     await getData()
-    //     okppText.innerText = 'Cliente dado de baja con éxito'
-    //     showOkPopup(okpp)
-    // })
 })

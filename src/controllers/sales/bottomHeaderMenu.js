@@ -11,12 +11,12 @@ const bottomHeaderMenu = [
         href:'/sales/in-progress-orders/details',
         subitems:[]
     },
-    // {
-    //     id:3,
-    //     name:'SEGUIMIENTO',
-    //     href:'/sales/shipping',
-    //     subitems:[]
-    // },
+    {
+        id:3,
+        name:'SEGUIMIENTO',
+        href:'/sales/shipping',
+        subitems:[]
+    },
     // {
     //     id:2,
     //     name:'VENTAS',

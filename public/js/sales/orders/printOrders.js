@@ -20,7 +20,7 @@ async function printOrders() {
     const paymentVStatus = (element.enabled === 1 && element.id_orders_status !== 1 && element.id_payments_status !== 5) ? '' : 'disabled';
     const paymentVchequed = element.id_payments_status === 6 ? 'checked' : '';
 
-    const deliverClass = (element.enabled === 1 && element.id_orders_status === 2) ? 'allowedIcon' : 'notAllowedIcon';
+    // const deliverClass = (element.enabled === 1 && element.id_orders_status === 2) ? 'allowedIcon' : 'notAllowedIcon';
     const cancelClass = ((element.id_orders_status === 1 || element.id_orders_status === 2) && 
                             [1, 2, 3].includes(element.id_payments_status)) ? 'allowedIcon' : 'notAllowedIcon';
     const cancelIcon = element.enabled === 1 ? 'fa-circle-xmark' : 'fa-circle-check';
@@ -45,7 +45,6 @@ async function printOrders() {
                 <th class="${rowClass} ${color}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
                 <th class="${rowClass} ${color}"><i class="fa-regular fa-credit-card ${paymentClass}" id="${paymentClass === 'allowedIcon' ? 'payment_' + element.id : ''}"></i></th>
                 <th class="${rowClass} ${color}"><input type="checkbox" id="paymentV_${element.id}" ${paymentVchequed} ${paymentVStatus}></th>
-                <th class="${rowClass} ${color}"><i class="fa-solid fa-truck-ramp-box ${deliverClass}" id="${deliverClass === 'allowedIcon' ? 'deliver_' + element.id : ''}"></i></th>
                 <th class="${rowClass} ${color}"><i class="fa-solid fa-user-pen allowedIcon" id="assign_${element.id}"></i></th>
                 <th class="${rowClass} ${color}"><i class="fa-regular ${commentIcon} allowedIcon" id="obs_${element.id}"></i></th>
                 <th class="${rowClass} ${color}"><i class="fa-regular ${cancelIcon} ${cancelClass}" id="${cancelClass === 'allowedIcon' ? cancelId + element.id : ''}"></i></th>
@@ -70,7 +69,7 @@ function ordersEventListeners() {
         const edit = document.getElementById('edit_' + element.id)
         const assignOrder = document.getElementById('assign_' + element.id)
         const obs = document.getElementById('obs_' + element.id)
-        const deliverOrder = document.getElementById('deliver_' + element.id)
+        //const deliverOrder = document.getElementById('deliver_' + element.id)
         const restoreOrder = document.getElementById('restore_' + element.id)
         const payment = document.getElementById('payment_' + element.id)
         const paymentV = document.getElementById('paymentV_' + element.id)        
@@ -88,7 +87,7 @@ function ordersEventListeners() {
         edit.addEventListener("click", async() => {
 
             //clear data
-            og.orderDetails = element.orders_orders_details
+            og.orderDetails = [...element.orders_orders_details]
             printOrderDetails()
             clearInputs([selectProduct, ceoppReqQty, ceoppConfQty])
             ceoppAddError.style.display = 'none'
@@ -106,7 +105,6 @@ function ordersEventListeners() {
             og.orderData.id_customers = idCustomers
             og.orderData.id_sales_channels = salesChannel
             og.orderData.order_number = orderNumber
-            og.orderDetails = element.orders_orders_details
             og.orderData.id = element.id
             ceoppTitle.innerText = 'EDITAR PEDIDO'
             ceoppEdit.style.display = 'flex'
@@ -200,13 +198,13 @@ function ordersEventListeners() {
         }
 
         //deliver order
-        if (deliverOrder) {
-            deliverOrder.addEventListener('click',async()=>{
-                og.idOrderToDeliver = element.id
-                doppQuestion.innerHTML = '¿Confirma que desea entregar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-                dopp.style.display = 'block'
-            })
-        }
+        // if (deliverOrder) {
+        //     deliverOrder.addEventListener('click',async()=>{
+        //         og.idOrderToDeliver = element.id
+        //         doppQuestion.innerHTML = '¿Confirma que desea entregar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
+        //         dopp.style.display = 'block'
+        //     })
+        // }
 
         //assign manager
         if (assignOrder) {

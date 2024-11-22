@@ -1,6 +1,8 @@
 const express = require('express')
 const apisSalesController = require('../../controllers/apisControllers/apisSalesController.js')
 const ordersController = require('../../controllers/sales/ordersController.js')
+const shippingMethodsController = require('../../controllers/sales/shippingMethodsController.js')
+const shippingController = require('../../controllers/sales/shippingController.js')
 const apisWordpressController = require('../../controllers/apisControllers/apisWordpressController.js')
 const router = express.Router()
 
@@ -25,6 +27,10 @@ router.post('/cancel-order-ninox',apisSalesController.cancelOrderNinox)
 //payments assignations
 router.get('/payments-assignations/customer-assignations/:idCustomer',ordersController.customerAssignations)
 
+//shipping methods
+router.post('/shipping-methods/create',shippingMethodsController.create)
+router.post('/shipping/edit',shippingController.edit)
+
 
 //orders
 router.post('/edit-order-observations',apisSalesController.editOrderObs)
@@ -35,6 +41,8 @@ router.post('/cancel-order-detail',apisSalesController.cancelOrderDetail)
 router.post('/edit-order-detail',apisSalesController.editOrderDetail)
 router.post('/edit-order-detail-observations',apisSalesController.editOrderDetailObs)
 router.post('/add-products',apisSalesController.addProducts)
+
+
 
 
 

@@ -6,12 +6,12 @@ const paymentMethodsController = require('../controllers/sales/paymentMethodsCon
 const router = express.Router()
 
 //---BACKEND---//
-router.get('/in-progress-orders/details',salesController.inProgressOrdersDetails)
-router.get('/in-progress-orders',salesController.inProgressOrders)
-router.get('/consolidated',salesController.sales)
-router.get('/customers',salesController.customers)
-router.get('/payment-methods',salesController.paymentMethods)
-router.get('/shipping',salesController.shipping)
+router.get('/in-progress-orders/details',salesController.inProgressOrdersDetails)/**/
+router.get('/in-progress-orders',salesController.inProgressOrders)/**/
+router.get('/consolidated',salesController.sales)/**/
+router.get('/customers',salesController.customers)/**/
+router.get('/payment-methods',salesController.paymentMethods)/**/
+router.get('/shipping',salesController.shipping)/**/
 
 
 //---APIS---//

@@ -1,20 +1,33 @@
-const bottomHeaderMenu = require("../sales/bottomHeaderMenu")
+const ordersQueries = require("../../dbQueries/sales/ordersQueries")
+const customersQueries = require("../../dbQueries/data/customersQueries")
 
 const shippingController = {
-  ////BACKEND
-  shipping: (req,res) => {
-    try{
-        const selectedItem = 'SEGUIMIENTO'
+    //////APIS//////
+    edit: async(req,res) =>{
+        try{
 
-        return res.render('sales/shipping/shipping',{title:'Seguimiento',bottomHeaderMenu,selectedItem})
+          const data = req.body
 
-    }catch(error){
+          //get date and add to data
+          // const date = new Date()
+          // const dateArg = new Date(date.getTime() - 3 * 60 * 60 * 1000)
+          
+          //edit orders
+          await ordersQueries.update(data.idOrders,data.orders_data)
 
-        console.log(error)
-        return res.send('Ha ocurrido un error')
-    }
-},
-  //////APIS//////
+          //edit customers if applies
+          if (data.editMobile) {
+            await customersQueries.update(data.mobile_data,data.idCustomers)
+          }
+          
+        
+          res.status(200).json()
+        
+        }catch(error){
+          console.log(error)
+          return res.send('Ha ocurrido un error')
+        }
+    },
 }
 
 module.exports = shippingController

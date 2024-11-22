@@ -60,7 +60,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-
+      shipping_date:{
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      id_shipping_methods:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      shipping_number:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      shipping_company:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      shipping_observations:{
+        type: DataTypes.STRING,
+        allowNull: true
+      }
     }
     const config = {
     tableName : 'sales_orders',
@@ -73,31 +92,35 @@ module.exports = (sequelize, DataTypes) => {
       Sale_order.belongsTo(models.Data_customers,{
          as:'orders_customers',
          foreignKey: 'id_customers'
-    }),
+      }),
       Sale_order.belongsTo(models.Data_orders_managers,{
         as:'orders_orders_managers',
         foreignKey: 'id_orders_managers'
-    }),
-     Sale_order.belongsTo(models.Data_orders_status,{
-      as:'orders_orders_status',
-      foreignKey: 'id_orders_status'
-    }),
-    Sale_order.belongsTo(models.Data_payments_status,{
-      as:'orders_payments_status',
-      foreignKey: 'id_payments_status'
-    }),
-    Sale_order.belongsTo(models.Data_sales_channels,{
-      as:'orders_sales_channels',
-      foreignKey: 'id_sales_channels'
-    }),
-    Sale_order.hasMany(models.Sales_payments_assignations,{
-      as:'orders_assignations',
-      foreignKey: 'id_orders'
-    }),
-    Sale_order.hasMany(models.Sales_orders_details,{
-      as:'orders_orders_details',
-      foreignKey: 'id_orders'
-    })
+      }),
+       Sale_order.belongsTo(models.Data_orders_status,{
+        as:'orders_orders_status',
+        foreignKey: 'id_orders_status'
+      }),
+      Sale_order.belongsTo(models.Data_payments_status,{
+        as:'orders_payments_status',
+        foreignKey: 'id_payments_status'
+      }),
+      Sale_order.belongsTo(models.Data_shipping_methods,{
+        as:'shipping_method_data',
+        foreignKey: 'id_shipping_methods'
+      }),
+      Sale_order.belongsTo(models.Data_sales_channels,{
+        as:'orders_sales_channels',
+        foreignKey: 'id_sales_channels'
+      }),
+      Sale_order.hasMany(models.Sales_payments_assignations,{
+        as:'orders_assignations',
+        foreignKey: 'id_orders'
+      }),
+      Sale_order.hasMany(models.Sales_orders_details,{
+        as:'orders_orders_details',
+        foreignKey: 'id_orders'
+      })
     }
   return Sale_order
  }

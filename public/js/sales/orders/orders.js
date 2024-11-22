@@ -15,7 +15,7 @@ import { eodppEventListeners } from "./ordersEODPP.js"
 import { oloppEventListeners } from "./ordersOLOPP.js"
 import { amppEventListeners } from "./ordersAMPP.js"
 import { obppEventListeners } from "./ordersOBPP.js"
-import { doppEventListeners } from "./ordersDOPP.js"
+// import { doppEventListeners } from "./ordersDOPP.js"
 import { roppEventListeners } from "./ordersROPP.js"
 import { rpppEventListeners } from "./ordersRPPP.js"
 import { rcpppEventListeners } from "./ordersRCPPP.js"
@@ -61,7 +61,7 @@ window.addEventListener('load',async()=>{
     oloppEventListeners() //ORDERS LINE OBSERVATIONS POPUP
     amppEventListeners() //ASSIGN MANAGER POPUP
     obppEventListeners() //OBSERVATIONS POPUP
-    doppEventListeners() //DELIVER ORDER POPUP
+    // doppEventListeners() //DELIVER ORDER POPUP
     roppEventListeners() //RESTORE ORDER POPUP
     rpppEventListeners() //REGISTER PAYMENT POPUP
     rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP

@@ -4,8 +4,8 @@ const dataController = require('../controllers/cuttings/dataController.js')
 const router = express.Router()
 
 //---BACKEND---//
-router.get('/products',productsController.products)
-router.get('/data',dataController.data)
+router.get('/products',productsController.products)//**//
+router.get('/data',dataController.data)//**//
 
 //---APIS---//
 /*data*/

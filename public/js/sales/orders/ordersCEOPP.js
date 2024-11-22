@@ -68,7 +68,7 @@ function ceoppEventListeners() {
 
     //add item
     ceoppAddItem.addEventListener("click", async() => {
-        
+
         let errors = 0
 
         const itemToAdd = og.products.filter(p => p.full_description == selectProduct.value)
@@ -90,6 +90,7 @@ function ceoppEventListeners() {
             ceoppAddError.style.display = 'none'
             const inputs = [selectProduct, ceoppReqQty, ceoppConfQty]
             const id = og.orderDetails.length == 0 ? 0 : (og.orderDetails.reduce((max, obj) => (obj.id > max ? obj.id : max), -Infinity) + 1)
+            
             og.orderDetails.push({
                 id: id,
                 id_products: itemToAdd[0].id,

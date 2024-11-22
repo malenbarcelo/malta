@@ -1,7 +1,8 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
-import { getData } from "./functions.js"
+import { getData, applyFilters } from "./functions.js"
 import { showOkPopup } from "../../generalFunctions.js"
+import { printOrdersDetails } from "./printOrdersDetails.js"
 
 //LINE OBSERVATIONS POPUP (LOPP)
 function loppEventListeners() {
@@ -24,6 +25,8 @@ function loppEventListeners() {
         bodyOrdersDetails.innerHTML = ''
         ordersDetailsLoader.style.display = 'block'
         await getData()
+        applyFilters()
+        printOrdersDetails()
 
         okppText.innerText = 'Observaciones editadas con éxito'
         showOkPopup(okpp)

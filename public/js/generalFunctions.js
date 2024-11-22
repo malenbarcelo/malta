@@ -244,33 +244,6 @@ function closePopupsEventListeners(closePopups) {
     })
 }
 
-// function acceptWithEnter(popups) {
-//     document.addEventListener('keydown', function(event) {
-        
-//         if (event.key === 'Enter') {
-//             const displayedPopups = popups.filter(p => p.popup.style.display === 'block')
-            
-//             displayedPopups.forEach(dp => {
-//                 let otherPopupsDisplayed = 0
-//                 dp.popupsToAvoidClosing.forEach(pp => {
-//                     if (pp.style.display == 'block') {
-//                         otherPopupsDisplayed += 1
-//                     }
-//                 })
-//                 if (otherPopupsDisplayed == 0) {
-//                     dp.acceptButtons.forEach(button => {
-//                         if (button.style.display == 'block') {
-//                             console.log('hola')
-//                             button.click()
-//                         }
-//                     })
-//                 }
-//             })
-            
-//         }
-//       })
-// }
-
 function acceptWithEnterInput(input,button) {
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -347,24 +320,6 @@ function closeWithEscape(popups) {
         }
     })
 }
-
-// function closeWithEscape(popups) {
-//     document.addEventListener('keydown', function(e) {
-//         if (e.key === 'Escape') {
-//             const displayedrPopups = popups.filter(p => p.popup.style.display == 'block')
-//             popups.forEach(element => {
-//                 if (element.popup.style.display !== 'none') {
-//                     const isInputFocused = element.inputsToAvoidClosing.some(i => document.activeElement === i)
-//                     const popupsDisplayed = element.popupsToAvoidClosing.some(pp => pp.style.display === 'block')
-                    
-//                     if (!isInputFocused && !popupsDisplayed) {
-//                         element.popup.style.display = 'none'
-//                     }
-//                 }
-//             })
-//         }
-//     })
-// }
 
 
 

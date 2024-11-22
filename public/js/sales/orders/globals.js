@@ -7,31 +7,31 @@ let og = {
     tableIcons: [
         {
             icon:eoppIcon,
-            right:'16%'
+            right:'14%'
         },
         {
             icon:rpppIcon,
-            right:'13.5%'
+            right:'12%'
         },
         {
             icon:pvppIcon,
-            right:'10.5%'
+            right:'9%'
         },
-        {
-            icon:doppIcon,
-            right:'7.5%'
-        },
+        // {
+        //     icon:doppIcon,
+        //     right:'7.5%'
+        // },
         {
             icon:amppIcon,
-            right:'5%'
+            right:'6%'
         },
         {
             icon:obppIcon,
-            right:'2.5%'
+            right:'3%'
         },
         {
             icon:coppIcon,
-            right:'-0.5%'
+            right:'0%'
         }
     ],
     popups:[cdpp,espp,ecpp,cppp,cpmpp,copp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],

@@ -26,7 +26,7 @@ function applyFilters() {
 
     //customer
     let idCustomer = filterCustomer.value == '' ? '' : odg.customers.filter(c => c.customer_name == filterCustomer.value)
-    
+
     odg.ordersDetailsFiltered = filterCustomer.value == '' ? odg.ordersDetailsFiltered : (idCustomer.length == 0 ? [] : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_customers == idCustomer[0].id))
 
     //product
@@ -37,20 +37,34 @@ function applyFilters() {
         odg.ordersDetailsFiltered = odg.ordersDetailsFiltered
     }else{
         if (filterOrderStatus.value == 'complete') {
-            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity != null)
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_status == 2)
         }else{
-            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity == null)
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_status == 1)
         }
     }
 
     //order_manager
     odg.ordersDetailsFiltered = filterOrderManager.value == 'default' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_managers == filterOrderManager.value)
+
+    //date from
+    odg.ordersDetailsFiltered = filterFrom.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date >= filterFrom.value)
+
+    //date until
+    odg.ordersDetailsFiltered = filterUntil.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date <= filterUntil.value)
+
+}
+
+function updateTableData() {
+    const total = odg.ordersDetailsFiltered.reduce((acc, i) => acc + parseFloat(i.extended_price,2), 0)
+    const quantity = odg.ordersDetailsFiltered.reduce((acc, i) => acc + (i.confirmed_quantity ? parseFloat(i.confirmed_quantity,2) : 0), 0)
+    totalAmount.innerHTML = '<div><b>TOTAL $:</b> $ ' + odg.formatter.format(total,2) + '</div>'
+    itemsQuantity.innerHTML = '<div><b>CANTIDAD DE ITEMS:</b> ' + quantity + '</div>'
 }
 
 function completeELSPPsizes() {
-    
+
     elsppSizes.innerHTML = ''
-    
+
     odg.productSizes.forEach(size => {
         const checked = (odg.selectedSizes.filter( s => s.id_sizes == size.id_sizes)).length == 0 ? '' : 'checked'
         elsppSizes.innerHTML += '<div class="divCheckbox1"><input type="checkbox" id="size_' + size.id_sizes + '" ' + checked + '><label>' + size.size_data.size + '</label></div>'
@@ -70,9 +84,9 @@ function completeELSPPsizes() {
 }
 
 function completeELCPPcolors() {
-    
+
     elcppColors.innerHTML = ''
-    
+
     odg.productColors.forEach(color => {
         const checked = (odg.selectedColors.filter( c => c.id_colors == color.id_colors)).length == 0 ? '' : 'checked'
         elcppColors.innerHTML += '<div class="divCheckbox1"><input type="checkbox" id="color_' + color.id_colors + '" ' + checked + '><label>' + color.color_data.color + '</label></div>'
@@ -91,4 +105,4 @@ function completeELCPPcolors() {
     })
 }
 
-export {getData, applyFilters, completeELCPPcolors, completeELSPPsizes}
+export {getData, applyFilters, completeELCPPcolors, completeELSPPsizes, updateTableData}

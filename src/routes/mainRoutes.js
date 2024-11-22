@@ -5,11 +5,11 @@ const loginValidations = require('../validations/loginValidations.js')
 const authMiddleware = require('../middlewares/authMidleware.js')
 const router = express.Router()
 
-//---CACKEND---//
-router.get('/',mainController.login)
-router.post('/login',loginValidations.login,mainController.loginProcess)
-router.get('/logout',mainController.logoutProcess)
-router.get('/main-menu',authMiddleware,mainController.mainMenu)
+//---BACKEND---//
+router.get('/',mainController.login)/**/
+router.post('/login',loginValidations.login,mainController.loginProcess)/**/
+router.get('/logout',mainController.logoutProcess)/**/
+router.get('/main-menu',authMiddleware,mainController.mainMenu)/**/
 
 //---APIS---//
 router.get('/current-season',mainApisController.currentSeason)

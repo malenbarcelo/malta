@@ -1,11 +1,12 @@
 
 import g from "./globals.js"
+import { dateToString,clearInputs } from "../../generalFunctions.js"
 
 function printTable() {
 
     loader.style.display = 'block'        
     body.innerHTML = ''
-    const dataToPrint = g.orders
+    const dataToPrint = g.ordersFiltered
 
     let counter = 0
     const fragment = document.createDocumentFragment()  
@@ -16,12 +17,17 @@ function printTable() {
         const row = document.createElement('tr')
 
         row.innerHTML = `
-            <th class="${rowClass}">${element.date}</th>
+            <th class="${rowClass}">${dateToString(element.date)}</th>
             <th class="${rowClass}">${element.order_number}</th>
             <th class="${rowClass}">${element.orders_customers.customer_name}</th>
-            <th class="${rowClass}">${element.orders_customers.customer_name}</th>
-            
-            <th class="${rowClass}"><i class="fa-regular fa-trash-can allowedIcon" id="destroy_${element.id}"></i></th>
+            <th class="${rowClass}">${element.orders_customers.mobile == 0 || element.orders_customers.mobile == null ? '' : element.orders_customers.mobile }</th>
+            <th class="${rowClass}">${element.shipping_method_data == null ? '' : element.shipping_method_data.shipping_method}</th>
+            <th class="${rowClass}">${element.shipping_number == null ? '' : element.shipping_number}</th>
+            <th class="${rowClass}">${element.shipping_company == null ? '' : element.shipping_company}</th>
+            <th class="${rowClass}">${element.orders_payments_status.payment_status}</th>
+            <th class="${rowClass}">${element.orders_payments_status.payment_status}</th>
+            <th class="${rowClass}"><i class="fa-solid fa-truck-ramp-box allowedIcon" id="deliver_${element.id}"></i></th>
+            <th class="${rowClass}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
         `
         fragment.appendChild(row)
 
@@ -30,46 +36,43 @@ function printTable() {
 
     body.appendChild(fragment)
 
-    // Add customersevent listeners
-    //customersEventListeners(dataToPrint)
+    //Add event listeners
+    shippingEventListeners(dataToPrint)
 
     loader.style.display = 'none'   
 }
 
-function customersEventListeners() {
+function shippingEventListeners(dataToPrint) {
 
-    cg.customersFiltered.forEach(element => {
+    dataToPrint.forEach(element => {
 
         const edit = document.getElementById('edit_' + element.id)
-        const destroy = document.getElementById('destroy_' + element.id)
+        const deliver = document.getElementById('deliver_' + element.id)
 
-        destroy.addEventListener('click',async()=>{
-            cg.idCustomer = element.id
-            coppQuestion.innerHTML = '¿Confirma que desea dar de baja al clientes <b>' + element.customer_name + '</b>?'
+        deliver.addEventListener('click',async()=>{
+            g.idOrderToDeliver = element.id
+            coppQuestion.innerHTML = '¿Confirma que desea entregar el pedido #<b>' + element.order_number + '</b> del cliente <b>' + element.orders_customers.customer_name + '</b>?'
             copp.style.display = 'block'
         })
 
         edit.addEventListener('click',async()=>{
 
-            clearInputs(cg.ccppInputs)
-            isValid(cg.ccppInputs)
-            filterCustomer.value = ''
-            ccppTitle.innerText = 'EDITAR CLIENTE'
-            ccppCreate.style.display = 'none'
-            ccppEdit.style.display = 'block'
-            cg.customerToEdit = element.customer_name
-            cg.idCustomer = element.id
+            clearInputs([eshppMobile, eshppMethod, eshppNumber, eshppCompany, eshppObservations])
+            eshppCustomer.innerText = element.orders_customers.customer_name
+            eshppOrderNumber.innerText = '#' + String(element.order_number).padStart(5,'0')
+            g.idOrderToEdit = element.id
+            g.idCustomerToEdit = element.id_customers
+            g.initialMobile = element.orders_customers.mobile
 
             //complete data
-            ccppCustomer.value = element.customer_name
-            ccppEmail.value = element.email
-            ccppAddress.value = element.address
-            ccppCity.value = element.city
-            ccppCountry.value = element.country
-            ccppDiscount.value = element.discount
-            ccppNotes.value = element.notes
-
-            ccpp.style.display = 'block'
+            eshppMobile.value = element.orders_customers.mobile == 0 || element.orders_customers.mobile == null ? '' : element.orders_customers.mobile
+            const selectedOption = (element.id_shipping_methods == null || element.id_shipping_methods == 'default') ? document.getElementById('0') : document.getElementById('method_' + element.id_shipping_methods)
+            selectedOption.selected = true
+            eshppNumber.value = element.shipping_number
+            eshppCompany.value = element.shipping_company
+            eshppObservations.value = element.shipping_observations
+            
+            eshpp.style.display = 'block'
         })
         
     })

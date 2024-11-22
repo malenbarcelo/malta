@@ -180,7 +180,8 @@ const ordersQueries = {
         return newOrder
     },
     createOrders: async(ordersToreate) => {
-        model.bulkCreate(ordersToreate)
+        const orders = model.bulkCreate(ordersToreate)
+        return orders
     },
     lastId: async() => {
         const lastId = await model.findOne({
@@ -189,9 +190,12 @@ const ordersQueries = {
 
           return lastId.id
     },
-    deliverOrder: async(orderId) => {        
+    deliverOrder: async(orderId,date) => {        
         await model.update(
-            { id_orders_status: 3 },
+            { 
+                id_orders_status: 3,
+                shipping_date: date
+            },
             { where: { id: orderId } }
         )
     },
@@ -311,12 +315,21 @@ const ordersQueries = {
             },
             include: [
                 {association: 'orders_customers'},
+                {association: 'orders_payments_status'},
+                {association: 'orders_assignations'},
+                {association: 'shipping_method_data'},
             ],
-            raw:true,
             nest:true,
         })
 
         return orders
+    },
+    update: async(orderId,data) => {        
+        await model.update(data, {
+            where: {
+                id: orderId
+            }
+        });
     },
 }       
 

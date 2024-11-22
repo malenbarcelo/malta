@@ -5,18 +5,19 @@ async function getData() {
 
     g.orders = await (await fetch(dominio + 'apis/sales/not-shipped-orders')).json()
     g.ordersFiltered = g.orders
-    console.log(g.orders)
+    g.shippingMethods = await (await fetch(dominio + 'apis/data/shipping-methods')).json()
 }
 
 function applyFilters() {
 
-    cg.customersFiltered = cg.customers
+    g.ordersFiltered = g.orders
+
+    //order number
+    g.ordersFiltered = orderNumber.value == '' ? g.ordersFiltered : g.ordersFiltered.filter(o => o.order_number == orderNumber.value)
 
     //customer
-    cg.customersFiltered = filterCustomer.value == '' ? cg.customersFiltered : cg.customersFiltered.filter(c => c.customer_name == filterCustomer.value)
+    g.ordersFiltered = customer.value == '' ? g.ordersFiltered : g.ordersFiltered.filter(o => o.orders_customers.customer_name == customer.value)
 
 }
-
-
 
 export {getData, applyFilters}
