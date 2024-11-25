@@ -1,4 +1,4 @@
-const dominio = 'http://localhost:3005/'
+const dominio = 'https://maltachic.wnpower.host/'
 
 module.exports = dominio
 
