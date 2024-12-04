@@ -78,8 +78,8 @@ function ordersEventListeners() {
         if (cancelOrder) {
             cancelOrder.addEventListener('click',async()=>{
                 og.idOrderToCancel = element.id
-                coppQuestion.innerHTML = '¿Confirma que desea cancelar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
-                copp.style.display = 'block'
+                caoppQuestion.innerHTML = '¿Confirma que desea cancelar el pedido <b>N° ' + element.order_number + '</b> del cliente <b>' + customer + '</b>?'
+                caopp.style.display = 'block'
             })
         }
 
@@ -107,6 +107,7 @@ function ordersEventListeners() {
             og.orderData.order_number = orderNumber
             og.orderData.id = element.id
             ceoppTitle.innerText = 'EDITAR PEDIDO'
+            og.action = 'edit'
             ceoppEdit.style.display = 'flex'
             ceoppCreate.style.display = 'none'
     

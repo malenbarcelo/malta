@@ -4,10 +4,10 @@ import { applyFilters, getData } from "./functions.js"
 import { showOkPopup} from "../../generalFunctions.js"
 import { printOrders } from "./printOrders.js"
 
-//CANCEL ORDER POPUP (COPP)
-function coppEventListeners() {
+//CANCEL ORDER POPUP (CAOPP)
+function caoppEventListeners() {
     //accept cancel order
-    coppAccept.addEventListener("click", async() => {
+    caoppAccept.addEventListener("click", async() => {
 
         const data = {idOrder:og.idOrderToCancel}
 
@@ -17,7 +17,7 @@ function coppEventListeners() {
             body: JSON.stringify(data)
         })
 
-        copp.style.display = 'none'
+        caopp.style.display = 'none'
 
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
@@ -31,4 +31,4 @@ function coppEventListeners() {
     })
 }
 
-export {coppEventListeners}
+export {caoppEventListeners}

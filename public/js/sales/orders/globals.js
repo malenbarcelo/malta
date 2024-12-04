@@ -34,7 +34,7 @@ let og = {
             right:'0%'
         }
     ],
-    popups:[cdpp,espp,ecpp,cppp,cpmpp,copp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
+    popups:[cdpp,espp,ecpp,cppp,cpmpp,caopp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
     elementsToPredict:[
         {
             input: filterCustomer,
@@ -141,6 +141,7 @@ let og = {
     ],
     createDataTypeSelected:{},
     //CREATE-EDIT ORDER
+    action:'',
     fabrics:[],
     productsTypes:[],
     productSizes:[],

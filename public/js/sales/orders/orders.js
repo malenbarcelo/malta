@@ -6,7 +6,7 @@ import { printOrderDetails } from "./printOrderDetails.js"
 import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup,dateToString } from "../../generalFunctions.js"
 
 //popups events listeners
-import { coppEventListeners } from "./ordersCOPP.js"
+import { caoppEventListeners } from "./ordersCAOPP.js"
 import { ceoppEventListeners } from "./ordersCEOPP.js"
 import { epsppEventListeners } from "./ordersEPSPP.js"
 import { epcppEventListeners } from "./ordersEPCPP.js"
@@ -25,6 +25,7 @@ import { esppEventListeners } from "./ordersESPP.js"
 import { ecppEventListeners } from "./ordersECPP.js"
 import { cdppEventListeners } from "./ordersCDPP.js"
 import { cbppEventListeners } from "./ordersCBPP.js"
+import {schppEventListeners } from "./ordersSCHPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -52,7 +53,7 @@ window.addEventListener('load',async()=>{
     printOrders()
 
     //popups event listeners
-    coppEventListeners() //CANCEL ORDER POPUP
+    caoppEventListeners() //CANCEL ORDER POPUP
     ceoppEventListeners() //CREATE EDIT ORDER POPUP
     epsppEventListeners() //EDIT PRODUCT SIZES POPUP
     epcppEventListeners() //EDIT PRODUCT COLORS POPUP
@@ -71,21 +72,24 @@ window.addEventListener('load',async()=>{
     ecppEventListeners() //EDIT COLORS POPUP (from create product)
     cdppEventListeners() //CREATE DATA POPUP (from create data)
     cbppEventListeners() //CUSTOMER BALANCE POPUP
+    schppEventListeners() //SAVE CHANGES POPUP
 
     //close popups event listener
     closePopups(og.popups)
 
     //close with escape
-    closeWithEscape(og.popups)
+    const popupsToClose = og.popups.filter( p => p.id != 'ceopp')
+    closeWithEscape(popupsToClose)
 
     //accept with enter inputs
     acceptWithEnterInput(ceoppReqQty,ceoppAddItem) //add product
     acceptWithEnterInput(ceoppConfQty,ceoppAddItem) //add product
-    acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product
+    acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product    
 
     //accept with enter popups
-    acceptWithEnterPopup(copp,coppAccept) //cancel order
+    acceptWithEnterPopup(caopp,caoppAccept) //cancel order
     acceptWithEnterPopup(ropp,roppAccept) //restore order
+    acceptWithEnterPopup(schpp,schppAccept) //save changes
     
     //table info events listeners
     showTableInfo(og.tableIcons,310,150)
@@ -199,6 +203,7 @@ window.addEventListener('load',async()=>{
             ceoppEdit.style.display = 'none'
             ceoppCreate.style.display = 'flex'
             ceoppTitle.innerText = 'CREAR PEDIDO'
+            og.action = 'create'
             updateOrderData()
             customerOrder.innerText = customer + ' - Pedido N° ' + orderNumber
 

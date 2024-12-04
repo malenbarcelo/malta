@@ -8,6 +8,14 @@ import { printOrders } from "./printOrders.js"
 //CREATE EDIT ORDER POPUP (CEOPP)
 function ceoppEventListeners() {
 
+    //close with escape
+    document.addEventListener('keydown', function(e) {
+        const popup = document.getElementById('ceopp')
+        if (e.key === 'Escape' && popup.classList.contains('slideIn')) {
+            schpp.style.display = 'block'
+        }
+    })
+
     //change select products
     selectProduct.addEventListener("change", async() => {
 
