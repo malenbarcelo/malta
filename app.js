@@ -58,7 +58,11 @@ app.use(cors())
 
 //get ninox data
 //cron.schedule('*/15 * * * *', cronController.getNinoxData)
-//cron.schedule('* * * * *', cronController.getNinoxData)
+//cron.schedule('* * * * *', cronController.getWpData)
+//cron.schedule('* * * * *', cronController.addWpData)
+
+//cronController.getWpData()
+//cronController.addWpData()
 
 //Declare and listen port
 const APP_PORT = 3005
@@ -82,6 +86,7 @@ app.use('/apis/sales/customers',salesRoutes) //customers
 app.use('/apis/sales/payment-methods',salesRoutes) //payment_methods
 app.use('/apis/sales/payments',salesRoutes) //payments
 app.use('/apis/sales/orders',salesRoutes) //orders
+app.use('/apis/sales/web-orders',salesRoutes) //web orders
 
 //cuttings
 app.use('/apis/cuttings',cuttingsRoutes) //orders

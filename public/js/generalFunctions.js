@@ -296,13 +296,26 @@ function showOkPopup(popupToShow) {
 function closePopups(popups) {
     popups.forEach(popup => {
         const closeIcon = document.getElementById(popup.id + 'Close')
-        closeIcon.addEventListener("click", async() => {
-            if (popup.style.display == 'block') {
-                popup.style.display = 'none'
-            }else{
-                popup.classList.remove('slideIn')
-            }
-        })
+        const cancelIcon = document.getElementById(popup.id + 'Cancel')
+        if (closeIcon) {
+            closeIcon.addEventListener("click", async() => {
+                if (popup.style.display == 'block') {
+                    popup.style.display = 'none'
+                }else{
+                    popup.classList.remove('slideIn')
+                }
+            })
+        }
+        if (cancelIcon) {
+            cancelIcon.addEventListener("click", async() => {
+                if (popup.style.display == 'block') {
+                    popup.style.display = 'none'
+                }else{
+                    popup.classList.remove('slideIn')
+                }
+            })
+        }
+        
     })
 }
 

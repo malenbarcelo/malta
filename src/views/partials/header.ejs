@@ -33,9 +33,10 @@
                     <% if (itemMenu.subitems.length > 0) { %>
                         <div class="subItems" id="<%= 'subItems_' + itemMenu.id %>">
                             <% itemMenu.subitems.forEach(subitem => { %>
-                                <a href="<%= subitem.href %>" class="subitemHeaderMenu"><%= subitem.subitem %></a>
+                                <a href="<%= subitem.href %>" class="subitemHeaderMenu"><%= subitem.subitem %></a>                                
                             <% }) %>
                         </div>
+                        <div class="showSubitems"><i class="fa-solid fa-chevron-down"></i></div>
                     <% } %>
                 </div>
             <% }) %>

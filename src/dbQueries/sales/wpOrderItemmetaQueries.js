@@ -14,17 +14,16 @@ const wpOrderItemmetaQueries = {
         })
         return monthOrderItemmeta
     },
-    createOrderItemmeta: async(newOrderItemmeta,month,year) => {
-        for (let i = 0; i < newOrderItemmeta.length; i++) {
-            await model.create({
-                meta_id:newOrderItemmeta[i].meta_id,
-                order_item_id:newOrderItemmeta[i].order_item_id,
-                meta_key:newOrderItemmeta[i].meta_key,
-                meta_value:newOrderItemmeta[i].meta_value,
-                month:month,
-                year:year
-            })
-        }
+    createOrderItemmeta: async(newOrderItemmeta) => {
+        await model.bulkCreate(newOrderItemmeta)
+    },
+    getMaxId: async() => {
+        const maxId = await model.findOne({
+            order: [['meta_id', 'DESC']],
+            raw: true
+        })
+
+        return maxId
     },
 }       
 

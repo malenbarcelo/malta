@@ -12,7 +12,10 @@ function ceoppEventListeners() {
     document.addEventListener('keydown', function(e) {
         const popup = document.getElementById('ceopp')
         if (e.key === 'Escape' && popup.classList.contains('slideIn')) {
-            schpp.style.display = 'block'
+            const activePopups = og.popups.filter(p => p.style.display == 'block')
+            if (activePopups.length == 0) {
+                schpp.style.display = 'block'
+            }
         }
     })
 
@@ -78,48 +81,36 @@ function ceoppEventListeners() {
     ceoppAddItem.addEventListener("click", async() => {
 
         let errors = 0
-
-        const itemToAdd = og.products.filter(p => p.full_description == selectProduct.value)
         const findItem = og.orderDetails.filter(d => d.description == selectProduct.value)
+        const itemToAdd = og.products.filter(p => p.full_description == selectProduct.value)
 
         if (itemToAdd.length == 0) {
             errors += 1
             ceoppAddError.innerText = 'Debe seleccionar un producto'
             ceoppAddError.style.display = 'block'
         }
-
-        if (findItem.length > 0) {
-            errors += 1
-            ceoppAddError.innerText = 'El producto seleccionado ya se encuentra en el pedido'
-            ceoppAddError.style.display = 'block'
-        }
         
         if (errors == 0 ) {
-            ceoppAddError.style.display = 'none'
-            const inputs = [selectProduct, ceoppReqQty, ceoppConfQty]
-            const id = og.orderDetails.length == 0 ? 0 : (og.orderDetails.reduce((max, obj) => (obj.id > max ? obj.id : max), -Infinity) + 1)
-            
-            og.orderDetails.push({
-                id: id,
-                id_products: itemToAdd[0].id,
-                description: itemToAdd[0].full_description,
-                unit_price:itemToAdd[0].unit_price,
-                required_quantity: ceoppReqQty.value,
-                confirmed_quantity: ceoppConfQty.value,
-                extended_price: ceoppConfQty.value == '' ? 0 : parseFloat(ceoppConfQty.value,2) * parseFloat(itemToAdd[0].unit_price,2),
-                enabled:1,
-                observations2:'',
-                colors:og.selectedColors,
-                sizes:og.selectedSizes,
-                product_data: itemToAdd[0]
-            })
-
-            ceoppAttributes.style.display = 'none'
-            printOrderDetails()
-            updateOrderData()
-            clearInputs(inputs)
-            
+            if (findItem.length > 0) {
+                aepppQuestion.innerHTML = 'El item <b>' + selectProduct.value + '</b> ya está en la orden, desea volver a agregarlo?'
+                og.error = 1
+                aeppp.style.display = 'block'
+            }else{
+                addItem(itemToAdd)                
+            }
         }
+    })
+
+    //add existing item
+    aepppAccept.addEventListener("click", async() => {
+        const itemToAdd = og.products.filter(p => p.full_description == selectProduct.value)
+        addItem(itemToAdd)
+    })
+
+    //cancel add existing item
+    aepppCancel.addEventListener("click", async() => {
+        clearInputs([selectProduct, ceoppReqQty, ceoppConfQty])
+        selectProduct.focus()
     })
 
     //create product
@@ -226,8 +217,35 @@ function ceoppEventListeners() {
         showOkPopup(okpp)
 
     })
+}
 
+function addItem(itemToAdd) {
     
+    ceoppAddError.style.display = 'none'
+    const inputs = [selectProduct, ceoppReqQty, ceoppConfQty]
+    const id = og.orderDetails.length == 0 ? 0 : (og.orderDetails.reduce((max, obj) => (obj.id > max ? obj.id : max), -Infinity) + 1)
+
+    og.orderDetails.push({
+        id: id,
+        id_products: itemToAdd[0].id,
+        description: itemToAdd[0].full_description,
+        unit_price:itemToAdd[0].unit_price,
+        required_quantity: ceoppReqQty.value,
+        confirmed_quantity: ceoppConfQty.value,
+        extended_price: ceoppConfQty.value == '' ? 0 : parseFloat(ceoppConfQty.value,2) * parseFloat(itemToAdd[0].unit_price,2),
+        enabled:1,
+        observations2:'',
+        colors:og.selectedColors,
+        sizes:og.selectedSizes,
+        product_data: itemToAdd[0]
+    })
+
+    ceoppAttributes.style.display = 'none'
+    aeppp.style.display = 'none'
+    printOrderDetails()
+    updateOrderData()
+    clearInputs(inputs)
+    selectProduct.focus()
 }
 
 export {ceoppEventListeners}

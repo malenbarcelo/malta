@@ -1,5 +1,4 @@
 
-
 import og from "./globals.js"
 import { clearInputs } from "../../generalFunctions.js"
 import { printCustomerOrder } from "./printTables.js"
@@ -12,7 +11,7 @@ function cbppEventListeners() {
         if (cbppOrder.value == '') {
             clearInputs([cbppSubtotal, cbppDiscount, cbppTotal, cbppPaid, cbppBalance])
         }else{
-            const orderData = og.customerOrders.filter(o => o.id == cbppOrder.value)[0]            
+            const orderData = og.customerOrders.filter(o => o.id == cbppOrder.value)[0]
             cbppSubtotal.value = og.formatter.format(parseFloat(orderData.subtotal,2))
             cbppDiscount.value = parseFloat(orderData.discount,2) * 100
             cbppTotal.value = og.formatter.format(parseFloat(orderData.total,2))

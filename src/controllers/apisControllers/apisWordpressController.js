@@ -12,10 +12,11 @@ const apisWordpressController = {
       const month = date.getMonth() + 1
       
       //get new posts from wordpress and save data in sales_wp_posts
+      console.log('hola')
       //await getNewPosts(month,year)
 
       //get new postmeta from wordpress and save data in sales_wp_postmeta
-      await getNewPostmeta(month,year)
+      //await getNewPostmeta(month,year)
 
       //get new order items from wordpress and save data in sales_wp_order_items
       //await getNewOrderItems(month,year)

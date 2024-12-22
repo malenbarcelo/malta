@@ -84,12 +84,16 @@ window.addEventListener('load',async()=>{
     //accept with enter inputs
     acceptWithEnterInput(ceoppReqQty,ceoppAddItem) //add product
     acceptWithEnterInput(ceoppConfQty,ceoppAddItem) //add product
-    acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product    
+    acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product
+    acceptWithEnterInput(eodppPrice,eodppAccept) //edit order line
+    acceptWithEnterInput(eodppQtyR,eodppAccept) //edit order line
+    acceptWithEnterInput(eodppQtyC,eodppAccept) //edit order line        
 
     //accept with enter popups
     acceptWithEnterPopup(caopp,caoppAccept) //cancel order
     acceptWithEnterPopup(ropp,roppAccept) //restore order
     acceptWithEnterPopup(schpp,schppAccept) //save changes
+    //acceptWithEnterPopup(aeppp,aepppAccept) //add existing product
     
     //table info events listeners
     showTableInfo(og.tableIcons,310,150)

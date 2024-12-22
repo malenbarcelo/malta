@@ -18,11 +18,28 @@ const salesController = {
             const ordersManagers = await ordersManagersQueries.ordersManagers()
             const paymentMethods = await paymentMethodsQueries.paymentMethods()
             const ordersStatus = await ordersStatusQueries.ordersStatus()
-            const paymentsStatus = await paymentsStatusQueries.paymentsStatus()
+            let paymentsStatus = await paymentsStatusQueries.paymentsStatus()
+            paymentsStatus = paymentsStatus.filter(p => ![1,2].includes(p.id))
             const distinctProducts = await productsQueries.distinctProducts()
             const orders = await ordersQueries.inProgressOrders()
 
             return res.render('sales/orders/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,paymentsStatus,distinctProducts,orders,paymentMethods})
+
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
+    inProgressOrdersWeb: async(req,res) => {
+        try{
+
+            const selectedItem = 'PEDIDOS'
+            const ordersStatus = await ordersStatusQueries.ordersStatus()
+            let paymentsStatus = await paymentsStatusQueries.paymentsStatus()
+            paymentsStatus = paymentsStatus.filter(p => p.id != 6 )
+            
+            return res.render('sales/ordersWeb/ordersWeb',{title:'Pedidos',bottomHeaderMenu,selectedItem, ordersStatus, paymentsStatus})
 
         }catch(error){
 

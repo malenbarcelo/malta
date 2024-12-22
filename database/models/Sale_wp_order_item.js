@@ -35,6 +35,13 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     const Sale_wp_order_items = sequelize.define(alias, cols, config)
+
+    Sale_wp_order_items.associate = (models) => {
+      Sale_wp_order_items.hasMany(models.Sales_wp_order_itemmeta,{
+        as:'itemmeta',
+        foreignKey: 'order_item_id'
+      })
+    }
     
     return Sale_wp_order_items
  }

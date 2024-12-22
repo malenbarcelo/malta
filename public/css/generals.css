@@ -179,6 +179,11 @@ ul {
     left: calc(50vw - 30px)
 }
 
+.loader-btm{
+    top: 60%;
+    left: calc(50vw - 30px)
+}
+
 #ordersLoader{
     top: 450px;
     left: calc(50vw - 30px);

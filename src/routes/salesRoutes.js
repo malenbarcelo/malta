@@ -1,6 +1,7 @@
 const express = require('express')
 const salesController = require('../controllers/salesController.js')
 const ordersController = require('../controllers/sales/ordersController.js')
+const webOrdersController = require('../controllers/sales/webOrdersController.js')
 const customersController = require('../controllers/sales/customersController.js')
 const paymentMethodsController = require('../controllers/sales/paymentMethodsController.js')
 const router = express.Router()
@@ -8,6 +9,7 @@ const router = express.Router()
 //---BACKEND---//
 router.get('/in-progress-orders/details',salesController.inProgressOrdersDetails)/**/
 router.get('/in-progress-orders',salesController.inProgressOrders)/**/
+router.get('/in-progress-orders/web',salesController.inProgressOrdersWeb)
 router.get('/consolidated',salesController.sales)/**/
 router.get('/customers',salesController.customers)/**/
 router.get('/payment-methods',salesController.paymentMethods)/**/
@@ -31,7 +33,11 @@ router.post('/register-customer-payment',ordersController.saveCustomerPayment)
 
 //orders
 router.post('/update-payment-status',ordersController.updatePaymentStatus)
+router.post('/update-payment-status',ordersController.updatePaymentStatus)
 router.post('/edit-orders-details/unit-price',ordersController.editOrdersUnitPrice)
+
+//web-orders
+router.get('/in-progress-orders/show-canceled',webOrdersController.inProgressOrdersShowCanceled)
 
 
 

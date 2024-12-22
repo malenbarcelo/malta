@@ -23,7 +23,6 @@
     left: calc(50vw - 183px);
 }
 
-
 #dlppContent{
     top: 30%;
     width: 400px;
@@ -34,6 +33,12 @@
     top: 8%;
     width: 600px;
     left: calc(500px - 310px);
+}
+
+#aepppContent{
+    top: 25%;
+    width: 400px;
+    left: calc(600px - 210px);
 }
 
 #elppContent{

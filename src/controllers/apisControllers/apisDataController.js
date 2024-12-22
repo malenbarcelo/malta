@@ -3,6 +3,7 @@ const customersQueries = require('../../dbQueries/data/customersQueries')
 const salesChannelsQueries = require('../../dbQueries/data/salesChannelsQueries')
 const productsQueries = require('../../dbQueries/cuttings/productsQueries')
 const ordersManagersQueries = require('../../dbQueries/data/ordersManagersQueries')
+const ordersWpQueries = require('../../dbQueries/sales/ordersWpQueries')
 
 const apisDataController = {
   customers: async(req,res) =>{
@@ -60,6 +61,21 @@ const apisDataController = {
       const customers = await customersQueries.customers()
 
       const predictedCustomers = customers.filter(c => c.customer_name.toLowerCase().includes(string))
+
+      res.status(200).json(predictedCustomers)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  predictCustomersWeb: async(req,res) =>{
+    try{
+      const string = req.params.string.toLowerCase()
+
+      const customers = await ordersWpQueries.customers()
+
+      const predictedCustomers = customers.filter(c => c.customer.toLowerCase().includes(string))
 
       res.status(200).json(predictedCustomers)
 

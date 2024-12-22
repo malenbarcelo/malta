@@ -4,6 +4,12 @@ const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const ordersNinoxQueries = require('../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../dbQueries/sales/ordersNinoxDetailsQueries')
 const paymentsNinoxQueries = require('../dbQueries/sales/paymentsNinoxQueries')
+const ordersWpQueries = require('../dbQueries/sales/ordersWpQueries')
+const wpPostsQueries = require('../dbQueries/sales/wpPostsQueries')
+const wpPostmetaQueries = require('../dbQueries/sales/wpPostmetaQueries')
+const wpOrderItemsQueries = require('../dbQueries/sales/wpOrderItemsQueries')
+const seasonQueries = require('../dbQueries/main/seasonsQueries')
+const {getNewPosts, getNewPostmeta, getNewOrderItems, getNewOrderItemmeta, saveNewOrders, saveNewOrdersDetails} = require('../functions/salesWpFuntions')
 
 const cronController = {
     getNinoxData: async(req,res) => {
@@ -109,6 +115,45 @@ const cronController = {
                 
             }
             
+
+        }catch (error) {
+             console.log(error)
+        }
+    },
+    getWpData: async(req,res) => {
+        try {
+
+            //get Arg date
+            const date = new Date()
+            date.setUTCHours(date.getUTCHours() - 3)
+            const year = date.getFullYear()
+            const month = date.getMonth() + 1
+
+            //get new posts from wordpress and save data in sales_wp_posts
+            await getNewPosts(month,year)
+
+            //get new postmeta from wordpress and save data in sales_wp_postmeta
+            await getNewPostmeta(month,year)
+
+            //get new order items from wordpress and save data in sales_wp_order_items
+            await getNewOrderItems(month,year)
+
+            //get new order itemmeta from wordpress and save data in sales_wp_order_items
+            await getNewOrderItemmeta(month,year)
+            
+
+        }catch (error) {
+             console.log(error)
+        }
+    },
+    addWpData: async(req,res) => {
+        try {
+
+            //save orders wp
+            const { newOrders, itemDetailsToSave } = await saveNewOrders()
+
+            //save orders details
+            //await saveNewOrdersDetails(newOrders, itemDetailsToSave)
 
         }catch (error) {
              console.log(error)

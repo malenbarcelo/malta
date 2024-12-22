@@ -56,15 +56,10 @@
 .bottomHeader{
     display: flex;
     justify-content:center;
-    column-gap: 50px;
-    height: 25%;
-    border-bottom: var(--color3) 1px solid;
+    column-gap: 70px;
+    height: 25%;    
     position: relative;
-    background-color:var(--color1);
-}
-
-.bottomHeaderBorder{
-    border-top: white solid 1px;
+    background-color:var(--color3);
 }
 
 .itemsMenu{
@@ -72,7 +67,11 @@
     display: flex;
     align-items: center;    
     justify-content: center;
-    width: 150px;
+    column-gap: 5px;
+}
+
+.showSubitems{
+    font-size: 13px;
 }
 
 .subItems{
@@ -94,9 +93,9 @@
     cursor: pointer;
 }
 
-.refItemHeaderMenu{
+/* .refItemHeaderMenu{
     color: var(--color2);
-}
+} */
 
 .subitemHeaderMenu{
     font-size: 13px;
@@ -106,21 +105,21 @@
 }
 
 .itemHeaderMenu:hover a{
-    color:var(--color3);
+    font-weight: bold;
+    /* color:var(--color3); */
 }
 
 .subitemHeaderMenu:hover{
     font-weight: bold;
-    background-color:var(--color5);
+    background-color:rgb(213, 212, 212);
 }
 
 .selectedItem{
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(204, 201, 201, 0.7)
+    text-shadow: 2px 2px 4px rgba(97, 95, 95, 0.7)
 }
 
 .goToMainMenu{
-    color: var(--color2);
     position: absolute;
     height: 100%;
     display: flex;
@@ -135,12 +134,7 @@
     font-weight: bold;
 }
 
-.mainMenuHref{
-    color:var(--color2)
-}
-
 .headerSeason{
-    color: var(--color2);
     position: absolute;
     height: 100%;
     left: 30px;

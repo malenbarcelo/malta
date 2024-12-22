@@ -30,11 +30,18 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
     const config = {
-    tableName : 'sales_wp_order_itemmeta',
-    timestamps : false
+      tableName : 'sales_wp_order_itemmeta',
+      timestamps : false
     }
 
     const Sale_wp_order_itemmeta = sequelize.define(alias, cols, config)
-    
+
+    Sale_wp_order_itemmeta.associate = (models) => {
+      Sale_wp_order_itemmeta.belongsTo(models.Sales_wp_order_items,{
+        as:'order_items',
+        foreignKey: 'order_item_id'
+      })
+    }
+
     return Sale_wp_order_itemmeta
  }

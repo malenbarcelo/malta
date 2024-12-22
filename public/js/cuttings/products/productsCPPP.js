@@ -17,7 +17,7 @@ async function cpppEventListeners() {
     const inputs = [cpppCode, cpppDescription, cpppFabric]
     inputs.forEach(input => {
         input.addEventListener("change", async(e) => {
-            cpppFullDescription.value = cpppCode.value + ' - ' + cpppDescription.value  + ' - ' + cpppFabric.value
+            cpppFullDescription.value = cpppCode.value.trim() + ' - ' + cpppDescription.value.trim()  + ' - ' + cpppFabric.value.trim()
         })
     })
 
@@ -50,9 +50,9 @@ async function cpppEventListeners() {
         if (errors == 0) {
             const data = {
                 product:{
-                    product_code:cpppCode.value,
+                    product_code:cpppCode.value.trim(),
                     id_products_types:pg.productsTypes.filter(pt => pt.product_type == cpppType.value)[0].id,
-                    description:cpppDescription.value,
+                    description:cpppDescription.value.trim(),
                     id_fabrics:pg.fabrics.filter(f => f.fabric == cpppFabric.value)[0].id,
                     full_description:cpppFullDescription.value,
                     unit_price:parseFloat(cpppPrice.value,2),

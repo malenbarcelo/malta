@@ -14,18 +14,30 @@ const wpPostmetaQueries = {
         })
         return monthPostmeta
     },
-    createPostmeta: async(newPostmeta,month,year) => {
-        for (let i = 0; i < newPostmeta.length; i++) {
-            await model.create({
-                meta_id:newPostmeta[i].meta_id,
-                post_id:newPostmeta[i].post_id,
-                meta_key:newPostmeta[i].meta_key,
-                meta_value:newPostmeta[i].meta_value,
-                month:month,
-                year:year
-            })
-        }
+    createPostmeta: async(newPostmeta) => {
+        await model.bulkCreate(newPostmeta)
     },
+    getMaxId: async() => {
+        const maxId = await model.findOne({
+            order: [['meta_id', 'DESC']],
+            raw: true
+        })
+
+        return maxId
+    },
+    getPostsToSave: async (firstPostId) => {
+        const postsToSave = await model.findAll({
+            attributes:[['post_id','post_id'],['meta_key','meta_key'],['meta_value','meta_value']],
+            where: {
+                post_id: {
+                    [Op.gte]: firstPostId,
+                },
+            },
+            raw: true,
+        })
+    
+        return postsToSave
+    }
 }       
 
 module.exports = wpPostmetaQueries

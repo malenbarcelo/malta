@@ -1,10 +1,11 @@
 const db = require('../../../database/models')
 const model = db.Seasons
 
-const usersQueries = {
+const seasonQueries = {
     currentSeason: async() => {
         const season = await model.findOne({
-            order: [['id', 'DESC']]
+            order: [['id', 'DESC']],
+            raw:true
         })
         return season
     },
@@ -17,4 +18,4 @@ const usersQueries = {
     }
 }
 
-module.exports = usersQueries
+module.exports = seasonQueries

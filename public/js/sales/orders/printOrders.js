@@ -21,8 +21,7 @@ async function printOrders() {
     const paymentVchequed = element.id_payments_status === 6 ? 'checked' : '';
 
     // const deliverClass = (element.enabled === 1 && element.id_orders_status === 2) ? 'allowedIcon' : 'notAllowedIcon';
-    const cancelClass = ((element.id_orders_status === 1 || element.id_orders_status === 2) && 
-                            [1, 2, 3].includes(element.id_payments_status)) ? 'allowedIcon' : 'notAllowedIcon';
+    const cancelClass = ((element.id_orders_status === 1 || element.id_orders_status === 2) && [1, 2, 3].includes(element.id_payments_status)) ? 'allowedIcon' : 'notAllowedIcon';
     const cancelIcon = element.enabled === 1 ? 'fa-circle-xmark' : 'fa-circle-check';
     const cancelId = element.enabled === 1 ? 'cancel_' : 'restore_';
     const commentIcon = element.observations ? 'fa-comment-dots' : 'fa-comment';
