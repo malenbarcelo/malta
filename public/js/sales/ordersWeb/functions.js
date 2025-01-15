@@ -1,4 +1,3 @@
-import { salesChannels } from "../../../../src/dbQueries/data/salesChannelsQueries.js"
 import { dominio } from "../../dominio.js"
 import g from "./globals.js"
 // import { printOrders } from "./printOrders.js"

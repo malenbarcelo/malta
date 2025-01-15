@@ -30,8 +30,9 @@ async function printOrdersDetails() {
             const line6 = '<th class="' + rowClass + '">' + sizes + '</th>'
             const line7 = '<th class="' + rowClass + '">' + colors + '</th>'
             const line8 = '<th class="' + rowClass + '">' + element.unit_price + '</th>'
-            const line9 = '<th class="' + rowClass + '">' + requiredQuantity + '</th>'
-            const line10 = '<th class="' + rowClass + '">' + confirmedQuantity + '</th>'
+            
+            const line9 = '<th class="' + rowClass + '">' + confirmedQuantity + '</th>'
+            const line10 = '<th class="' + rowClass + '">' + requiredQuantity + '</th>'
             const line11 = '<th class="' + rowClass + '">' + odg.formatter.format(parseFloat(element.extended_price,2)) + '</th>'
             const line12 = '<th class="' + rowClass + ' ' + (orderData.id_orders_status == 1 ? 'errorColor': null) + '">' + orderData.orders_orders_status.order_status + '</th>'
             //const line12 = '<th class="' + rowClass + '">' + orderData.orders_orders_managers.order_manager_name + '</th>'

@@ -331,6 +331,14 @@ const ordersQueries = {
             }
         });
     },
+    bulkUpdate: async(data) => {        
+        for (const d of data) {
+            await model.update(
+            d, 
+            { where: { id: d.id } }
+            )
+        }
+    },
 }       
 
 module.exports = ordersQueries

@@ -97,8 +97,6 @@ function rpppEventListeners() {
             isInvalid([rpppPaymentMethod])
         }
 
-        
-
         if (errors == 0) {
 
             const data = {

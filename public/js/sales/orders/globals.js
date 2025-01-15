@@ -174,7 +174,8 @@ let og = {
     },
     errorsQty:0,
     customerData:[],
-    createPaymentMethodFrom:''
+    createPaymentMethodFrom:'',
+    changeDiscountFrom:''
 }
 
 export default og

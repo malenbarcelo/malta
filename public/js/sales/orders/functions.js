@@ -129,7 +129,11 @@ function updateOrderData() {
 
     //createEdit order - change discount
     chdppDiscount.addEventListener("click", async() => {
-        chdppNewDiscount.value = og.orderData.discount * 100
+        chdppNewDiscount.value = (og.orderData.discount * 100).toFixed(2)
+        og.changeDiscountFrom = 'ceopp'
+        chdpp.classList.add('popup')
+        chdpp.classList.remove('popup2')
+        chdppContent.style.left = 'calc(600px - 160px)'
         chdpp.style.display = 'block'
     })
 }
@@ -183,6 +187,8 @@ function completeEPCPPcolors() {
 }
 
 async function printCustomerMovements(dataToPrint) {
+
+    console.log(dataToPrint)
 
     ordersLoader.style.display = 'block'
     cmppBody.innerHTML = ''

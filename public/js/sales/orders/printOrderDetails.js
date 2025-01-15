@@ -19,8 +19,8 @@ async function printOrderDetails() {
             <tr>
                 <th class="${rowClass}">${element.description}</th>
                 <th class="${rowClass}">${og.formatter.format(element.unit_price)}</th>
-                <th class="${rowClass}">${element.required_quantity == null ? '' : element.required_quantity }</th>
                 <th class="${rowClass}">${element.confirmed_quantity == null ? '' : element.confirmed_quantity }</th>
+                <th class="${rowClass}">${element.required_quantity == null ? '' : element.required_quantity }</th>
                 <th class="${rowClass}">${og.formatter.format(element.extended_price)}</th>
                 <th class="${rowClass}">${sizes}</th>
                 <th class="${rowClass}">${colors}</th>

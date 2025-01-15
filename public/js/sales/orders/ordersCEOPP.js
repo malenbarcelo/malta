@@ -8,6 +8,11 @@ import { printOrders } from "./printOrders.js"
 //CREATE EDIT ORDER POPUP (CEOPP)
 function ceoppEventListeners() {
 
+    //close with X
+    ceoppClose.addEventListener("click", () => {
+        schpp.style.display = 'block'
+    })
+
     //close with escape
     document.addEventListener('keydown', function(e) {
         const popup = document.getElementById('ceopp')
@@ -172,7 +177,7 @@ function ceoppEventListeners() {
         ordersLoader.style.display = 'block'
         ceopp.classList.remove('slideIn')
         await getData()
-        await applyFilters()
+        applyFilters()
         await printOrders()
         okppText.innerText = 'Orden creada con éxito'
         showOkPopup(okpp)

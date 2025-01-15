@@ -75,10 +75,10 @@ window.addEventListener('load',async()=>{
     schppEventListeners() //SAVE CHANGES POPUP
 
     //close popups event listener
-    closePopups(og.popups)
+    const popupsToClose = og.popups.filter( p => p.id != 'ceopp')
+    closePopups(popupsToClose)
 
     //close with escape
-    const popupsToClose = og.popups.filter( p => p.id != 'ceopp')
     closeWithEscape(popupsToClose)
 
     //accept with enter inputs
@@ -258,6 +258,7 @@ window.addEventListener('load',async()=>{
 
         cbppBody.innerHTML = ''
         clearInputs([cbppSubtotal, cbppDiscount, cbppTotal, cbppPaid, cbppBalance])
+        cbppOrderStatus.style.display = 'none'
         
         //customer orders
         og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value)
