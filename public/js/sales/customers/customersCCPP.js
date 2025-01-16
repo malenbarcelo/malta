@@ -61,7 +61,10 @@ async function ccppEventListeners() {
 
         if (errors == 0) {
             const findCustomer = cg.customers.filter(c => (c.customer_name).toLowerCase() == ccppCustomer.value.toLowerCase())
-            if (findCustomer.length > 0 && cg.customerToEdit != ccppCustomer.value) {
+            console.log(cg.customerToEdit)
+            console.log(findCustomer)
+            
+            if (findCustomer.length > 0 && cg.idCustomer != findCustomer[0].id) {
                 errors += 1
                 isInvalid([ccppCustomer])
                 ccppCustomerError.style.display = 'none'

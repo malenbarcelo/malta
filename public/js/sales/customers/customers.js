@@ -68,9 +68,12 @@ window.addEventListener('load',async()=>{
 
     //CONFIRM POPUPS
     coppAccept.addEventListener("click", async() => {
-        const data = {id: cg.idCustomer}
+        const data = [{
+            id: cg.idCustomer,
+            enabled:0
+        }]
 
-        await fetch(dominio + 'apis/sales/customers/delete-customer',{
+        await fetch(dominio + 'apis/update/data-customers',{
             method:'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)

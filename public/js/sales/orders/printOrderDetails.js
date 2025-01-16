@@ -10,13 +10,14 @@ async function printOrderDetails() {
     let rows = ''; 
 
     og.orderDetails.forEach((element, index) => {
+
         const rowClass = index % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
         const sizes = (element.sizes.map(s => s.size_data.size)).join(', ')
         const colors = (element.colors.map(c => c.color_data.color)).join(', ')
         const comments = (element.observations2 == '' || element.observations2 == null) ? '<i class="fa-regular fa-comment pointer" id="observations_' + element.id + '"></i>' : '<i class="fa-regular fa-comment-dots pointer" id="observations_' + element.id + '"></i>'
 
         rows += `
-            <tr>
+            <tr id="tr_${element.id}">
                 <th class="${rowClass}">${element.description}</th>
                 <th class="${rowClass}">${og.formatter.format(element.unit_price)}</th>
                 <th class="${rowClass}">${element.confirmed_quantity == null ? '' : element.confirmed_quantity }</th>
@@ -40,6 +41,7 @@ function ordersDetailsEventListeners() {
 
     og.orderDetails.forEach(element => {
 
+        const tr = document.getElementById('tr_' + element.id)
         const deleteRow = document.getElementById('delete_' + element.id)
         const editRow = document.getElementById('edit_' + element.id)
         const observations = document.getElementById('observations_' + element.id)
@@ -55,7 +57,7 @@ function ordersDetailsEventListeners() {
 
         //edit
         if (editRow) {
-            editRow.addEventListener('click',async()=>{
+            editRow.addEventListener('click',async(e)=>{
                 const productData = og.orderDetails.filter(product => product.id == element.id)[0]    
                 eodppTitle.innerText = productData.description    
                 //clear errors
@@ -91,6 +93,13 @@ function ordersDetailsEventListeners() {
                 eodpp.style.display = 'block'    
             })
         }
+
+        //edit with double click
+        tr.addEventListener('dblclick',async()=>{
+            if (editRow) {
+                editRow.click()
+            }
+        })
 
         //observations
         observations.addEventListener('click',async()=>{

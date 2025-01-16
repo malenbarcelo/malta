@@ -77,10 +77,11 @@ function completeECPPcolors() {
 
 }
 
-function cpppValidations() {
+async function cpppValidations() {
     let errors = 0
     const findType = pg.productsTypes.filter(pt => pt.product_type.toLowerCase() == cpppType.value.toLowerCase())
     const findFabric = pg.fabrics.filter(f => f.fabric.toLowerCase() == cpppFabric.value.toLowerCase())
+    pg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + pg.season.season)).json() //get products again in case someone else has created any product
     const findCode = pg.products.filter(p => p.product_code.toLowerCase() == cpppCode.value.toLowerCase() && p.season == pg.season.season)
 
     if (findCode.length > 0 && pg.codeToEdit != cpppCode.value) {

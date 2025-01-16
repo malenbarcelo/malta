@@ -58,7 +58,7 @@ const apisDataController = {
     try{
       const string = req.params.string.toLowerCase()
 
-      const customers = await customersQueries.customers()
+      let customers = await customersQueries.getDistinct()
 
       const predictedCustomers = customers.filter(c => c.customer_name.toLowerCase().includes(string))
 

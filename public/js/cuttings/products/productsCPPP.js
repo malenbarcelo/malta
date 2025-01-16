@@ -44,7 +44,7 @@ async function cpppEventListeners() {
         let errors = inputsValidation(inputs)
 
         if (errors == 0) {
-            errors = cpppValidations()
+            errors = await cpppValidations()
         }
 
         if (errors == 0) {
@@ -92,7 +92,7 @@ async function cpppEventListeners() {
         let errors = inputsValidation(inputs)
 
         if (errors == 0) {
-            errors = cpppValidations()
+            errors = await cpppValidations()
         }
 
         if (errors == 0) {

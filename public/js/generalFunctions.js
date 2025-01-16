@@ -104,7 +104,7 @@ async function applyPredictElement(elementsToPredict) {
 
 async function predictElements(input,list,apiUrl,dataToPrint,elementName) {
 
-    if (input.value.length >= 3) {
+    if (input.value.length >= 2) {
 
         let id = 0
         

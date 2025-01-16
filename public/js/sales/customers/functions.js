@@ -5,7 +5,7 @@ import { printCustomers } from "./printCustomers.js"
 async function getData() {
 
     //get data and complete globals
-    cg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
+    cg.customers = await (await fetch(dominio + 'apis/get/data-customers')).json()
     cg.customersFiltered = cg.customers
 
     applyFilters()

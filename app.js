@@ -14,6 +14,7 @@ const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
 const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
 const updateRoutes = require('./src/routes/apisRoutes/updateRoutes.js')
+const getRoutes = require('./src/routes/apisRoutes/getRoutes.js')
 const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
 const mainRoutes = require('./src/routes/mainRoutes.js')
@@ -79,6 +80,7 @@ app.use('/sales',salesRoutes)
 app.use('/cuttings',cuttingsRoutes)
 
 /*---APIS---*/
+app.use('/apis/get',getRoutes) //getRoutes
 app.use('/apis/update',updateRoutes) //updateRoutes
 
 
@@ -97,5 +99,5 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-//console.log(bcrypt.hashSync('pedro',10))
+console.log(bcrypt.hashSync('jbarcelo',10))
 

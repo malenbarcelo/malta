@@ -47,6 +47,35 @@ const customersQueries = {
             }
         )
     },
+    getDistinct: async () => {
+        const data = await model.findAll({
+            attributes: [[sequelize.fn('DISTINCT', sequelize.col('customer_name')), 'customer_name']],
+            where: {
+                enabled: 1
+            },
+            order: [['customer_name', 'ASC']],
+            raw: true,
+        });
+        return data
+    },
+    bulkUpdate: async(data) => {        
+        for (const d of data) {
+            await model.update(
+            d, 
+            { where: { id: d.id } }
+            )
+        }
+    },
+    get: async() => {
+        const data = await model.findAll({
+            where:{
+                enabled: 1
+            },
+            order:[['customer_name','ASC']],
+            raw:true,
+        })
+        return data
+    },
 }
 
 module.exports = customersQueries

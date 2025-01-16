@@ -63,7 +63,7 @@ window.addEventListener('load',async()=>{
         cpppTypeError2.style.display = 'none'
         cpppFabricError2.style.display = 'none'
         cpppCodeError2.style.display = 'none'
-        pg.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
+        pg.newProductColors = []
         pg.newProductSizes = [{id:26,size:'U'}]
         pg.action = 'create'
         pg.codeToEdit = ''
@@ -72,7 +72,7 @@ window.addEventListener('load',async()=>{
         cpppCreate.classList.remove('notVisible')
         cpppSizes.value =  pg.newProductSizes.map(size => size.size).join(", ")
         cpppColors.value =  pg.newProductColors.map(color => color.color).join(", ")
-        cpppRemoveColor.checked = false
+        cpppRemoveColor.checked = true
         cppp.style.display = 'block'
     })
 })
