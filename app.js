@@ -15,6 +15,7 @@ const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.j
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
 const updateRoutes = require('./src/routes/apisRoutes/updateRoutes.js')
 const getRoutes = require('./src/routes/apisRoutes/getRoutes.js')
+const composedRoutes = require('./src/routes/apisRoutes/composedRoutes.js')
 const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
 const mainRoutes = require('./src/routes/mainRoutes.js')
@@ -42,11 +43,11 @@ app.set('view engine','ejs')
 
 //configure session
 app.use(session({
-    //store: new FileStore(),
+    store: new FileStore(),
     secret:'secret',
     resave: false,
     saveUninitialized: false,
-    //cookie: { secure: false } // Change to true in PRD to use HTTPS
+    cookie: { secure: false } // Change to true in PRD to use HTTPS
 }))
 
 //middlewares
@@ -80,8 +81,9 @@ app.use('/sales',salesRoutes)
 app.use('/cuttings',cuttingsRoutes)
 
 /*---APIS---*/
-app.use('/apis/get',getRoutes) //getRoutes
-app.use('/apis/update',updateRoutes) //updateRoutes
+app.use('/apis/get',getRoutes) 
+app.use('/apis/update',updateRoutes)
+app.use('/apis/composed',composedRoutes) 
 
 
 
@@ -99,5 +101,5 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-console.log(bcrypt.hashSync('jbarcelo',10))
+//console.log(bcrypt.hashSync('jbarcelo',10))
 

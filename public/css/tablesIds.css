@@ -27,7 +27,9 @@
     height: 430px;
 }
 
-
+#cbppTable{
+    max-height: 330px;
+}
 
 #eoppInfo,#rpppInfo,#pvppInfo,#doppInfo,#coppInfo,#amppInfo,#obppInfo,#ob2ppInfo{
     width: 60px;

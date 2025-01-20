@@ -3,7 +3,7 @@ import og from "./globals.js"
 import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
-import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup,dateToString } from "../../generalFunctions.js"
+import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup,dateToString, focusInputs } from "../../generalFunctions.js"
 
 //popups events listeners
 import { caoppEventListeners } from "./ordersCAOPP.js"
@@ -125,6 +125,10 @@ window.addEventListener('load',async()=>{
             printOrders()
         })
     })
+
+    //focus filters
+    const filtersToFocus = [filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
+    focusInputs(filtersToFocus)    
 
     //unfilter event listener
     unfilterOrders.addEventListener("click", async() => {
@@ -258,10 +262,11 @@ window.addEventListener('load',async()=>{
 
         cbppBody.innerHTML = ''
         clearInputs([cbppSubtotal, cbppDiscount, cbppTotal, cbppPaid, cbppBalance])
-        cbppOrderStatus.style.display = 'none'
+        cbppIncompleteOrder.style.display = 'none'
+        cbppDeliveredOrder.style.display = 'none'
         
         //customer orders
-        og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value)
+        og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value && o.id_payments_status != 5)
         
         //complete select
         if (og.customerOrders.length == 1) {
@@ -275,8 +280,9 @@ window.addEventListener('load',async()=>{
             })
         }
 
-        cbppTitle.innerText = filterCustomer.value
+        cbppTitle.innerText = filterCustomer.value.toUpperCase()
         selectChannelError.style.display = 'none'
+        cbppPrintPdf.style.display = 'none'
         cbpp.style.display = 'block'
     })  
 })

@@ -3,7 +3,7 @@ import odg from "./globals.js"
 import { getData, applyFilters, updateTableData } from "./functions.js"
 import { printOrdersDetails } from "./printOrdersDetails.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { closePopups, applyPredictElement, acceptWithEnterInput, showTableInfo, clearInputs, isValid, closeWithEscape } from "../../generalFunctions.js"
+import { closePopups, applyPredictElement, acceptWithEnterInput, showTableInfo, clearInputs, isValid, closeWithEscape, focusInputs } from "../../generalFunctions.js"
 
 //popups events listeners
 import { dlppEventListeners } from "./ordersDetailsDLPP.js"
@@ -71,6 +71,9 @@ window.addEventListener('load',async()=>{
             printOrdersDetails()
         })
     })
+
+    //focus filters
+    focusInputs(filters)
 
     //unfilter event listener
     unfilterOrdersDetails.addEventListener("click", async() => {

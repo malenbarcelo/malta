@@ -9,9 +9,11 @@ async function getData() {
     pg.fabrics = await (await fetch(dominio + 'apis/cuttings/data/fabrics')).json()
     pg.colors = await (await fetch(dominio + 'apis/cuttings/data/colors')).json()
     pg.sizes = await (await fetch(dominio + 'apis/cuttings/data/sizes')).json()
-    pg.season = await (await fetch(dominio + 'apis/main/current-season')).json()
-    pg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + pg.season.season)).json()
+    pg.seasons = await (await fetch(dominio + 'apis/get/seasons')).json()
+    pg.selectedSeason = pg.seasons.filter(s => s.season == filterSeason.value)[0]
+    pg.products = pg.selectedSeason ? await (await fetch(dominio + 'apis/cuttings/products/season-products/' + pg.selectedSeason.season)).json() : []
     pg.productsFiltered = pg.products
+    pg.elementsToPredict[0].apiUrl = 'apis/cuttings/products/predict-season-descriptions/' + pg.selectedSeason.season + '/'
 
 }
 
@@ -81,8 +83,8 @@ async function cpppValidations() {
     let errors = 0
     const findType = pg.productsTypes.filter(pt => pt.product_type.toLowerCase() == cpppType.value.toLowerCase())
     const findFabric = pg.fabrics.filter(f => f.fabric.toLowerCase() == cpppFabric.value.toLowerCase())
-    pg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + pg.season.season)).json() //get products again in case someone else has created any product
-    const findCode = pg.products.filter(p => p.product_code.toLowerCase() == cpppCode.value.toLowerCase() && p.season == pg.season.season)
+    pg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + pg.currentSeason.season)).json() //get products again in case someone else has created any product
+    const findCode = pg.products.filter(p => p.product_code.toLowerCase() == cpppCode.value.toLowerCase() && p.season == pg.currentSeason.season)
 
     if (findCode.length > 0 && pg.codeToEdit != cpppCode.value) {
         errors += 1
@@ -93,6 +95,14 @@ async function cpppValidations() {
         isValid([cpppCode])
         cpppCodeError.style.display = 'none'
         cpppCodeError2.style.display = 'none'
+    }
+
+    const doubleSpaces = /\s{2,}/.test(cpppDescription.value)
+    if (doubleSpaces) {
+        errors += 1
+        isInvalid([cpppDescription])
+        cpppDescriptionError.style.display = 'none'
+        cpppDescriptionError2.style.display = 'block'
     }
     
     if (findType.length === 0) {

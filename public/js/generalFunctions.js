@@ -334,6 +334,20 @@ function closeWithEscape(popups) {
     })
 }
 
+function focusInputs(inputsToFocus) {
+    inputsToFocus.forEach(input => {
+        input.addEventListener('focus', () => {
+            input.classList.add('i-focused')
+        })
+    
+        input.addEventListener('blur', () => {
+            input.classList.remove('i-focused')
+        })
+    })
+}
 
 
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups}
+
+
+
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups,focusInputs}

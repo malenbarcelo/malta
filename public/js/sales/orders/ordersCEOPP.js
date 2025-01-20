@@ -126,14 +126,15 @@ function ceoppEventListeners() {
         cpppTypeError2.style.display = 'none'
         cpppFabricError2.style.display = 'none'
         cpppCodeError2.style.display = 'none'
-        og.newProductColors = [{id:35,color:'BLANCO'},{id:36,color:'NEGRO'}]
+        cpppDescriptionError2.style.display = 'none'
+        og.newProductColors = []
         og.newProductSizes = [{id:26,size:'U'}]
         cpppTitle.innerText = 'CREAR PRODUCTO'
         cpppEdit.classList.add('notVisible')
         cpppCreate.classList.remove('notVisible')
         cpppSizes.value =  og.newProductSizes.map(size => size.size).join(", ")
         cpppColors.value =  og.newProductColors.map(color => color.color).join(", ")
-        cpppRemoveColor.checked = false
+        cpppRemoveColor.checked = true
         cppp.style.display = 'block'
         cpppCode.focus()
 

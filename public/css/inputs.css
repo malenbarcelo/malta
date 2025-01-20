@@ -104,6 +104,10 @@ accent-color: black
     color: grey;
 }
 
+.i-focused {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.8); /* Offset X, Offset Y, Blur Radius, Spread Radius, Color */
+}
+
 /*----------TABLES RESUME----------*/
 .divTableSummary{
     display: flex;

@@ -1,5 +1,6 @@
 
 import pg from "./globals.js"
+import { dominio } from "../../dominio.js"
 import { showTableInfo, closePopups, clearInputs, isValid, applyPredictElement,closeWithEscape } from "../../generalFunctions.js"
 import { getData } from "./functions.js"
 import { printProducts } from "./printProducts.js"
@@ -17,9 +18,10 @@ window.addEventListener('load',async()=>{
     productsLoader.style.display = 'block'
 
     //getData
+    pg.currentSeason = await (await fetch(dominio + 'apis/main/current-season')).json()
+    filterSeason.value = pg.currentSeason.season
     await getData()
-    pg.elementsToPredict[0].apiUrl = 'apis/cuttings/products/predict-season-descriptions/' + pg.season.season + '/'
-
+    
     //print products
     printProducts()
 
@@ -31,6 +33,15 @@ window.addEventListener('load',async()=>{
             printProducts()
         })
     })
+
+    //change season
+    filterSeason.addEventListener("change", async() => {
+        filterSeason.value = filterSeason.value.toUpperCase()
+        await getData()
+        applyPredictElement(pg.elementsToPredict)
+        applyFilters()
+        printProducts()
+    })     
 
     //unfilter event listener
     unfilter.addEventListener("click", async() => {
@@ -63,6 +74,7 @@ window.addEventListener('load',async()=>{
         cpppTypeError2.style.display = 'none'
         cpppFabricError2.style.display = 'none'
         cpppCodeError2.style.display = 'none'
+        cpppDescriptionError2.style.display = 'none'
         pg.newProductColors = []
         pg.newProductSizes = [{id:26,size:'U'}]
         pg.action = 'create'

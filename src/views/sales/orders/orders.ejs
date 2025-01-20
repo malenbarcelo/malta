@@ -56,14 +56,7 @@
         </div>
         <div class="divInput">
             <label for="selectOrder" class="label1"># Pedido</label>
-            <select name="selectOrder" id="filterOrder" class="input1 ixs ips">
-                <option value=""></option>
-                <% orders.forEach(order => { %>
-                    <option value="<%= order.order_number %>">
-                        <%= order.order_number %>
-                    </option>
-                <% }) %>
-            </select>
+            <input type="text" id="filterOrder" class="input1 ixs ips" autocomplete="off">
         </div>
         <div class="divInput">
             <label for="selectOrderManager" class="label1">Encargado</label>

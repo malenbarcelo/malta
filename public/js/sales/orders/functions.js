@@ -279,6 +279,14 @@ function cpppValidations() {
         cpppCodeError.style.display = 'none'
         cpppCodeError2.style.display = 'none'
     }
+
+    const doubleSpaces = /\s{2,}/.test(cpppDescription.value)
+    if (doubleSpaces) {
+        errors += 1
+        isInvalid([cpppDescription])
+        cpppDescriptionError.style.display = 'none'
+        cpppDescriptionError2.style.display = 'block'
+    }
     
     if (findType.length === 0) {
         errors += 1

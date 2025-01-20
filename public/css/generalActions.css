@@ -3,6 +3,7 @@
     display: flex;
     column-gap: 20px;
     position: absolute;
+    z-index: 1;
 }
 
 .divGeneralAction{
@@ -15,6 +16,13 @@
     align-items: center;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.dga-s{
+    border: var(--color1) solid 2px;
+    font-size: 17px;
+    height: 23px;
+    width: 23px;
 }
 
 .divGeneralAction:hover{
@@ -37,8 +45,24 @@
     row-gap: 5px;
 }
 
+.dgas-ts{
+    top: 10vh;
+}
+
+.dgas-tm{
+    top: 12vh;
+}
+
+.dgas-rs{
+    right: 6vw;
+}
+
+.dgas-rm{
+    right: 15vw;
+}
+
 #DGAorders{
-    right: 15vh;
+    right: 14vh;
     top: 22vh;
 }
 

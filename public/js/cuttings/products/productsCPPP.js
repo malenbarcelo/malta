@@ -60,7 +60,7 @@ async function cpppEventListeners() {
                     sold_qty:0,
                     commited_qty:0,
                     stock:0,
-                    season:pg.season.season,
+                    season:pg.currentSeason.season,
                     enabled:1
                 },
                 sizes:pg.newProductSizes,

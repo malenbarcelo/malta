@@ -69,6 +69,7 @@ function addEventListeners(dataToPrint) {
             cpppTypeError2.style.display = 'none'
             cpppFabricError2.style.display = 'none'
             cpppCodeError2.style.display = 'none'
+            cpppDescriptionError2.style.display = 'none'
             pg.productColors = element.product_colors
             pg.productSizes = element.product_sizes
             pg.idProductToEdit = element.id
