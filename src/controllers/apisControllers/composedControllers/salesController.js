@@ -45,10 +45,10 @@ const salesController = {
         // Prepare order data for the table
         const orderData = [
             ['Subtotal', String(subtotal)],
-            ['Discount', String(discount)],
+            ['Descuento', String(discount)],
             ['Total', String(total)],
-            ['Paid', String(amountPaid)],
-            ['Balance', String(balance)]
+            ['Pagado', String(amountPaid)],
+            ['Saldo', String(balance)]
         ];
         
         // Prepare order details for the table
