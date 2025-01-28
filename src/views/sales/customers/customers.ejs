@@ -2,7 +2,7 @@
 <%- include('../../partials/header') %>
 
     <!------MAIN TITLE------>
-    <div class="mainTitle">CLIENTES</div>
+    <div class="mainTitle">CLIENTES DIFUSIÓN</div>
 
     <!------GENERAL ACTIONS------>
     <div class="divGeneralActions" id="DGAcustomers">
@@ -22,6 +22,15 @@
                 <input type="text" class="input1 ixxl ipl" autocomplete="off" id="filterCustomer">
                 <ul class="predictedElements" id="ulPredictedCustomers"></ul>
             </div>
+            <div class="divInput">
+                <label class="label1" id="filterChannelLabel" >Canal</label>
+                <select class="input1 ixs ipl" id="filterChannel">
+                    <option value=""></option>
+                    <% salesChannels.forEach(sc => { %>
+                        <option value="<%= sc.id %>"><%= sc.sales_channel %></option>
+                    <% }) %>
+                </select>
+            </div>
             <div id="unfilter" class="unfilterIcon" >
                 <i class="fa-solid fa-filter-circle-xmark"></i>
             </div>
@@ -39,6 +48,7 @@
                 <thead>
                     <tr>
                         <th class="theadCss wXL thLeftBorder thTall">Cliente</th>
+                        <th class="theadCss wXS thTall">Canal</th>
                         <th class="theadCss wXL thTall">Email</th>
                         <th class="theadCss wL thTall">Domicilio</th>
                         <th class="theadCss wL thTall">Teléfono</th>

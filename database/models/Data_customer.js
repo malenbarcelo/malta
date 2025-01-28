@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
+      id_sales_channels:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       enabled:{
         type: DataTypes.INTEGER,
         allowNull: false
@@ -52,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
     const Data_customer = sequelize.define(alias, cols, config)
 
     Data_customer.associate = (models) => {
+      Data_customer.belongsTo(models.Data_sales_channels,{
+        as:'sales_channel_data',
+        foreignKey: 'id_sales_channels'
+        }),
       Data_customer.hasMany(models.Sales_payments_assignations,{
       as:'customers_payments_assignations',
       foreignKey: 'id_customers'

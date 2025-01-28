@@ -1,5 +1,6 @@
 import { dominio } from "./dominio.js"
 import g from "./globals.js"
+let eventListenersRefs = {}
 
 function clearInputs(inputs) {
 
@@ -84,22 +85,51 @@ function dateToString(date) {
 
 async function applyPredictElement(elementsToPredict) {
 
-    for (let i = 0; i < elementsToPredict.length; i++) {
+    // Eliminar listeners previos si existen
+    elementsToPredict.forEach((element, index) => {
+        if (eventListenersRefs[index]) {
+            const { input, inputHandler, keydownHandler } = eventListenersRefs[index]
+            input.removeEventListener("input", inputHandler)
+            input.removeEventListener("keydown", keydownHandler)
+        }
+    })
+
+    // Crear nuevos event listeners
+    elementsToPredict.forEach((element, index) => {
+        const { input, list, apiUrl, name, elementName } = element
+
+        const inputHandler = async (e) => {
+            predictElements(input, list, apiUrl, name, elementName)
+        }
+
+        const keydownHandler = async (e) => {
+            selectFocusedElement(e, input, list, elementName)
+        }
+
+        // Guardar referencias para eliminarlos más adelante
+        eventListenersRefs[index] = { input, inputHandler, keydownHandler }
+
+        // Asignar los nuevos event listeners
+        input.addEventListener("input", inputHandler)
+        input.addEventListener("keydown", keydownHandler)
+    })
+
+    // for (let i = 0; i < elementsToPredict.length; i++) {
         
-        const input = elementsToPredict[i].input
-        const list = elementsToPredict[i].list
-        const apiUrl = elementsToPredict[i].apiUrl
-        const name = elementsToPredict[i].name
-        const elementName = elementsToPredict[i].elementName
+    //     const input = elementsToPredict[i].input
+    //     const list = elementsToPredict[i].list
+    //     const apiUrl = elementsToPredict[i].apiUrl
+    //     const name = elementsToPredict[i].name
+    //     const elementName = elementsToPredict[i].elementName
 
-        input.addEventListener("input", async(e) => {
-            predictElements(input,list,apiUrl,name,elementName)
-        })
+    //     input.addEventListener("input", async(e) => {
+    //         predictElements(input,list,apiUrl,name,elementName)
+    //     })
 
-        input.addEventListener("keydown", async(e) => {
-            selectFocusedElement(e,input,list,elementName)
-        })
-    }
+    //     input.addEventListener("keydown", async(e) => {
+    //         selectFocusedElement(e,input,list,elementName)
+    //     })
+    // }
 }
 
 async function predictElements(input,list,apiUrl,dataToPrint,elementName) {

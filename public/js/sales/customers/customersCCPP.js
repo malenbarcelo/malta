@@ -10,7 +10,7 @@ async function ccppEventListeners() {
     //create
     ccppCreate.addEventListener("click", async() => {
 
-        let  errors = inputsValidation([ccppCustomer])
+        let  errors = inputsValidation([ccppCustomer, ccppChannel])
 
         if (errors == 0) {
             const findCustomer = cg.customers.filter(c => (c.customer_name).toLowerCase() == ccppCustomer.value.toLowerCase())
@@ -28,6 +28,7 @@ async function ccppEventListeners() {
             
             const data = {
                 customer_name:ccppCustomer.value,
+                id_sales_channels: ccppChannel.value,
                 email:ccppEmail.value,
                 address:ccppAddress.value,
                 city:ccppCity.value,
@@ -57,7 +58,7 @@ async function ccppEventListeners() {
     //edit
     ccppEdit.addEventListener("click", async() => {
 
-        let  errors = inputsValidation([ccppCustomer])
+        let  errors = inputsValidation([ccppCustomer, ccppChannel])
 
         if (errors == 0) {
             const findCustomer = cg.customers.filter(c => (c.customer_name).toLowerCase() == ccppCustomer.value.toLowerCase())
@@ -78,6 +79,7 @@ async function ccppEventListeners() {
                 id:cg.idCustomer,
                 newData:{
                     customer_name:ccppCustomer.value,
+                    id_sales_channels: ccppChannel.value,
                     email:ccppEmail.value,
                     address:ccppAddress.value,
                     city:ccppCity.value,

@@ -18,6 +18,16 @@
                 <div class="divError" id="ccppCustomerError2">El cliente ingresado ya existe</div>
             </div>
             <div class="divInput mtm">
+                <label class="label1" id="ccppChannelLabel" >Canal</label>
+                <select class="input1 ixxxl ipl" id="ccppChannel">
+                    <option value=""></option>
+                    <% salesChannels.forEach(sc => { %>
+                        <option value="<%= sc.id %>"><%= sc.sales_channel %></option>
+                    <% }) %>
+                </select>
+                <div class="divError" id="ccppChannelError">Debe ingresar un canal</div>
+            </div>
+            <div class="divInput mtm">
                 <label class="label1" id="ccppEmailLabel">Email</label>
                 <input type="text" class="input1 ixxxl ipl" id="ccppEmail" autocomplete="off">
             </div>
@@ -38,7 +48,7 @@
                 <input type="number" class="input1 ixxxl ipl" id="ccppMobile" autocomplete="off">
             </div>
             <div class="divInput mtm">
-                <label class="label1" id="ccppDicountLabel">Discount %</label>
+                <label class="label1" id="ccppDicountLabel">Descuento %</label>
                 <input type="number" class="input1 ixxxl ipl" id="ccppDiscount" autocomplete="off">
             </div>
             <div class="divInput mtm">

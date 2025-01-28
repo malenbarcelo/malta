@@ -19,6 +19,9 @@ function applyFilters() {
     //customer
     cg.customersFiltered = filterCustomer.value == '' ? cg.customersFiltered : cg.customersFiltered.filter(c => c.customer_name == filterCustomer.value)
 
+    //sales channels
+    cg.customersFiltered = filterChannel.value == '' ? cg.customersFiltered : cg.customersFiltered.filter(c => c.id_sales_channels == filterChannel.value)
+
 }
 
 

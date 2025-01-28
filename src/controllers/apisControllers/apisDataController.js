@@ -69,6 +69,22 @@ const apisDataController = {
       return res.send('Ha ocurrido un error')
     }
   },
+  predictChannelCustomers: async(req,res) =>{
+    try{
+      const string = req.params.string.toLowerCase()
+      const idSalesChannels = req.params.idSalesChannels
+
+      let customers = await customersQueries.getDistinctByChannel(idSalesChannels)
+
+      const predictedCustomers = customers.filter(c => c.customer_name.toLowerCase().includes(string))
+
+      res.status(200).json(predictedCustomers)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
   predictCustomersWeb: async(req,res) =>{
     try{
       const string = req.params.string.toLowerCase()

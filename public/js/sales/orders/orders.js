@@ -110,12 +110,11 @@ window.addEventListener('load',async()=>{
                 applyFilters()
                 printOrders()
             }
-            selectChannelError.style.display = 'none'
         })
     })
 
     //predicts elements
-    applyPredictElement(og.elementsToPredict)
+    //applyPredictElement(og.elementsToPredict)
 
     //filters event listeners
     const filters = [showCanceled,filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]

@@ -20,18 +20,18 @@ window.addEventListener('load',async()=>{
     const tableIcons = [
         {
             icon:ecppIcon,
-            right:'11%'
+            right:'8.5%'
         },        
         {
             icon:dcppIcon,
-            right:'8%'
+            right:'5.5%'
         }
     ]
         
     showTableInfo(tableIcons,240,100)
 
     //filters event listeners
-    const filters = [filterCustomer]
+    const filters = [filterCustomer, filterChannel]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             applyFilters()

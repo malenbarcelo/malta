@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
 import { printOrders } from "./printOrders.js"
-import { dateToString,isValid,isInvalid } from "../../generalFunctions.js"
+import { dateToString,isValid,isInvalid, applyPredictElement } from "../../generalFunctions.js"
 
 
 async function getData() {
@@ -46,18 +46,23 @@ function applyFilters() {
     og.ordersFiltered = filterPaymentStatus.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_payments_status == filterPaymentStatus.value)
 
     //sales channels
-    if (og.channelsChecked.length == 0) {
+    if (og.channelsChecked.length == 0 || og.channelsChecked.length == 2) {
         og.ordersFiltered = og.ordersFiltered
-    }else{
-        const selectedChannels = og.channelsChecked.map(input => input.id)
-        const channels = []
-        
-        selectedChannels.forEach(channel => {
-            const channelId = parseInt(channel.split('_')[1])
-            channels.push(channelId)
-        })
+        og.elementsToPredict[0].apiUrl = 'apis/data/customers/predict-customers/'
 
-        og.ordersFiltered  = og.ordersFiltered.filter(o => channels.includes(o.id_sales_channels))
+        //predicts elements
+        applyPredictElement(og.elementsToPredict)
+
+    }else{
+        const selectedChannel = og.channelsChecked.map(input => input.id)[0]
+        const channelId = parseInt(selectedChannel.split('_')[1])
+
+        og.ordersFiltered  = og.ordersFiltered.filter(o => o.id_sales_channels == channelId)
+
+        og.elementsToPredict[0].apiUrl = 'apis/data/customers/predict-customers/' + channelId + '/'
+
+        //predicts elements
+        applyPredictElement(og.elementsToPredict)
     }
 
 }

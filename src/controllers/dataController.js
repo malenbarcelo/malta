@@ -1,3 +1,5 @@
+const salesChannelsQueries = require('../dbQueries/data/salesChannelsQueries')
+
 const bottomHeaderMenu = [
     {
         'name':'VENTAS',
@@ -24,18 +26,8 @@ const dataController = {
             return res.send('Ha ocurrido un error')
         }
     },
-    customers: (req,res) => {
-        try{
-            
-            const selectedItem = 'VENTAS'
-            
-            return res.render('data/customers',{title:'Clientes',bottomHeaderMenu,selectedItem})
-
-        }catch(error){
-            console.log(error)
-            return res.send('Ha ocurrido un error')
-        }
-    },
+    customers: async(req,res) => {
+    }
 }
 
 module.exports = dataController

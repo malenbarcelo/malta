@@ -10,7 +10,7 @@ let cg = {
         }
     ],
     customers:[],
-    ccppInputs: [ccppCustomer,ccppEmail,ccppAddress, ccppCity, ccppCountry,ccppMobile,ccppDiscount,ccppNotes],
+    ccppInputs: [ccppCustomer,ccppEmail,ccppChannel,ccppAddress, ccppCity, ccppCountry,ccppMobile,ccppDiscount,ccppNotes],
     customerToEdit:'',
     idCustomer:0
     

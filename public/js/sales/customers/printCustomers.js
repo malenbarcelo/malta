@@ -22,6 +22,7 @@ async function printCustomers() {
 
         row.innerHTML = `
             <th class="${rowClass}">${element.customer_name}</th>
+            <th class="${rowClass}">${element.sales_channel_data.sales_channel}</th>
             <th class="${rowClass}">${element.email == null ? '' : element.email}</th>
             <th class="${rowClass}">${element.address == null ? '' : element.address}</th>
             <th class="${rowClass}">${element.mobile == null || element.mobile == 0 ? '' : element.mobile}</th>
@@ -69,6 +70,7 @@ function customersEventListeners() {
 
             //complete data
             ccppCustomer.value = element.customer_name
+            ccppChannel.value = element.id_sales_channels
             ccppEmail.value = element.email
             ccppAddress.value = element.address
             ccppCity.value = element.city

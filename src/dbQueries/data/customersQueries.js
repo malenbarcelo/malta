@@ -15,7 +15,8 @@ const customersQueries = {
                         }
                     },
                     required: false
-                }
+                },
+                { association: 'sales_channel_data' }
             ],
             order:[['customer_name','ASC']],
             nest:true,
@@ -58,6 +59,18 @@ const customersQueries = {
         });
         return data
     },
+    getDistinctByChannel: async (idSalesChannels) => {
+        const data = await model.findAll({
+            attributes: [[sequelize.fn('DISTINCT', sequelize.col('customer_name')), 'customer_name']],
+            where: {
+                enabled: 1,
+                id_sales_channels: idSalesChannels
+            },
+            order: [['customer_name', 'ASC']],
+            raw: true,
+        });
+        return data
+    },
     bulkUpdate: async(data) => {        
         for (const d of data) {
             await model.update(
@@ -71,8 +84,10 @@ const customersQueries = {
             where:{
                 enabled: 1
             },
+            include:[{ association: 'sales_channel_data' }],
             order:[['customer_name','ASC']],
             raw:true,
+            nest:true
         })
         return data
     },

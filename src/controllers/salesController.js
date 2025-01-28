@@ -100,8 +100,11 @@ const salesController = {
     customers: async(req,res) => {
         try{
             const selectedItem = 'DATOS'
+            let salesChannels = await salesChannelsQueries.salesChannels()
+
+            salesChannels = salesChannels.filter( sc => sc.sales_channel == 'Dif1' || sc.sales_channel == 'Dif2')
             
-            return res.render('sales/customers/customers',{title:'Clientes',bottomHeaderMenu,selectedItem})
+            return res.render('sales/customers/customers',{title:'Clientes',bottomHeaderMenu,selectedItem,salesChannels})
             
         }catch(error){
 
