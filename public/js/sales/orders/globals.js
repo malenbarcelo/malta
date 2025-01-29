@@ -75,7 +75,7 @@ let og = {
     paymentMethods:[],
     customersSummary:[],
     customerOrders:[],
-    channelsChecks:[channel_1, channel_2, channel_3, channel_4],
+    channelsChecks:[channel_1, channel_2],
     channelsChecked:[],
     //CREATE PRODUCT
     sizes:[],

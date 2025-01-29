@@ -48,6 +48,7 @@ async function cpppEventListeners() {
         }
 
         if (errors == 0) {
+            productsLoader.style.display = 'block'
             const data = {
                 product:{
                     product_code:cpppCode.value.trim(),
@@ -67,22 +68,24 @@ async function cpppEventListeners() {
                 colors:pg.newProductColors
             }
 
-            await fetch(dominio + 'apis/cuttings/products/create-product',{
+            const response = await fetch(dominio + 'apis/cuttings/products/create-product',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
 
-            productsLoader.style.display = 'block'
+            const responseData = await response.json()
+                
             bodyProducts.innerHTML = ''
             cppp.style.display = 'none'
             await getData()
             unfilter.click()
             printProducts()
-
             okppText.innerText = 'Producto creado con éxito'
             showOkPopup(okpp)
-            
+
+            productsLoader.style.display = 'none'
+
         }
     })
 

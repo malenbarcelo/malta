@@ -1,5 +1,5 @@
 const db = require('../../../database/models')
-const sequelize = require('sequelize')
+const { sequelize, Op } = require('sequelize')
 const model = db.Cuttings_products
 
 const productsQueries = {
@@ -9,6 +9,34 @@ const productsQueries = {
             raw:true,
         })
         return products
+    },
+    get: async({limit,offset,filters}) => {
+        
+        const where = {
+            enabled: 1
+        }
+
+        if (filters.product_code) {
+            where.product_code = {
+                [Op.like]: `%${filters.product_code}%`
+            }
+        }
+
+        if (filters.season) {
+            where.season = {
+                [Op.like]: `%${filters.season}%`
+            }
+        }
+
+        const data = await model.findAndCountAll({
+            where,
+            limit,
+            offset,
+            raw:true,
+            nest:true
+        })
+
+        return data
     },
     seasonProducts: async(season) => {
         const products = await model.findAll({

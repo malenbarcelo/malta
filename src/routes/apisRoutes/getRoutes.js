@@ -8,4 +8,7 @@ router.get('/seasons',getController.getSeasons)
 //data_customers
 router.get('/data-customers',getController.getCustomers)
 
+//products
+router.get('/cuttings-products',getController.getProducts)
+
 module.exports = router

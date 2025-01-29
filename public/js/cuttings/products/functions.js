@@ -103,6 +103,10 @@ async function cpppValidations() {
         isInvalid([cpppDescription])
         cpppDescriptionError.style.display = 'none'
         cpppDescriptionError2.style.display = 'block'
+    }else{
+        isValid([cpppDescription])
+        cpppDescriptionError.style.display = 'none'
+        cpppDescriptionError2.style.display = 'none'
     }
     
     if (findType.length === 0) {

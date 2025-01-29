@@ -2,6 +2,7 @@ const bottomHeaderMenu = require("./bottomHeaderMenu")
 const productsQueries = require("../../dbQueries/cuttings/productsQueries")
 const productsSizesQueries = require("../../dbQueries/cuttings/productsSizesQueries")
 const productsColorsQueries = require("../../dbQueries/cuttings/productsColorsQueries")
+const dominio = require("../dominio")
 
 const productsController = {
     ////BACKEND
@@ -20,10 +21,19 @@ const productsController = {
     ////APIS
     createProduct: async(req,res) => {
         try{
+            const season = await (await fetch(`${dominio}apis/main/current-season`)).json()
+            let filters = `product_code=${req.body.product.product_code}&season=${season.season}`
+            
             const product = req.body.product
             let sizes = req.body.sizes
             let colors = req.body.colors
             
+            //findout if product has already been created (for doubleclick errors)
+            const existingProduct = await (await fetch(`${dominio}apis/get/cuttings-products?${filters}`)).json()
+
+            if (existingProduct.rows.length > 0) {
+                return res.status(400).json({ error: 'El producto ya existe' })
+            }
 
             //create products
             const newProduct = await productsQueries.create(product)
@@ -36,7 +46,7 @@ const productsController = {
             colors = colors.map(color => ({id_products: newProduct.id,id_colors: color.id}))
             await productsColorsQueries.bulkCreate(colors)
             
-            res.status(200).json()
+            return res.json({ success: true, product: newProduct })
 
         }catch(error){
 

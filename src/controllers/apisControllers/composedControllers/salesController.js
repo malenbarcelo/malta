@@ -44,11 +44,11 @@ const salesController = {
         
         // Prepare order data for the table
         const orderData = [
-            ['Subtotal', String(subtotal)],
-            ['Descuento', String(discount)],
-            ['Total', String(total)],
-            ['Pagado', String(amountPaid)],
-            ['Saldo', String(balance)]
+            ['SUBTOTAL', String(subtotal)],
+            ['DESCUENTO', String(discount)],
+            ['TOTAL', String(total)],
+            ['PAGADO', String(amountPaid)],
+            ['SALDO', String(balance)]
         ];
         
         // Prepare order details for the table
@@ -86,7 +86,7 @@ const salesController = {
 
         // Set data for the order data table (table 1)
         const rowHeightT1 = 17;
-        const tableColumnWidthsT1 = [70, 70];
+        const tableColumnWidthsT1 = [100, 170];
         const tableWidthT1 = tableColumnWidthsT1.reduce((a, b) => a + b, 0);
         const startXT1 = (doc.page.width - tableWidthT1) / 2;
         const startYT1 = 80;
@@ -102,7 +102,7 @@ const salesController = {
 
                 // Configure font size based on column
                 if (colIndex === 0) {
-                    doc.font('Helvetica').fontSize(10); 
+                    doc.font('Helvetica-Bold').fontSize(9); 
                 } else if (colIndex === 1) {
                     doc.font('Helvetica').fontSize(8); 
                 }

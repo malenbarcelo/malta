@@ -150,6 +150,18 @@ const salesController = {
             return res.send('Ha ocurrido un error')
         }
     },
+    products: async(req,res) => {
+        try{
+            const selectedItem = 'DATOS'
+            
+            return res.render('cuttings/products/products',{title:'Productos',bottomHeaderMenu,selectedItem})
+            
+        }catch(error){
+
+            console.log(error)
+            return res.send('Ha ocurrido un error')
+        }
+    },
 }
 
 module.exports = salesController

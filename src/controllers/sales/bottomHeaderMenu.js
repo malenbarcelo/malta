@@ -23,7 +23,7 @@ const bottomHeaderMenu = [
         href:'/sales/shipping',
         subitems:[
             {'subitem':'DIFUSIÓN', 'href':'/sales/shipping'},
-            {'subitem':'WEB', 'href':'/sales/shipping/web'}
+            {'subitem':'WEB', 'href':'/sales/shipping/web'},
         ]
     },
     // {
@@ -38,7 +38,9 @@ const bottomHeaderMenu = [
         href:'/sales/customers',
         subitems:[
             {'subitem':'CLIENTES', 'href':'/sales/customers'},
-            {'subitem':'FORMAS DE PAGO', 'href':'/sales/payment-methods'}
+            {'subitem':'FORMAS DE PAGO', 'href':'/sales/payment-methods'},
+            {'subitem':'PRODUCTOS', 'href':'/sales/products'},
+            
         ]
     },
     

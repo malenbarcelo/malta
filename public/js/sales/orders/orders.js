@@ -113,9 +113,6 @@ window.addEventListener('load',async()=>{
         })
     })
 
-    //predicts elements
-    //applyPredictElement(og.elementsToPredict)
-
     //filters event listeners
     const filters = [showCanceled,filterCustomer,filterOrder,filterOrderManager,filterOrderStatus,filterPaymentStatus]
     filters.forEach(filter => {
@@ -265,7 +262,7 @@ window.addEventListener('load',async()=>{
         cbppDeliveredOrder.style.display = 'none'
         
         //customer orders
-        og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value && o.id_payments_status != 5)
+        og.customerOrders = og.orders.filter(o => o.orders_customers.customer_name == filterCustomer.value && o.id_payments_status != 5 && o.enabled == 1)
         
         //complete select
         if (og.customerOrders.length == 1) {

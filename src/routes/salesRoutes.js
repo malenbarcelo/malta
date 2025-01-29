@@ -14,6 +14,8 @@ router.get('/consolidated',salesController.sales)/**/
 router.get('/customers',salesController.customers)/**/
 router.get('/payment-methods',salesController.paymentMethods)/**/
 router.get('/shipping',salesController.shipping)/**/
+router.get('/products',salesController.products)/**/
+
 
 
 //---APIS---//
