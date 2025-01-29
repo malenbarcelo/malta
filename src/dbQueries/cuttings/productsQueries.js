@@ -1,5 +1,6 @@
 const db = require('../../../database/models')
-const { sequelize, Op, fn } = require('sequelize')
+const { sequelize } = require('sequelize')
+const { Op, fn, col } = require('sequelize')
 const model = db.Cuttings_products
 
 const productsQueries = {
@@ -63,7 +64,7 @@ const productsQueries = {
     },
     distinctProducts: async() => {
         const distinctProducts = await model.findAll({
-            attributes: [[sequelize.fn('DISTINCT', sequelize.col('description')), 'description']],
+            attributes: [[fn('DISTINCT', col('description')), 'description']],
             raw:true,
         })
         return distinctProducts
