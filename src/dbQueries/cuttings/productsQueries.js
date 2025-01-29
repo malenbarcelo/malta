@@ -1,5 +1,5 @@
 const db = require('../../../database/models')
-const { sequelize, Op } = require('sequelize')
+const { sequelize, Op, fn } = require('sequelize')
 const model = db.Cuttings_products
 
 const productsQueries = {
