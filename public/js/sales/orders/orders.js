@@ -267,8 +267,12 @@ window.addEventListener('load',async()=>{
         //complete select
         if (og.customerOrders.length == 1) {
             cbppOrder.innerHTML = '<option value="' + og.customerOrders[0].id + '">#' + og.customerOrders[0].order_number.toString().padStart(5, '0') + ' (' + dateToString(og.customerOrders[0].date) + ')</option>'
-            const event = new Event('change')
-            cbppOrder.dispatchEvent(event)
+            
+            setTimeout(() => {
+                const event = new Event('change')
+                cbppOrder.dispatchEvent(event)
+            }, 10)
+            
         }else{
             cbppOrder.innerHTML = '<option value=""></option>'
             og.customerOrders.forEach(order => {
