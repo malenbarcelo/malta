@@ -4,6 +4,7 @@ let og = {
         minimumFractionDigits: 0,
         useGrouping: true
     }),
+    lastClickTime:0,
     tableIcons: [
         {
             icon:eoppIcon,

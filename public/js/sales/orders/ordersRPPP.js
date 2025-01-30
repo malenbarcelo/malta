@@ -97,17 +97,16 @@ function rpppEventListeners() {
         //find customer positive balance and show checkbox if applies
         let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + og.orderToPay.id_customers)).json()
 
-        console.log(positiveBalance)
-        
         if (positiveBalance == 0 && og.orderToPayPayment.balanceUsed > 0) {
             errors += 1
-            ordersLoader.style.display = 'block'
+
             updateCustomerData()
+            rppp.style.display = 'none'
             bodyOrders.innerHTML = ''
+            ordersLoader.style.display = 'block'
             await getData()
             applyFilters()
             printOrders()
-            rppp.style.display = 'none'
             errorppText.innerText = 'El saldo a favor ya fue utilizado'
             showOkPopup(errorpp)
 
