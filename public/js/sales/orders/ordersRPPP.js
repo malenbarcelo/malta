@@ -97,7 +97,9 @@ function rpppEventListeners() {
         //find customer positive balance and show checkbox if applies
         let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + og.orderToPay.id_customers)).json()
 
-        if (positiveBalance == 0 && og.orderToPay.balanceUsed > 0) {
+        console.log(positiveBalance)
+        
+        if (positiveBalance == 0 && og.orderToPayPayment.balanceUsed > 0) {
             errors += 1
             ordersLoader.style.display = 'block'
             updateCustomerData()

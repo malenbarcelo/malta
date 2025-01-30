@@ -101,5 +101,5 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-//console.log(bcrypt.hashSync('jbarcelo',10))
+//console.log(bcrypt.hashSync('user1',10))
 
