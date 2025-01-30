@@ -74,18 +74,9 @@ window.addEventListener('load',async()=>{
     cbppEventListeners() //CUSTOMER BALANCE POPUP
     schppEventListeners() //SAVE CHANGES POPUP
 
-    //take double click as single click
+    //get upload time
     og.lastClickTime = new Date().getTime()
-    document.addEventListener('click', (e) => {        
-        const now = new Date().getTime()
-        if (now - og.lastClickTime < 300) {
-            console.log('Click simple detectadooo')
-            //ignore click
-            return
-        }
-        og.lastClickTime = now
-    })
-
+    
     //close popups event listener
     const popupsToClose = og.popups.filter( p => p.id != 'ceopp')
     closePopups(popupsToClose)

@@ -82,6 +82,14 @@ function rpppEventListeners() {
     
     rpppAccept.addEventListener("click", async() => {
 
+        const now = new Date().getTime()
+
+        if (now - og.lastClickTime < 300) {
+            return  // Ignore double click
+        }
+
+        og.lastClickTime = now
+
         let errors = 0
 
         if (rpppBalanceUsed.value == 0 && rpppPayment.value == '') {
