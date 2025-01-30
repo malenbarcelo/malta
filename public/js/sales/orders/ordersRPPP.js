@@ -28,8 +28,6 @@ function rpppEventListeners() {
                 rpppBalanceAlert.style.color = 'green'
                 rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo a favor de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>'
             }else if (og.orderToPay.balance > totalPayment) {
-                console.log(og.orderToPay.balance)
-                console.log(totalPayment)
                 rpppBalanceAlert.style.color = 'rgb(206, 10, 10)';
                 rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>';
             } else {
@@ -94,6 +92,23 @@ function rpppEventListeners() {
         if (rpppBalanceUsed.value == 0 && rpppPaymentMethod.value == '') {
             errors += 1
             isInvalid([rpppPaymentMethod])
+        }
+
+        //find customer positive balance and show checkbox if applies
+        let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + og.orderToPay.id_customers)).json()
+
+        if (positiveBalance == 0 && og.orderToPay.balanceUsed > 0) {
+            errors += 1
+            ordersLoader.style.display = 'block'
+            updateCustomerData()
+            bodyOrders.innerHTML = ''
+            await getData()
+            applyFilters()
+            printOrders()
+            rppp.style.display = 'none'
+            errorppText.innerText = 'El saldo a favor ya fue utilizado'
+            showOkPopup(errorpp)
+
         }
 
         if (errors == 0) {
