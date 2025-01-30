@@ -87,7 +87,8 @@ window.addEventListener('load',async()=>{
     acceptWithEnterInput(chdppNewDiscount,chdppAccept) //add product
     acceptWithEnterInput(eodppPrice,eodppAccept) //edit order line
     acceptWithEnterInput(eodppQtyR,eodppAccept) //edit order line
-    acceptWithEnterInput(eodppQtyC,eodppAccept) //edit order line        
+    acceptWithEnterInput(eodppQtyC,eodppAccept) //edit order line
+    acceptWithEnterInput(rcpppAmount,rcpppAccept) //register payment        
 
     //accept with enter popups
     acceptWithEnterPopup(caopp,caoppAccept) //cancel order

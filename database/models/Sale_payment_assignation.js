@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
     const config = {
-    tableName : 'sales_payments_assignations',
-    timestamps : false
+      tableName : 'sales_payments_assignations',
+      timestamps : false
     }
 
     const Sale_payment_assignation = sequelize.define(alias, cols, config)

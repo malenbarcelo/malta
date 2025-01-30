@@ -81,7 +81,6 @@ function rpppEventListeners() {
         cpmppTitle.innerText = 'CREAR FORMA DE PAGO'
         cpmpp.style.display = 'block'
     })
-
     
     rpppAccept.addEventListener("click", async() => {
 
@@ -98,6 +97,9 @@ function rpppEventListeners() {
         }
 
         if (errors == 0) {
+
+            rpppUnabledAccept.style.display = 'block'
+            rpppAccept.style.display = 'none'
 
             const data = {
                 orderToPay:og.orderToPay,
@@ -130,7 +132,6 @@ function rpppEventListeners() {
         }
         
     })
-        
 }
 
 export {rpppEventListeners}

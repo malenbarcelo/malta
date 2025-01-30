@@ -11,6 +11,7 @@ async function printOrders() {
 
     //printTable
     const rows = og.ordersFiltered.map((element, index) => {
+        
     const date = dateToString(element.date);
     const rowClass = index % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
     const color = element.enabled === 0 ? 'errorColor' : '';
@@ -121,6 +122,9 @@ function ordersEventListeners() {
         //payment
         if (payment) {
             payment.addEventListener('click',async()=>{
+
+                rpppUnabledAccept.style.display = 'none'
+                rpppAccept.style.display = 'block'
 
                 //find customer positive balance and show checkbox if applies
                 let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
