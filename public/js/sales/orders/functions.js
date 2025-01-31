@@ -29,9 +29,7 @@ function applyFilters() {
     og.ordersFiltered = showCanceled.checked ? og.ordersFiltered : og.ordersFiltered.filter(o => o.enabled != 0)    
 
     //customer
-    let idCustomer = filterCustomer.value == '' ? '' : og.customers.filter(c => c.customer_name == filterCustomer.value)
-    idCustomer = idCustomer.length == 0 ? 0 : idCustomer[0].id
-    og.ordersFiltered = filterCustomer.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_customers == idCustomer)
+    og.ordersFiltered = filterCustomer.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.orders_customers.customer_name.toLowerCase().includes(filterCustomer.value.toLowerCase()))
 
     //order
     og.ordersFiltered = filterOrder.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.order_number == filterOrder.value)

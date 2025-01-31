@@ -204,9 +204,9 @@ function selectWithClick(e,dataToSelect) {
 function selectFocusedElement(e,input,list,elementName) {
     if (e.key === 'ArrowDown' && g.predictedElements.length > 0) {
             
-        g.focusedElement = (g.focusedElement == g.predictedElements.length-1) ? g.focusedElement : (g.focusedElement + 1)            
+        g.focusedElement = (g.focusedElement == g.predictedElements.length-1) ? g.focusedElement : (g.focusedElement + 1)
         
-        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)            
+        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)
         g.elementToFocus.classList.add('predictedElementFocused')
         g.elementToFocus.scrollIntoView({
             behavior: 'smooth',
@@ -222,16 +222,21 @@ function selectFocusedElement(e,input,list,elementName) {
 
         g.focusedElement = (g.focusedElement == 0) ? g.focusedElement : (g.focusedElement - 1)
 
-        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)            
-        g.elementToFocus.classList.add('predictedElementFocused')
-        g.elementToFocus.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest'
-        })
+        g.elementToFocus = document.getElementById(elementName + '_' + g.focusedElement)
 
-        if (g.focusedElement != -1) {
+        if (g.elementToFocus != null) {
+            g.elementToFocus.classList.add('predictedElementFocused')
+            g.elementToFocus.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            })  
+        }
+        
+        if (g.focusedElement != -1 && g.focusedElement != null) {
             g.elementToUnfocus = document.getElementById(elementName + '_' + (g.focusedElement + 1))
-            g.elementToUnfocus.classList.remove('predictedElementFocused')                
+            if (g.elementToUnfocus != null) {
+                g.elementToUnfocus.classList.remove('predictedElementFocused')
+            }
         }
         
     }else if(e.key === 'Enter'){
@@ -240,6 +245,8 @@ function selectFocusedElement(e,input,list,elementName) {
         }
         list.style.display = 'none'
         g.focusedElement = -1
+
+        input.dispatchEvent(new Event('change'))
         
         //handleEnter(input,list)
     }else if(e.key === 'Escape'){

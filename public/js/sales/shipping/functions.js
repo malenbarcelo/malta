@@ -16,7 +16,7 @@ function applyFilters() {
     g.ordersFiltered = orderNumber.value == '' ? g.ordersFiltered : g.ordersFiltered.filter(o => o.order_number == orderNumber.value)
 
     //customer
-    g.ordersFiltered = customer.value == '' ? g.ordersFiltered : g.ordersFiltered.filter(o => o.orders_customers.customer_name == customer.value)
+    g.ordersFiltered = customer.value == '' ? g.ordersFiltered : g.ordersFiltered.filter(o => o.orders_customers.customer_name.toLowerCase().includes(customer.value.toLowerCase()))
 
 }
 

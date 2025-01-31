@@ -25,12 +25,10 @@ function applyFilters() {
     odg.ordersDetailsFiltered = filterOrder.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.order_number == filterOrder.value)
 
     //customer
-    let idCustomer = filterCustomer.value == '' ? '' : odg.customers.filter(c => c.customer_name == filterCustomer.value)
-
-    odg.ordersDetailsFiltered = filterCustomer.value == '' ? odg.ordersDetailsFiltered : (idCustomer.length == 0 ? [] : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_customers == idCustomer[0].id))
+    odg.ordersDetailsFiltered = filterCustomer.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.orders_customers.customer_name.toLowerCase().includes(filterCustomer.value.toLowerCase()))
 
     //product
-    odg.ordersDetailsFiltered = filterProduct.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.description == filterProduct.value)
+    odg.ordersDetailsFiltered = filterProduct.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.description.toLowerCase().includes(filterProduct.value.toLowerCase()))
 
     //order_status
     if (filterOrderStatus.value == 'default') {
