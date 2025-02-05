@@ -6,7 +6,7 @@ let odg = {
     }),
     season:'',
     userLogged:'',
-    popups: [appp,dlpp,elcpp,elpp,elspp,lopp],
+    popups: [sscpp,appp,dlpp,elcpp,elpp,elspp,lopp],
     elementsToPredict:[
         {
             input: filterCustomer,

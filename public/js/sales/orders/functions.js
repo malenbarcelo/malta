@@ -191,8 +191,6 @@ function completeEPCPPcolors() {
 
 async function printCustomerMovements(dataToPrint) {
 
-    console.log(dataToPrint)
-
     ordersLoader.style.display = 'block'
     cmppBody.innerHTML = ''
     let counter = 0
@@ -200,8 +198,11 @@ async function printCustomerMovements(dataToPrint) {
 
     //printTable
     dataToPrint.forEach(element => {
+
         const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
         const date = dateToString(element.date)
+        const editIcon = element.type == 'PEDIDO' ? '' : `<i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i>`
+        const destroyIcon = element.type == 'PEDIDO' ? '' : `<i class="fa-regular fa-trash-can allowedIcon" id="destroy_${element.id}"></i>`
         
         const row = document.createElement('tr')
         row.innerHTML = `
@@ -210,6 +211,8 @@ async function printCustomerMovements(dataToPrint) {
             <th class="${rowClass}">${element.order_number}</th>
             <th class="${rowClass}">${og.formatter.format(element.total)}</th>            
             <th class="${rowClass}">${og.formatter.format(element.balance)}</th>
+            <th class="${rowClass}">${editIcon}</th>
+            <th class="${rowClass}">${destroyIcon}</th>
         `
         fragment.appendChild(row)
 
@@ -218,7 +221,36 @@ async function printCustomerMovements(dataToPrint) {
 
     cmppBody.appendChild(fragment)
 
+    movementsEventListeners(dataToPrint)
+
     ordersLoader.style.display = 'none'
+}
+
+function movementsEventListeners(dataToPrint) {
+
+    dataToPrint.forEach(element => {
+
+        const edit = document.getElementById('edit_' + element.id)
+        const destroy = document.getElementById('destroy_' + element.id)
+
+        //edit
+        if (edit) {
+            edit.addEventListener("click", async() => {
+                copp.style.display = 'block'
+            })
+        }
+
+        //destroy
+        if (destroy) {
+            destroy.addEventListener("click", async() => {
+                og.elementToUpdate = element
+                og.coppAction = 'destroyMovement'
+                coppQuestion.innerText = '¿Confirma que desea eliminar el movimiento seleccionado?'
+                copp.style.display = 'block'
+            })
+        }
+    })
+
 }
 
 function completeESPPsizes() {
@@ -317,4 +349,19 @@ function cpppValidations() {
     
 }
 
-export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements,completeESPPsizes,completeECPPcolors,cpppValidations}
+function selectOrderManager() {
+    if (og.userLogged == 'Esteban') {
+        filterOrderManager.value = 4
+        channel_2.checked = true
+        og.channelsChecked.push(channel_2)
+    }
+    if (og.userLogged == 'Pedro') {
+        filterOrderManager.value = 5
+        og.channelsChecked.push(channel_1)
+        channel_1.checked = true
+    }
+}
+
+
+
+export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements,completeESPPsizes,completeECPPcolors,cpppValidations,selectOrderManager}

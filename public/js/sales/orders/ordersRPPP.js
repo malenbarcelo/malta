@@ -92,6 +92,11 @@ function rpppEventListeners() {
 
         let errors = 0
 
+        if (rpppDate.value == '') {
+            errors += 1
+            isInvalid([rpppDate])
+        }
+
         if (rpppBalanceUsed.value == 0 && rpppPayment.value == '') {
             errors += 1
             isInvalid([rpppPayment])
@@ -126,6 +131,7 @@ function rpppEventListeners() {
             rpppAccept.style.display = 'none'
 
             const data = {
+                date: rpppDate.value,
                 orderToPay:og.orderToPay,
                 amountPaid:og.orderToPayPayment,
                 idPaymentMethod:rpppPaymentMethod.value,

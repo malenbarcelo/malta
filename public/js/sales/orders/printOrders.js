@@ -28,7 +28,7 @@ async function printOrders() {
     const commentIcon = element.observations ? 'fa-comment-dots' : 'fa-comment';
     
         return `
-            <tr>
+            <tr id="tr_${element.id}">
             <th class="${rowClass} ${color}">${element.order_number}</th>
                 <th class="${rowClass} ${color}">${element.season}</th>
                 <th class="${rowClass} ${color}">${date}</th>
@@ -72,7 +72,8 @@ function ordersEventListeners() {
         //const deliverOrder = document.getElementById('deliver_' + element.id)
         const restoreOrder = document.getElementById('restore_' + element.id)
         const payment = document.getElementById('payment_' + element.id)
-        const paymentV = document.getElementById('paymentV_' + element.id)        
+        const paymentV = document.getElementById('paymentV_' + element.id) 
+        const tr = document.getElementById('tr_' + element.id)       
 
         //cancel order
         if (cancelOrder) {
@@ -119,6 +120,13 @@ function ordersEventListeners() {
             ceopp.classList.add('slideIn')
         })
 
+        //edit row with double click
+        tr.addEventListener('dblclick',async()=>{
+            if (edit) {
+                edit.click()
+            }
+        })
+
         //payment
         if (payment) {
             payment.addEventListener('click',async()=>{
@@ -159,7 +167,14 @@ function ordersEventListeners() {
                 rpppBalanceAlert.innerHTML = ''
                 rpppUseBalanceCheck.checked = false
                 rpppTitle.innerText = 'PEDIDO #' + element.order_number
-                clearInputs([rpppPayment,rpppPaymentMethod])
+                clearInputs([rpppDate,rpppPayment,rpppPaymentMethod])
+                const today = new Date()
+                const year = today.getFullYear()
+                const month = String(today.getMonth() + 1).padStart(2, '0')
+                const day = String(today.getDate()).padStart(2, '0')
+                const formattedDate = `${year}-${month}-${day}`
+                rpppDate.value = formattedDate
+
                 rppp.style.display = 'block'
             })
         }

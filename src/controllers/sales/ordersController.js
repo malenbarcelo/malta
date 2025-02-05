@@ -110,8 +110,8 @@ const ordersController = {
       try{
 
         const data = req.body
-        const date = new Date()
-        data.date = date
+        const date = new Date(data.date)
+        data.date = date.setHours(date.getHours() + 3)
 
         //save data in payments
         const newPayment = await paymentsQueries.registerCustomerPayment(data)

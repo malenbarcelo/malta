@@ -18,8 +18,7 @@ function apppEventListeners() {
         }else{
             if (apppProduct.value != '' && apppCustomer.value != '') {
                 const productsToAdd = odg.products.filter(p => p.full_description == apppProduct.value)
-                const customer = odg.customers.filter(c => c.customer_name == apppCustomer.value)
-
+                const customer = odg.customers.filter(c => c.customer_name.trim() == apppCustomer.value.trim())
                 if (productsToAdd.length == 0) {
                     apppError.innerText = 'Producto inválido'
                     apppError.style.display = 'block'
@@ -31,6 +30,7 @@ function apppEventListeners() {
                         const id = odg.productsToAdd.length == 0 ? 1 : Math.max(...odg.productsToAdd.map(element => element.id)) + 1
                         odg.productsToAdd.push({
                             'id':id,
+                            'reqQty':apppReqQty.value,
                             'customer':customer[0],
                             'season':odg.season.season,
                             'products':productsToAdd

@@ -1,7 +1,7 @@
 <!----------Register payment---------->
 <div class="popup" id="rppp">
     
-    <div class="popupContent ppContentHlWxl" id="rpppContent">
+    <div class="popupContent" id="rpppContent">
 
         <div id="rpppNegativeBalance"></div>
 
@@ -16,6 +16,11 @@
 
         <div class="divInputsColumn mtm mbm">
             <div class="divInput">
+                <label class="label1" id="rpppDateLabel">Fecha</label>
+                <input type="date" class="input1 il ipm" id="rpppDate">
+                <div class="divError"  id="rpppDateError">Debe completar la fecha</div>
+            </div>
+            <div class="divInput mtm">
                 <label class="label1 unabledLabel">Subtotal</label>
                 <input type="text" step="0.01" class="input1 il ipm unabledInput" id="rpppSubtotal" readonly>
             </div>

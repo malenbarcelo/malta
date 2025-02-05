@@ -41,7 +41,7 @@ async function printOrdersDetails() {
             const line15 = '<th class="' + rowClass + '"><i class="fa-regular fa-trash-can allowedIcon" id="delete_' + element.id + '"></i></th>'
             
 
-            bodyOrdersDetails.innerHTML += '<tr>' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + '</tr>'
+            bodyOrdersDetails.innerHTML += '<tr id="tr_' + element.id + '">' + line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9 + line10 + line11 + line12 + line13 + line14 + line15 + '</tr>'
 
             counter += 1
 
@@ -60,6 +60,7 @@ function ordersDetailsEventListeners() {
         const edit = document.getElementById('edit_' + element.id)
         const deleteLine = document.getElementById('delete_' + element.id)
         const obs = document.getElementById('obs_' + element.id)
+        const tr = document.getElementById('tr_' + element.id)
 
         //edit line
         edit.addEventListener('click',async()=>{
@@ -97,6 +98,13 @@ function ordersDetailsEventListeners() {
                 
             elpp.style.display = 'block'
             
+        })
+
+        //edit with double click
+        tr.addEventListener('dblclick',async()=>{
+            if (edit) {
+                edit.click()
+            }
         })
 
         //delete line        

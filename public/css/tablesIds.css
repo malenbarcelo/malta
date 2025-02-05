@@ -12,7 +12,7 @@
 }
 
 #productsClientsTable{
-    height: 250px;
+    height: 300px;
 }
 
 #cmppTable{
@@ -64,6 +64,12 @@
 #productsTypesTable,#fabricsTable,#colorsTable,#sizesTable {
     height: 450px;
 }
+
+/*----------shipping.ejs----------*/
+#shippingTable {
+    height: 430px;
+}
+
 
 
 

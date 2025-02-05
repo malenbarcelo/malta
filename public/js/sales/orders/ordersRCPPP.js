@@ -39,11 +39,12 @@ function rcpppEventListeners() {
     rcpppAccept.addEventListener("click", async() => {
 
         //validations
-        const errors = inputsValidation([rcpppType,rcpppPaymentMethod,rcpppAmount])
+        const errors = inputsValidation([rcpppDate,rcpppType,rcpppPaymentMethod,rcpppAmount])
 
         if (errors == 0) {
 
             const data = {
+                date: rcpppDate.value,
                 amount:parseFloat(rcpppAmount.value,2),
                 type:rcpppType.value,
                 id_customers:og.customerData[0].id,

@@ -77,15 +77,19 @@ window.addEventListener('load',async()=>{
 
     //unfilter event listener
     unfilterOrdersDetails.addEventListener("click", async() => {
+
+        ordersDetailsLoader.style.display = 'block'
         odg.ordersDetailsFiltered = odg.ordersDetails
         filterOrder.value = ''
         filterProduct.value = ''
         filterCustomer.value = ''
         filterOrderStatus.value = 'default'
-        filterOrderManager.value = 'default'
         filterFrom.value = ''
         filterUntil.value = ''
+        applyFilters()
         printOrdersDetails()
+        ordersDetailsLoader.style.display = 'none'
+        
     })
 
     //predicts elements
@@ -102,9 +106,10 @@ window.addEventListener('load',async()=>{
 
     //DGAaddProduct    
     DGAaddProduct.addEventListener("click", async() => {
-        const inputs = [apppProduct, apppCustomer]
+        const inputs = [apppReqQty,apppProduct, apppCustomer]
         clearInputs(inputs)
         isValid(inputs)
+        apppError.style.display = 'none'
         odg.salesChannel = 0
         odg.productsToAdd = []
         printProductsToAdd()

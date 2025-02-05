@@ -35,7 +35,7 @@ let og = {
             right:'0%'
         }
     ],
-    popups:[aeppp,cdpp,espp,ecpp,cppp,cpmpp,caopp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
+    popups:[copp,aeppp,cdpp,espp,ecpp,cppp,cpmpp,caopp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
     elementsToPredict:[
         {
             input: filterCustomer,
@@ -177,6 +177,8 @@ let og = {
     customerData:[],
     createPaymentMethodFrom:'',
     changeDiscountFrom:'',
+    coppAction: '',
+    elementToUpdate:{}
 }
 
 export default og

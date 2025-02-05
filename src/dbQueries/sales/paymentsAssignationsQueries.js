@@ -30,9 +30,7 @@ const paymentsAssignationsQueries = {
         })
         return customersAssignations
     },
-    registerAssignation: async(type, idPayment, idCustomer, idOrder, amount) => {
-        
-        const date = new Date()
+    registerAssignation: async(type, idPayment, idCustomer, idOrder, amount, date) => {
 
         await model.create({
             date:date,

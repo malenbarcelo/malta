@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements } from "./functions.js"
+import { getData, applyFilters,updateCustomerData,updateOrderData, printCustomerMovements, selectOrderManager } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 import { printOrderDetails } from "./printOrderDetails.js"
 import { closePopups,clearInputs, showTableInfo, applyPredictElement, closeWithEscape, acceptWithEnterInput, acceptWithEnterPopup,dateToString, focusInputs } from "../../generalFunctions.js"
@@ -15,7 +15,6 @@ import { eodppEventListeners } from "./ordersEODPP.js"
 import { oloppEventListeners } from "./ordersOLOPP.js"
 import { amppEventListeners } from "./ordersAMPP.js"
 import { obppEventListeners } from "./ordersOBPP.js"
-// import { doppEventListeners } from "./ordersDOPP.js"
 import { roppEventListeners } from "./ordersROPP.js"
 import { rpppEventListeners } from "./ordersRPPP.js"
 import { rcpppEventListeners } from "./ordersRCPPP.js"
@@ -26,6 +25,7 @@ import { ecppEventListeners } from "./ordersECPP.js"
 import { cdppEventListeners } from "./ordersCDPP.js"
 import { cbppEventListeners } from "./ordersCBPP.js"
 import {schppEventListeners } from "./ordersSCHPP.js"
+import {coppEventListeners } from "./ordersCOPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -35,16 +35,7 @@ window.addEventListener('load',async()=>{
     await getData()
 
     //select order manager
-    if (og.userLogged == 'Esteban') {
-        filterOrderManager.value = 4
-        channel_2.checked = true
-        og.channelsChecked.push(channel_2)
-    }
-    if (og.userLogged == 'Pedro') {
-        filterOrderManager.value = 5
-        og.channelsChecked.push(channel_1)
-        channel_1.checked = true
-    }
+    selectOrderManager()
 
     //apply filters
     applyFilters()
@@ -62,7 +53,6 @@ window.addEventListener('load',async()=>{
     oloppEventListeners() //ORDERS LINE OBSERVATIONS POPUP
     amppEventListeners() //ASSIGN MANAGER POPUP
     obppEventListeners() //OBSERVATIONS POPUP
-    // doppEventListeners() //DELIVER ORDER POPUP
     roppEventListeners() //RESTORE ORDER POPUP
     rpppEventListeners() //REGISTER PAYMENT POPUP
     rcpppEventListeners() //REGISTER CUSTOMER PAYMENT POPUP
@@ -73,6 +63,7 @@ window.addEventListener('load',async()=>{
     cdppEventListeners() //CREATE DATA POPUP (from create data)
     cbppEventListeners() //CUSTOMER BALANCE POPUP
     schppEventListeners() //SAVE CHANGES POPUP
+    coppEventListeners() // confirm popup
 
     //get upload time
     og.lastClickTime = new Date().getTime()
@@ -132,14 +123,13 @@ window.addEventListener('load',async()=>{
 
     //unfilter event listener
     unfilterOrders.addEventListener("click", async() => {
-        og.ordersFiltered = og.orders
-        clearInputs(filters)
-        
-        og.channelsChecks.forEach(element => {
-            element.checked = false
-        })
 
-        og.channelsChecked = []
+        og.ordersFiltered = og.orders
+
+        const filtersToClear = [filterCustomer,filterOrder,filterOrderStatus,filterPaymentStatus]
+        
+        clearInputs(filtersToClear)
+        
         applyFilters()
         printOrders()
         updateCustomerData()
@@ -240,7 +230,16 @@ window.addEventListener('load',async()=>{
             selectChannelError.style.display = 'none'
         }else{
             rcpppSubtitle.innerText = og.customerData[0].customer_name
-            clearInputs([rcpppType,rcpppPaymentMethod,rcpppAmount])
+            clearInputs([rcpppDate,rcpppType,rcpppPaymentMethod,rcpppAmount])
+
+            const today = new Date()
+            const year = today.getFullYear()
+            const month = String(today.getMonth() + 1).padStart(2, '0')
+            const day = String(today.getDate()).padStart(2, '0')
+            const formattedDate = `${year}-${month}-${day}`
+            rcpppDate.value = formattedDate
+            
+            //rcpppDate.value = formattedDate
             selectChannelError.style.display = 'none'
             rcppp.style.display = 'block'
 

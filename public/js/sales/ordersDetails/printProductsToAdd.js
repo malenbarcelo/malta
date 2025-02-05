@@ -23,6 +23,10 @@ function printProductsToAdd() {
                 thDescription.className = rowClass;
                 thDescription.textContent = product.full_description;
 
+                const thReqQty = document.createElement('th');
+                thReqQty.className = rowClass;
+                thReqQty.textContent = element.reqQty;
+
                 const thColor = document.createElement('th');
                 thColor.className = rowClass;
                 thColor.textContent = product.product_colors.map(c => c.color_data.color).join(', ')
@@ -40,6 +44,7 @@ function printProductsToAdd() {
 
                 row.appendChild(thCustomer);
                 row.appendChild(thDescription);
+                row.appendChild(thReqQty);
                 row.appendChild(thColor);
                 row.appendChild(thSize);
                 row.appendChild(thDelete);

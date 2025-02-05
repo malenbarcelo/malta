@@ -121,7 +121,7 @@ const ordersQueries = {
     },
     findCustomerOrders: async(idCustomer,dateFrom) => {
         const orders = await model.findAll({
-            attributes: ['date','total','order_number',[sequelize.literal("'PEDIDO'"), 'type'],[sequelize.literal("1"), 'type_number']],            
+            attributes: ['id','date','total','order_number',[sequelize.literal("'PEDIDO'"), 'type'],[sequelize.literal("1"), 'type_number']],            
             where: {
                 id_customers:idCustomer,
                 enabled:1,

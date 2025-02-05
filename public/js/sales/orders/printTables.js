@@ -20,6 +20,8 @@ async function printCustomerMovements(dataToPrint) {
             <th class="${rowClass}">${element.order_number}</th>
             <th class="${rowClass}">${og.formatter.format(element.total)}</th>            
             <th class="${rowClass}">${og.formatter.format(element.balance)}</th>
+            <th class="${rowClass}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
+            <th class="${rowClass}"><i class="fa-regular fa-trash-can allowedIcon" id="destroy_${element.id}"></i></th>
         `
         fragment.appendChild(row)
 

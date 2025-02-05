@@ -17,9 +17,7 @@ const paymentsQueries = {
 
         return orderPayments
     },
-    registerPayment: async(idCustomer,payment,idPaymentMethod,type) => {
-        
-        const date = new Date()
+    registerPayment: async(idCustomer,payment,idPaymentMethod,type,date) => {
 
         const newPayment = await model.create({
             date:date,
@@ -68,7 +66,7 @@ const paymentsQueries = {
     },
     findCustomerPayments: async(idCustomer,dateFrom) => {
         const payments = await model.findAll({
-            attributes: ['date',['amount','total'],'type',[sequelize.literal("'-'"), 'order_number'],[sequelize.literal("2"), 'type_number']],
+            attributes: ['id','date',['amount','total'],'type',[sequelize.literal("'-'"), 'order_number'],[sequelize.literal("2"), 'type_number']],
             where: {
                 id_customers:idCustomer,
                 [Op.and]: [

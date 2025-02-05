@@ -22,6 +22,7 @@ async function printProducts() {
 
         
         const row = document.createElement('tr')
+        row.id = 'tr_' + element.id
 
         row.innerHTML = `
             <th class="${rowClass}">${element.product_code}</th>
@@ -54,6 +55,14 @@ function addEventListeners(dataToPrint) {
 
         const edit = document.getElementById('edit_' + element.id)
         const destroy = document.getElementById('destroy_' + element.id)
+        const tr = document.getElementById('tr_' + element.id)
+
+        //edit row with double click
+        tr.addEventListener('dblclick',async()=>{
+            if (edit) {
+                edit.click()
+            }
+        })
 
         destroy.addEventListener('click',async()=>{
             pg.idProductToDelete = element.id

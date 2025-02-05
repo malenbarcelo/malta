@@ -190,7 +190,7 @@ const apisSalesController = {
       let ordersToCreate = []
       const userLogged = req.session.userLogged
       const orderManager = await ordersManagersQueries.findOrderManager(userLogged.id)
-
+      
       //get orders to create data
       const newOrderNumber = await ordersQueries.newOrder()
       let orderNumber = newOrderNumber
@@ -340,6 +340,8 @@ const apisSalesController = {
       const balanceUsed = req.body.amountPaid.balanceUsed
       const newBalance = req.body.newBalance
       const idPaymentMethod = parseInt(req.body.idPaymentMethod)
+      let date = new Date(req.body.date)
+      date = date.setHours(date.getHours() + 3)
 
       const orderPayment = newBalance < 0 ? (payment + newBalance) : payment
       const notAssignedPayment = -newBalance
@@ -347,22 +349,22 @@ const apisSalesController = {
       //register payment
       let newPayment
       if (payment > 0) {
-        newPayment = await paymentsQueries.registerPayment(idCustomer,payment,idPaymentMethod,'PAGO')
+        newPayment = await paymentsQueries.registerPayment(idCustomer,payment,idPaymentMethod,'PAGO',date)
       }
 
       //register order payment
       if (orderPayment > 0) {
-        await paymentsAssignationsQueries.registerAssignation('PAGO ASIGNADO', newPayment.id, idCustomer, idOrder, orderPayment)
+        await paymentsAssignationsQueries.registerAssignation('PAGO ASIGNADO', newPayment.id, idCustomer, idOrder, orderPayment,date)
       }
       
       //register payment without order if corresponds
       if (notAssignedPayment > 0) {
-        await paymentsAssignationsQueries.registerAssignation('PAGO NO ASIGNADO', newPayment.id, idCustomer, null, notAssignedPayment)
+        await paymentsAssignationsQueries.registerAssignation('PAGO NO ASIGNADO', newPayment.id, idCustomer, null, notAssignedPayment,date)
       }
 
       //assign balance used if corresponds
       if (balanceUsed > 0) {
-        await paymentsAssignationsQueries.registerAssignation('ASIGNACION', null, idCustomer, idOrder, balanceUsed)
+        await paymentsAssignationsQueries.registerAssignation('ASIGNACION', null, idCustomer, idOrder, balanceUsed,date)
       }
 
       //update order payment status
