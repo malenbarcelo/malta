@@ -20,7 +20,6 @@ router.get('/products',salesController.products)/**/
 
 //---APIS---//
 //customers
-router.get('/customers-summary',ordersController.customersSummary)
 router.get('/customer-movements/:idCustomer',ordersController.customerMovements)
 router.post('/post-notes',ordersController.postNotes)
 router.post('/create-customer',customersController.createCustomer)

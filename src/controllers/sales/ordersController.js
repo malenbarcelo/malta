@@ -1,8 +1,6 @@
 const dominio = require("../dominio")
 const ordersQueries = require("../../dbQueries/sales/ordersQueries")
 const ordersDetailsQueries = require("../../dbQueries/sales/ordersDetailsQueries")
-const paymentsQueries = require("../../dbQueries/sales/paymentsQueries")
-const paymentsAssignationsQueries = require("../../dbQueries/sales/paymentsAssignationsQueries")
 const customersQueries = require("../../dbQueries/data/customersQueries")
 const {updateOrderData} = require('../../functions/salesFunctions')
 const moment = require('moment-timezone')
@@ -36,62 +34,6 @@ const ordersController = {
           return res.send('Ha ocurrido un error')
         }
     },
-    customersSummary: async(req,res) =>{
-      try{
-          //get date from
-          let dateFrom = new Date()
-          dateFrom.setMonth(dateFrom.getMonth() - 12)
-          dateFrom.setHours(0, 0, 0, 0)
-
-          //get customers
-          let customersData = await customersQueries.customers(dateFrom)
-          customersData = customersData.map(cd => cd.get({ plain: true }))
-
-          //get in progress orders
-          //let inProgressOrders = await (await fetch(dominio + 'apis/sales/in-progress-orders')).json()
-          const orders = await ordersQueries.inProgressOrders()
-          const inProgressOrders = orders.map(order => order.get({ plain: true }))
-
-          inProgressOrders.forEach(order => {
-            const amountPaid = order.orders_assignations.reduce((sum, oa) => sum +parseFloat(oa.amount,2), 0)
-            const balance = parseFloat(order.total) - amountPaid
-            order.amountPaid = amountPaid
-            order.balance = balance
-          })
-
-          //complete customers data
-          customersData.forEach(c => {
-              
-              const ordersBalance = inProgressOrders
-                   .filter(o => o.id_customers == c.id)
-                   .reduce((acc, o) => acc + o.balance, 0)
-
-              const notAssignedPayments = c.customers_payments_assignations
-                   .filter(cpa => cpa.type == 'PAGO NO ASIGNADO')
-                   .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
-
-              const assignments = c.customers_payments_assignations
-                   .filter(cpa => cpa.type == 'ASIGNACION')
-                   .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
-
-              const returns = c.customers_payments_assignations
-                   .filter(cpa => cpa.type == 'REINTEGRO')
-                   .reduce((acc, cpa) => acc + parseFloat(cpa.amount,2), 0)
-              
-              c.ordersBalance = -ordersBalance
-              c.positiveBalance = notAssignedPayments - assignments - returns
-              c.netBalance = c.ordersBalance + c.positiveBalance
-          })
-
-          customersData.sort((a, b) => a.netBalance - b.netBalance)
-
-          res.status(200).json(customersData)
-  
-      }catch(error){
-        console.group(error)
-        return res.send('Ha ocurrido un error')
-      }
-    },
     postNotes: async(req,res) =>{
       try{
 
@@ -116,10 +58,10 @@ const ordersController = {
         //save data in payments
         const newPayment = await paymentsQueries.registerCustomerPayment(data)
 
-        //save data un payments assignations
+        //save data in payments assignations
         const assignation = {
           date: data.date,
-          type: data.type == 'PAGO' ? 'PAGO NO ASIGNADO' : 'REINTEGRO',
+          type: data.type,
           id_payments: newPayment.id,
           id_customers:data.id_customers,
           amount:data.amount
@@ -155,7 +97,7 @@ const ordersController = {
         let customerMovements = [...orders, ...payments]
         customerMovements.sort((a, b) => new Date(a.date) - new Date(b.date))
         customerMovements = customerMovements.map(c => {
-          c.total = c.type == 'PAGO' ? parseFloat(c.total, 10) : -parseFloat(c.total, 10)
+          c.total = (c.type == 'PAGO ASIGNADO' || c.type == 'PAGO NO ASIGNADO')  ? parseFloat(c.total, 10) : -parseFloat(c.total, 10)
           return c
         })
 

@@ -6,6 +6,11 @@
     --color4:rgb(62, 60, 60);
     --color5:#F5F5F5;
     --errorColor:rgb(221, 7, 7);
+    --errorColorLight:rgb(202, 127, 127);
+    --okColor: green;
+    --okColorLight:rgb(173, 204, 173);
+    --alertColor: rgb(104, 104, 104);
+    --alertColorLight:rgba(255, 255, 0, 0.785);
 }
 
 /*---------------------font family---------------------*/

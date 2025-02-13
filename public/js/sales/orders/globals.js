@@ -18,10 +18,6 @@ let og = {
             icon:pvppIcon,
             right:'9%'
         },
-        // {
-        //     icon:doppIcon,
-        //     right:'7.5%'
-        // },
         {
             icon:amppIcon,
             right:'6%'
@@ -35,7 +31,7 @@ let og = {
             right:'0%'
         }
     ],
-    popups:[copp,aeppp,cdpp,espp,ecpp,cppp,cpmpp,caopp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
+    popups:[eppp,copp,aeppp,cdpp,espp,ecpp,cppp,cpmpp,caopp,epspp,epcpp,chdpp,eodpp,olopp,ampp,obpp,dopp,ropp,rcppp,rppp,cmpp,ceopp,cbpp],
     elementsToPredict:[
         {
             input: filterCustomer,
@@ -74,7 +70,6 @@ let og = {
     ordersFiltered:[],
     ordersManagers:[],
     paymentMethods:[],
-    customersSummary:[],
     customerOrders:[],
     channelsChecks:[channel_1, channel_2],
     channelsChecked:[],
@@ -175,10 +170,13 @@ let og = {
     },
     errorsQty:0,
     customerData:[],
+    customerBalance: 0,
     createPaymentMethodFrom:'',
     changeDiscountFrom:'',
     coppAction: '',
-    elementToUpdate:{}
+    elementToUpdate:{},
+    paymentToEdit:{},
+    escNumber:0
 }
 
 export default og

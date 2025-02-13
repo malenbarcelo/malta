@@ -8,52 +8,48 @@ function printProductsToAdd() {
     const fragment = document.createDocumentFragment();
 
     odg.productsToAdd.forEach(element => {
-        element.products.forEach(product => {
-            if (product.enabled != 0) {
 
-                const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
+        const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
 
-                const row = document.createElement('tr');
+        const row = document.createElement('tr');
 
-                const thCustomer = document.createElement('th');
-                thCustomer.className = rowClass;
-                thCustomer.textContent = element.customer.customer_name;
+        const thCustomer = document.createElement('th');
+        thCustomer.className = rowClass;
+        thCustomer.textContent = element.customer_name;
 
-                const thDescription = document.createElement('th');
-                thDescription.className = rowClass;
-                thDescription.textContent = product.full_description;
+        const thDescription = document.createElement('th');
+        thDescription.className = rowClass;
+        thDescription.textContent = element.description;
 
-                const thReqQty = document.createElement('th');
-                thReqQty.className = rowClass;
-                thReqQty.textContent = element.reqQty;
+        const thReqQty = document.createElement('th');
+        thReqQty.className = rowClass;
+        thReqQty.textContent = element.required_quantity;
 
-                const thColor = document.createElement('th');
-                thColor.className = rowClass;
-                thColor.textContent = product.product_colors.map(c => c.color_data.color).join(', ')
+        const thColor = document.createElement('th');
+        thColor.className = rowClass;
+        thColor.textContent = element.colors.map(c => c.color_data.color).join(', ')
 
-                const thSize = document.createElement('th');
-                thSize.className = rowClass;
-                thSize.textContent = product.product_sizes.map(s => s.size_data.size).join(', ')
+        const thSize = document.createElement('th');
+        thSize.className = rowClass;
+        thSize.textContent = element.sizes.map(s => s.size_data.size).join(', ')
 
-                const thDelete = document.createElement('th');
-                thDelete.className = rowClass;
-                const deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fa-regular fa-trash-can allowedIcon';
-                deleteIcon.id = `delete_${element.id}_${product.id}`;
-                thDelete.appendChild(deleteIcon);
+        const thDelete = document.createElement('th');
+        thDelete.className = rowClass;
+        const deleteIcon = document.createElement('i');
+        deleteIcon.className = 'fa-regular fa-trash-can allowedIcon';
+        deleteIcon.id = `delete_${element.row_id}`;
+        thDelete.appendChild(deleteIcon);
 
-                row.appendChild(thCustomer);
-                row.appendChild(thDescription);
-                row.appendChild(thReqQty);
-                row.appendChild(thColor);
-                row.appendChild(thSize);
-                row.appendChild(thDelete);
+        row.appendChild(thCustomer);
+        row.appendChild(thDescription);
+        row.appendChild(thReqQty);
+        row.appendChild(thColor);
+        row.appendChild(thSize);
+        row.appendChild(thDelete);
 
-                fragment.appendChild(row);
+        fragment.appendChild(row);
 
-                counter += 1;
-            }
-        });
+        counter += 1;
     });
 
     bodyAddProducts.appendChild(fragment);
@@ -64,29 +60,14 @@ function printProductsToAdd() {
 function productsToAddEventListeners() {
 
     odg.productsToAdd.forEach(element => {
-        element.products.forEach(product => {
-            const deleteLine = document.getElementById('delete_' + element.id + '_' + product.id)
+        const deleteLine = document.getElementById('delete_' + element.row_id)
 
-            //delete line
-            if (deleteLine) {
-                deleteLine.addEventListener('click',async()=>{
+        //delete line
+        deleteLine.addEventListener('click',async()=>{
 
-                    odg.productsToAdd = odg.productsToAdd.map(item => {
-                        if (item.id == element.id) {
-                            item.products = item.products.map(product2 => {
-                                if (product2.id === product.id) {
-                                    return { ...product2, enabled: 0 };
-                                }
-                                return product2
-                            })
-                        }
-                        return item
-                    })
+            odg.productsToAdd = odg.productsToAdd.filter( p => p.row_id != element.row_id)
 
-                    printProductsToAdd()
-                })
-            }        
-            
+            printProductsToAdd()
         })
     })
 }

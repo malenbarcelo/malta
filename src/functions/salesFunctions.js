@@ -1,6 +1,5 @@
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../dbQueries/sales/ordersDetailsQueries')
-const paymentsAssignationsQueries = require('../dbQueries/sales/paymentsAssignationsQueries')
 
 async function updateOrderData(idOrders) {
     let orderData = await ordersQueries.findOrder(idOrders)

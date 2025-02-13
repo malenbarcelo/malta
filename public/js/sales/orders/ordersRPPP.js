@@ -1,6 +1,6 @@
 import { dominio } from "../../dominio.js"
 import og from "./globals.js"
-import { isInvalid, clearInputs, showOkPopup,isValid } from "../../generalFunctions.js"
+import { isInvalid, clearInputs, showOkPopup,isValid, ignoreDoubleClick } from "../../generalFunctions.js"
 import { applyFilters, getData, updateCustomerData } from "./functions.js"
 import { printOrders } from "./printOrders.js"
 
@@ -31,7 +31,7 @@ function rpppEventListeners() {
                 rpppBalanceAlert.style.color = 'rgb(206, 10, 10)';
                 rpppBalanceAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><div>Quedará un saldo pendiente de ARS ' + og.formatter.format(og.orderToPay.balance - totalPayment) + '</div>';
             } else {
-                rpppBalanceAlert.innerHTML = '';  // Sin alertas si es igual
+                rpppBalanceAlert.innerHTML = ''; 
             }
 
             rpppNewBalance.value = og.formatter.format(og.orderToPay.balance - totalPayment)
@@ -79,89 +79,143 @@ function rpppEventListeners() {
         cpmppTitle.innerText = 'CREAR FORMA DE PAGO'
         cpmpp.style.display = 'block'
     })
-    
+
     rpppAccept.addEventListener("click", async() => {
 
-        const now = new Date().getTime()
+        let responseStatus1
+        let responseStatus2
 
-        if (now - og.lastClickTime < 300) {
-            return  // Ignore double click
+        // ignore double click
+        if (ignoreDoubleClick(1200)) {
+            return
         }
 
-        og.lastClickTime = now
-
-        let errors = 0
-
-        if (rpppDate.value == '') {
-            errors += 1
-            isInvalid([rpppDate])
-        }
-
-        if (rpppBalanceUsed.value == 0 && rpppPayment.value == '') {
-            errors += 1
-            isInvalid([rpppPayment])
-        }
-
-        if (rpppBalanceUsed.value == 0 && rpppPaymentMethod.value == '') {
-            errors += 1
-            isInvalid([rpppPaymentMethod])
-        }
-
-        //find customer positive balance and show checkbox if applies
-        let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + og.orderToPay.id_customers)).json()
-
-        if (positiveBalance == 0 && og.orderToPayPayment.balanceUsed > 0) {
-            errors += 1
-
-            updateCustomerData()
-            rppp.style.display = 'none'
-            bodyOrders.innerHTML = ''
-            ordersLoader.style.display = 'block'
-            await getData()
-            applyFilters()
-            printOrders()
-            errorppText.innerText = 'El saldo a favor ya fue utilizado'
-            showOkPopup(errorpp)
-
-        }
+        //validations
+        const errors = validations()
 
         if (errors == 0) {
 
-            rpppUnabledAccept.style.display = 'block'
-            rpppAccept.style.display = 'none'
+            ordersLoader.style.display = 'block'
+            rppp.style.display = 'none'
 
-            const data = {
-                date: rpppDate.value,
-                orderToPay:og.orderToPay,
-                amountPaid:og.orderToPayPayment,
-                idPaymentMethod:rpppPaymentMethod.value,
-                newBalance:og.orderToPayNewBalance
+            //get date
+            let date = new Date(rpppDate.value)
+            date = date.setHours(date.getHours() + 3)
+
+            //get data
+            const payment = rpppPayment.value == '' ? 0 : parseFloat(rpppPayment.value)
+            const assignation = parseFloat(rpppBalanceUsed.value.replace('.',''),2)
+            const newBalance = og.orderToPay.balance - payment - assignation
+
+            //complete data
+            const data = []
+
+            if (payment > 0) {
+                const assignedPayment = newBalance < 0 ? og.orderToPay.balance - assignation : payment
+                data.push({
+                    id_orders:og.orderToPay.id,
+                    date: date,
+                    type: 'PAGO ASIGNADO',
+                    amount:assignedPayment,
+                    id_payments_methods:rpppPaymentMethod.value,
+                    id_customers: og.orderToPay.id_customers
+                })
+            }
+
+            if (rpppBalanceUsed.value > 0) {
+                data.push({
+                    id_orders:og.orderToPay.id,
+                    date: date,
+                    type: 'ASIGNACION',
+                    amount:assignation,
+                    id_customers: og.orderToPay.id_customers
+                })
+            }
+
+            if (newBalance < 0) {
+                data.push({
+                    date: date,
+                    type: 'PAGO NO ASIGNADO',
+                    amount:-newBalance,
+                    id_customers: og.orderToPay.id_customers,
+                    id_payments_methods:rpppPaymentMethod.value,
+                })
             }
 
             //register payment
-            if (data.amountPaid.payment > 0 || data.amountPaid.balanceUsed > 0) {
-                await fetch(dominio + 'apis/sales/register-payment',{
+            const response = await fetch(dominio + 'apis/create/sales-transactions',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            responseStatus1 = await response.json()
+
+            // update payment status
+            if (responseStatus1.message == 'ok') {
+
+                const idPaymentsStatus = newBalance > 0 ? 4 : 5
+
+                const data = [{
+                    id: og.orderToPay.id,
+                    id_payments_status : idPaymentsStatus
+                }]
+
+                const response = await fetch(dominio + 'apis/update/sales-orders',{
                     method:'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
                 })
+
+                responseStatus2 = await response.json()
             }
 
-            updateCustomerData()
-
-            rppp.style.display = 'none'
-
+            // update data
             bodyOrders.innerHTML = ''
-            ordersLoader.style.display = 'block'
             await getData()
             applyFilters()
             printOrders()
-            okppText.innerText = 'Pago registrado con éxito'
-            showOkPopup(okpp)
+
+            // show result
+            if (responseStatus1.message == 'ok' && responseStatus2.message == 'ok') {
+                okText.innerText = 'Pago registrado con éxito'
+                showOkPopup(okPopup)
+            }else{
+                errorText.innerText = 'Error al registrar el pago'
+                showOkPopup(errorPopup)
+            }
+
+            // hide loader
+            ordersLoader.style.display = 'none'
 
         }
-        
+
     })
 }
+
+function validations() {
+
+    let errors = 0
+
+    if (rpppDate.value == '') {
+        errors += 1
+        isInvalid([rpppDate])
+    }
+
+    if (rpppBalanceUsed.value == 0 && rpppPayment.value == '') {
+        errors += 1
+        isInvalid([rpppPayment])
+    }
+
+    if (rpppBalanceUsed.value == 0 && rpppPaymentMethod.value == '') {
+        errors += 1
+        isInvalid([rpppPaymentMethod])
+    }
+
+    return errors
+
+}
+
+
 
 export {rpppEventListeners}

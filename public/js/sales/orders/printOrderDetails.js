@@ -90,7 +90,8 @@ function ordersDetailsEventListeners() {
                 }
                 
                 //show popup
-                eodpp.style.display = 'block'    
+                eodpp.style.display = 'block'
+                eodppQtyC.focus()
             })
         }
 

@@ -3,7 +3,6 @@ import og from "./globals.js"
 import { printOrders } from "./printOrders.js"
 import { dateToString,isValid,isInvalid, applyPredictElement } from "../../generalFunctions.js"
 
-
 async function getData() {
     og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
     og.userLogged = userLogged.innerText
@@ -17,7 +16,6 @@ async function getData() {
     og.sizes = await (await fetch(dominio + 'apis/cuttings/data/sizes')).json()
     og.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
     og.ordersFiltered = og.orders   
-    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
     og.paymentMethods = await (await fetch(dominio + 'apis/data/payment-methods')).json()
 }
 
@@ -63,6 +61,8 @@ function applyFilters() {
         applyPredictElement(og.elementsToPredict)
     }
 
+    updateCustomerData()
+
 }
 
 function updateOrdersData() {
@@ -76,20 +76,21 @@ function updateOrdersData() {
 
 async function updateCustomerData() {
 
-    og.customersSummary = await (await fetch(dominio + 'apis/sales/customers/customers-summary')).json()
+    og.customerData = og.customers.filter(c => c.customer_name == filterCustomer.value)
+    const customerId = og.customerData[0]?.id || 0
+    const balance = await (await fetch(dominio + 'apis/composed/positive-balance?id_customers=' + customerId)).json()
+    og.customerBalance = balance
+    const customerNotes = og.customerData[0]?.notes || ''
 
     if (filterCustomer.value != '') {
-        og.customerData = og.customersSummary.filter(c => c.customer_name == filterCustomer.value)
-        const customerPositiveBalance = og.customerData.length > 0 ? og.customerData[0].positiveBalance : 0
-        const customerNotes = og.customerData.length > 0 ? og.customerData[0].notes : null
-
+        
         //balance
-        if (customerPositiveBalance > 0) {
-            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(customerPositiveBalance);
+        if (balance > 0) {
+            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO A FAVOR: </b>$' + og.formatter.format(balance);
             positiveBalance.style.color = 'green'
             positiveBalance.style.display = 'block';
-        } else if (customerPositiveBalance < 0) {
-            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO EN CONTRA: </b>$' + og.formatter.format(customerPositiveBalance);
+        } else if (balance < 0) {
+            positiveBalance.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><b>SALDO EN CONTRA: </b>$' + og.formatter.format(balance);
             positiveBalance.style.color = 'var(--errorColor)'
             positiveBalance.style.display = 'block';
         } else {
@@ -97,7 +98,7 @@ async function updateCustomerData() {
         }
 
         //comments
-        if (customerNotes == null || customerNotes =='') {
+        if (customerNotes == null || customerNotes == '') {
             notes.innerHTML = '<i class="fa-regular fa-comment"></i>'
         }else{
             notes.innerHTML = '<i class="fa-regular fa-comment-dots"></i>'
@@ -194,25 +195,28 @@ async function printCustomerMovements(dataToPrint) {
     ordersLoader.style.display = 'block'
     cmppBody.innerHTML = ''
     let counter = 0
-    const fragment = document.createDocumentFragment()  
+    const fragment = document.createDocumentFragment()
 
     //printTable
     dataToPrint.forEach(element => {
 
         const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
         const date = dateToString(element.date)
-        const editIcon = element.type == 'PEDIDO' ? '' : `<i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i>`
-        const destroyIcon = element.type == 'PEDIDO' ? '' : `<i class="fa-regular fa-trash-can allowedIcon" id="destroy_${element.id}"></i>`
+
+        const orderNumber = element.order_number ?? (element.id_orders ? element.order_data.order_number : '')
+        
+        // const editIcon = element.type == 'PEDIDO' || ( element.type == 'PAGO NO ASIGNADO' && positiveBalance == 0) ? '' : `<i class="fa-regular fa-pen-to-square allowedIcon" id="editM_${element.id}"></i>`
+        // const destroyIcon = (element.type == 'PEDIDO' || (element.type == 'PAGO' && positiveBalance < element.total)) ? '' : `<i class="fa-regular fa-trash-can allowedIcon" id="destroyM_${element.id}"></i>`
         
         const row = document.createElement('tr')
         row.innerHTML = `
             <th class="${rowClass}">${date}</th>
-            <th class="${rowClass}">${element.type}</th>
-            <th class="${rowClass}">${element.order_number}</th>
-            <th class="${rowClass}">${og.formatter.format(element.total)}</th>            
+            <th class="${rowClass}">${element.type || 'PEDIDO'}</th>
+            <th class="${rowClass}">${orderNumber}</th>
+            <th class="${rowClass}">${og.formatter.format(element.amount || element.total)}</th>            
             <th class="${rowClass}">${og.formatter.format(element.balance)}</th>
-            <th class="${rowClass}">${editIcon}</th>
-            <th class="${rowClass}">${destroyIcon}</th>
+            <th class="${rowClass}">${''}</th>
+            <th class="${rowClass}">${''}</th>
         `
         fragment.appendChild(row)
 
@@ -230,13 +234,19 @@ function movementsEventListeners(dataToPrint) {
 
     dataToPrint.forEach(element => {
 
-        const edit = document.getElementById('edit_' + element.id)
-        const destroy = document.getElementById('destroy_' + element.id)
+        const edit = document.getElementById('editM_' + element.id)
+        const destroy = document.getElementById('destroyM_' + element.id)
 
         //edit
         if (edit) {
             edit.addEventListener("click", async() => {
-                copp.style.display = 'block'
+                epppDate.value = element.date
+                epppType.value = element.type
+                epppAmount.value = element.type == 'REINTEGRO' ? -element.total : element.total
+                isValid([epppDate,epppAmount])
+                og.paymentToEdit = element
+                eppp.style.display = 'block'
+                epppAmount.focus()
             })
         }
 

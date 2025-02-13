@@ -7,15 +7,6 @@ const customersQueries = {
     customers: async(dateFrom) => {
         const customers = await model.findAll({
             include: [
-                {
-                    association: 'customers_payments_assignations',
-                    where: {
-                        date: {
-                            [Op.gt]: dateFrom
-                        }
-                    },
-                    required: false
-                },
                 { association: 'sales_channel_data' }
             ],
             order:[['customer_name','ASC']],

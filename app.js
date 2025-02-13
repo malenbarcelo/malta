@@ -14,7 +14,9 @@ const apisSalesRoutes = require('./src/routes/apisRoutes/apisSalesRoutes.js')
 const apisCuttingsRoutes = require('./src/routes/apisRoutes/apisCuttingsRoutes.js')
 const apisDataRoutes = require('./src/routes/apisRoutes/apisDataRoutes.js')
 const updateRoutes = require('./src/routes/apisRoutes/updateRoutes.js')
+const createRoutes = require('./src/routes/apisRoutes/createRoutes.js')
 const getRoutes = require('./src/routes/apisRoutes/getRoutes.js')
+const deleteRoutes = require('./src/routes/apisRoutes/deleteRoutes.js')
 const composedRoutes = require('./src/routes/apisRoutes/composedRoutes.js')
 const cuttingsRoutes = require('./src/routes/cuttingsRoutes.js')
 const dataRoutes = require('./src/routes/dataRoutes.js')
@@ -83,9 +85,9 @@ app.use('/cuttings',cuttingsRoutes)
 /*---APIS---*/
 app.use('/apis/get',getRoutes) 
 app.use('/apis/update',updateRoutes)
-app.use('/apis/composed',composedRoutes) 
-
-
+app.use('/apis/create',createRoutes)
+app.use('/apis/delete',deleteRoutes)
+app.use('/apis/composed',composedRoutes)
 
 //main
 app.use('/apis/main',mainRoutes) //main
@@ -101,5 +103,5 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-//console.log(bcrypt.hashSync('user1',10))
+//console.log(bcrypt.hashSync('mlow',10))
 

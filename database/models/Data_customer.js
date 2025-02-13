@@ -59,11 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       Data_customer.belongsTo(models.Data_sales_channels,{
         as:'sales_channel_data',
         foreignKey: 'id_sales_channels'
-        }),
-      Data_customer.hasMany(models.Sales_payments_assignations,{
-      as:'customers_payments_assignations',
-      foreignKey: 'id_customers'
-      })
+        })
     }
     
     return Data_customer

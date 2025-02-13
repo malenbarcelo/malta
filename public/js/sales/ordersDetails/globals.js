@@ -48,6 +48,7 @@ let odg = {
     lineToDelete:[],
     lineToEdit:[],
     productsToAdd:[],
+    customersProductsToAdd:[],
     createOrder:false,
     salesChannel:0,
     productSizes:[],

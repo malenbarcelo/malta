@@ -5,7 +5,7 @@ import { updateOrdersData, updateOrderData, getData, applyFilters } from "./func
 import { printOrderDetails } from "./printOrderDetails.js"
 
 async function printOrders() {
-
+    
     ordersLoader.style.display = 'block'
     bodyOrders.innerHTML = ''
 
@@ -29,7 +29,7 @@ async function printOrders() {
     
         return `
             <tr id="tr_${element.id}">
-            <th class="${rowClass} ${color}">${element.order_number}</th>
+                <th class="${rowClass} ${color}">${element.order_number}</th>
                 <th class="${rowClass} ${color}">${element.season}</th>
                 <th class="${rowClass} ${color}">${date}</th>
                 <th class="${rowClass} ${color}">${element.orders_sales_channels.sales_channel}</th>
@@ -134,8 +134,8 @@ function ordersEventListeners() {
                 rpppUnabledAccept.style.display = 'none'
                 rpppAccept.style.display = 'block'
 
-                //find customer positive balance and show checkbox if applies
-                let positiveBalance = await (await fetch(dominio + 'apis/sales/payments-assignations/customer-assignations/' + element.id_customers)).json()
+                //find customer balance
+                let positiveBalance = await (await fetch(dominio + 'apis/composed/positive-balance?id_customers=' + element.id_customers)).json()
 
                 if (positiveBalance > 0) {
                     og.orderToPayCustomerBalance = positiveBalance

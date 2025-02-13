@@ -50,8 +50,6 @@ const paymentMethodsController = {
 
         const id = req.body.id
 
-        console.log(id)
-
         //edit payment method
         await paymentMethodsQueries.destroy(id)
       

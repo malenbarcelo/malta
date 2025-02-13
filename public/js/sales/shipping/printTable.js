@@ -15,6 +15,7 @@ function printTable() {
 
         const rowClass = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'        
         const row = document.createElement('tr')
+        row.id = 'tr_' + element.id
 
         row.innerHTML = `
             <th class="${rowClass}">${dateToString(element.date)}</th>
@@ -47,6 +48,7 @@ function shippingEventListeners(dataToPrint) {
     dataToPrint.forEach(element => {
 
         const edit = document.getElementById('edit_' + element.id)
+        const tr = document.getElementById('tr_' + element.id)
         const deliver = document.getElementById('deliver_' + element.id)
 
         deliver.addEventListener('click',async()=>{
@@ -73,6 +75,13 @@ function shippingEventListeners(dataToPrint) {
             eshppObservations.value = element.shipping_observations
             
             eshpp.style.display = 'block'
+        })
+
+        //edit row with double click
+        tr.addEventListener('dblclick',async()=>{
+            if (edit) {
+                edit.click()
+            }
         })
         
     })

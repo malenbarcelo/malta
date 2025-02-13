@@ -11,7 +11,7 @@ const ordersDetailsColorsQueries = {
         await model.destroy(
             { where: { id_orders_details: ids } }
         )
-    }
+    },
 }       
 
 module.exports = ordersDetailsColorsQueries

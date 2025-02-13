@@ -26,6 +26,7 @@ import { cdppEventListeners } from "./ordersCDPP.js"
 import { cbppEventListeners } from "./ordersCBPP.js"
 import {schppEventListeners } from "./ordersSCHPP.js"
 import {coppEventListeners } from "./ordersCOPP.js"
+import {epppEventListeners } from "./ordersEPPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -64,6 +65,8 @@ window.addEventListener('load',async()=>{
     cbppEventListeners() //CUSTOMER BALANCE POPUP
     schppEventListeners() //SAVE CHANGES POPUP
     coppEventListeners() // confirm popup
+    epppEventListeners() // edit payment popup 
+
 
     //get upload time
     og.lastClickTime = new Date().getTime()
@@ -82,7 +85,8 @@ window.addEventListener('load',async()=>{
     acceptWithEnterInput(eodppPrice,eodppAccept) //edit order line
     acceptWithEnterInput(eodppQtyR,eodppAccept) //edit order line
     acceptWithEnterInput(eodppQtyC,eodppAccept) //edit order line
-    acceptWithEnterInput(rcpppAmount,rcpppAccept) //register payment        
+    acceptWithEnterInput(rcpppAmount,rcpppAccept) //register payment
+    acceptWithEnterInput(epppAmount,epppAccept) //edit payment        
 
     //accept with enter popups
     acceptWithEnterPopup(caopp,caoppAccept) //cancel order
@@ -150,8 +154,6 @@ window.addEventListener('load',async()=>{
             DGAregisterPayment.classList.remove('notVisible')
             DGAmovementsDetails.classList.remove('notVisible')
             DGAbalance.classList.remove('notVisible')
-
-            updateCustomerData()
         }else{
             DGAregisterPayment.classList.add('notVisible')
             DGAmovementsDetails.classList.add('notVisible')
@@ -248,11 +250,34 @@ window.addEventListener('load',async()=>{
 
     //view customer movements
     DGAmovementsDetails.addEventListener("click", async() => {
-        const findCustomer = og.customers.filter( c => c.customer_name == filterCustomer.value)
-        const customerMovements = await (await fetch(dominio + 'apis/sales/customers/customer-movements/' + findCustomer[0].id)).json()
-        cmppSubtitle.innerText = findCustomer[0].customer_name
-        printCustomerMovements(customerMovements)
+        
+        //get last two years info
+        const date = new Date()
+        date.setMonth(date.getMonth() - 24)
+        const formattedDate = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0')
+        
+        const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_customers=${og.customerData[0].id}&date_from=${formattedDate}`)).json()
+
+        const orders = await (await fetch(`${dominio}apis/get/sales-orders?id_customers=${og.customerData[0].id}&date_from=${formattedDate}`)).json()
+
+        // merge both arrays
+        const movements = [...transactions.rows, ...orders.rows]
+
+        // order by date
+        movements.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+        //get balance
+        let balance = 0
+        movements.forEach((item) => {
+            const amount = parseFloat(item.amount || item.total) // Convierte a número si está en string
+            balance += (item.type == 'PAGO NO ASIGNADO' || item.type == 'PAGO ASIGNADO') ? amount : (item.type == 'ASIGNACION' ? 0 : -amount)
+            item.balance = balance
+        })
+
+        cmppSubtitle.innerText = og.customerData[0].customer_name
+        printCustomerMovements(movements)
         selectChannelError.style.display = 'none'
+        cmppBalance.innerHTML = og.customerBalance >= 0 ? 'Saldo a favor: $ ' + og.formatter.format(og.customerBalance) : 'Saldo en contra: $ ' + og.formatter.format(og.customerBalance)
         cmpp.style.display = 'block'
     })
     

@@ -1,0 +1,35 @@
+<!-- edit payment popup (eppp) -->
+<div class="popup2" id="eppp">
+    
+    <div class="popupContent ppContentHmWl" id="epppContent">
+
+        <div class="popupIcons">
+            <div class="popupIcon2"><i class="fa-regular fa-credit-card"></i></div>
+            <div class="popupClose2" id="epppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="epppTitle">EDITAR MOVIMIENTO</div>
+
+        <div class="divInputsColumn mtl mbm">
+            <div class="divInput">
+                <label class="label1" id="epppDateLabel">Fecha</label>
+                <input type="date" class="input1 im ipl" id="epppDate">
+                <div class="divError" id="epppDateError">Debe ingresar una fecha</div>                
+            </div>
+            <div class="divInput mtm">
+                <label class="label1" id="epppTypeLabel">Tipo</label>
+                <input type="text" class="input1 im ipl" id="epppType" readonly>               
+            </div>
+            
+            <div class="divInput mtm">
+                <label class="label1" id="epppAmountLabel">Importe $</label>
+                <input type="number" step="0.01" class="input1 im ipl" id="epppAmount">
+                <div class="divError" id="epppAmountError">El importe debe ser numérico y mayor a 0</div>
+            </div>
+        </div>
+
+        <div class="divButtonsRow mtl mbs">
+            <div id="epppAccept" class="button1 bxs">Aceptar</div>
+        </div>
+    </div>
+</div>

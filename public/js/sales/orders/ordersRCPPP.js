@@ -37,38 +37,46 @@ function rcpppEventListeners() {
     })
 
     rcpppAccept.addEventListener("click", async() => {
-
+        
         //validations
         const errors = inputsValidation([rcpppDate,rcpppType,rcpppPaymentMethod,rcpppAmount])
 
         if (errors == 0) {
 
-            const data = {
-                date: rcpppDate.value,
+            rcppp.style.display = 'none'
+            ordersLoader.style.display = 'block'
+
+            //get date
+            let date = new Date(rcpppDate.value)
+            date = date.setHours(date.getHours() + 3)
+
+            const data = [{
+                date: date,
                 amount:parseFloat(rcpppAmount.value,2),
-                type:rcpppType.value,
+                type:rcpppType.value == 'PAGO' ? 'PAGO NO ASIGNADO' : 'REINTEGRO',
                 id_customers:og.customerData[0].id,
                 id_payments_methods: rcpppPaymentMethod.value
-            }
+            }]
+            
 
             //register customer payment
-            if (data.amount > 0) {
-                await fetch(dominio + 'apis/sales/payments/register-customer-payment',{
+            if (data[0].amount > 0) {
+                const response = await fetch(dominio + 'apis/create/sales-transactions',{
                     method:'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
                 })
-            }
 
-            updateCustomerData()
-            rcppp.style.display = 'none'
-            bodyOrders.innerHTML = ''
-            ordersLoader.style.display = 'block'
-            await getData()
-            applyFilters()
-            printOrders()
-            okppText.innerText = 'Pago registrado con éxito'
-            showOkPopup(okpp)
+                const responseStatus = await response.json()
+                
+                updateCustomerData()
+                bodyOrders.innerHTML = ''
+                await getData()
+                applyFilters()
+                printOrders()
+                okppText.innerText = 'Pago registrado con éxito'
+                showOkPopup(okpp)
+            }
         }
     })
         

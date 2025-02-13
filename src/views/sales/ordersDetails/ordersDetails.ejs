@@ -35,17 +35,33 @@
             <ul class="predictedElements" id="ulPredictedProducts"></ul>
         </div>
         <div class="divInput">
+            <label class="label1">Canal</label>
+            <select id="filterChannel" class="input1 ixxs sps">
+                <option value=""></option>
+                <option value="1">Dif1</option>
+                <option value="2">Dif2</option>
+            </select>
+        </div>
+        <!-- <div class="divInput">
             <label class="label1">Desde</label>
             <input type="date" class="input1 ixxs sps" id="filterFrom">
         </div>
         <div class="divInput">
             <label class="label1">Hasta</label>
             <input type="date" class="input1 ixxs sps" id="filterUntil">
-        </div>        
+        </div>         -->
         <div class="divInput">
-            <label class="label1">Estado</label>
-            <select id="filterOrderStatus" class="input1 ixxs sps">
+            <label class="label1">Estado de la orden</label>
+            <select id="filterOrderStatus" class="input1 ixs sps">
                 <option value="default"></option>
+                <option value="complete">Completo</option>
+                <option value="incomplete">Incompleto</option>
+            </select>
+        </div>
+        <div class="divInput">
+            <label class="label1">Estado del artículo</label>
+            <select id="filterItemStatus" class="input1 ixs sps">
+                <option value=""></option>
                 <option value="complete">Completo</option>
                 <option value="incomplete">Incompleto</option>
             </select>
@@ -80,24 +96,24 @@
 
         <div class="tableInfo" id="elppInfo">Editar línea</div>
         <div class="tableInfo" id="loppInfo">Ver observ.</div>
-        <div class="tableInfo" id="dlppInfo">Eliminar línea</div>
+        <div class="tableInfo" id="dlppInfo">Eliminar item</div>
         
         <div class="divTable" id="ordersDetailsTable">
             <table>
                 <thead>
                     <tr>
                         <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
-                        <th class="theadCss wXS thTall">Fecha</th>
-                        <th class="theadCss wXS thTall">Canal</th>
+                        <th class="theadCss wXXS thTall">Canal</th>
                         <th class="theadCss wM thTall">Cliente</th>
                         <th class="theadCss wXL thTall">Producto</th>
                         <th class="theadCss wXS thTall">Talles</th>
                         <th class="theadCss wL thTall">Colores</th>
                         <th class="theadCss wXS thTall">Precio</th>
-                        <th class="theadCss wXS thTall">Cantidad confirmada</th>
-                        <th class="theadCss wXS thTall">Cantidad requerida</th>
+                        <th class="theadCss wXXS thTall">Cantidad confirmada</th>
+                        <th class="theadCss wS thTall">Cantidad requerida</th>
                         <th class="theadCss wS thTall">Total</th>
-                        <th class="theadCss wXS thTall">Estado del pedido</th>                 
+                        <th class="theadCss wXS thTall">Estado del pedido</th>
+                        <th class="theadCss wXS thTall">Última edición</th>                 
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="elppIcon"></i></th>
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment tableIcon" id="loppIcon"></i></th>
     
@@ -123,6 +139,7 @@
 <%- include('./ordersDetailsELSPP') %>
 <%- include('./ordersDetailsPopups') %>
 <%- include('../../partials/okPopup') %>
+<%- include('../../partials/resultsPopups') %>
 
 <!----------SCRIPTS---------->
 <script type="module" src="/js/sales/ordersDetails/ordersDetails.js"></script>

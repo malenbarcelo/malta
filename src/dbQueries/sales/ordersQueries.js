@@ -14,7 +14,6 @@ const ordersQueries = {
                 {association: 'orders_orders_managers'},
                 {association: 'orders_sales_channels'},
                 {association: 'orders_orders_details'},
-                {association: 'orders_assignations'}
 
             ],
             where:{
@@ -65,7 +64,7 @@ const ordersQueries = {
                     ]
 
                 },
-                {association: 'orders_assignations'}
+                //{association: 'orders_assignations'}
 
             ],
             where:{
@@ -316,7 +315,6 @@ const ordersQueries = {
             include: [
                 {association: 'orders_customers'},
                 {association: 'orders_payments_status'},
-                {association: 'orders_assignations'},
                 {association: 'shipping_method_data'},
             ],
             nest:true,
@@ -338,6 +336,65 @@ const ordersQueries = {
             { where: { id: d.id } }
             )
         }
+    },
+    get: async({limit,offset,filters}) => {
+                
+            const where = {}
+    
+            if (filters.id_customers) {
+                where.id_customers = filters.id_customers
+            }
+    
+            if (filters.date_from) {
+                where.date = {
+                    [Op.and]: [
+                        sequelize.where(
+                            fn('DATE', col('date')),
+                            {
+                                [Op.gt]: new Date(filters.date_from)
+                            }
+                        )
+                    ]
+                }
+            }
+    
+            const data = await model.findAndCountAll({
+                where,
+                limit,
+                offset,
+                raw:true,
+                nest:true,
+                order:[['date','ASC']],
+            })
+    
+            return data
+    },
+    lastOrders: async({filters}) => {
+                
+        const where = {
+            enabled:1,
+        }
+
+        if (filters.customers) {
+            where.id_customers = filters.customers
+        }
+
+        const data = await model.findAll({
+            where,
+            raw: true,
+            group: ['id_customers','id_payments_status'],
+            attributes: [
+                'id_customers',
+                'id_payments_status',
+                [sequelize.fn('MAX', sequelize.col('id')), 'id_orders']
+            ]
+        })
+
+        return data
+    },
+    create: async(data) => {
+        const orders = model.bulkCreate(data)
+        return orders
     },
 }       
 

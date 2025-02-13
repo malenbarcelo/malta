@@ -1,10 +1,9 @@
 const ordersQueries = require('../../dbQueries/sales/ordersQueries')
+const transactionsQueries = require('../../dbQueries/sales/transactionsQueries')
 const ordersDetailsQueries = require('../../dbQueries/sales/ordersDetailsQueries')
 const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsColorsQueries')
 const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
 const ordersManagersQueries = require('../../dbQueries/data/ordersManagersQueries')
-const paymentsQueries = require('../../dbQueries/sales/paymentsQueries')
-const paymentsAssignationsQueries = require('../../dbQueries/sales/paymentsAssignationsQueries')
 const accountsMovementsQueries = require('../../dbQueries/sales/accountsMovementsQueries')
 const ordersNinoxQueries = require('../../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../../dbQueries/sales/ordersNinoxDetailsQueries')
@@ -17,6 +16,8 @@ const apisSalesController = {
   inProgressOrders: async(req,res) =>{
     try{
 
+      const date1 = Date.now()
+
       const orders = await ordersQueries.inProgressOrders()
       const plainOrders = orders.map(order => order.get({ plain: true }))
 
@@ -27,6 +28,10 @@ const apisSalesController = {
         order.balance = balance
 
       })
+
+      const date2 = Date.now()
+
+      console.log(date2-date1)
 
       res.status(200).json(plainOrders)
 
@@ -41,13 +46,12 @@ const apisSalesController = {
       const orders = await ordersQueries.inProgressOrdersShowCanceled()
       const plainOrders = orders.map(order => order.get({ plain: true }))
 
-      plainOrders.forEach(order => {
-        const amountPaid = order.orders_assignations.reduce((sum, oa) => sum +parseFloat(oa.amount,2), 0)
-        const balance = parseFloat(order.total) - amountPaid
-        order.amountPaid = amountPaid
-        order.balance = balance
-
-      })
+      for (const o of plainOrders){
+        const amountPaid = await transactionsQueries.sumTransactions(o.id)
+        const balance = parseFloat(o.total) - amountPaid
+        o.amountPaid = amountPaid == null ? 0 : amountPaid
+        o.balance = balance
+      }
 
       res.status(200).json(plainOrders)
 
@@ -59,7 +63,14 @@ const apisSalesController = {
   inProgressOrdersDetails: async(req,res) =>{
     try{
 
+      const date1 = Date.now()
+
       const ordersDetails = await ordersDetailsQueries.inProgressOrdersDetails()
+
+      const date2 = Date.now()
+
+      console.log('tiempo: ' + (date2-date1))
+
 
       res.status(200).json(ordersDetails)
 
@@ -94,6 +105,7 @@ const apisSalesController = {
       }
 
       //create order
+      console.log(data)
       const newOrder = await ordersQueries.createOrder(data)
       const orderId = newOrder.id      
       
@@ -146,6 +158,7 @@ const apisSalesController = {
       //create order details
       for (let i = 0; i < data.order_details.length; i++) {
         const newDetail = await ordersDetailsQueries.createOrderDetail(data.order_details[i],data.id)
+        
         //create orders details colors
         const colors = data.order_details[i].colors.map(obj => ({
           id_orders_details: newDetail.id,
@@ -162,25 +175,25 @@ const apisSalesController = {
       }      
 
       //update order status
-      await updateOrderStatus(data.id)
+      //await updateOrderStatus(data.id)
       
-      //get order data
-      const orderData = await ordersQueries.findOrder(data.id)
+      // //get order data
+      // const orderData = await ordersQueries.findOrder(data.id)
       
-      //update order total
-      const newTotal = await updateOrderData(orderData.id)
+      // //update order total
+      // const newTotal = await updateOrderData(orderData.id)
 
-      //update payment status      
-      const idPaymentsStatus = orderData.id_payments_status
-      if (idPaymentsStatus == 4 || idPaymentsStatus == 5) {
-        await updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
-      }
+      // //update payment status      
+      // const idPaymentsStatus = orderData.id_payments_status
+      // if (idPaymentsStatus == 4 || idPaymentsStatus == 5) {
+      //   await updatePaymentStatus(orderData.id,idPaymentsStatus,orderData.total,newTotal)
+      // }
 
-      res.status(200).json()
+      res.json({message:'ok'})
 
     }catch(error){
-      console.group(error)
-      return res.send('Ha ocurrido un error')
+      console.log(error)
+      res.json({message:'error'})
     }
   },
   addProducts: async(req,res) =>{
@@ -349,7 +362,7 @@ const apisSalesController = {
       //register payment
       let newPayment
       if (payment > 0) {
-        newPayment = await paymentsQueries.registerPayment(idCustomer,payment,idPaymentMethod,'PAGO',date)
+        newPayment = await paymentsQueries.registerPayment(idCustomer,payment,idPaymentMethod,'PAGO ASIGNADO',date)
       }
 
       //register order payment
@@ -531,24 +544,24 @@ const apisSalesController = {
         await ordersDetailsSizesQueries.create(sizesToCreate)
       }
 
-      //update order data
-      const newTotal = await updateOrderData(data.lineToEdit.id_orders)
+      // //update order data
+      // const newTotal = await updateOrderData(data.lineToEdit.id_orders)
       
-      //update order status
-      updateOrderStatus(data.lineToEdit.id_orders)
+      // //update order status
+      // updateOrderStatus(data.lineToEdit.id_orders)
 
-      //update payment status
-      const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
-      const total = data.lineToEdit.orders_details_orders.total
-      if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
-        updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
-      }
+      // //update payment status
+      // const idPaymentsStatus = data.lineToEdit.orders_details_orders.id_payments_status
+      // const total = data.lineToEdit.orders_details_orders.total
+      // if (idPaymentsStatus == 4 || idPaymentsStatus == 5 || idPaymentsStatus == 6) {
+      //   updatePaymentStatus(data.lineToEdit.id_orders,idPaymentsStatus,total,newTotal)
+      // }
 
-      res.status(200).json()
+      res.json({message:'ok'})
 
     }catch(error){
-      console.group(error)
-      return res.send('Ha ocurrido un error')
+      console.log(error)
+      res.json({message:'error'})
     }
   },
   restoreOrder: async(req,res) =>{

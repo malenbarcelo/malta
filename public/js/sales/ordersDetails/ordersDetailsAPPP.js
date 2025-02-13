@@ -1,13 +1,13 @@
 import { dominio } from "../../dominio.js"
 import odg from "./globals.js"
 import { applyFilters, getData } from "./functions.js"
-import { showOkPopup } from "../../generalFunctions.js"
+import { showOkPopup, getDate } from "../../generalFunctions.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
 import { printOrdersDetails } from "./printOrdersDetails.js"
 
 //ADD PRODUCT POPUP (APPP)
 function apppEventListeners() {
-    
+
     const inputs = [apppProduct, apppCustomer]
 
     //add products
@@ -17,9 +17,9 @@ function apppEventListeners() {
             apppError.style.display = 'block'
         }else{
             if (apppProduct.value != '' && apppCustomer.value != '') {
-                const productsToAdd = odg.products.filter(p => p.full_description == apppProduct.value)
+                const productToAdd = odg.products.filter(p => p.full_description == apppProduct.value)
                 const customer = odg.customers.filter(c => c.customer_name.trim() == apppCustomer.value.trim())
-                if (productsToAdd.length == 0) {
+                if (productToAdd.length == 0) {
                     apppError.innerText = 'Producto inválido'
                     apppError.style.display = 'block'
                 }else{
@@ -27,13 +27,21 @@ function apppEventListeners() {
                         apppError.innerText = 'Cliente inválido'
                         apppError.style.display = 'block'
                     }else{
-                        const id = odg.productsToAdd.length == 0 ? 1 : Math.max(...odg.productsToAdd.map(element => element.id)) + 1
+                        const id = odg.productsToAdd.length == 0 ? 1 : Math.max(...odg.productsToAdd.map(element => element.row_id)) + 1
+                        odg.customersProductsToAdd.push(customer[0])
                         odg.productsToAdd.push({
-                            'id':id,
-                            'reqQty':apppReqQty.value,
-                            'customer':customer[0],
-                            'season':odg.season.season,
-                            'products':productsToAdd
+                            required_quantity:apppReqQty.value,
+                            extended_price: 0,
+                            id_customers:customer[0].id,
+                            customer_name:customer[0].customer_name,
+                            id_products:productToAdd[0].id,
+                            description:productToAdd[0].full_description,
+                            unit_price:productToAdd[0].unit_price,
+                            colors:productToAdd[0].product_colors,
+                            sizes:productToAdd[0].product_sizes,
+                            enabled:1,
+                            row_id:id
+
                         })
                         printProductsToAdd()
                         apppCustomer.value = ''
@@ -47,54 +55,162 @@ function apppEventListeners() {
     //save
     apppAccept.addEventListener("click", async(e) => {
 
+        let responseStatus1
+        let responseStatus2
+        let responseStatus3
+        let responseStatus4
+        let responseStatus5
+
+        const date = getDate(new Date())
+
+        ordersDetailsLoader.style.display = 'block'
+        appp.style.display = 'none'
+
         const data = odg.productsToAdd
-        odg.createOrder = false
+        const customers = odg.customersProductsToAdd.filter((obj, index, self) =>
+            index === self.findIndex((el) => el.id === obj.id)
+        )
+        const customersIds = customers.map( c => c.id)
 
-        //find out if there are orders to create
-        let ordersToCreate = 0
-        data.forEach(element => {
-            const customerOrders = odg.orders.filter( o => o.id_customers == element.customer.id && o.enabled == 1)
-            if (customerOrders.length == 0) {
-                ordersToCreate +=1
-                odg.createOrder = true
-                element.createOrder = true
-            }else{
-                element.createOrder = false
-            }
-        })
+        //findout if there are orders to create
+        const lastOrders = await (await fetch(`${dominio}apis/composed/last-orders?customers=[${customersIds}]`)).json()
+        const lastOrdersCustomers = new Set(lastOrders.map(item => item.id_customers))
+        const ordersToCreate = customers.filter(c => !lastOrdersCustomers.has(c.id))
 
-        if (ordersToCreate > 0 && odg.salesChannel == 0) {
-            sscpp.style.display = 'block'
-        }else{
-            
-            data.forEach(element => {
-                if (element.createOrder == true) {
-                    element.id_sales_channels = parseInt(odg.salesChannel)
-                }
+        // create orders if applies
+        if (ordersToCreate.length > 0) {
+            let maxOrderNumber = odg.orders.reduce((max, obj) => Math.max(max, obj.order_number), -Infinity) + 1
+            const data = []
+
+            ordersToCreate.forEach((o,index) => {
+                data.push({
+                    date: date,
+                    order_number: maxOrderNumber + index,
+                    id_customers:o.id,
+                    id_sales_channels: o.id_sales_channels,
+                    total: 0,
+                    subtotal: 0,
+                    discount: o.discount,
+                    id_orders_status: 1,
+                    id_payments_status: 3,
+                    id_orders_managers: filterOrderManager.value == 'default' ? 1 : filterOrderManager.value,
+                    season: odg.season.season,
+                    enabled:1
+                })
             })
 
-            await fetch(dominio + 'apis/sales/add-products',{
+            //create orders
+            const response1 = await fetch(dominio + 'apis/create/sales-orders',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
 
-            //get data
-            ordersDetailsLoader.style.display = 'block'
-            await getData()
-            printOrdersDetails()
-            applyFilters()
-            appp.style.display = 'none'
-            okppText.innerText = 'Productos agregado con éxito'
-            showOkPopup(okpp)
-            
-        }
-    })
+            responseStatus1 = await response1.json()
 
-    sscppAccept.addEventListener("click", async(e) => {
-        odg.salesChannel = sscppSalesChannel.value
-        sscpp.style.display = 'none'
-        apppAccept.click()
+        }
+
+        // update orders if applies
+        if (lastOrders.length > 0) {
+            const data = []
+
+            console.log(lastOrders)
+
+            lastOrders.forEach((o) => {
+                data.push({
+                    id: o.id_orders,
+                    id_orders_status: 1,
+                    id_payments_status: o.id_payments_status == 3 ? 3 : 4
+                })
+            })
+
+            //update orders
+            const response2 = await fetch(dominio + 'apis/update/sales-orders',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            responseStatus2 = await response2.json()
+
+        }
+
+        // create orders details
+        const newLastOrders = await (await fetch(`${dominio}apis/composed/last-orders?customers=[${customersIds}]`)).json()
+
+        odg.productsToAdd = odg.productsToAdd.map(product => ({
+            ...product,
+            date:date,
+            id_orders: newLastOrders.filter( lo => lo.id_customers == product.id_customers)[0].id_orders
+        }))
+
+        const response3 = await fetch(dominio + 'apis/create/sales-orders-details',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(odg.productsToAdd)
+        })
+
+        responseStatus3 = await response3.json()
+
+        // create colors and sizes
+        const createdData = responseStatus3.data
+
+        const colorsToCreate = []
+        const sizesToCreate = []
+
+        createdData.forEach(d => {
+            // find profuct
+            const product = odg.products.find(p => p.id === d.id_products)
+
+            if (product) {
+                product.product_colors.forEach(c => {
+                    colorsToCreate.push({
+                        id_orders_details: d.id,
+                        id_colors: c.id_colors
+                    })
+                })
+
+                product.product_sizes.forEach(s => {
+                    sizesToCreate.push({
+                        id_orders_details: d.id,
+                        id_sizes: s.id_sizes
+                    })
+                })
+            }
+        })
+
+        //create colors
+        const response4 = await fetch(dominio + 'apis/create/sales-orders-details-colors',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(colorsToCreate)
+        })
+
+        responseStatus4 = await response4.json()
+
+        //create size
+        const response5 = await fetch(dominio + 'apis/create/sales-orders-details-sizes',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(sizesToCreate)
+        })
+
+        responseStatus5 = await response5.json()
+        //get data
+        bodyOrdersDetails.innerHTML = ''
+        await getData()
+        applyFilters()
+        printOrdersDetails()
+
+        if ((!responseStatus1 || responseStatus1.message == 'ok') && (!responseStatus2 || responseStatus2.message == 'ok') && responseStatus3.message == 'ok' && responseStatus4.message == 'ok' && responseStatus5.message == 'ok') {
+            okText.innerText = 'Productos agregados con éxito'
+            showOkPopup(okPopup)
+        }else{
+            errorText.innerText = 'Error al agregar productos'
+            showOkPopup(errorPopup)
+        }
+
+        ordersDetailsLoader.style.display = 'none'
     })
 }
 

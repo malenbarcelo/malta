@@ -19,9 +19,25 @@ function ceoppEventListeners() {
         if (e.key === 'Escape' && popup.classList.contains('slideIn')) {
             const activePopups = og.popups.filter(p => p.style.display == 'block')
             if (activePopups.length == 0) {
-                schpp.style.display = 'block'
+                og.escNumber += 1
+                if (og.escNumber == 1) {
+                    schpp.style.display = 'block'
+                }else{
+                    schpp.style.display = 'none'
+                    popup.classList.remove('slideIn')
+                    og.escNumber = 0
+                }
             }
         }
+        if (e.ctrlKey && e.key === "g" && popup.classList.contains('slideIn')) {
+            const activePopups = og.popups.filter(p => p.style.display == 'block')
+            if (activePopups.length == 0 && og.action == 'edit') {
+                ceoppEdit.click()
+            }
+            if (activePopups.length == 0 && og.action == 'create') {
+                ceoppCreate.click()
+            }
+        }  
     })
 
     //change select products
@@ -150,6 +166,8 @@ function ceoppEventListeners() {
     //save order
     ceoppCreate.addEventListener("click", async() => {
 
+        og.escNumber = 0
+
         let incompleteRows = 0
         
         og.orderDetails.forEach(element => {
@@ -167,6 +185,8 @@ function ceoppEventListeners() {
 
         const data = og.orderData
         data.order_details = og.orderDetails
+
+        console.log(data)
         
         await fetch(dominio + 'apis/sales/create-order',{
             method:'POST',
@@ -188,6 +208,23 @@ function ceoppEventListeners() {
     //edit order
     ceoppEdit.addEventListener("click", async() => {
 
+        og.escNumber = 0
+
+        let responseStatus1
+        let responseStatus2
+
+        ceopp.classList.remove('slideIn')
+        bodyOrders.innerHTML = ''
+        ordersLoader.style.display = 'block'
+
+        // get payment status
+        const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${og.orderData.id}`)).json()
+        const amountPaid = transactions.rows.reduce((sum, t) => sum + parseFloat(t.amount), 0)
+        const orderTotal = og.orderData.total
+        const orderBalance = orderTotal - amountPaid
+        const idPaymentsStatus = orderBalance == 0 ? 5 : ( orderBalance > 0 ? 4 : 3)
+        
+        // get order status
         let incompleteRows = 0
         
         og.orderDetails.forEach(element => {
@@ -196,7 +233,6 @@ function ceoppEventListeners() {
             }
         })
 
-        //get order status
         if (incompleteRows > 0 || og.orderDetails.length == 0) {
             og.orderData.id_orders_status = 1
         }else{
@@ -206,22 +242,60 @@ function ceoppEventListeners() {
         const data = og.orderData
         data.season = og.season.season
         data.order_details = og.orderDetails
+        data.id_payments_status = idPaymentsStatus
         
-        await fetch(dominio + 'apis/sales/edit-order',{
+        const response = await fetch(dominio + 'apis/sales/edit-order',{
             method:'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         })
 
-        bodyOrders.innerHTML = ''
-        ordersLoader.style.display = 'block'
-        ceopp.classList.remove('slideIn')
+        responseStatus1 = await response.json()
+
+        // create not assigned payment if necessary
+        if (responseStatus1.message == 'ok' && orderBalance < 0) {
+
+            //get date
+            let date = new Date()
+            date = date.setHours(date.getHours() + 3)
+
+            const data = [
+                {
+                    date:date,
+                    amount: -orderBalance,
+                    type:'PAGO NO ASIGNADO',
+                    id_customers:og.orderData.id_customers
+                },
+                {
+                    date:date,
+                    amount: orderBalance,
+                    type:'PAGO ASIGNADO',
+                    id_customers:og.orderData.id_customers,
+                    id_orders:og.orderData.id
+                },
+            ]
+
+            const response = await fetch(dominio + 'apis/create/sales-transactions',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            responseStatus2 = await response.json()
+
+        }
+
         await getData()
         applyFilters()
         await printOrders()
-        okppText.innerText = 'Orden editada con éxito'
-        showOkPopup(okpp)
 
+        if (responseStatus1.message == 'ok' && (!responseStatus2 || (responseStatus2 && responseStatus2.message == 'ok'))) {
+            okText.innerText = 'Orden editada con éxito'
+            showOkPopup(okPopup)
+        }else{
+            errorText.innerText = 'Error al editar la orden'
+            showOkPopup(errorPopup)
+        }
     })
 }
 

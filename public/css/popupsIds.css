@@ -89,9 +89,8 @@
 /*-----orders.ejs-----*/
 
 #cmppContent{
-    top: 15%;
-    width: 700px;
-    /*left: calc(50vw - 360px);*/
+    top: 5%;
+    width: 800px;
     margin: auto;
     padding-bottom: 30px;
 }
@@ -113,6 +112,7 @@
     top: 5%;
     margin: auto;
 }
+
 
 
 

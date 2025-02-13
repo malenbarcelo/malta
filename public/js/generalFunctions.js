@@ -383,8 +383,31 @@ function focusInputs(inputsToFocus) {
     })
 }
 
+function ignoreDoubleClick(time) {
+
+    const now = new Date().getTime()
+
+        if (now - g.lastClickTime < time) {
+            return  true // Ignore double click
+        }
+
+        g.lastClickTime = now
+
+        return false
+}
+
+function getDate(date) {
+
+    let formattedDate = new Date(date)
+    formattedDate = date.setHours(date.getHours() + 3)
+
+    return formattedDate
+}
 
 
 
 
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups,focusInputs}
+
+
+
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups,focusInputs,ignoreDoubleClick, getDate}

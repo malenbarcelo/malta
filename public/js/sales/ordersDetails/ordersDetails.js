@@ -17,18 +17,20 @@ window.addEventListener('load',async()=>{
 
     //get data
     ordersDetailsLoader.style.display = 'block'
+    
+    //const date1 = Date.now()
     await getData()
+    //const date2 = Date.now()
+    //console.log(date2-date1)
 
     //select order manager
     if (odg.userLogged == 'Esteban') {
         filterOrderManager.value = 4
-        //channel_2.checked = true
-        //og.channelsChecked.push(channel_2)
+        filterChannel.value = 2
     }
     if (odg.userLogged == 'Pedro') {
         filterOrderManager.value = 5
-        //og.channelsChecked.push(channel_1)
-        //channel_1.checked = true
+        filterChannel.value = 1
     }
 
     //apply filters
@@ -49,22 +51,22 @@ window.addEventListener('load',async()=>{
     const tableIcons = [
         {
             icon:elppIcon,
-            right:'6.5%'
+            right:'8.5%'
         },        
         {
             icon:loppIcon,
-            right:'4%'
+            right:'6%'
         },
         {
             icon:dlppIcon,
-            right:'1%'
+            right:'3%'
         }
     ]
         
-    showTableInfo(tableIcons,240,100)
+    showTableInfo(tableIcons,268,100)
 
     //filters event listeners
-    const filters = [filterOrder,filterProduct,filterCustomer,filterFrom, filterUntil, filterOrderStatus,filterOrderManager]
+    const filters = [filterOrder,filterProduct,filterCustomer,filterChannel,filterOrderStatus,filterItemStatus,filterOrderManager]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
             applyFilters()
@@ -84,8 +86,9 @@ window.addEventListener('load',async()=>{
         filterProduct.value = ''
         filterCustomer.value = ''
         filterOrderStatus.value = 'default'
-        filterFrom.value = ''
-        filterUntil.value = ''
+        filterItemStatus.value = ''
+        //filterFrom.value = ''
+        //filterUntil.value = ''
         applyFilters()
         printOrdersDetails()
         ordersDetailsLoader.style.display = 'none'

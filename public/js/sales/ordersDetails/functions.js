@@ -19,18 +19,24 @@ async function getData() {
 
 function applyFilters() {
 
+    const date1 = Date.now()
+
     odg.ordersDetailsFiltered = odg.ordersDetails
 
-    //order
+    // order
+    console.log(filterOrder.value)
     odg.ordersDetailsFiltered = filterOrder.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.order_number == filterOrder.value)
 
-    //customer
+    // customer
     odg.ordersDetailsFiltered = filterCustomer.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.orders_customers.customer_name.toLowerCase().includes(filterCustomer.value.toLowerCase()))
 
-    //product
+    // product
     odg.ordersDetailsFiltered = filterProduct.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.description.toLowerCase().includes(filterProduct.value.toLowerCase()))
 
-    //order_status
+    // channel
+    odg.ordersDetailsFiltered = filterChannel.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_sales_channels == filterChannel.value)
+
+    // order_status
     if (filterOrderStatus.value == 'default') {
         odg.ordersDetailsFiltered = odg.ordersDetailsFiltered
     }else{
@@ -41,14 +47,29 @@ function applyFilters() {
         }
     }
 
+    // item status
+    if (filterItemStatus.value == '') {
+        odg.ordersDetailsFiltered = odg.ordersDetailsFiltered
+    }else{
+        if (filterItemStatus.value == 'complete') {
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity != '' && o.confirmed_quantity != null && o.confirmed_quantity != 0)
+        }else{
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity == '' || o.confirmed_quantity == null || o.confirmed_quantity == 0)
+        }
+    }
+
     //order_manager
     odg.ordersDetailsFiltered = filterOrderManager.value == 'default' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.id_orders_managers == filterOrderManager.value)
 
-    //date from
-    odg.ordersDetailsFiltered = filterFrom.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date >= filterFrom.value)
+    // //date from
+    // odg.ordersDetailsFiltered = filterFrom.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date >= filterFrom.value)
 
-    //date until
-    odg.ordersDetailsFiltered = filterUntil.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date <= filterUntil.value)
+    // //date until
+    // odg.ordersDetailsFiltered = filterUntil.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date <= filterUntil.value)
+
+    const date2 = Date.now()
+
+    console.log('filtros: ' + (date2-date1))
 
 }
 
