@@ -67,7 +67,9 @@ function elppEventListeners() {
                 const total = subtotal * (1 - discount)
                 
                 //get order status
-                const idOrderStatus = details.rows.filter( d => d.confirmed_quantity == null || d.confirmed_quantity == '').length > 0 ? 1 : 2
+                const idOrderStatus = details.rows.some(d => d.confirmed_quantity == null || d.confirmed_quantity === '') ? 1 : 2
+
+                console.log(idOrderStatus)
 
                 //get payment status
                 const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${orderId}`)).json()

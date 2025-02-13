@@ -24,7 +24,6 @@ function applyFilters() {
     odg.ordersDetailsFiltered = odg.ordersDetails
 
     // order
-    console.log(filterOrder.value)
     odg.ordersDetailsFiltered = filterOrder.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.order_number == filterOrder.value)
 
     // customer
@@ -52,10 +51,11 @@ function applyFilters() {
         odg.ordersDetailsFiltered = odg.ordersDetailsFiltered
     }else{
         if (filterItemStatus.value == 'complete') {
-            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity != '' && o.confirmed_quantity != null && o.confirmed_quantity != 0)
-        }else{
-            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity == '' || o.confirmed_quantity == null || o.confirmed_quantity == 0)
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity !== '' && o.confirmed_quantity !== null && o.confirmed_quantity !== undefined)
+        } else {
+            odg.ordersDetailsFiltered = odg.ordersDetailsFiltered.filter(o => o.confirmed_quantity === '' || o.confirmed_quantity === null || o.confirmed_quantity === undefined)
         }
+        
     }
 
     //order_manager
