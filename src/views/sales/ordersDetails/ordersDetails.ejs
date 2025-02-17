@@ -31,7 +31,7 @@
         </div>
         <div class="divInput">
             <label class="label1" id="filterProductLabel">Producto</label>
-            <input type="text" class="input1 il ips" id="filterProduct" autocomplete="off">
+            <input type="text" class="input1 ixl ips" id="filterProduct" autocomplete="off">
             <ul class="predictedElements" id="ulPredictedProducts"></ul>
         </div>
         <div class="divInput">
@@ -53,20 +53,20 @@
         <div class="divInput">
             <label class="label1">Estado de la orden</label>
             <select id="filterOrderStatus" class="input1 ixs sps">
-                <option value="default"></option>
-                <option value="complete">Completo</option>
-                <option value="incomplete">Incompleto</option>
+                <option value=""></option>
+                <option value="2">Completo</option>
+                <option value="1">Incompleto</option>
             </select>
         </div>
         <div class="divInput">
             <label class="label1">Estado del artículo</label>
             <select id="filterItemStatus" class="input1 ixs sps">
                 <option value=""></option>
-                <option value="complete">Completo</option>
-                <option value="incomplete">Incompleto</option>
+                <option value="2">Completo</option>
+                <option value="1">Incompleto</option>
             </select>
         </div>
-        <div class="divInput">
+        <!-- <div class="divInput">
             <label class="label1">Encargado</label>
             <select id="filterOrderManager" class="input1 ixxs sps">
                 <option value="default"></option>
@@ -76,7 +76,7 @@
                     </option>
                 <% }) %>
             </select>
-        </div>
+        </div> -->
 
         <div id="unfilterOrdersDetails" class="unfilterIcon" >
             <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -85,35 +85,35 @@
 </div>
 
 <!--------TABLE DATA-------->
-<div class="tableSummary mts">    
+<!-- <div class="tableSummary mts">    
     <div id="totalAmount"></div>
     <div id="itemsQuantity"></div>
-</div>
+</div> -->
 
 <!---------ORDERS DETAILS TABLE--------->
-<div class="mts">
-    <div class="divTable">
+<div class="mtl">
+    <div class="divTable divTable-m" id="table">
 
         <div class="tableInfo" id="elppInfo">Editar línea</div>
         <div class="tableInfo" id="loppInfo">Ver observ.</div>
         <div class="tableInfo" id="dlppInfo">Eliminar item</div>
         
-        <div class="divTable" id="ordersDetailsTable">
+        <div class="divTable divTable-m" id="ordersDetailsTable">
             <table>
                 <thead>
                     <tr>
                         <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
                         <th class="theadCss wXXS thTall">Canal</th>
                         <th class="theadCss wM thTall">Cliente</th>
-                        <th class="theadCss wXL thTall">Producto</th>
-                        <th class="theadCss wXS thTall">Talles</th>
-                        <th class="theadCss wL thTall">Colores</th>
+                        <th class="theadCss wXXL thTall">Producto</th>
+                        <!-- <th class="theadCss wXS thTall">Talles</th>
+                        <th class="theadCss wL thTall">Colores</th> -->
                         <th class="theadCss wXS thTall">Precio</th>
                         <th class="theadCss wXXS thTall">Cantidad confirmada</th>
-                        <th class="theadCss wS thTall">Cantidad requerida</th>
+                        <th class="theadCss wM thTall">Cantidad requerida</th>
                         <th class="theadCss wS thTall">Total</th>
                         <th class="theadCss wXS thTall">Estado del pedido</th>
-                        <th class="theadCss wXS thTall">Última edición</th>                 
+                        <th class="theadCss wM thTall">Última modificación</th>                 
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-pen-to-square tableIcon" id="elppIcon"></i></th>
                         <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment tableIcon" id="loppIcon"></i></th>
     
@@ -142,5 +142,5 @@
 <%- include('../../partials/resultsPopups') %>
 
 <!----------SCRIPTS---------->
-<script type="module" src="/js/sales/ordersDetails/ordersDetails.js"></script>
+<script type="module" src="/js/sales/ordersDetails/ordersDetails2.js"></script>
 

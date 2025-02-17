@@ -43,8 +43,8 @@
 
 #elppContent{
     top: 25%;
-    width: 580px;
-    left: calc(50vw - 300px);
+    width: 600px;
+    margin:auto;
 }
 
 /*edit line sizes popup (elspp)*/

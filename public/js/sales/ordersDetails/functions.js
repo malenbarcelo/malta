@@ -7,11 +7,14 @@ async function getData() {
     //get data and complete globals
     odg.season = await (await fetch(dominio + 'apis/main/current-season')).json()
     odg.userLogged = userLogged.innerText
-    odg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
-    odg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + odg.season.season)).json()
-    odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
+    //odg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
+    //odg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + odg.season.season)).json()
+    //odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
+    const dateGD1 = Date.now()
     odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
-    odg.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
+    const dateGD2 = Date.now()
+    console.log('get data: ' + (dateGD2-dateGD1))
+    //odg.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     odg.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
     odg.elementsToPredict[2].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
     odg.ordersDetailsFiltered = odg.ordersDetails
@@ -19,7 +22,7 @@ async function getData() {
 
 function applyFilters() {
 
-    const date1 = Date.now()
+    //const date1 = Date.now()
 
     odg.ordersDetailsFiltered = odg.ordersDetails
 
@@ -67,9 +70,9 @@ function applyFilters() {
     // //date until
     // odg.ordersDetailsFiltered = filterUntil.value == '' ? odg.ordersDetailsFiltered : odg.ordersDetailsFiltered.filter(o => o.orders_details_orders.date <= filterUntil.value)
 
-    const date2 = Date.now()
+    // const date2 = Date.now()
 
-    console.log('filtros: ' + (date2-date1))
+    // console.log('filtros: ' + (date2-date1))
 
 }
 

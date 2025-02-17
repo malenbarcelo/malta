@@ -30,6 +30,10 @@ th{
     margin: auto;
 }
 
+.divTable-m{
+    max-height: 430px;
+}
+
 .theadCss{
     font-size: 13px;
     text-align: center;

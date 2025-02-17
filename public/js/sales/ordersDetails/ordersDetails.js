@@ -18,10 +18,10 @@ window.addEventListener('load',async()=>{
     //get data
     ordersDetailsLoader.style.display = 'block'
     
-    //const date1 = Date.now()
+    const date0 = Date.now()
     await getData()
-    //const date2 = Date.now()
-    //console.log(date2-date1)
+    const date1 = Date.now()
+    console.log(date1-date0)
 
     //select order manager
     if (odg.userLogged == 'Esteban') {
@@ -119,5 +119,9 @@ window.addEventListener('load',async()=>{
         closeWithEscape(appp,inputs)
         appp.style.display = 'block'
     })
+
+    const date2 = Date.now()
+
+    console.log(date2-date1)
 
 })

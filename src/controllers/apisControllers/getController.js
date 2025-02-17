@@ -1,8 +1,12 @@
 const transactionsQueries = require('../../dbQueries/sales/transactionsQueries')
 const ordersQueries = require('../../dbQueries/sales/ordersQueries')
 const ordersDetailsQueries = require('../../dbQueries/sales/ordersDetailsQueries')
+const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsColorsQueries')
+const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
 const customersQueries = require('../../dbQueries/data/customersQueries')
 const productsQueries = require('../../dbQueries/cuttings/productsQueries')
+const productsColorsQueries = require('../../dbQueries/cuttings/productsColorsQueries')
+const productsSizesQueries = require('../../dbQueries/cuttings/productsSizesQueries')
 const seasonsQueries = require('../../dbQueries/main/seasonsQueries')
 
 const getController = {
@@ -132,7 +136,7 @@ const getController = {
   //sales_orders_details
   getOrdersDetails: async(req,res) =>{
     try{
-      const { page, size, id_orders } = req.query
+      const { page, size, id_orders, order_number, customer_name, description, id_sales_channels, id_orders_status, item_status } = req.query
       const limit = size ? parseInt(size) : undefined
       const offset = page ? (parseInt(page) - 1) * limit : undefined
       const filters = {}
@@ -141,6 +145,24 @@ const getController = {
       if (id_orders) {
           filters.id_orders = id_orders
       }
+      if (order_number) {
+        filters.order_number = order_number
+      }
+      if (customer_name) {
+        filters.customer_name = customer_name
+      }
+      if (description) {
+        filters.description = description
+      }
+      if (id_sales_channels) {
+        filters.id_sales_channels = id_sales_channels
+      }
+      if (id_orders_status) {
+        filters.id_orders_status = id_orders_status
+      }
+      if (item_status) {
+        filters.item_status = item_status
+      }
 
       //get data
       const data = await ordersDetailsQueries.get({ limit, offset, filters })
@@ -148,6 +170,90 @@ const getController = {
       //get pages
       const pages = Math.ceil(data.count / limit)
       data.pages = pages
+
+      res.status(200).json(data)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  // cuttings_products_colors
+  getProductsColors: async(req,res) =>{
+    try{
+      const { id_products } = req.query
+      const filters = {}
+            
+      //add filters
+      if (id_products) {
+          filters.id_products = id_products
+      }
+
+      //get data
+      const data = await productsColorsQueries.get({ filters })
+
+      res.status(200).json(data)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  // cuttings_products_sizes
+  getProductsSizes: async(req,res) =>{
+    try{
+      const { id_products } = req.query
+      const filters = {}
+            
+      //add filters
+      if (id_products) {
+          filters.id_products = id_products
+      }
+
+      //get data
+      const data = await productsSizesQueries.get({ filters })
+
+      res.status(200).json(data)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  // sales_orders_details_colors
+  getOrdersDetailsColors: async(req,res) =>{
+    try{
+      const { id_orders_details } = req.query
+      const filters = {}
+            
+      //add filters
+      if (id_orders_details) {
+          filters.id_orders_details = id_orders_details
+      }
+
+      //get data
+      const data = await ordersDetailsColorsQueries.get({ filters })
+
+      res.status(200).json(data)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  // sales_orders_details_sizes
+  getOrdersDetailsSizes: async(req,res) =>{
+    try{
+      const { id_orders_details } = req.query
+      const filters = {}
+            
+      //add filters
+      if (id_orders_details) {
+          filters.id_orders_details = id_orders_details
+      }
+
+      //get data
+      const data = await ordersDetailsSizesQueries.get({ filters })
 
       res.status(200).json(data)
 

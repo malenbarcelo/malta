@@ -1,10 +1,10 @@
 import { dominio } from "../../dominio.js"
-import odg from "./globals.js"
-import { applyFilters, getData } from "./functions.js"
+import g from "./globals2.js"
+import { f } from "./functions2.js"
+import { printDetails } from "./printDetails2.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { printOrdersDetails } from "./printOrdersDetails.js"
 
-//DELETE LINE POPUP (DLPP)
+// DELETE LINE POPUP (DLPP)
 function dlppEventListeners() {
 
     dlppAccept.addEventListener("click", async() => {
@@ -18,7 +18,7 @@ function dlppEventListeners() {
         let responseStatus3
         
         const data = [{
-            id:odg.lineToDelete.id,
+            id:g.lineToDelete.id,
             enabled:0
         }]
         
@@ -32,21 +32,21 @@ function dlppEventListeners() {
 
         if (responseStatus1.message == 'ok') {
 
-            const orderId = odg.lineToDelete.orders_details_orders.id
-            const customerId = odg.lineToDelete.orders_details_orders.id_customers
-            const discount = parseFloat(odg.lineToDelete.orders_details_orders.discount)
+            const orderId = g.lineToDelete.orders_details_orders.id
+            const customerId = g.lineToDelete.orders_details_orders.id_customers
+            const discount = parseFloat(g.lineToDelete.orders_details_orders.discount)
 
-            //get new order data
+            // get new order data
             const details = await (await fetch(`${dominio}apis/get/sales-orders-details?id_orders=${orderId}`)).json()
 
             // get new subtotal
             const subtotal = details.rows.reduce((sum, item) => sum + (parseFloat(item.extended_price) || 0), 0)
             const total = subtotal * (1 - discount)
             
-            //get order status
+            // get order status
             const idOrderStatus = details.rows.filter( d => d.confirmed_quantity == null || d.confirmed_quantity == '').length > 0 ? 1 : 2
 
-            //get payment status
+            // get payment status
             const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${orderId}`)).json()
             const amountPaid = transactions.rows.reduce((sum, t) => sum + parseFloat(t.amount), 0)
             const orderBalance = total - amountPaid
@@ -60,7 +60,7 @@ function dlppEventListeners() {
                 id_payments_status: idPaymentsStatus
             }]
 
-            //update order
+            // update order
             const response = await fetch(dominio + 'apis/update/sales-orders',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -70,7 +70,6 @@ function dlppEventListeners() {
             responseStatus2 = await response.json()
 
             // create not assigned payment if necessary
-            console.log(orderBalance)
             if (responseStatus2.message == 'ok' && orderBalance < 0) {
 
                 //get date
@@ -103,9 +102,15 @@ function dlppEventListeners() {
 
             }
 
-            await getData()
-            applyFilters()
-            printOrdersDetails()
+            //update scroll data
+            g.loadedPages = new Set()
+            g.previousScrollTop = 0
+
+            //get and print data
+            g.details = await f.getDetails()
+            printDetails()
+
+            ordersDetailsTable.scrollTop = 0
 
             if (responseStatus1.message == 'ok' && responseStatus2.message == 'ok' && (!responseStatus3 || (responseStatus3 && responseStatus3.message == 'ok'))) {
                 okText.innerText = 'Línea eliminada con éxito'

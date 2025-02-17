@@ -1,6 +1,6 @@
 const db = require('../../../database/models')
 const sequelize = require('sequelize')
-const { Op, fn, col } = require('sequelize')
+const { Op, fn, col, literal } = require('sequelize')
 const model = db.Sales_orders_details
 
 const ordersDetailsQueries = {
@@ -44,11 +44,11 @@ const ordersDetailsQueries = {
                         }
                     ]
                 },
-            ],
+             ],
             where:{enabled:1},
             order:[['id_orders','ASC']],
             nest:true,
-            //limit:10
+            //limit:50
         })
         return ordersDetails
     },
@@ -145,6 +145,7 @@ const ordersDetailsQueries = {
     },
     get: async({limit,offset,filters}) => {
                     
+        // orders details where condition
         const where = {
             enabled:1
         }
@@ -153,11 +154,79 @@ const ordersDetailsQueries = {
             where.id_orders = filters.id_orders
         }
 
+        if (filters.description) {
+            where.description = { [Op.like]: `%${filters.description.toLowerCase()}%` }
+        }
+
+        console.log(filters.item_status)
+
+        if (filters.item_status) {
+            if (filters.item_status == 1) {
+                where.confirmed_quantity = { [Op.or]: ['', null] }
+            } else {
+                where.confirmed_quantity = { [Op.not]: ['', null] }
+            }
+        }        
+        
+        // orders where condition
+        const whereOrders = {
+            enabled:1,
+            id_orders_status: [1,2]
+        }
+
+        if (filters.order_number) {
+            whereOrders.order_number = filters.order_number
+        }
+
+        if (filters.id_orders_status) {
+            whereOrders.id_orders_status = filters.id_orders_status
+        }
+
+        if (filters.id_sales_channels) {
+            whereOrders.id_sales_channels = filters.id_sales_channels
+        }
+
+        // customers where condition
+        const whereCustomers = {}
+
+        if (filters.customer_name) {
+            whereCustomers.customer_name = { [Op.like]: `%${filters.customer_name.toLowerCase()}%` }
+        }
+
+        if (filters.item_status) {
+            if (filters.item_status == 2) {
+                where.confirmed_quantity = { [Op.gte]: 0 }
+            } else {
+                where.confirmed_quantity = { [Op.or]: { [Op.lt]: 0, [Op.is]: null } }
+            }
+        }
+        
+        
+
         const data = await model.findAndCountAll({
+            include:[
+                {
+                    association:'orders_details_orders',
+                    attributes:['order_number','id_sales_channels', 'id_orders_status','id_customers','discount'],
+                    include: [
+                        {
+                            association: 'orders_customers',
+                            where: Object.keys(whereCustomers).length ? whereCustomers : undefined
+                        },
+                        {association: 'orders_sales_channels'},
+                        {association: 'orders_orders_status'},
+                        {association: 'orders_orders_managers'},
+                        {association: 'orders_payments_status'}
+                    ],
+                    where:whereOrders
+                }
+            ],
             where,
             limit,
             offset,
+            order:[['id_orders','ASC']],
             raw:true,
+            nest:true
 
         })
 

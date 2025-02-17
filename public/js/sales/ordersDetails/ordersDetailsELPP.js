@@ -1,25 +1,26 @@
 import { dominio } from "../../dominio.js"
-import odg from "./globals.js"
-import { getData, completeELCPPcolors, completeELSPPsizes,applyFilters } from "./functions.js"
-import { printOrdersDetails } from "./printOrdersDetails.js"
-import { showOkPopup, inputsValidation,acceptWithEnterInput } from "../../generalFunctions.js"
+import g from "./globals2.js"
+import { f } from "./functions2.js"
+import { printDetails } from "./printDetails2.js"
+import { completeELCPPcolors, completeELSPPsizes } from "./functions.js"
+import { showOkPopup, inputsValidation } from "../../generalFunctions.js"
 
 //EDIT LINE POPUP (ELPP)
 function elppEventListeners() {
 
-    //change colors
-    elppColorsIcon.addEventListener("click", async() => {
-        completeELCPPcolors()
-        elcppError.style.display = 'none'
-        elcpp.style.display = 'block'
-    })
+    // //change colors
+    // elppColorsIcon.addEventListener("click", async() => {
+    //     completeELCPPcolors()
+    //     elcppError.style.display = 'none'
+    //     elcpp.style.display = 'block'
+    // })
 
-    //change sizes
-    elppSizesIcon.addEventListener("click", async() => {
-        completeELSPPsizes()
-        elsppError.style.display = 'none'
-        elspp.style.display = 'block'
-    })
+    // //change sizes
+    // elppSizesIcon.addEventListener("click", async() => {
+    //     completeELSPPsizes()
+    //     elsppError.style.display = 'none'
+    //     elspp.style.display = 'block'
+    // })
 
     //elpp accept    
     elppAccept.addEventListener("click", async() => {
@@ -36,16 +37,16 @@ function elppEventListeners() {
             let responseStatus2
             let responseStatus3
             
-            const data = {
-                lineToEdit:odg.lineToEdit,
-                unit_price:elppPrice.value,
-                required_quantity:elppQtyR.value,
-                confirmed_quantity:elppQtyC.value,
-                colors:odg.selectedColors,
-                sizes:odg.selectedSizes
-            }
+            const data = [{
+                id:g.lineToEdit.id,
+                unit_price: parseFloat(elppPrice.value),
+                required_quantity: elppQtyR.value,
+                confirmed_quantity: elppQtyC.value == '' ? null : parseInt(elppQtyC.value),
+                extended_price: elppQtyC.value == '' ? 0 : parseFloat(elppPrice.value) * parseFloat(elppQtyC.value)
+            }]
             
-            const response = await fetch(dominio + 'apis/sales/edit-order-detail',{
+            // update orders_details
+            const response = await fetch(dominio + 'apis/update/sales-orders-details',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -55,9 +56,9 @@ function elppEventListeners() {
 
             if (responseStatus1.message == 'ok') {
 
-                const orderId = odg.lineToEdit.orders_details_orders.id
-                const customerId = odg.lineToEdit.orders_details_orders.id_customers
-                const discount = parseFloat(odg.lineToEdit.orders_details_orders.discount)
+                const orderId = g.lineToEdit.id_orders
+                const customerId = g.lineToEdit.orders_details_orders.id_customers
+                const discount = parseFloat(g.lineToEdit.orders_details_orders.discount)
 
                 //get new order data
                 const details = await (await fetch(`${dominio}apis/get/sales-orders-details?id_orders=${orderId}`)).json()
@@ -68,8 +69,6 @@ function elppEventListeners() {
                 
                 //get order status
                 const idOrderStatus = details.rows.some(d => d.confirmed_quantity == null || d.confirmed_quantity === '') ? 1 : 2
-
-                console.log(idOrderStatus)
 
                 //get payment status
                 const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${orderId}`)).json()
@@ -127,9 +126,15 @@ function elppEventListeners() {
 
                 }
 
-                await getData()
-                applyFilters()
-                printOrdersDetails()
+                //update scroll data
+                g.loadedPages = new Set()
+                g.previousScrollTop = 0
+
+                //get and print data
+                g.details = await f.getDetails()
+                printDetails()
+
+                ordersDetailsTable.scrollTop = 0
 
                 if (responseStatus1.message == 'ok' && responseStatus2.message == 'ok' && (!responseStatus3 || (responseStatus3 && responseStatus3.message == 'ok'))) {
                     okText.innerText = 'Línea editada con éxito'
@@ -144,10 +149,6 @@ function elppEventListeners() {
         }
     })
 
-    //elpp accept with enter
-    acceptWithEnterInput(elppPrice,elppAccept)
-    acceptWithEnterInput(elppQtyR,elppAccept)
-    acceptWithEnterInput(elppQtyC,elppAccept)
 }
 
 export {elppEventListeners}

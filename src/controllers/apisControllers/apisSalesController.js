@@ -105,7 +105,6 @@ const apisSalesController = {
       }
 
       //create order
-      console.log(data)
       const newOrder = await ordersQueries.createOrder(data)
       const orderId = newOrder.id      
       

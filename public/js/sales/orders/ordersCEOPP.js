@@ -29,7 +29,7 @@ function ceoppEventListeners() {
                 }
             }
         }
-        if (e.ctrlKey && e.key === "g" && popup.classList.contains('slideIn')) {
+        if (e.ctrlKey && e.key === "q" && popup.classList.contains('slideIn')) {
             const activePopups = og.popups.filter(p => p.style.display == 'block')
             if (activePopups.length == 0 && og.action == 'edit') {
                 ceoppEdit.click()

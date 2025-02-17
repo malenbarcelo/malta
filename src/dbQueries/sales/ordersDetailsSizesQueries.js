@@ -12,6 +12,23 @@ const ordersDetailsSizesQueries = {
             { where: { id_orders_details: ids } }
         )
     },
+    get: async({filters}) => {
+                    
+        let where = {}
+
+        if (filters.id_orders_details) {
+            where.id_orders_details = filters.id_orders_details
+        }
+
+        const data = await model.findAndCountAll({
+            include:[{association:'size_data'}],
+            where,
+            raw:true,
+            nest:true
+        })
+
+        return data
+    },
 }       
 
 module.exports = ordersDetailsSizesQueries
