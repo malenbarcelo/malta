@@ -137,8 +137,9 @@ function updateOrderData() {
         og.changeDiscountFrom = 'ceopp'
         chdpp.classList.add('popup')
         chdpp.classList.remove('popup2')
-        chdppContent.style.left = 'calc(600px - 160px)'
+        //chdppContent.style.left = 'calc(600px - 160px)'
         chdpp.style.display = 'block'
+        chdppNewDiscount.focus()
     })
 }
 

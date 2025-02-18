@@ -242,8 +242,6 @@ function ceoppEventListeners() {
         og.orderData.id_payments_status = idPaymentsStatus
 
         const data = og.orderData
-
-        console.log(data)
         
         const response = await fetch(dominio + 'apis/sales/edit-order',{
             method:'POST',
