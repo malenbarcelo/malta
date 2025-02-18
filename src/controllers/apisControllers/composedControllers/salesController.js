@@ -311,6 +311,20 @@ const salesController = {
             console.log(error);
             return res.send('An error occurred');
         }
+    },
+    // max order number
+    maxOrderNumber: async(req, res) => {
+        try {
+            
+            //get data
+            const maxOrderNumber = await ordersQueries.maxOrderNumber()
+
+            res.status(200).json(maxOrderNumber)
+            
+        } catch (error) {
+            console.log(error);
+            return res.send('An error occurred');
+        }
     }
 }
 module.exports = salesController

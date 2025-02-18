@@ -1,16 +1,17 @@
 import { dominio } from "../../dominio.js"
 import { f } from "./functions2.js"
 import { gf } from "../../globalFunctions.js"
-import { clearInputs, focusInputs, applyPredictElement, closePopups, acceptWithEnterInput, closeWithEscape } from "../../generalFunctions.js"
+import { clearInputs, focusInputs, applyPredictElement, closePopups, acceptWithEnterInput, closeWithEscape, isValid } from "../../generalFunctions.js"
 import g from "./globals2.js"
 import { printDetails } from "./printDetails2.js"
+import { printProductsToAdd } from "./printProductsToAdd.js"
 
 //popups events listeners
 import { elppEventListeners } from "./ordersDetailsELPP.js"
 import { dlppEventListeners } from "./ordersDetailsDLPP.js"
 import { loppEventListeners } from "./ordersDetailsLOPP.js"
-import { elcppEventListeners } from "./ordersDetailsELCPP.js"
-import { elsppEventListeners } from "./ordersDetailsELSPP.js"
+// import { elcppEventListeners } from "./ordersDetailsELCPP.js"
+// import { elsppEventListeners } from "./ordersDetailsELSPP.js"
 import { apppEventListeners } from "./ordersDetailsAPPP.js"
 
 window.addEventListener('load',async()=>{
@@ -20,13 +21,10 @@ window.addEventListener('load',async()=>{
 
     //popups event listeners
     dlppEventListeners() // delete line
-    
-    
-    
     loppEventListeners() // line observations
     elppEventListeners() // edit line
-    elcppEventListeners() // edit line colors
-    elsppEventListeners() // edit line sizes
+    // elcppEventListeners() // edit line colors
+    // elsppEventListeners() // edit line sizes
     apppEventListeners() // add product
 
     // get general data
@@ -138,7 +136,24 @@ window.addEventListener('load',async()=>{
     acceptWithEnterInput(elppQtyR,elppAccept) // elpp
     acceptWithEnterInput(elppQtyC,elppAccept) // elpp
     acceptWithEnterInput(apppCustomer,apppAddLine) // appp
+    acceptWithEnterInput(erqppQty,erqppAccept) // erqpp
 
+    //DGAaddProduct    
+    DGAaddProduct.addEventListener("click", async() => {
 
+        ordersDetailsLoader.style.display = 'block'
 
+        const inputs = [apppProduct, apppCustomer]
+        g.customers = g.customers.length == 0 ? await (await fetch(`${dominio}apis/get/data-customers`)).json() : g.customers
+        g.products = g.products.length == 0 ? await (await fetch(`${dominio}apis/get/cuttings-products?season=${g.season.season}`)).json() : g.products
+        clearInputs(inputs)
+        isValid(inputs)
+        apppError.style.display = 'none'
+        g.productsToAdd = []
+        printProductsToAdd()
+        appp.style.display = 'block'
+        apppProduct.focus()
+
+        ordersDetailsLoader.style.display = 'none'
+    })
 })

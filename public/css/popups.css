@@ -32,6 +32,7 @@
     font-size: 14px;
     max-height: 90vh;
     overflow-y: auto;
+    margin: auto;
 }
 
 /*----------POPUP ICONS----------*/
@@ -346,6 +347,24 @@
     width: 300px;
     top: 40%;
     left: calc(50vw - 183px);
+}
+
+
+
+
+
+
+
+
+/*-- popups options --*/
+/* top */
+.pp-t-30{
+    top:30%
+}
+
+/* width */
+.pp-w-400{
+    width:400px
 }
 
 

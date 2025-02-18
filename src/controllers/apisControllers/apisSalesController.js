@@ -138,6 +138,8 @@ const apisSalesController = {
 
       const data = req.body
 
+      console.log(data)
+
       //update order
       await ordersQueries.updateOrder(data.id, data)
 

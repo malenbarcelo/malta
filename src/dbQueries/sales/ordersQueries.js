@@ -235,7 +235,7 @@ const ordersQueries = {
     updateOrderStatus: async(idOrders,idOrderStatus) => {
 
         await model.update(
-            { id_orders_status: idOrderStatus },
+            { id_orders_status: idOrderStatus, },
             { where: { id: idOrders } }
         )
     },
@@ -275,6 +275,7 @@ const ordersQueries = {
                 discount:data.discount,                
                 total: data.total,
                 id_orders_status:data.id_orders_status,
+                id_payments_status:data.id_payments_status,
              },
             { where: { id: orderId } }
         )
@@ -387,7 +388,8 @@ const ordersQueries = {
                 'id_customers',
                 'id_payments_status',
                 [sequelize.fn('MAX', sequelize.col('id')), 'id_orders']
-            ]
+            ],
+            order:[['id_orders','desc']]
         })
 
         return data
@@ -396,6 +398,14 @@ const ordersQueries = {
         const orders = model.bulkCreate(data)
         return orders
     },
+    maxOrderNumber: async () => {
+        const data = await model.findOne({
+            attributes: [[sequelize.fn('MAX', sequelize.col('order_number')), 'order_number']]
+        })
+    
+        return data?.dataValues?.order_number || 0
+    }
+    
 }       
 
 module.exports = ordersQueries

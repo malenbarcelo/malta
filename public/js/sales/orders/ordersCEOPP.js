@@ -185,8 +185,6 @@ function ceoppEventListeners() {
 
         const data = og.orderData
         data.order_details = og.orderDetails
-
-        console.log(data)
         
         await fetch(dominio + 'apis/sales/create-order',{
             method:'POST',
@@ -216,19 +214,12 @@ function ceoppEventListeners() {
         ceopp.classList.remove('slideIn')
         bodyOrders.innerHTML = ''
         ordersLoader.style.display = 'block'
-
-        // get payment status
-        const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${og.orderData.id}`)).json()
-        const amountPaid = transactions.rows.reduce((sum, t) => sum + parseFloat(t.amount), 0)
-        const orderTotal = og.orderData.total
-        const orderBalance = orderTotal - amountPaid
-        const idPaymentsStatus = orderBalance == 0 ? 5 : ( orderBalance > 0 ? 4 : 3)
         
         // get order status
         let incompleteRows = 0
         
         og.orderDetails.forEach(element => {
-            if (element.confirmed_quantity == '') {
+            if (element.confirmed_quantity === '' || element.confirmed_quantity === null) {
                 incompleteRows +=1
             }
         })
@@ -239,10 +230,20 @@ function ceoppEventListeners() {
             og.orderData.id_orders_status = 2
         }
 
+        // get payment status
+        const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${og.orderData.id}`)).json()
+        const amountPaid = transactions.rows.reduce((sum, t) => sum + parseFloat(t.amount), 0)
+        const orderTotal = og.orderData.total
+        const orderBalance = orderTotal - amountPaid
+        const idPaymentsStatus = amountPaid == 0 ? 3 : ((orderBalance == 0 && incompleteRows == 0) ? 5 : 4)
+        
+        og.orderData.season = og.season.season
+        og.orderData.order_details = og.orderDetails
+        og.orderData.id_payments_status = idPaymentsStatus
+
         const data = og.orderData
-        data.season = og.season.season
-        data.order_details = og.orderDetails
-        data.id_payments_status = idPaymentsStatus
+
+        console.log(data)
         
         const response = await fetch(dominio + 'apis/sales/edit-order',{
             method:'POST',

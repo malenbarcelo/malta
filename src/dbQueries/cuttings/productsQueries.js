@@ -30,10 +30,19 @@ const productsQueries = {
         }
 
         const data = await model.findAndCountAll({
+            include:[
+                {
+                    association:'product_colors',
+                    include:[{association: 'color_data'}]
+                },
+                {
+                    association:'product_sizes',
+                    include:[{association: 'size_data'}]
+                }
+            ],
             where,
             limit,
             offset,
-            raw:true,
             nest:true
         })
 

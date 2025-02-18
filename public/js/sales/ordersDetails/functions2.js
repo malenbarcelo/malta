@@ -5,6 +5,7 @@ const f = {
 
     getGeneralData: async function() {
         g.season = await (await fetch(dominio + 'apis/main/current-season')).json()
+        g.userLogged = userLogged.innerText
         g.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + g.season.season + '/'
         g.elementsToPredict[2].apiUrl = 'apis/cuttings/products/predict-season-products/' + g.season.season + '/'
     },

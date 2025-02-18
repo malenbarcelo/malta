@@ -1,9 +1,10 @@
 import { dominio } from "../../dominio.js"
-import odg from "./globals.js"
+import g from "./globals2.js"
 import { applyFilters, getData } from "./functions.js"
+import { f } from "./functions2.js"
 import { showOkPopup, getDate } from "../../generalFunctions.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { printOrdersDetails } from "./printOrdersDetails.js"
+import { printDetails } from "./printDetails2.js"
 
 //ADD PRODUCT POPUP (APPP)
 function apppEventListeners() {
@@ -17,8 +18,8 @@ function apppEventListeners() {
             apppError.style.display = 'block'
         }else{
             if (apppProduct.value != '' && apppCustomer.value != '') {
-                const productToAdd = odg.products.filter(p => p.full_description == apppProduct.value)
-                const customer = odg.customers.filter(c => c.customer_name.trim() == apppCustomer.value.trim())
+                const productToAdd = g.products.rows.filter(p => p.full_description == apppProduct.value)
+                const customer = g.customers.filter(c => c.customer_name.trim() == apppCustomer.value.trim())
                 if (productToAdd.length == 0) {
                     apppError.innerText = 'Producto inválido'
                     apppError.style.display = 'block'
@@ -27,21 +28,20 @@ function apppEventListeners() {
                         apppError.innerText = 'Cliente inválido'
                         apppError.style.display = 'block'
                     }else{
-                        const id = odg.productsToAdd.length == 0 ? 1 : Math.max(...odg.productsToAdd.map(element => element.row_id)) + 1
-                        odg.customersProductsToAdd.push(customer[0])
-                        odg.productsToAdd.push({
-                            required_quantity:apppReqQty.value,
+                        const id = g.productsToAdd.length == 0 ? 1 : Math.max(...g.productsToAdd.map(element => element.row_id)) + 1
+                        g.customersProductsToAdd.push(customer[0])
+                        g.productsToAdd.push({
                             extended_price: 0,
                             id_customers:customer[0].id,
                             customer_name:customer[0].customer_name,
                             id_products:productToAdd[0].id,
                             description:productToAdd[0].full_description,
                             unit_price:productToAdd[0].unit_price,
-                            colors:productToAdd[0].product_colors,
+                            colors:productToAdd[0].product_colors.length == 0 ? [{color_data:{color:'U'}}] : productToAdd[0].product_colors,
                             sizes:productToAdd[0].product_sizes,
+                            required_quantity: '',
                             enabled:1,
                             row_id:id
-
                         })
                         printProductsToAdd()
                         apppCustomer.value = ''
@@ -65,9 +65,10 @@ function apppEventListeners() {
 
         ordersDetailsLoader.style.display = 'block'
         appp.style.display = 'none'
+        bodyOrdersDetails.innerHTML = ''
 
-        const data = odg.productsToAdd
-        const customers = odg.customersProductsToAdd.filter((obj, index, self) =>
+        const data = g.productsToAdd
+        const customers = g.customersProductsToAdd.filter((obj, index, self) =>
             index === self.findIndex((el) => el.id === obj.id)
         )
         const customersIds = customers.map( c => c.id)
@@ -79,13 +80,17 @@ function apppEventListeners() {
 
         // create orders if applies
         if (ordersToCreate.length > 0) {
-            let maxOrderNumber = odg.orders.reduce((max, obj) => Math.max(max, obj.order_number), -Infinity) + 1
+            const maxOrderNumber = await (await fetch(`${dominio}apis/composed/max-order-number`)).json()
+            const orderNumber = maxOrderNumber + 1
             const data = []
 
             ordersToCreate.forEach((o,index) => {
+
+                const idOrdersManagers = g.userLogged == 'Pedro' ? 5 : (g.userLogged == 'Esteban' ? 4 : (g.userLogged == 'Antonio' ? 2 : 3))
+
                 data.push({
                     date: date,
-                    order_number: maxOrderNumber + index,
+                    order_number: orderNumber + index,
                     id_customers:o.id,
                     id_sales_channels: o.id_sales_channels,
                     total: 0,
@@ -93,8 +98,8 @@ function apppEventListeners() {
                     discount: o.discount,
                     id_orders_status: 1,
                     id_payments_status: 3,
-                    id_orders_managers: filterOrderManager.value == 'default' ? 1 : filterOrderManager.value,
-                    season: odg.season.season,
+                    id_orders_managers: idOrdersManagers,
+                    season: g.season.season,
                     enabled:1
                 })
             })
@@ -113,8 +118,6 @@ function apppEventListeners() {
         // update orders if applies
         if (lastOrders.length > 0) {
             const data = []
-
-            console.log(lastOrders)
 
             lastOrders.forEach((o) => {
                 data.push({
@@ -138,7 +141,7 @@ function apppEventListeners() {
         // create orders details
         const newLastOrders = await (await fetch(`${dominio}apis/composed/last-orders?customers=[${customersIds}]`)).json()
 
-        odg.productsToAdd = odg.productsToAdd.map(product => ({
+        g.productsToAdd = g.productsToAdd.map(product => ({
             ...product,
             date:date,
             id_orders: newLastOrders.filter( lo => lo.id_customers == product.id_customers)[0].id_orders
@@ -147,7 +150,7 @@ function apppEventListeners() {
         const response3 = await fetch(dominio + 'apis/create/sales-orders-details',{
             method:'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(odg.productsToAdd)
+            body: JSON.stringify(g.productsToAdd)
         })
 
         responseStatus3 = await response3.json()
@@ -160,7 +163,7 @@ function apppEventListeners() {
 
         createdData.forEach(d => {
             // find profuct
-            const product = odg.products.find(p => p.id === d.id_products)
+            const product = g.products.rows.find(p => p.id === d.id_products)
 
             if (product) {
                 product.product_colors.forEach(c => {
@@ -196,11 +199,16 @@ function apppEventListeners() {
         })
 
         responseStatus5 = await response5.json()
-        //get data
-        bodyOrdersDetails.innerHTML = ''
-        await getData()
-        applyFilters()
-        printOrdersDetails()
+        
+        //update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
+
+        //get and print data
+        g.details = await f.getDetails()
+        printDetails()
+
+        ordersDetailsTable.scrollTop = 0
 
         if ((!responseStatus1 || responseStatus1.message == 'ok') && (!responseStatus2 || responseStatus2.message == 'ok') && responseStatus3.message == 'ok' && responseStatus4.message == 'ok' && responseStatus5.message == 'ok') {
             okText.innerText = 'Productos agregados con éxito'
@@ -211,6 +219,22 @@ function apppEventListeners() {
         }
 
         ordersDetailsLoader.style.display = 'none'
+    })
+
+    // edit required quantity
+    erqppAccept.addEventListener("click", async(e) => {
+
+        ordersDetailsLoader.style.display = 'block'
+
+        erqpp.style.display = 'none'
+
+        const row = g.productsToAdd.find(p => p.row_id === g.rowToEdit)
+        row.required_quantity = erqppQty.value
+
+        printProductsToAdd()
+
+        ordersDetailsLoader.style.display = 'none'
+
     })
 }
 

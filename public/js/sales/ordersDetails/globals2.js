@@ -1,7 +1,9 @@
 
 let g = {
     // main data
+    season: {},
     details:[],
+    userLogged:'',
     // filters
     filters: {
         size:20,
@@ -14,7 +16,7 @@ let g = {
         item_status:''
     },
     // popups
-    popups: [sscpp,appp,dlpp,elcpp,elpp,elspp,lopp],
+    popups: [sscpp,erqpp,appp,dlpp,elcpp,elpp,elspp,lopp],
     // tooltips
     tooltips: [
         {
@@ -72,8 +74,12 @@ let g = {
     productSizes:[],
     // delete line popup
     lineToDelete:{},
-
-
+    // add products popup
+    productsToAdd:[],
+    customersProductsToAdd:[],
+    customers:[],
+    products:[],
+    rowToEdit:0
 }
 
 export default g

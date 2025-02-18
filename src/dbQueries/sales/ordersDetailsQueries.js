@@ -200,14 +200,12 @@ const ordersDetailsQueries = {
                 where.confirmed_quantity = { [Op.or]: { [Op.lt]: 0, [Op.is]: null } }
             }
         }
-        
-        
 
         const data = await model.findAndCountAll({
             include:[
                 {
                     association:'orders_details_orders',
-                    attributes:['order_number','id_sales_channels', 'id_orders_status','id_customers','discount'],
+                    attributes:['id','order_number','id_sales_channels', 'id_orders_status','id_customers','discount'],
                     include: [
                         {
                             association: 'orders_customers',
