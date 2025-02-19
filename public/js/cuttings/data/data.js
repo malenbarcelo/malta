@@ -73,6 +73,7 @@ window.addEventListener('load',async()=>{
             isValid([cdppData])
             clearInputs([cdppData])
             cdpp.style.display = 'block'
+            cdppData.focus()
         })
     })
 })
