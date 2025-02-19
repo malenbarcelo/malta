@@ -14,12 +14,13 @@ async function printDetails() {
 
         const row = document.createElement('tr')
         row.id = `tr_${element.id}`
-        row.className = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        row.className = element.confirmed_quantity === '' || element.confirmed_quantity === null ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete'
         
         const requiredQuantity = element.required_quantity ?? ''
         const confirmedQuantity = element.confirmed_quantity ?? ''
         const commentIcon = (!element.observations2 || element.observations2.trim() === '') ? 'fa-comment' : 'fa-comment-dots'
-        const statusClass = element.orders_details_orders.id_orders_status == 1 ? 'errorColor' : ''
+        //const statusClass = element.orders_details_orders.id_orders_status == 1 ? 'errorColor' : ''
+        const statusClass = ''
         const dateString = element.update_at
         const date = new Date(dateString)
 

@@ -13,7 +13,7 @@ async function printOrders() {
     const rows = og.ordersFiltered.map((element, index) => {
         
     const date = dateToString(element.date);
-    const rowClass = index % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd';
+    const rowClass = element.id_orders_status == 1 ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete';
     const color = element.enabled === 0 ? 'errorColor' : '';
     const status = element.enabled === 0 ? 'Cancelado' : element.orders_orders_status.order_status;
     

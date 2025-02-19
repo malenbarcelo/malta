@@ -90,6 +90,18 @@ border-top-right-radius: 15px;
     background-color: var(--color3);
 }/*background when row number is odd*/
 
+.tBodyComplete{
+    background-color: rgb(220, 248, 220);
+    border-bottom: black solid 1px;
+}
+
+.tBodyIncomplete{
+    background-color: rgb(241, 194, 194);
+    border-bottom: black solid 1px;
+}
+
+
+
 .allowedIcon{
     cursor: pointer;
 }

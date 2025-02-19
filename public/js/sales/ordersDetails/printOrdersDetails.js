@@ -17,7 +17,7 @@ async function printOrdersDetails() {
 
         const row = document.createElement('tr')
         row.id = `tr_${element.id}`
-        row.className = counter % 2 === 0 ? 'tBody1 tBodyEven' : 'tBody1 tBodyOdd'
+        row.className = element.confirmed_quantity === '' || element.confirmed_quantity === null ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete'
         
         const orderData = element.orders_details_orders
         const formattedDate = new Date(element.update_at).toLocaleString('es-AR', {
