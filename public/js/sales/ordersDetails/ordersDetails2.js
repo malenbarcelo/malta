@@ -156,4 +156,33 @@ window.addEventListener('load',async()=>{
 
         ordersDetailsLoader.style.display = 'none'
     })
+
+    // order data
+    orderDown.addEventListener("click", async() => {
+
+        ordersDetailsLoader.style.display = 'block'
+
+        orderUp.classList.remove('notVisible')
+        orderDown.classList.add('notVisible')
+        g.filters.order = '[["id","DESC"]]'
+
+        await f.updateData()
+
+        ordersDetailsLoader.style.display = 'none'
+    })
+
+    orderUp.addEventListener("click", async() => {
+
+        ordersDetailsLoader.style.display = 'block'
+
+        orderUp.classList.add('notVisible')
+        orderDown.classList.remove('notVisible')
+        g.filters.order = '[["id","ASC"]]'
+
+        await f.updateData()
+
+        ordersDetailsLoader.style.display = 'none'
+    })
 })
+
+

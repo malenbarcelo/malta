@@ -136,7 +136,7 @@ const getController = {
   //sales_orders_details
   getOrdersDetails: async(req,res) =>{
     try{
-      const { page, size, id_orders, order_number, customer_name, description, id_sales_channels, id_orders_status, item_status } = req.query
+      const { page, size, order, id_orders, order_number, customer_name, description, id_sales_channels, id_orders_status, item_status } = req.query
       const limit = size ? parseInt(size) : undefined
       const offset = page ? (parseInt(page) - 1) * limit : undefined
       const filters = {}
@@ -162,6 +162,10 @@ const getController = {
       }
       if (item_status) {
         filters.item_status = item_status
+      }
+
+      if (order) {
+        filters.order = JSON.parse(order)
       }
 
       //get data

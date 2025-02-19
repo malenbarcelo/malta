@@ -1,5 +1,6 @@
 import { dominio } from "../../dominio.js"
 import g from "./globals2.js"
+import { printDetails } from "./printDetails2.js"
 
 const f = {
 
@@ -16,6 +17,7 @@ const f = {
         let filters = ''
         filters += g.filters.size == '' ? '' : `&size=${g.filters.size}`
         filters += g.filters.page == '' ? '' : `&page=${g.filters.page}`
+        filters += g.filters.order == '' ? '' : `&order=${g.filters.order}`
         filters += g.filters.order_number == '' ? '' : `&order_number=${g.filters.order_number}`
         filters += g.filters.customer_name == '' ? '' : `&customer_name=${g.filters.customer_name}`
         filters += g.filters.description == '' ? '' : `&description=${g.filters.description}`
@@ -26,6 +28,20 @@ const f = {
         const fetchData = await (await fetch(`${dominio}apis/get/sales-orders-details?${filters}`)).json()
 
         return fetchData.rows
+
+    },
+
+    updateData: async function() {
+
+        //update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
+
+        //get and print data
+        g.details = await f.getDetails()
+        printDetails()
+
+        ordersDetailsTable.scrollTop = 0
 
     },
 }

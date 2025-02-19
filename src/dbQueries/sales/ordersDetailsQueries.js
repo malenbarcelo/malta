@@ -158,8 +158,6 @@ const ordersDetailsQueries = {
             where.description = { [Op.like]: `%${filters.description.toLowerCase()}%` }
         }
 
-        console.log(filters.item_status)
-
         if (filters.item_status) {
             if (filters.item_status == 1) {
                 where.confirmed_quantity = { [Op.or]: ['', null] }
@@ -201,6 +199,12 @@ const ordersDetailsQueries = {
             }
         }
 
+        // order
+        let order = ''
+        if (filters.order) {
+            order = filters.order
+        }
+
         const data = await model.findAndCountAll({
             include:[
                 {
@@ -222,7 +226,7 @@ const ordersDetailsQueries = {
             where,
             limit,
             offset,
-            order:[['id_orders','ASC']],
+            order,
             raw:true,
             nest:true
 

@@ -8,6 +8,7 @@ let g = {
     filters: {
         size:20,
         page:1,
+        order:'[["id","ASC"]]',
         order_number:'',
         customer_name:'',
         description:'',
@@ -56,14 +57,14 @@ let g = {
             list: ulPredictedProducts2,
             apiUrl: '',
             name: 'full_description',
-            elementName: 'product'
+            elementName: 'product2'
         },
         {
             input: apppCustomer,
             list: ulPredictedCustomers2,
             apiUrl: 'apis/data/customers/predict-customers/',
             name: 'customer_name',
-            elementName: 'customer'
+            elementName: 'customer2'
         },
     ],
     // edit line popup

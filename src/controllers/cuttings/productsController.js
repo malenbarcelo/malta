@@ -126,7 +126,7 @@ const productsController = {
 
             const season = req.params.season
             const string = req.params.string.toLowerCase()
-        
+
             //get products
             const products = await productsQueries.seasonProducts(season)
         

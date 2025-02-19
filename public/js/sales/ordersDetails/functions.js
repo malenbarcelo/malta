@@ -10,9 +10,7 @@ async function getData() {
     //odg.customers = await (await fetch(dominio + 'apis/data/customers')).json()
     //odg.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + odg.season.season)).json()
     //odg.orders = await (await fetch(dominio + 'apis/sales/in-progress-orders/show-canceled')).json()
-    const dateGD1 = Date.now()
     odg.ordersDetails = await (await fetch(dominio + 'apis/sales/in-progress-orders/details')).json()
-    const dateGD2 = Date.now()
     console.log('get data: ' + (dateGD2-dateGD1))
     //odg.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
     odg.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + odg.season.season + '/'
