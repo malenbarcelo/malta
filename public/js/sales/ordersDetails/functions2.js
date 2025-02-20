@@ -25,8 +25,6 @@ const f = {
         filters += g.filters.id_orders_status == '' ? '' : `&id_orders_status=${g.filters.id_orders_status}`
         filters += g.filters.item_status == '' ? '' : `&item_status=${g.filters.item_status}`
 
-        console.log(`${dominio}apis/get/sales-orders-details?${filters}`)
-
         const fetchData = await (await fetch(`${dominio}apis/get/sales-orders-details?${filters}`)).json()
 
         return fetchData.rows

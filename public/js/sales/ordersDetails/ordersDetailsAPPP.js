@@ -205,6 +205,7 @@ function apppEventListeners() {
         g.previousScrollTop = 0
 
         //get and print data
+        g.filters.page = 1
         g.details = await f.getDetails()
         printDetails()
 

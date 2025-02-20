@@ -6,8 +6,6 @@ import { clearInputs } from "../../generalFunctions.js"
 async function printDetails() {
 
     bodyOrdersDetails.innerHTML = ''
-
-    console.log(g.details)
     
     let counter = 0
     const fragment = document.createDocumentFragment()
