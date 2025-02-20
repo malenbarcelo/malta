@@ -14,8 +14,6 @@ async function printDetails() {
     
     g.details.forEach(element => {
 
-        console.log(element)
-
         const row = document.createElement('tr')
         row.id = `tr_${element.id}`
         row.className = element.confirmed_quantity === '' || element.confirmed_quantity === null ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete'
