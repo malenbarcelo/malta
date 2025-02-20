@@ -6,11 +6,15 @@ import { clearInputs } from "../../generalFunctions.js"
 async function printDetails() {
 
     bodyOrdersDetails.innerHTML = ''
+
+    console.log(g.details)
     
     let counter = 0
     const fragment = document.createDocumentFragment()
     
     g.details.forEach(element => {
+
+        console.log(element)
 
         const row = document.createElement('tr')
         row.id = `tr_${element.id}`

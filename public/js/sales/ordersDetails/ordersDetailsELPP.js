@@ -54,6 +54,8 @@ function elppEventListeners() {
 
             responseStatus1 = await response.json()
 
+            console.log(responseStatus1)
+
             if (responseStatus1.message == 'ok') {
 
                 const orderId = g.lineToEdit.id_orders
@@ -93,6 +95,8 @@ function elppEventListeners() {
 
                 responseStatus2 = await response.json()
 
+                console.log(responseStatus2)
+
                 // create not assigned payment if necessary
                 if (responseStatus2.message == 'ok' && orderBalance < 0) {
 
@@ -124,17 +128,28 @@ function elppEventListeners() {
 
                     responseStatus3 = await response.json()
 
+                    console.log(responseStatus3)
+
                 }
+
+                console.log(1)
 
                 //update scroll data
                 g.loadedPages = new Set()
                 g.previousScrollTop = 0
 
+                console.log(2)
+
                 //get and print data
+                console.log(3)
                 g.details = await f.getDetails()
+                console.log(4)
                 printDetails()
+                console.log(5)
 
                 ordersDetailsTable.scrollTop = 0
+
+                console.log(8)
 
                 if (responseStatus1.message == 'ok' && responseStatus2.message == 'ok' && (!responseStatus3 || (responseStatus3 && responseStatus3.message == 'ok'))) {
                     okText.innerText = 'Línea editada con éxito'
