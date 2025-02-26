@@ -10,10 +10,10 @@ async function printOrders() {
     bodyOrders.innerHTML = ''
 
     //printTable
-    const rows = og.ordersFiltered.map((element, index) => {
-        
+    const rows = og.ordersFiltered.map((element, index) => {        
     const date = dateToString(element.date);
-    const rowClass = element.id_orders_status == 1 ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete';
+    const rowClass = 'tBody1 tBody-' + element.id_orders_status + '-' + element.id_payments_status
+    //const rowClass = element.id_orders_status == 1 ? 'tBody1 tBodyIncomplete' : 'tBody1 tBodyComplete';
     const color = element.enabled === 0 ? 'errorColor' : '';
     const status = element.enabled === 0 ? 'Cancelado' : element.orders_orders_status.order_status;
     

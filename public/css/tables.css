@@ -100,6 +100,46 @@ border-top-right-radius: 15px;
     border-bottom: black solid 1px;
 }
 
+.tBody-2-5{ /* completo, pagado */
+    background-color: rgb(211, 250, 211);
+    border-bottom: black solid 1px;
+}
+
+.tBody-2-4{ /* completo, pago parcial */
+    background-color:rgb(139, 227, 139);
+    border-bottom: black solid 1px;
+}
+
+.tBody-1-4{ /* incompleto, pago parcial */
+    background-color:rgb(241, 194, 194);
+    border-bottom: black solid 1px;
+}
+
+.tBody-2-3{ /* completo, sin pagar */
+    background-color: rgb(78, 159, 78);
+    border-bottom: black solid 1px;
+}
+
+.tBody-1-3{ /* incompleto, sin pagar */
+    background-color: rgb(221, 133, 133);
+    border-bottom: black solid 1px;
+}
+
+.tBody-3-3{ /* entregado, sin pagar */
+    background-color:rgb(247, 247, 17);
+    border-bottom: black solid 1px;
+}
+
+.tBody-3-4{ /* entregado, pago parcial */
+    background-color: rgb(247, 228, 105);
+    border-bottom: black solid 1px;
+}
+
+.tBody-1-6,.tBody-2-6,.tBody-3-6{ /* pago en verificación */
+    background-color: rgb(167, 160, 160);
+    border-bottom: black solid 1px;
+}
+
 
 
 .allowedIcon{
