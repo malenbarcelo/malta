@@ -4,6 +4,7 @@ import { printOrders } from "./printOrders.js"
 import { dateToString,isValid,isInvalid, applyPredictElement } from "../../generalFunctions.js"
 
 async function getData() {
+
     og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
     og.userLogged = userLogged.innerText
     og.customers = await (await fetch(dominio + 'apis/data/customers')).json()

@@ -49,6 +49,7 @@ const productsQueries = {
         return data
     },
     seasonProducts: async(season) => {
+        console.log('holaaaaaaaaaaaa')
         const products = await model.findAll({
             where:{
                 season:season,
@@ -69,6 +70,7 @@ const productsQueries = {
             order:[['product_code','ASC']],
             nest:true
         })
+        console.log('chau')
         return products
     },
     distinctProducts: async() => {

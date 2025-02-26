@@ -104,8 +104,8 @@ function rpppEventListeners() {
 
             //get data
             const payment = rpppPayment.value == '' ? 0 : parseFloat(rpppPayment.value)
-            const assignation = parseFloat(rpppBalanceUsed.value.replace('.',''),2)
-            const newBalance = og.orderToPay.balance - payment - assignation
+            const assignation = Number(rpppBalanceUsed.value.replaceAll('.', ''))
+            const newBalance = parseFloat((og.orderToPay.balance - payment - assignation).toFixed(3))
 
             //complete data
             const data = []
@@ -122,7 +122,7 @@ function rpppEventListeners() {
                 })
             }
 
-            if (rpppBalanceUsed.value > 0) {
+            if (assignation > 0) {
                 data.push({
                     id_orders:og.orderToPay.id,
                     date: date,

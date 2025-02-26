@@ -110,6 +110,8 @@ const productsController = {
             
             const season = req.params.season
 
+            console.log(season)
+
             //get products
             const products = await productsQueries.seasonProducts(season)
 
