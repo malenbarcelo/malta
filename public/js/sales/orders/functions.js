@@ -365,7 +365,7 @@ function selectOrderManager() {
     filterOrderManager.value = og.userLogged
     const salesChannelId = og.ordersManagers.find(om => om.id == og.userLogged).id_sales_channels
     let salesChannel
-    if (salesChannelId != null) {
+    if (salesChannelId != null && salesChannelId != 0) {
         salesChannel = document.getElementById('channel_' + salesChannelId)
         og.channelsChecked.push(salesChannel)
         salesChannel.checked = true
