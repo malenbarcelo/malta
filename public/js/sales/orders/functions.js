@@ -364,11 +364,13 @@ function cpppValidations() {
 function selectOrderManager() {
     filterOrderManager.value = og.userLogged
     const salesChannelId = og.ordersManagers.find(om => om.id == og.userLogged).id_sales_channels
-    const salesChannel = document.getElementById('channel_' + salesChannelId)
-    salesChannel.checked = true
-    og.channelsChecked.push(salesChannel)
+    let salesChannel
+    if (salesChannelId != null) {
+        salesChannel = document.getElementById('channel_' + salesChannelId)
+        og.channelsChecked.push(salesChannel)
+        salesChannel.checked = true
+    }
 }
-
 
 
 export {getData, updateOrdersData,updateOrderData, updateCustomerData,applyFilters, completeEPSPPsizes, completeEPCPPcolors, printCustomerMovements,completeESPPsizes,completeECPPcolors,cpppValidations,selectOrderManager}

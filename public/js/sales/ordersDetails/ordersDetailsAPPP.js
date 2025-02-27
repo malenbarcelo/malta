@@ -86,8 +86,6 @@ function apppEventListeners() {
 
             ordersToCreate.forEach((o,index) => {
 
-                const idOrdersManagers = g.userLogged == 'Pedro' ? 5 : (g.userLogged == 'Esteban' ? 4 : (g.userLogged == 'Antonio' ? 2 : 3))
-
                 data.push({
                     date: date,
                     order_number: orderNumber + index,
@@ -98,7 +96,7 @@ function apppEventListeners() {
                     discount: o.discount,
                     id_orders_status: 1,
                     id_payments_status: 3,
-                    id_orders_managers: idOrdersManagers,
+                    id_users: g.userLogged,
                     season: g.season.season,
                     enabled:1
                 })
