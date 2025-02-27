@@ -1,7 +1,7 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
 
-<div class="notVisible" id="userLogged"><%= userLogged.first_name %></div>
+<div class="notVisible" id="userLogged"><%= userLogged.id %></div>
 
 <!------MAIN TITLE------>
 <div class="mainTitle mbm">
@@ -62,9 +62,9 @@
             <label for="selectOrderManager" class="label1">Encargado</label>
             <select name="selectOrderManager" id="filterOrderManager" class="input1 ixs ips">
                 <option value=""></option>
-                <% ordersManagers.forEach(manager => { %>
-                    <option value="<%= manager.id %>">
-                        <%= manager.order_manager_name %>
+                <% users.forEach(user => { %>
+                    <option value="<%= user.id %>">
+                        <%= user.first_name %>
                     </option>
                 <% }) %>
             </select>
@@ -135,7 +135,7 @@
         <table>
             <thead>
                 <tr>
-                    <th class="theadCss wXS thLeftBorder thTall"># Pedido</th>
+                    <th class="theadCss wXS thTall"># Pedido</th>
                     <th class="theadCss wXS thTall">Temporada</th>
                     <th class="theadCss wXS thTall">Fecha</th>
                     <th class="theadCss wXS thTall">Canal</th>
@@ -154,7 +154,7 @@
                     <!-- <th class="theadCss wXXS thTall"><i class="fa-solid fa-truck-ramp-box tableIcon" id="doppIcon"></i></th> -->
                     <th class="theadCss wXXS thTall"><i class="fa-solid fa-user-pen tableIcon" id="amppIcon"></i></th>
                     <th class="theadCss wXXS thTall"><i class="fa-regular fa-comment tableIcon" id="obppIcon"></i></th>
-                    <th class="theadCss wXXS thTall thRightBorder"><i class="fa-regular fa-circle-xmark tableIcon" id="coppIcon"></i></th>
+                    <th class="theadCss wXXS thTall"><i class="fa-regular fa-circle-xmark tableIcon" id="coppIcon"></i></th>
                 </tr>
             </thead>
             <tbody id="bodyOrders"></tbody>

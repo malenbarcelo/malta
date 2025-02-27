@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
         },
-      id_orders_managers:{
+      id_users:{
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -93,9 +93,9 @@ module.exports = (sequelize, DataTypes) => {
          as:'orders_customers',
          foreignKey: 'id_customers'
       }),
-      Sale_order.belongsTo(models.Data_orders_managers,{
-        as:'orders_orders_managers',
-        foreignKey: 'id_orders_managers'
+      Sale_order.belongsTo(models.Users,{
+        as:'user_data',
+        foreignKey: 'id_users'
       }),
        Sale_order.belongsTo(models.Data_orders_status,{
         as:'orders_orders_status',

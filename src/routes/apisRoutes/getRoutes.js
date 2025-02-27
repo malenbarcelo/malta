@@ -32,4 +32,7 @@ router.get('/sales-orders-details-colors',getController.getOrdersDetailsColors)
 // sales_orders_details
 router.get('/sales-orders-details-sizes',getController.getOrdersDetailsSizes)
 
+// users
+router.get('/users',getController.getUsers)
+
 module.exports = router

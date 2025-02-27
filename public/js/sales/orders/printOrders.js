@@ -41,7 +41,7 @@ async function printOrders() {
                 <th class="${rowClass} ${color}">${og.formatter.format(element.balance)}</th>
                 <th class="${rowClass} ${(element.id_orders_status === 1 ? 'errorColor' : color)}">${status}</th>
                 <th class="${rowClass} ${color}">${element.orders_payments_status.payment_status}</th>
-                <th class="${rowClass} ${color}">${element.orders_orders_managers.order_manager_name}</th>
+                <th class="${rowClass} ${color}">${element.user_data.first_name}</th>
                 <th class="${rowClass} ${color}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
                 <th class="${rowClass} ${color}"><i class="fa-regular fa-credit-card ${paymentClass}" id="${paymentClass === 'allowedIcon' ? 'payment_' + element.id : ''}"></i></th>
                 <th class="${rowClass} ${color}"><input type="checkbox" id="paymentV_${element.id}" ${paymentVchequed} ${paymentVStatus}></th>
@@ -228,7 +228,7 @@ function ordersEventListeners() {
         //assign manager
         if (assignOrder) {
             assignOrder.addEventListener('click',async()=>{
-                amppSelectOM.value = element.id_orders_managers
+                amppSelectOM.value = element.id_users
                 og.idOrderToAssign = element.id
                 ampp.style.display = 'block'
             })

@@ -103,5 +103,5 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 app.use('/apis/cuttings',cuttingsRoutes) //orders
 
 
-//console.log(bcrypt.hashSync('mlow',10))
+//console.log(bcrypt.hashSync('dan',10))
 

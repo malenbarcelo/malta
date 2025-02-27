@@ -66,10 +66,10 @@
         <div class="divInputsColumn mtm mbl">
             <div class="divInput">
                 <select id="amppSelectOM" class="input1 inputXXL">
-                    <% ordersManagers.forEach(om => { %>
-                        <% if (om.enabled == 1) { %>
-                            <option value="<%= om.id %>">
-                                <%= om.order_manager_name %>
+                    <% users.forEach(user => { %>
+                        <% if (user.enabled == 1) { %>
+                            <option value="<%= user.id %>">
+                                <%= user.first_name %>
                             </option>
                         <% } %>
                     <% }) %>

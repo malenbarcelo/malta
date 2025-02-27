@@ -1,11 +1,11 @@
 const customersQueries = require('../dbQueries/data/customersQueries')
-const ordersManagersQueries = require('../dbQueries/data/ordersManagersQueries')
 const salesChannelsQueries = require('../dbQueries/data/salesChannelsQueries')
 const ordersStatusQueries = require('../dbQueries/data/ordersStatusQueries')
 const paymentsStatusQueries = require('../dbQueries/data/paymentsStatusQueries')
 const paymentMethodsQueries = require('../dbQueries/data/paymentMethodsQueries')
 const productsQueries = require('../dbQueries/cuttings/productsQueries')
 const ordersQueries = require('../dbQueries/sales/ordersQueries')
+const usersQueries = require('../dbQueries/users/usersQueries')
 const shippingMethodsQueries = require("../dbQueries/data/shippingMethodsQueries")
 const bottomHeaderMenu = require("./sales/bottomHeaderMenu")
 
@@ -15,7 +15,7 @@ const salesController = {
 
             const selectedItem = 'PEDIDOS'
             const customers = await customersQueries.customers()
-            const ordersManagers = await ordersManagersQueries.ordersManagers()
+            const users = await usersQueries.get()
             const paymentMethods = await paymentMethodsQueries.paymentMethods()
             const ordersStatus = await ordersStatusQueries.ordersStatus()
             let paymentsStatus = await paymentsStatusQueries.paymentsStatus()
@@ -23,7 +23,7 @@ const salesController = {
             const distinctProducts = await productsQueries.distinctProducts()
             const orders = await ordersQueries.inProgressOrders()
 
-            return res.render('sales/orders/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,paymentsStatus,distinctProducts,orders,paymentMethods})
+            return res.render('sales/orders/orders',{title:'Pedidos',bottomHeaderMenu,selectedItem,customers,users,ordersStatus,paymentsStatus,distinctProducts,orders,paymentMethods})
 
         }catch(error){
 
@@ -52,12 +52,12 @@ const salesController = {
 
             const selectedItem = 'DETALLE DE PEDIDOS'
             const customers = await customersQueries.customers()
-            const ordersManagers = await ordersManagersQueries.ordersManagers()
+            const users = await usersQueries.get()
             const ordersStatus = await ordersStatusQueries.ordersStatus()
             const distinctProducts = await productsQueries.distinctProducts()
             const orders = await ordersQueries.inProgressOrders()
 
-            return res.render('sales/ordersDetails/ordersDetails',{title:'Detalle de pedidos',bottomHeaderMenu,selectedItem,customers,ordersManagers,ordersStatus,distinctProducts,orders})
+            return res.render('sales/ordersDetails/ordersDetails',{title:'Detalle de pedidos',bottomHeaderMenu,selectedItem,customers,users,ordersStatus,distinctProducts,orders})
 
         }catch(error){
 

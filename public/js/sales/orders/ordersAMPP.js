@@ -12,7 +12,7 @@ function amppEventListeners() {
 
         const data = {
             idOrder:og.idOrderToAssign,
-            orderManagerId:amppSelectOM.value
+            orderManagerId:parseInt(amppSelectOM.value)
         }
 
         await fetch(dominio + 'apis/sales/assign-order-manager',{

@@ -74,7 +74,7 @@ function elppEventListeners() {
                 const transactions = await (await fetch(`${dominio}apis/get/sales-transactions?id_orders=${orderId}`)).json()
                 const amountPaid = transactions.rows.reduce((sum, t) => sum + parseFloat(t.amount), 0)
                 const orderBalance = total - amountPaid
-                const idPaymentsStatus = orderBalance == 0 ? 5 : ( orderBalance > 0 ? 4 : 3)
+                const idPaymentsStatus = orderBalance == 0 ? 5 : ( (orderBalance > 0 && amountPaid > 0) ? 4 : 3)
 
                 const data = [{
                     id:orderId,

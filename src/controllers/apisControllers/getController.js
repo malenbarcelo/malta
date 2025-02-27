@@ -5,6 +5,7 @@ const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsC
 const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
 const customersQueries = require('../../dbQueries/data/customersQueries')
 const productsQueries = require('../../dbQueries/cuttings/productsQueries')
+const usersQueries = require('../../dbQueries/users/usersQueries')
 const productsColorsQueries = require('../../dbQueries/cuttings/productsColorsQueries')
 const productsSizesQueries = require('../../dbQueries/cuttings/productsSizesQueries')
 const seasonsQueries = require('../../dbQueries/main/seasonsQueries')
@@ -28,6 +29,19 @@ const getController = {
     try{
 
       const data = await customersQueries.get()
+      
+      res.status(200).json(data)
+
+    }catch(error){
+      console.group(error)
+      return res.send('Ha ocurrido un error')
+    }
+  },
+  //users
+  getUsers: async(req,res) =>{
+    try{
+
+      const data = await usersQueries.get()
       
       res.status(200).json(data)
 

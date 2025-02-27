@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      id_sales_channels:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       password:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -45,7 +49,11 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Users_categories,{
          as:'user_category',
          foreignKey: 'id_users_categories'
-      })
+      }),
+      User.belongsTo(models.Data_sales_channels,{
+        as:'sales_channel',
+        foreignKey: 'id_sales_channels'
+     })
     }
     
     return User

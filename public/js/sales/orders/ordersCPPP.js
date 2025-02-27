@@ -55,6 +55,7 @@ async function cpppEventListeners() {
             isValid([cdppData])
             clearInputs([cdppData])
             cdpp.style.display = 'block'
+            cdppData.focus()
         })
     })
 

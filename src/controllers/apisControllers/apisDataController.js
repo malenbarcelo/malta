@@ -2,7 +2,6 @@
 const customersQueries = require('../../dbQueries/data/customersQueries')
 const salesChannelsQueries = require('../../dbQueries/data/salesChannelsQueries')
 const productsQueries = require('../../dbQueries/cuttings/productsQueries')
-const ordersManagersQueries = require('../../dbQueries/data/ordersManagersQueries')
 const ordersWpQueries = require('../../dbQueries/sales/ordersWpQueries')
 
 const apisDataController = {
@@ -36,18 +35,6 @@ const apisDataController = {
       const products = await productsQueries.products()
 
       res.status(200).json(products)
-
-    }catch(error){
-      console.group(error)
-      return res.send('Ha ocurrido un error')
-    }
-  },
-  ordersManagers: async(req,res) =>{
-    try{
-
-      const ordersManagers = await ordersManagersQueries.ordersManagers()
-
-      res.status(200).json(ordersManagers)
 
     }catch(error){
       console.group(error)

@@ -8,7 +8,7 @@ async function getData() {
     og.season = await (await fetch(dominio + 'apis/main/current-season')).json()
     og.userLogged = userLogged.innerText
     og.customers = await (await fetch(dominio + 'apis/data/customers')).json()
-    og.ordersManagers = await (await fetch(dominio + 'apis/data/orders-managers')).json()
+    og.ordersManagers = await (await fetch(dominio + 'apis/get/users')).json()
     og.elementsToPredict[1].apiUrl = 'apis/cuttings/products/predict-season-products/' + og.season.season + '/'
     og.products = await (await fetch(dominio + 'apis/cuttings/products/season-products/' + og.season.season)).json()
     og.productsTypes = await (await fetch(dominio + 'apis/cuttings/data/products-types')).json()
@@ -34,7 +34,7 @@ function applyFilters() {
     og.ordersFiltered = filterOrder.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.order_number == filterOrder.value)
 
     //order_manager
-    og.ordersFiltered = filterOrderManager.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_managers == filterOrderManager.value)
+    og.ordersFiltered = filterOrderManager.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_users == filterOrderManager.value)
 
     //order_status
     og.ordersFiltered = filterOrderStatus.value == '' ? og.ordersFiltered : og.ordersFiltered.filter(o => o.id_orders_status == filterOrderStatus.value)
@@ -362,16 +362,11 @@ function cpppValidations() {
 }
 
 function selectOrderManager() {
-    if (og.userLogged == 'Esteban') {
-        filterOrderManager.value = 4
-        channel_2.checked = true
-        og.channelsChecked.push(channel_2)
-    }
-    if (og.userLogged == 'Pedro') {
-        filterOrderManager.value = 5
-        og.channelsChecked.push(channel_1)
-        channel_1.checked = true
-    }
+    filterOrderManager.value = og.userLogged
+    const salesChannelId = og.ordersManagers.find(om => om.id == og.userLogged).id_sales_channels
+    const salesChannel = document.getElementById('channel_' + salesChannelId)
+    salesChannel.checked = true
+    og.channelsChecked.push(salesChannel)
 }
 
 

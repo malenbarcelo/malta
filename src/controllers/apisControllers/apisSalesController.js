@@ -3,7 +3,6 @@ const transactionsQueries = require('../../dbQueries/sales/transactionsQueries')
 const ordersDetailsQueries = require('../../dbQueries/sales/ordersDetailsQueries')
 const ordersDetailsColorsQueries = require('../../dbQueries/sales/ordersDetailsColorsQueries')
 const ordersDetailsSizesQueries = require('../../dbQueries/sales/ordersDetailsSizesQueries')
-const ordersManagersQueries = require('../../dbQueries/data/ordersManagersQueries')
 const accountsMovementsQueries = require('../../dbQueries/sales/accountsMovementsQueries')
 const ordersNinoxQueries = require('../../dbQueries/sales/ordersNinoxQueries')
 const ordersNinoxDetailsQueries = require('../../dbQueries/sales/ordersNinoxDetailsQueries')
@@ -96,14 +95,8 @@ const apisSalesController = {
 
       const data = req.body
       const userLogged = req.session.userLogged
-      const orderManager = await ordersManagersQueries.findOrderManager(userLogged.id)
-
-      if (orderManager.length > 0) {
-        data.id_orders_managers = orderManager[0].id        
-      }else{
-        data.id_orders_managers = 1
-      }
-
+      data.id_users = userLogged.id
+      
       //create order
       const newOrder = await ordersQueries.createOrder(data)
       const orderId = newOrder.id      
@@ -137,8 +130,6 @@ const apisSalesController = {
     try{
 
       const data = req.body
-
-      console.log(data)
 
       //update order
       await ordersQueries.updateOrder(data.id, data)

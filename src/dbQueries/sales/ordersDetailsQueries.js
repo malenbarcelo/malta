@@ -19,7 +19,6 @@ const ordersDetailsQueries = {
                         {association: 'orders_customers'},
                         {association: 'orders_sales_channels'},
                         {association: 'orders_orders_status'},
-                        {association: 'orders_orders_managers'},
                         {association: 'orders_payments_status'}
                     ]
                 },
@@ -217,7 +216,7 @@ const ordersDetailsQueries = {
                         },
                         {association: 'orders_sales_channels'},
                         {association: 'orders_orders_status'},
-                        {association: 'orders_orders_managers'},
+                        {association: 'user_data'},
                         {association: 'orders_payments_status'}
                     ],
                     where:whereOrders

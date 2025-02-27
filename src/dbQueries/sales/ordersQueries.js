@@ -11,7 +11,7 @@ const ordersQueries = {
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
-                {association: 'orders_orders_managers'},
+                {association: 'user_data'},
                 {association: 'orders_sales_channels'},
                 {association: 'orders_orders_details'},
 
@@ -35,7 +35,7 @@ const ordersQueries = {
                 {association: 'orders_customers'},
                 {association: 'orders_orders_status'},
                 {association: 'orders_payments_status'},
-                {association: 'orders_orders_managers'},
+                {association: 'user_data'},
                 {association: 'orders_sales_channels'},
                 {
                     association: 'orders_orders_details',
@@ -170,7 +170,7 @@ const ordersQueries = {
             total:data.total,
             id_orders_status:data.id_orders_status,
             id_payments_status:3,
-            id_orders_managers:data.id_orders_managers,            
+            id_users:data.id_users,            
             observations:data.observations,
             season:data.season,
             enabled:1
@@ -201,7 +201,7 @@ const ordersQueries = {
     assignOrderManager: async(orderId,orderManagerId) => {
         await model.update(
             {
-                id_orders_managers:orderManagerId
+                id_users:orderManagerId
             },
             {
                 where:{id:orderId}
