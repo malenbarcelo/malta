@@ -21,6 +21,8 @@ const productsController = {
     ////APIS
     createProduct: async(req,res) => {
         try{
+
+            console.log('createProduct')
             const season = await (await fetch(`${dominio}apis/main/current-season`)).json()
             let filters = `product_code=${req.body.product.product_code}&season=${season.season}`
             
@@ -31,7 +33,10 @@ const productsController = {
             //findout if product has already been created (for doubleclick errors)
             const existingProduct = await (await fetch(`${dominio}apis/get/cuttings-products?${filters}`)).json()
 
+            console.log(existingProduct)
+
             if (existingProduct.rows.length > 0) {
+                console.log('producto existente')
                 return res.status(400).json({ error: 'El producto ya existe' })
             }
 
@@ -45,6 +50,8 @@ const productsController = {
             //create products colors
             colors = colors.map(color => ({id_products: newProduct.id,id_colors: color.id}))
             await productsColorsQueries.bulkCreate(colors)
+
+            console.log(newProduct)
             
             return res.json({ success: true, product: newProduct })
 

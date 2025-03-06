@@ -1,11 +1,13 @@
 const express = require('express')
 const productsController = require('../controllers/cuttings/productsController.js')
 const dataController = require('../controllers/cuttings/dataController.js')
+const moldsController = require('../controllers/cuttings/moldsController.js')
 const router = express.Router()
 
 //---BACKEND---//
-router.get('/products',productsController.products)//**//
-router.get('/data',dataController.data)//**//
+router.get('/molds',moldsController.molds)
+router.get('/products',productsController.products)
+router.get('/data',dataController.data)
 
 //---APIS---//
 /*data*/

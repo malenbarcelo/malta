@@ -1,0 +1,61 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">
+    MOLDES
+</div>
+
+<!------GENERAL ACTIONS------>
+<div class="divGeneralActions t-160 r-150" id="DGAmolds">
+    <div class="divGeneralAction" id="DGAcreate">
+        <i class="fa-solid fa-plus"></i>
+        <div class="showActionPopup">
+            Crear molde
+        </div>        
+    </div>
+</div>
+
+<!--------GENERAL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1">Molde</label>
+            <input type="text" id="mold" class="input1 ixs ipm" autocomplete="off">
+            <ul class="predictedElements" id="moldPredicted"></ul>
+        </div>
+        <div class="unfilterIcon" id="unfilter">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
+</div>
+
+<!---------PRODUCTS TABLE--------->
+<div class="m-t-15">
+    <div class="divTable">        
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss w-70">Molde</th>
+                    <th class="theadCss w-400">Descripción</th>
+                    <th class="theadCss w-70">Prendas por capa</th>
+                    <th class="theadCss w-150">Imagen</th>
+                    <th class="theadCss w-50"><i class="fa-regular fa-pen-to-square"></i></th>
+                </tr>
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!----------LOADER---------->
+<div class="loader m-a m-t-55-perc" id="loader" ></div>
+
+<!----------POPUPS---------->
+<%- include('./moldsCEMPP') %>
+<%- include('../../partials/okPopup') %>
+
+<!----------SCRIPTS---------->
+<script type="module" src="/js/cuttings/molds/molds.js"></script>
+
+
