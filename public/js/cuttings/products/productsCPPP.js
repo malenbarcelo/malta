@@ -49,6 +49,8 @@ async function cpppEventListeners() {
 
         if (errors == 0) {
             productsLoader.style.display = 'block'
+            bodyProducts.innerHTML = ''
+            cppp.style.display = 'none'
             const data = {
                 product:{
                     product_code:cpppCode.value.trim(),
@@ -68,8 +70,6 @@ async function cpppEventListeners() {
                 colors:pg.newProductColors
             }
 
-            console.log('request')
-
             const response = await fetch(dominio + 'apis/cuttings/products/create-product',{
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -77,11 +77,8 @@ async function cpppEventListeners() {
             })
 
             const responseData = await response.json()
-
-            console.log(responseData)
                 
-            bodyProducts.innerHTML = ''
-            cppp.style.display = 'none'
+            
             await getData()
             unfilter.click()
             printProducts()
