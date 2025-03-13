@@ -1,5 +1,11 @@
 const bottomHeaderMenu = [
     {
+        id:4,
+        name:'CORTES',
+        href:'/cuttings',
+        subitems:[]
+    },
+    {
         id:3,
         name:'MOLDES',
         href:'/cuttings/molds',

@@ -7,11 +7,13 @@ table{
 thead{
     position: sticky;
     top:0;
+    z-index: 1;
 }/*to leave titles fixed*/
 
 th{
     font-weight: lighter;
-    padding: 5px 0px
+    padding: 5px 0px;
+    position: relative;
 }
 
 .divTablesRow{
@@ -40,7 +42,6 @@ th{
     text-align: center;
     background-color: var(--color1);
     color: var(--color2);
-    padding: 4px;
     font-weight: lighter;
     min-height: 30px
 }
@@ -80,6 +81,12 @@ border-top-right-radius: 15px;
 .tBody3{
     font-weight: lighter;
     padding: 3px 0px;
+    font-size: 12px;
+}
+
+.tBody4{
+    font-weight: lighter;
+    padding: 5px 0px;
     font-size: 12px;
 }
 
@@ -223,6 +230,11 @@ border-top-right-radius: 15px;
 
 .orderIcon{
     font-size: 14px;
+    cursor: pointer;
+}
+
+.th-order{
+    position: absolute;
     cursor: pointer;
 }
 

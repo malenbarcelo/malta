@@ -1,0 +1,26 @@
+.coppOrder{
+    border: black solid 2px;
+}
+
+.coppOrderTitle{
+    background-color: rgb(212, 204, 204);
+    border-top: black solid 1px;
+    border-bottom  : black solid 1px;
+    border-left: black solid 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coppOrderValue{
+    border-top: black solid 1px;
+    border-bottom  : black solid 1px;
+    border-right: black solid 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coppImageDiv{
+    border: black solid 1px;
+}

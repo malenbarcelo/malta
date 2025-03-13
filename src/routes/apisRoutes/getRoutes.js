@@ -1,5 +1,6 @@
 const express = require('express')
 const getController = require('../../controllers/apisControllers/getController.js')
+const cuttingsController = require('../../controllers/apisControllers/getControllers/cuttingsController.js')
 const router = express.Router()
 
 // seasons
@@ -8,14 +9,23 @@ router.get('/seasons',getController.getSeasons)
 // data_customers
 router.get('/data-customers',getController.getCustomers)
 
-// cuttings-products
+// cuttings
+router.get('/cuttings',cuttingsController.getCuttings)
+
+// cuttings_products
 router.get('/cuttings-products',getController.getProducts)
 
-// cuttings-products-colors
+// cuttings_products_colors
 router.get('/cuttings-products-colors',getController.getProductsColors)
 
-// cuttings-products-sizes
+// cuttings_products_sizes
 router.get('/cuttings-products-sizes',getController.getProductsSizes)
+
+// cuttings_molds
+router.get('/cuttings-molds',cuttingsController.getMolds)
+
+// cuttings_layers
+router.get('/cuttings-layers',cuttingsController.getLayers)
 
 // sales_transactions
 router.get('/sales-transactions',getController.getTransactions)
@@ -34,5 +44,7 @@ router.get('/sales-orders-details-sizes',getController.getOrdersDetailsSizes)
 
 // users
 router.get('/users',getController.getUsers)
+
+
 
 module.exports = router

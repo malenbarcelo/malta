@@ -1,4 +1,4 @@
-/* loaders */
+/* loader popup */
 .loaderPopup{
     display: none;
     position: fixed;
@@ -9,11 +9,29 @@
     height: 100%;
 }
 
+/* laoder */
+.loader {
+    border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid var(--color1);
+    width: 40px;
+    height: 40px;
+    animation: spin 3s linear infinite;
+    display: none;
+    position: absolute;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .ld-std{ /*loader standard*/
     background-color: rgba(0,0,0,0.6);
 }
 
-/* loader */
+/* content */
 .ld-content {
     border: 10px solid var(--color1);
     border-radius: 50%;

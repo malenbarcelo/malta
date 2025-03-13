@@ -1,0 +1,86 @@
+
+/*--- top ---*/
+.t-20{
+    top: 20px
+}
+
+.t-50{
+    top: 50px
+}
+
+.t-50-perc{
+    top: 50%;
+}
+
+.t-100{
+    top: 100px
+}
+
+.t-120{
+    top: 120px
+}
+
+.t-150{
+    top: 150px
+}
+
+.t-160{
+    top: 160px
+}
+
+.t-200{
+    top: 200px
+}
+
+.t-250{
+    top: 250px
+}
+
+.t-280{
+    top: 280px
+}
+
+.t-300{
+    top: 300px
+}
+
+/* right px */
+.r-20{
+    right: 20px
+}
+
+.r-40{
+    right: 40px
+}
+
+.r-100{
+    right: 100px
+}
+
+.r-150{
+    right: 150px
+}
+
+/* right perc */
+.r-10-perc{
+    right: 10%
+}
+
+.r-18-perc{
+    right: 18%
+}
+
+.r-28-perc{
+    right: 28%
+}
+
+.r-38-perc{
+    right: 38%
+}
+
+/* left */
+.l-calc-30{
+    left: calc(50vw - 30px);
+}
+
+

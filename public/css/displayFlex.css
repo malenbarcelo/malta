@@ -1,0 +1,22 @@
+.d-f-r{
+    display: flex;
+}
+
+.d-f-c{
+    display: flex;
+    flex-direction: column;
+}
+
+/*--- column gap ---*/
+.c-g-5{
+    column-gap: 5px;
+}
+
+.c-g-20{
+    column-gap: 20px;
+}
+
+/*--- justify content ---*/
+.j-c-c{
+    justify-content: center;
+}

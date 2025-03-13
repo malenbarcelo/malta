@@ -1,3 +1,8 @@
+/*--- px ---*/
+.w-30{
+    width: 30px
+}
+
 .w-50{
     width: 50px
 }
@@ -6,14 +11,110 @@
     width: 70px
 }
 
+.w-75{
+    width: 75px
+}
+
+.w-80{
+    width: 80px
+}
+
+.w-85{
+    width: 85px
+}
+
+.w-90{
+    width: 90px
+}
+
+.w-95{
+    width: 95px
+}
+
 .w-100{
-    width: 70px
+    width: 100px
+}
+
+.w-120{
+    width: 120px
 }
 
 .w-150{
-    width: 150px
+    width: 150px;
+}
+
+.w-200{
+    width: 200px;
+}
+
+.w-250{
+    width: 250px;
+}
+
+.w-300{
+    width: 300px
+}
+
+.w-350{
+    width: 350px;
 }
 
 .w-400{
     width: 400px
+}
+
+.w-480{
+    width: 480px
+}
+
+.w-500{
+    width: 500px;
+}
+
+.w-600{
+    width: 600px
+}
+
+.w-800{
+    width: 800px
+}
+
+.w-850{
+    width: 850px
+}
+
+/*--- percentage ---*/
+.w-15-perc{
+    width: 15%
+}
+.w-20-perc{
+    width: 20%
+}
+.w-25-perc{
+    width: 25%
+}
+.w-30-perc{
+    width: 30%
+}
+.w-35-perc{
+    width: 35%
+}
+.w-45-perc{
+    width: 45%
+}
+.w-65-perc{
+    width: 65%
+}
+.w-70-perc{
+    width: 65%
+}
+.w-80-perc{
+    width: 80%
+}
+.w-90-perc{
+    width: 90%;
+}
+.w-100-perc{
+    width: 100%;
+    
 }

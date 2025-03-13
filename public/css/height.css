@@ -1,0 +1,44 @@
+.h-35{
+    height: 35px;
+}
+
+.h-50{
+    height: 50px;
+}
+
+.h-60{
+    height: 60px;
+}
+.h-300{
+    height: 300px;
+}
+
+.h-330{
+    height: 330px;
+}
+
+.h-350{
+    height: 350px;
+}
+.h-400{
+    height: 400px;
+}
+
+.h-450{
+    height: 450px;
+}
+
+.h-700{
+    height: 700px;
+}
+
+/*--- max height ---*/
+.m-h-250{
+    max-height: 250px;
+    overflow-y: auto    ;
+
+}
+.m-h-430{
+    max-height: 430px;
+    overflow-y: auto;
+}

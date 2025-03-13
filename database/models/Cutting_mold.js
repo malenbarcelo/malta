@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       units_per_layer:{
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       image:{
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       enabled:{
         type: DataTypes.INTEGER,

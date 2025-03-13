@@ -1,0 +1,115 @@
+<!--- create edit layers popup (celpp) --->
+<div class="popup" id="celpp">    
+    <div class="popupContent t-20 w-850">
+
+        <div class="popupIcons">
+            <div class="popupIcon3"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="popupClose1" id="celppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
+        </div>
+        
+        <div class="popupTitle1" id="celppTitle"></div>
+        <div class="popupTitle1 m-t-10" id="celppSubtitle"></div>        
+
+        <div class="divInputsRow m-t-20">
+            <div class="divInput">
+                <label class="label1 f-s-12" id="celppMULabel">UM</label>
+                <select class="input-1 f-s-12 w-100 p-5-0"  id="celppMU">
+                    <option value=""></option>
+                    <option value="KG">KG</option>
+                    <option value="MT">MT</option>
+                </select>
+                <div class="divError" id="celppMUError">Campo requerido</div>
+            </div>
+        </div>
+
+        <div class="divInputsRow m-t-20">
+            <div class="divInput">
+                <label class="label1" id="celppColorToAddLabel">Color</label>
+                <input type="text" class="input-1 f-s-12 w-200 p-7-0" id="celppColorToAdd">
+            </div>
+            <div class="divInput">
+                <label class="label1" id="celppLayersToAddLabel">Capas</label>
+                <input type="number" step="0.01" class="input-1 f-s-12 w-90 p-7-0" id="celppLayersToAdd">
+            </div>
+            <div class="divInput">
+                <label class="label1" id="celppKgsMtsToAddLabel">Kg/Mt</label>
+                <input type="number" step="0.01" class="input-1 f-s-12 w-90 p-7-0" id="celppKgsMtsToAdd">
+            </div>
+            <div class="divInput f-s-17"><i class="fa-solid fa-square-plus pointer" id="celppAdd"></i></div>
+        </div>
+        <div class="divError" id="celppError">Debe ingresar todos los datos</div>
+
+        <div class="divInputsRow m-t-20 c-g-20">
+            <div class="d-f-r c-g-5">
+                <b>Capas: </b>
+                <div id="celppLayers"></div>
+            </div>
+            <div class="d-f-r c-g-5">
+                <b>Kgs/Mts: </b>
+                <div id="celppKgsMts"></div>
+            </div>
+            <div class="d-f-r c-g-5">
+                <b>Unidades por capa: </b>
+                <input type="number" class="input-1 w-30" id="celppUnitsPerLayer">
+            </div>
+            <div class="d-f-r c-g-5">
+                <b>Prendas: </b>
+                <div id="celppGarments"></div>
+            </div>
+        </div>
+
+        <!--- tables --->
+        <div class="divTablesRow m-t-20">
+            <div class="divTableRow">
+                <div class="tableTitle mbm">
+                    <div class="tableTitleText">DETALLE</div>
+                </div>            
+                <div class="divTable h-330" id="detailsTable">
+                    <table>
+                        <thead>
+                            <th class="theadCss p-5-0 w-100">Color</th>
+                            <th class="theadCss p-5-0 w-100">Capas</th>
+                            <th class="theadCss p-5-0 w-100">Kg/Mt</th>
+                            <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-pen-to-square"></i></th>
+                            <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-trash-can"></i></th>
+                        </thead>
+                        <tbody id="detailsBody"></tbody>
+                    </table>
+                    
+                </div>
+            
+            </div>
+            <div class="divTableRow">
+                <div class="tableTitle mbm">
+                    <div class="tableTitleText">RESUMEN</div>
+                </div>
+            
+                <div class="divTable h-330" id="summaryTable">                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="theadCss p-5-0 w-100">Color</th>
+                                <th class="theadCss p-5-0 w-100">Capas</th>
+                                <th class="theadCss p-5-0 w-100">Prendas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryBody"></tbody>
+                    </table>
+                </div>
+            
+            </div>
+
+        </div>
+
+        <!--- buttons --->
+        <div class="divButtonsRow m-t-20 m-b-5">
+            <div id="celppSave" class="button1 bxs">Guardar</div>
+        </div>
+    </div>
+
+    <!----------LOADER---------->
+    <div class="loader t-50-perc l-calc-30" id="layersLoader"></div>
+
+</div>
+
+

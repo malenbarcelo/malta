@@ -21,8 +21,13 @@
     <div class="divInputsRow">            
         <div class="divInput">
             <label class="label1">Molde</label>
-            <input type="text" id="mold" class="input1 ixs ipm" autocomplete="off">
+            <input type="text" id="mold" class="input1 w-150 ipm" autocomplete="off">
             <ul class="predictedElements" id="moldPredicted"></ul>
+        </div>
+        <div class="divInput">
+            <label class="label1">Description</label>
+            <input type="text" id="description" class="input1 w-400 ipm" autocomplete="off">
+            <ul class="predictedElements" id="descriptionPredicted"></ul>
         </div>
         <div class="unfilterIcon" id="unfilter">
             <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -32,13 +37,21 @@
 
 <!---------PRODUCTS TABLE--------->
 <div class="m-t-15">
-    <div class="divTable">        
+    <div class="divTable h-450" id="table">        
         <table>
             <thead>
                 <tr>
-                    <th class="theadCss w-70">Molde</th>
-                    <th class="theadCss w-400">Descripción</th>
-                    <th class="theadCss w-70">Prendas por capa</th>
+                    <th class="theadCss p-7-0 w-120">
+                        Molde
+                        <i class="fa-solid fa-arrow-down-a-z th-order r-18-perc notVisible" id="order_asc_mold"></i>
+                        <i class="fa-solid fa-arrow-up-z-a th-order r-18-perc" id="order_desc_mold"></i>
+                    </th>
+                    <th class="theadCss w-500">
+                        Descripción
+                        <i class="fa-solid fa-arrow-down-a-z th-order r-38-perc" id="order_asc_description"></i>
+                        <i class="fa-solid fa-arrow-up-z-a th-order r-38-perc notVisible" id="order_desc_description"></i>
+                    </th>
+                    <th class="theadCss w-150">Prendas por capa</th>
                     <th class="theadCss w-150">Imagen</th>
                     <th class="theadCss w-50"><i class="fa-regular fa-pen-to-square"></i></th>
                 </tr>
@@ -49,11 +62,12 @@
 </div>
 
 <!----------LOADER---------->
-<div class="loader m-a m-t-55-perc" id="loader" ></div>
+<div class="loader t-50-perc l-calc-30" id="loader" ></div>
 
 <!----------POPUPS---------->
 <%- include('./moldsCEMPP') %>
-<%- include('../../partials/okPopup') %>
+<%- include('./moldsIMPP') %>
+<%- include('../../partials/resultsPopups') %>
 
 <!----------SCRIPTS---------->
 <script type="module" src="/js/cuttings/molds/molds.js"></script>

@@ -160,25 +160,6 @@ ul {
     cursor: pointer;
 }
 
-/*---------------------loader---------------------*/
-.loader {
-    border: 10px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 10px solid var(--color1);
-    width: 40px;
-    height: 40px;
-    animation: spin 3s linear infinite;
-    display: none;
-    position: absolute;
-    top: 50%;
-    
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 .middleLoader{
     top: 50%;
     left: calc(50vw - 30px)

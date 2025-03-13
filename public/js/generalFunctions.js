@@ -5,13 +5,16 @@ let eventListenersRefs = {}
 function clearInputs(inputs) {
 
     inputs.forEach(input => {
+
         const label = document.getElementById(input.id + 'Label')
         const error = document.getElementById(input.id + 'Error')
         input.value = ''
+
         if (label) {
             label.classList.remove('errorColor')
             label.classList.remove('invalidLabel')
         }
+
         if (error) {
             error.style.display = 'none'
         }        
@@ -67,6 +70,21 @@ function isInvalid(inputs) {
             error.style.display = 'block'
         }
         
+    })    
+}
+
+function notValid(inputs, errorText) {
+    inputs.forEach(input => {
+        const label = document.getElementById(input.id + 'Label')
+        const error = document.getElementById(input.id + 'Error')
+        input.classList.add('invalidInput')
+        if (label) {
+            label.classList.add('invalidLabel')
+        }
+        if (error) {
+            error.innerText = errorText
+            error.style.display = 'block'
+        }        
     })    
 }
 
@@ -404,10 +422,82 @@ function getDate(date) {
     return formattedDate
 }
 
+function validations(input,validations) {
+
+    let errors = 0
+
+    // isEmpty
+    const isEmpty = validations.filter( v => v.validation == 'isEmpty')
+
+    if (isEmpty.length > 0 && input.value == '') {
+        errors += 1
+        notValid([input],isEmpty[0].text)
+        return errors
+    }
+
+    // isEmail
+    const isEmail = validations.filter( v => v.validation == 'isEmail')
+
+    if (isEmail.length > 0) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        const validateEmail = emailPattern.test(input.value)
+        if (!validateEmail) {
+            errors += 1
+            this.notValid([input],isEmail[0].text)
+            return errors
+        }
+    }
+
+    // isPassword
+    const isPassword = validations.filter( v => v.validation == 'isPassword')
+
+    if (isPassword.length > 0 && input.value.length < 4) {
+        errors += 1
+        notValid([input],isPassword[0].text)
+        return errors
+    }
+
+    // existingData
+    const existingData = validations.filter( v => v.validation == 'existingData')
+
+    if (existingData.length > 0 && existingData[0].result) {
+        errors += 1
+        notValid([input],existingData[0].text)
+        return errors
+    }
+
+    // notExistingData
+    const notExistingData = validations.filter( v => v.validation == 'notExistingData')
+
+    if (notExistingData.length > 0 && !notExistingData[0].result) {
+        errors += 1
+        notValid([input],notExistingData[0].text)
+        return errors
+    }
+
+    // fileExtensions
+    const fileExtensions = validations.find( v => v.validation == 'fileExtensions')
+
+    if (fileExtensions) {
+        const fileName = input.files[0].name
+        const fileExtension = fileName.split('.').pop().toLowerCase()
+
+        if (!fileExtensions.allowedExtensions.includes(fileExtension)) {
+            errors += 1
+            notValid([input],fileExtensions.text)
+            return errors
+        }
+    }
+
+    //validate input
+    if (errors == 0) {
+        isValid([input])
+    }
+
+    return errors
+    
+}
 
 
 
-
-
-
-export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups,focusInputs,ignoreDoubleClick, getDate}
+export {clearInputs,inputsValidation,isValid,dateToString,showOkPopup,predictElements,selectFocusedElement,closePopupsEventListeners,acceptWithEnterInput,acceptWithEnterPopup,showTableInfo, clearFilters,selectWithClick,isInvalid,applyPredictElement,closeWithEscape,closePopups,focusInputs,ignoreDoubleClick, getDate, validations}

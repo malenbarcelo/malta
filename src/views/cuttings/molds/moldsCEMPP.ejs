@@ -1,42 +1,43 @@
 <!--- create edit mold popup (cempp) --->
-<div class="popup" id="cempp">    
-    <div class="popupContent">
-
-        <div class="popupIcons">
-            <div class="popupIcon3"><i class="fa-solid fa-square-plus"></i></div>
-            <div class="popupClose1" id="cemppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
-        </div>
-        
-        <div class="popupTitle1" id="cemppTitle"></div>
-
-        <div class="divInputsColumn mtm mbm">
-            <div class="divInput">
-                <label class="label1" id="cemppMoldLabel">Molde</label>
-                <input type="text" class="input1 ixxxl ipl" id="cemppMold" autocomplete="off">
-                <div class="divError" id="cemppMoldError"></div>
+<form action="/apis/create/cuttings-molds" method="POST" enctype="multipart/form-data">
+    <div class="popup" id="cempp">    
+        <div class="popupContent t-120 w-600">
+    
+            <div class="popupIcons">
+                <div class="popupIcon3"><i class="fa-solid fa-square-plus"></i></div>
+                <div class="popupClose1" id="cemppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
             </div>
-            <div class="divInput mtm">
-                <label class="label1" id="cemppDescriptionLabel">Descripción</label>
-                <input type="text" class="input1 ixxxl ipl" id="cemppDescription" autocomplete="off">
-                <div class="divError" id="cemppDescriptionError"></div>
+            
+            <div class="popupTitle1" id="cemppTitle"></div>
+    
+            <div class="divInputsColumn mtm mbm">
+                <div class="divInput">
+                    <label class="label1" id="cemppMoldLabel">Molde</label>
+                    <input type="text" class="input1 ixxxl ipl" id="cemppMold" autocomplete="off">
+                    <div class="divError" id="cemppMoldError"></div>
+                </div>
+                <div class="divInput mtm">
+                    <label class="label1" id="cemppDescriptionLabel">Descripción</label>
+                    <input type="text" class="input1 ixxxl ipl" id="cemppDescription" autocomplete="off">
+                    <div class="divError" id="cemppDescriptionError"></div>
+                </div>
+                <div class="divInput mtm mbm">
+                    <label class="label1" id="cemppUnitsLabel">Prendas por capa</label>
+                    <input type="number" class="input1 ixxxl ipl" id="cemppUnits" autocomplete="off">
+                </div>
+                <div class="w-450 m-a m-h-250" id="cemppDrawingDiv"></div>
+                <div class="divInput">
+                    <label class="label1" id="cemppImageLabel"></label>
+                    <input type="file" class="input1 ixxxl ipl" id="cemppImage" name="cemppImage" autocomplete="off">
+                    <div class="divError" id="cemppImageError"></div>
+                </div>
             </div>
-            <div class="divInput mtm">
-                <label class="label1" id="cemppUnitsLabel">Prendas por capa</label>
-                <input type="text" class="input1 ixxxl ipl" id="cemppUnits" autocomplete="off">
+    
+            <div class="divButtonsRow m-t-35 m-b-10">
+                <div id="cemppCreate" class="button1 bxs">Crear</div>
+                <div id="cemppEdit" class="button1 bxs">Editar</div>
             </div>
-            <div class="divInput mtm">
-                <label class="label1" id="cemppUnitsLabel">Prendas por capa</label>
-                <input type="text" class="input1 ixxxl ipl" id="cemppUnits" autocomplete="off">
-            </div>
-            <div class="divInput mtm">
-                <label class="label1" id="cemppImageLabel">Imagen</label>
-                <input type="text" class="input1 ixxxl ipl" id="cemppImage" autocomplete="off">
-            </div>
-        </div>
-
-        <div class="divButtonsRow mtm mbs">
-            <div id="cemppCreate" class="button1 bxs">Crear</div>
-            <div id="cemppEdit" class="button1 bxs">Editar</div>
         </div>
     </div>
-</div>
+
+</form>

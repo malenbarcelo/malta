@@ -48,6 +48,11 @@ accent-color: black
     font-size: 13px;
 }
 
+.input-1{
+    text-align: center;
+    border:black solid 1px; 
+}
+
 .input2{
     text-align: center;
     border:grey solid 1px;

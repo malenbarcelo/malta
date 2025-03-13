@@ -1,0 +1,86 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<!------MAIN TITLE------>
+<div class="mainTitle">
+    CORTES
+</div>
+
+<!------GENERAL ACTIONS------>
+<div class="divGeneralActions t-160 r-150" id="DGAcuttings">
+    <div class="divGeneralAction" id="DGAcreate">
+        <i class="fa-solid fa-plus"></i>
+        <div class="showActionPopup">
+            Crear corte
+        </div>        
+    </div>
+</div>
+
+<!--------GENERAL FILTERS-------->
+<div class="mainFilters">
+    <div class="divInputsRow">            
+        <div class="divInput">
+            <label class="label1">Corte</label>
+            <input type="text" id="cutting" class="input1 w-150 ipm" autocomplete="off">
+            <ul class="predictedElements" id="cuttingPredicted"></ul>
+        </div>
+        <div class="divInput">
+            <label class="label1">Molde</label>
+            <input type="text" id="mold" class="input1 w-150 ipm" autocomplete="off">
+            <ul class="predictedElements" id="moldPredicted"></ul>
+        </div>
+        <div class="unfilterIcon" id="unfilter">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+    </div>    
+</div>
+
+<!---------CUTTINGS TABLE--------->
+<div class="m-t-15">
+    <div class="divTable h-450" id="table">
+        
+        <div class="tableInfo" id="celppInfo">Capas</div>
+        <div class="tableInfo" id="coppInfo">Orden de corte</div>
+        <div class="tableInfo" id="cecppInfo">Editar corte</div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th class="theadCss p-7-0 w-100">
+                        Fecha
+                        <i class="fa-solid fa-arrow-down-1-9 th-order r-10-perc notVisible" id="order_asc_date"></i>
+                        <i class="fa-solid fa-arrow-up-9-1 th-order r-10-perc" id="order_desc_date"></i>
+                    </th>
+                    <th class="theadCss p-7-0 w-100">
+                        Corte
+                        <i class="fa-solid fa-arrow-down-a-z th-order r-10-perc" id="order_asc_cutting"></i>
+                        <i class="fa-solid fa-arrow-up-z-a th-order r-10-perc notVisible" id="order_desc_cutting"></i>
+                    </th>
+                    <th class="theadCss w-100">Molde</th>
+                    <th class="theadCss w-400">Descripción</th>
+                    <th class="theadCss w-70">Kgs</th>
+                    <th class="theadCss w-70">Mts</th>
+                    <th class="theadCss w-70">Prendas</th>
+                    <th class="theadCss w-50"><i class="fa-solid fa-layer-group tableIcon" id="celppIcon"></i></th>
+                    <th class="theadCss w-50"><i class="fa-solid fa-scissors tableIcon" id="coppIcon"></i></th>
+                    <th class="theadCss w-50"><i class="fa-regular fa-pen-to-square tableIcon" id="cecppIcon"></i></th>
+                </tr>
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!----------LOADER---------->
+<div class="loader t-50-perc l-calc-30" id="loader" ></div>
+
+<!----------POPUPS---------->
+<%- include('./cuttingsCECPP') %>
+<%- include('./cuttingsCELPP') %>
+<%- include('./cuttingsCOPP') %>
+<%- include('../../partials/resultsPopups') %>
+
+<!----------SCRIPTS---------->
+<script type="module" src="/js/cuttings/cuttings/cuttings.js"></script>
+
+
