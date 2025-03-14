@@ -12,7 +12,6 @@ const f = {
         filters += g.filters.moldString == '' ? '' : `&mold_string=${g.filters.moldString}`
         filters += g.filters.description == '' ? '' : `&description=${g.filters.description}`
         filters += g.filters.order == '' ? '' : `&order=${g.filters.order}`
-        
 
         const fetchData = await (await fetch(`${dominio}apis/get/cuttings-molds?${filters}`)).json()
 

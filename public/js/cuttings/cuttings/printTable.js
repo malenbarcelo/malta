@@ -32,11 +32,13 @@ async function printTable() {
             <th class="${rowClass}">${kgs}</th>
             <th class="${rowClass}">${mts}</th>
             <th class="${rowClass}">${garments}</th>
-            <th class="${rowClass}"><i class="fa-solid fa-layer-group allowedIcon" id="layers_${element.id}"></i></th>
+            <th class="${rowClass}"><input type="checkbox" id="check_${element.id}"></th>
             <th class="${rowClass}"><i class="fa-solid fa-scissors allowedIcon" id="cuttingOrder_${element.id}"></i></th>
             <th class="${rowClass}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
         `
         fragment.appendChild(row)
+
+        
 
         counter += 1
     })
@@ -53,42 +55,15 @@ function eventListeners() {
 
         const edit = document.getElementById('edit_' + element.id)
         const cuttingOrder = document.getElementById('cuttingOrder_' + element.id)
-        const layers = document.getElementById('layers_' + element.id)        
+        const check = document.getElementById('check_' + element.id)
         const tr = document.getElementById('tr_' + element.id)
 
-        layers.addEventListener('click',async()=>{
-
-            loader.style.display = 'block'
-
-            celppTitle.innerText = "CORTE #" + element.cutting
-            celppSubtitle.innerText =  'MOLDE ' + element.mold_data.mold + ' - ' + element.mold_data.description
-            g.cuttingToEdit = element
-
-            //clear inputs
-            isValid([celppMU])
-            clearInputs(g.celppInputs)
-            celppError.style.display = 'none'
-
-            // get data
-            const order = '[["color","ASC"]]'
-            const layersDetails = await (await fetch(`${dominio}apis/get/cuttings-layers?id_cuttings=${element.id}&order=${order}`)).json()
-            g.layersDetails = layersDetails.rows
-            g.layersSummary = await (await fetch(`${dominio}apis/composed/layers-summary?id_cuttings=${element.id}&order=${order}`)).json()
-
-            //complete MU
-            celppMU.value = g.layersDetails.length > 0 ? g.layersDetails[0].mu : ''
-
-            // update summary
-            celppUnitsPerLayer.value = element.mold_data.units_per_layer
-            updateSummary(element)
-            
-            // print tables
-            printLayersDetails()
-            printLayersSummary()            
-            
-            celpp.style.display = 'block'
-            celppColorToAdd.focus()
-            loader.style.display = 'none'
+        check.addEventListener('click',async()=>{
+            if (g.selectedCuttings.includes(element)) {
+                g.selectedCuttings = g.selectedCuttings.filter( sc => sc != element)
+            }else{
+                g.selectedCuttings.push(element)
+            }
         })
 
         cuttingOrder.addEventListener('click',async()=>{

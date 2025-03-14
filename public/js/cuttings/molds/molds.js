@@ -102,12 +102,17 @@ window.addEventListener('load',async()=>{
 
         const asc = document.getElementById('order_asc_' + element)
         const desc = document.getElementById('order_desc_' + element)
-
+        
         asc.addEventListener("click", async() => {
             loader.style.display = 'block'
+            g.filters.page = 1
             asc.classList.add('notVisible')
             desc.classList.remove('notVisible')
             g.filters.order = '[["' + element + '","ASC"]]'
+
+            // update scroll data
+            g.loadedPages = new Set()
+            g.previousScrollTop = 0
             
             //get and print data
             g.molds = await f.getData()
@@ -120,9 +125,14 @@ window.addEventListener('load',async()=>{
 
         desc.addEventListener("click", async() => {
             loader.style.display = 'block'
+            g.filters.page = 1
             asc.classList.remove('notVisible')
             desc.classList.add('notVisible')
             g.filters.order = '[["' + element + '","DESC"]]'
+
+            // update scroll data
+            g.loadedPages = new Set()
+            g.previousScrollTop = 0
             
             //get and print data
             g.molds = await f.getData()

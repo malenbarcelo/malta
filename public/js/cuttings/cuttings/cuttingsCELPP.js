@@ -12,69 +12,69 @@ async function celppEventListeners() {
         printLayersSummary()
     })
 
-    celppAdd.addEventListener("click", async() => {
-        if (celppColorToAdd.value == '' || celppLayersToAdd.value == '' || celppKgsMtsToAdd.value == '') {
-            isInvalid(g.celppInputs)
-            celppError.style.display = 'block'
-        }else{
+    // celppAdd.addEventListener("click", async() => {
+    //     if (celppColorToAdd.value == '' || celppLayersToAdd.value == '' || celppKgsMtsToAdd.value == '') {
+    //         isInvalid(g.celppInputs)
+    //         celppError.style.display = 'block'
+    //     }else{
             
-            layersLoader.style.display = 'block'        
-            detailsBody.innerHTML = ''
+    //         layersLoader.style.display = 'block'        
+    //         detailsBody.innerHTML = ''
 
-            // add details to array
-            const maxId = g.layersDetails.length == 0 ? 0 : Math.max(...g.layersDetails.map(obj => obj.id))
-            g.layersDetails.push({
-                id: maxId + 1 || 1,
-                id_cuttings: g.cuttingToEdit.id,
-                color: celppColorToAdd.value,
-                layers: parseInt(celppLayersToAdd.value),
-                kgs_mts:celppKgsMtsToAdd.value,
-                type:'create'
-            })
-            g.layersDetails.sort((a, b) => {
-                if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
-                if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
-                return 0;
-            })
+    //         // add details to array
+    //         const maxId = g.layersDetails.length == 0 ? 0 : Math.max(...g.layersDetails.map(obj => obj.id))
+    //         g.layersDetails.push({
+    //             id: maxId + 1 || 1,
+    //             id_cuttings: g.cuttingToEdit.id,
+    //             color: celppColorToAdd.value,
+    //             layers: parseInt(celppLayersToAdd.value),
+    //             kgs_mts:celppKgsMtsToAdd.value,
+    //             type:'create'
+    //         })
+    //         g.layersDetails.sort((a, b) => {
+    //             if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
+    //             if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
+    //             return 0;
+    //         })
 
-            // add data to summary
-            let counter = 0
-            g.layersSummary.forEach(item => {
-                if (item.color.toLowerCase() == celppColorToAdd.value.toLowerCase()) {
-                  counter += 1
-                  item.total_layers = parseFloat(item.total_layers,2) + parseFloat(celppLayersToAdd.value,2)
-                  item.total_kgs_mts = parseFloat(item.total_kgs_mts,2) + parseFloat(celppKgsMtsToAdd.value,2)
-                }
-            })
+    //         // add data to summary
+    //         let counter = 0
+    //         g.layersSummary.forEach(item => {
+    //             if (item.color.toLowerCase() == celppColorToAdd.value.toLowerCase()) {
+    //               counter += 1
+    //               item.total_layers = parseFloat(item.total_layers,2) + parseFloat(celppLayersToAdd.value,2)
+    //               item.total_kgs_mts = parseFloat(item.total_kgs_mts,2) + parseFloat(celppKgsMtsToAdd.value,2)
+    //             }
+    //         })
 
-            if (counter == 0) {
-                g.layersSummary.push({
-                    id_cuttings: g.cuttingToEdit.id,
-                    color: celppColorToAdd.value,
-                    total_kgs_mts: parseFloat(celppKgsMtsToAdd.value,2),
-                    total_layers: parseFloat(celppLayersToAdd.value,2)
-                })
-            }
+    //         if (counter == 0) {
+    //             g.layersSummary.push({
+    //                 id_cuttings: g.cuttingToEdit.id,
+    //                 color: celppColorToAdd.value,
+    //                 total_kgs_mts: parseFloat(celppKgsMtsToAdd.value,2),
+    //                 total_layers: parseFloat(celppLayersToAdd.value,2)
+    //             })
+    //         }
 
-            g.layersSummary.sort((a, b) => {
-                if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
-                if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
-                return 0;
-            })  
+    //         g.layersSummary.sort((a, b) => {
+    //             if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
+    //             if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
+    //             return 0;
+    //         })  
 
-            // clear inputs
-            isValid(g.celppInputs)
-            clearInputs([celppLayersToAdd,celppKgsMtsToAdd])
-            celppError.style.display = 'none'
-            celppLayersToAdd.focus()
+    //         // clear inputs
+    //         isValid(g.celppInputs)
+    //         clearInputs([celppLayersToAdd,celppKgsMtsToAdd])
+    //         celppError.style.display = 'none'
+    //         celppLayersToAdd.focus()
 
-            // print tables
-            updateSummary()
-            printLayersDetails()
-            printLayersSummary()
+    //         // print tables
+    //         updateSummary()
+    //         printLayersDetails()
+    //         printLayersSummary()
 
-        }
-    })
+    //     }
+    // })
 
     // save layers
     celppSave.addEventListener("click", async() => {

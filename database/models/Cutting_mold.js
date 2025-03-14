@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      units_per_layer:{
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
       image:{
         type: DataTypes.STRING,
         allowNull: true,

@@ -22,9 +22,7 @@ async function printTable() {
         row.innerHTML = `
             <th class="${rowClass}">${element.mold}</th>
             <th class="${rowClass}">${element.description}</th>
-            <th class="${rowClass}">${element.units_per_layer || ''}</th>
-            <th class="${rowClass}">${image}</th>
-            
+            <th class="${rowClass}">${image}</th>            
             <th class="${rowClass}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
         `
         fragment.appendChild(row)

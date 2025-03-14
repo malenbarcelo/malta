@@ -4,7 +4,6 @@ let g = {
     // popups
     popups: [cecpp,celpp,copp],
     cecppInputs: [cecppDate, cecppCutting, cecppMold, cecppDescription],
-    celppInputs: [celppColorToAdd, celppLayersToAdd, celppKgsMtsToAdd],
     // tooltips
     tooltips: [
         {
@@ -52,6 +51,7 @@ let g = {
     // edit cutting
     cuttingToEdit:{},
     // layers
+    selectedCuttings:[],
     layersDetails:[],
     layersSummary:[],
 }

@@ -3,7 +3,7 @@ import { dominio } from "../../dominio.js"
 import { printTable } from "./printTable.js"
 import { f } from "./functions.js"
 import { gf } from "../../globalFunctions.js"
-import { clearInputs, closePopups, closeWithEscape, applyPredictElement, acceptWithEnterInput } from "../../generalFunctions.js"
+import { clearInputs, closePopups, closeWithEscape, applyPredictElement, acceptWithEnterInput, showOkPopup } from "../../generalFunctions.js"
 
 // popups events listeners
 import { cecppEventListeners } from "./cuttingsCECPP.js"
@@ -27,9 +27,6 @@ window.addEventListener('load',async()=>{
 
     // show tooltips
     gf.showTooltips(g.tooltips,239,100)
-
-    // accept with enter
-    acceptWithEnterInput(celppKgsMtsToAdd,celppAdd) // celpp
 
     // get cuttings
     g.filters.page = 1
@@ -150,7 +147,7 @@ window.addEventListener('load',async()=>{
 
     // })
 
-    // crate cutting
+    // create cutting
     DGAcreate.addEventListener("click", async() => {
         clearInputs(g.cecppInputs)
         const date = new Date()
@@ -163,6 +160,58 @@ window.addEventListener('load',async()=>{
         cecpp.style.display = 'block'
         cecppCutting.focus()
     })
+
+    // create layers
+    DGAlayers.addEventListener("click", async() => {
+        if (g.selectedCuttings.length == 0) {
+            errorText.innerText = 'Debe seleccionar al menos un corte'
+            showOkPopup(errorPopup)
+        }else{
+            loader.style.display = 'block'
+
+            //clear inputs
+            clearInputs([celppMU])
+
+            // add orders data
+            // celppCuttingsData.innerHTML = ''
+            // g.selectedCuttings.forEach(c => {
+            //     const line = `<div><b>Corte #</b>${c.cutting}</div>`
+            //     celppCuttingsData.innerHTML += line
+            // })
+            
+            
+            celpp.style.display = 'block'
+
+            loader.style.display = 'none'
+
+        }
+        // layers.addEventListener('click',async()=>{
+
+        
+
+        //     // get data
+        //     const order = '[["color","ASC"]]'
+        //     const layersDetails = await (await fetch(`${dominio}apis/get/cuttings-layers?id_cuttings=${element.id}&order=${order}`)).json()
+        //     g.layersDetails = layersDetails.rows
+        //     g.layersSummary = await (await fetch(`${dominio}apis/composed/layers-summary?id_cuttings=${element.id}&order=${order}`)).json()
+
+        //     //complete MU
+        //     celppMU.value = g.layersDetails.length > 0 ? g.layersDetails[0].mu : ''
+
+        //     // update summary
+        //     celppUnitsPerLayer.value = element.mold_data.units_per_layer
+        //     updateSummary(element)
+            
+        //     // print tables
+        //     printLayersDetails()
+        //     printLayersSummary()            
+            
+        //     celpp.style.display = 'block'
+        //     celppColorToAdd.focus()
+        // })
+    })
+
+    
 
     loader.style.display = 'none'
 })
