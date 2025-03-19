@@ -103,6 +103,7 @@ accent-color: black
 .unabledInput{
     border: grey solid 1px;
     color: grey;
+    text-align: center;
 }
 
 .unabledLabel{

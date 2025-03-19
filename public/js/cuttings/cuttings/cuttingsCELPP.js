@@ -2,140 +2,82 @@ import { validations, isInvalid, isValid,clearInputs, showOkPopup } from "../../
 import { dominio } from "../../dominio.js"
 import g from "./globals.js"
 import { f } from "./functions.js"
-import { printLayersDetails, printLayersSummary, printTable, updateSummary } from "./printTable.js"
+import { printTable } from "./printTable.js"
 
 // create edit layers popup (celpp)
 async function celppEventListeners() {
 
-    celppUnitsPerLayer.addEventListener("change", async() => {
-        celppGarments.innerText = (celppUnitsPerLayer.value == '' || celppUnitsPerLayer.value == 0) ? '?' : (parseFloat(celppLayers.innerText,2) / parseFloat(celppUnitsPerLayer.value,2)).toFixed(2)
-        printLayersSummary()
+    // close with X
+    celppClose.addEventListener("click", () => {
+        schpp.style.display = 'block'
     })
 
-    // celppAdd.addEventListener("click", async() => {
-    //     if (celppColorToAdd.value == '' || celppLayersToAdd.value == '' || celppKgsMtsToAdd.value == '') {
-    //         isInvalid(g.celppInputs)
-    //         celppError.style.display = 'block'
-    //     }else{
-            
-    //         layersLoader.style.display = 'block'        
-    //         detailsBody.innerHTML = ''
+    // close with escape
+    document.addEventListener('keydown', function(e) {
+        const popup = document.getElementById('celpp')
+        if (e.key === 'Escape' && popup.style.display == 'block') {
+            const activePopups = g.popups.filter(p => p.style.display == 'block')
+            if (activePopups.length == 1) {
+                g.escNumber += 1
+                if (g.escNumber == 1) {
+                    schpp.style.display = 'block'                    
+                }else{
+                    schpp.style.display = 'none'
+                    popup.style.display = 'none'
+                    g.escNumber = 0
+                }
+            }
+        }
+    })
 
-    //         // add details to array
-    //         const maxId = g.layersDetails.length == 0 ? 0 : Math.max(...g.layersDetails.map(obj => obj.id))
-    //         g.layersDetails.push({
-    //             id: maxId + 1 || 1,
-    //             id_cuttings: g.cuttingToEdit.id,
-    //             color: celppColorToAdd.value,
-    //             layers: parseInt(celppLayersToAdd.value),
-    //             kgs_mts:celppKgsMtsToAdd.value,
-    //             type:'create'
-    //         })
-    //         g.layersDetails.sort((a, b) => {
-    //             if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
-    //             if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
-    //             return 0;
-    //         })
-
-    //         // add data to summary
-    //         let counter = 0
-    //         g.layersSummary.forEach(item => {
-    //             if (item.color.toLowerCase() == celppColorToAdd.value.toLowerCase()) {
-    //               counter += 1
-    //               item.total_layers = parseFloat(item.total_layers,2) + parseFloat(celppLayersToAdd.value,2)
-    //               item.total_kgs_mts = parseFloat(item.total_kgs_mts,2) + parseFloat(celppKgsMtsToAdd.value,2)
-    //             }
-    //         })
-
-    //         if (counter == 0) {
-    //             g.layersSummary.push({
-    //                 id_cuttings: g.cuttingToEdit.id,
-    //                 color: celppColorToAdd.value,
-    //                 total_kgs_mts: parseFloat(celppKgsMtsToAdd.value,2),
-    //                 total_layers: parseFloat(celppLayersToAdd.value,2)
-    //             })
-    //         }
-
-    //         g.layersSummary.sort((a, b) => {
-    //             if (a.color.toLowerCase() < b.color.toLowerCase()) return -1;
-    //             if (a.color.toLowerCase() > b.color.toLowerCase()) return 1;
-    //             return 0;
-    //         })  
-
-    //         // clear inputs
-    //         isValid(g.celppInputs)
-    //         clearInputs([celppLayersToAdd,celppKgsMtsToAdd])
-    //         celppError.style.display = 'none'
-    //         celppLayersToAdd.focus()
-
-    //         // print tables
-    //         updateSummary()
-    //         printLayersDetails()
-    //         printLayersSummary()
-
-    //     }
-    // })
-
-    // save layers
+    // save changes
     celppSave.addEventListener("click", async() => {
 
         let errors = 0
+
         if (celppMU.value == '') {
-            errors +=1
-            isInvalid([celppMU])    
-        }
-        
-        
-        if (errors == 0) {
+            isInvalid([celppMU])
+            errors += 1
+        }else{
 
-            celpp.style.display = 'none'
-            loader.style.display = 'block'
-            body.innerHTML = ''
+            let responseData1 = ''
+            let responseData2 = ''
+            
 
-            let createResponseData = {}
-            let editResponseData = {}
-            let destroyResponseData = {}
+            // complete MU
+            g.selectedCuttingsToEdit.map( sc => sc.fabric_mu = celppMU.value)
 
-            // element to create
-            let create = g.layersDetails.filter( ld=> ld.type == 'create')
-            if (create.length > 0) {
-                create = create.map(({ id, ...rest }) => ({
-                    ...rest,
-                    mu: celppMU.value
-                }))
+            // complete layers_id
+            const maxId = await (await fetch(`${dominio}apis/composed/max-id-layers`)).json()
+            const layersId = maxId == null ? 1 : maxId + 1 
+            g.selectedCuttingsToEdit.map( sc => sc.id_layers = layersId)
+            g.layersToCreate.map( l => l.id_layers = layersId)
 
-                const createResponse = await fetch(dominio + 'apis/create/cuttings-layers',{
-                    method:'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(create)
-                })
+            console.log(g.layersToCreate)
 
-                createResponseData = await createResponse.json()
+            // const response1 = await fetch(dominio + 'apis/update/cuttings',{
+            //     method:'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify(g.selectedCuttingsToEdit)
+            // })
 
-                console.log(createResponseData)
-            }
+            // responseData1 = await response1.json()
 
-            // element to edit
-            let edit = g.layersDetails.filter( ld=> ld.type == 'edit')
+            // if (responseData1.message == 'ok') {
+            //     const response2 = await fetch(dominio + 'apis/create/cuttings-layers',{
+            //         method:'POST',
+            //         headers: {'Content-Type': 'application/json'},
+            //         body: JSON.stringify(g.layersToCreate)
+            //     })
 
-            // elements to destroy
-            let destroy = g.layersDetails.filter( ld=> ld.type == 'destroy')
+            //     responseData2 = await response2.json()
 
-            if (createResponseData.message == 'ok') {
-                // get and print cuttings
-                g.cuttings = await f.getData()
-                printTable()
-                okText.innerText = 'Capas editas con éxito'
-                showOkPopup(okPopup)
-            }else{
-                errorText.innerText = 'Error al editar capas'
-                showOkPopup(errorPopup)
-            }
-
-            printTable()
-            loader.style.display = 'none'
+            // }
+            
         }
     })
+
+    
 
     
 }

@@ -1,6 +1,7 @@
 import g from "./globals.js"
 import { dominio } from "../../dominio.js"
 import { printTable } from "./printTable.js"
+import { printLayers, printLayersSummary } from "./printLayers.js"
 import { f } from "./functions.js"
 import { gf } from "../../globalFunctions.js"
 import { clearInputs, closePopups, closeWithEscape, applyPredictElement, acceptWithEnterInput, showOkPopup } from "../../generalFunctions.js"
@@ -8,6 +9,8 @@ import { clearInputs, closePopups, closeWithEscape, applyPredictElement, acceptW
 // popups events listeners
 import { cecppEventListeners } from "./cuttingsCECPP.js"
 import { celppEventListeners } from "./cuttingsCELPP.js"
+import { elppEventListeners } from "./cuttingsELPP.js"
+import { schppEventListeners } from "./cuttingsSCHPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -18,12 +21,20 @@ window.addEventListener('load',async()=>{
     g.molds = molds.rows    
 
     // popups events listeners
-    cecppEventListeners() // cretae edit cutting popup (cecpp)
-    celppEventListeners() // cretae edit layers popup (celpp)
+    cecppEventListeners() // create edit cutting popup (cecpp)
+    celppEventListeners() // create edit layers popup (celpp)
+    elppEventListeners() // edit line popup (elpp)
+    schppEventListeners() // save changes popup (schpp)
 
     // close popups
-    closePopups(g.popups)
-    closeWithEscape(g.popups)
+    const popupsToClose = g.popups.filter( p => p.id != 'celpp')
+    closePopups(popupsToClose)
+    closeWithEscape(popupsToClose)
+
+    // accept with enter
+    acceptWithEnterInput(elppColor,elppSave)
+    acceptWithEnterInput(elppLayers,elppSave)
+    acceptWithEnterInput(elppKgsMts,elppSave)
 
     // show tooltips
     gf.showTooltips(g.tooltips,239,100)
@@ -168,50 +179,23 @@ window.addEventListener('load',async()=>{
             showOkPopup(errorPopup)
         }else{
             loader.style.display = 'block'
+            g.action = 'create'
 
-            //clear inputs
+            // clear inputs
             clearInputs([celppMU])
 
-            // add orders data
-            // celppCuttingsData.innerHTML = ''
-            // g.selectedCuttings.forEach(c => {
-            //     const line = `<div><b>Corte #</b>${c.cutting}</div>`
-            //     celppCuttingsData.innerHTML += line
-            // })
-            
-            
-            celpp.style.display = 'block'
+            // clear layers
+            f.clearLayers()
 
+            // print details
+            printLayers()
+            printLayersSummary()
+
+            celpp.style.display = 'block'
             loader.style.display = 'none'
 
         }
-        // layers.addEventListener('click',async()=>{
-
-        
-
-        //     // get data
-        //     const order = '[["color","ASC"]]'
-        //     const layersDetails = await (await fetch(`${dominio}apis/get/cuttings-layers?id_cuttings=${element.id}&order=${order}`)).json()
-        //     g.layersDetails = layersDetails.rows
-        //     g.layersSummary = await (await fetch(`${dominio}apis/composed/layers-summary?id_cuttings=${element.id}&order=${order}`)).json()
-
-        //     //complete MU
-        //     celppMU.value = g.layersDetails.length > 0 ? g.layersDetails[0].mu : ''
-
-        //     // update summary
-        //     celppUnitsPerLayer.value = element.mold_data.units_per_layer
-        //     updateSummary(element)
-            
-        //     // print tables
-        //     printLayersDetails()
-        //     printLayersSummary()            
-            
-        //     celpp.style.display = 'block'
-        //     celppColorToAdd.focus()
-        // })
     })
-
-    
 
     loader.style.display = 'none'
 })

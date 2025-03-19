@@ -24,4 +24,7 @@ router.get('/predict-molds-descriptions/:string',cuttingsController.predictMolds
 // layers summary
 router.get('/layers-summary',cuttingsController.layersSummary)
 
+// max id layers
+router.get('/max-id-layers',cuttingsController.maxIdLayers)
+
 module.exports = router

@@ -12,6 +12,14 @@
     column-gap: 5px;
 }
 
+.c-g-10{
+    column-gap: 20px;
+}
+
+.c-g-15{
+    column-gap: 20px;
+}
+
 .c-g-20{
     column-gap: 20px;
 }
@@ -19,4 +27,9 @@
 /*--- justify content ---*/
 .j-c-c{
     justify-content: center;
+}
+
+/*--- align items ---*/
+.a-i-c{
+    align-items: center;
 }

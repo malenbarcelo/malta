@@ -37,4 +37,7 @@ router.post('/data-customers',updateController.updateCustomers)
 // cuttings_molds
 router.post('/cuttings-molds',upload.single('cemppImage'),cuttingsController.updateMolds)
 
+// cuttings
+router.post('/cuttings',cuttingsController.updateCuttings)
+
 module.exports = router

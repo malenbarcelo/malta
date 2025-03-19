@@ -70,6 +70,12 @@ const layersQueries = {
 
         return data
     },
+    getMaxId: async() => {
+
+        const data = await model.max('id_layers')
+
+        return data
+    },
 }       
 
 module.exports = layersQueries

@@ -58,6 +58,19 @@ const cuttingsController = {
         return res.send('Ha ocurrido un error')
         }
     },
+    maxIdLayers: async(req,res) =>{
+        try{
+            
+            // max id
+            const data = await layersQueries.getMaxId()
+            
+            res.status(200).json(data)
+
+        }catch(error){
+        console.group(error)
+        return res.send('Ha ocurrido un error')
+        }
+    },
 }
 
 module.exports = cuttingsController

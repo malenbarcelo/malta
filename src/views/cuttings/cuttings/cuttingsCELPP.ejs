@@ -21,28 +21,8 @@
             </div>
         </div>
 
-        <!--- cuttings data --->
-        <div class="divInputsRow m-t-20 c-g-20">
-            <div class="d-f-r c-g-5">
-                <b>Corte: </b>
-                <div id="celppCutting"></div>
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>Base: </b>
-                <input type="number" class="input-1 w-30" id="celppBase">
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>&: </b>
-                <div id="celppPercentage"></div>
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>Prendas: </b>
-                <div id="celppGarments"></div>
-            </div>
-        </div>
-
         <!--- tables --->
-        <div class="divTable h-450" id="detailsTable">
+        <div class="divTable h-400" id="detailsTable">
             <table>
                 <thead>
                     <th class="theadCss p-5-0 w-50">#</th>
@@ -50,32 +30,12 @@
                     <th class="theadCss p-5-0 w-100">Capas</th>
                     <th class="theadCss p-5-0 w-100">Kg/Mt</th>
                     <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-pen-to-square"></i></th>
-                    <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-trash-can"></i></th>
                 </thead>
                 <tbody id="detailsBody"></tbody>
-            </table>
-            
+            </table>            
         </div>
 
-        <!--- summary --->
-        <div class="divInputsRow m-t-20 c-g-20">
-            <div class="d-f-r c-g-5">
-                <b>Capas: </b>
-                <div id="celppLayers"></div>
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>Kgs/Mts: </b>
-                <div id="celppKgsMts"></div>
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>Unidades por capa: </b>
-                <input type="number" class="input-1 w-30" id="celppUnitsPerLayer">
-            </div>
-            <div class="d-f-r c-g-5">
-                <b>Prendas: </b>
-                <div id="celppGarments"></div>
-            </div>
-        </div>
+        <div class="m-t-20" id="layersSummary"></div>        
 
         <!--- buttons --->
         <div class="divButtonsRow m-t-20 m-b-5">
@@ -84,7 +44,7 @@
     </div>
 
     <!----------LOADER---------->
-    <div class="loader t-50-perc l-calc-30" id="layersLoader"></div>
+    <div class="loader t-40-perc l-calc-30" id="layersLoader"></div>
 
 </div>
 

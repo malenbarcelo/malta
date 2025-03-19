@@ -3,12 +3,20 @@
     width: 30px
 }
 
+.w-40{
+    width: 40px
+}
+
+.w-45{
+    width: 45px
+}
+
 .w-50{
-    width: 50px
+    width: 50px;
 }
 
 .w-70{
-    width: 70px
+    width: 70px;
 }
 
 .w-75{
@@ -16,7 +24,7 @@
 }
 
 .w-80{
-    width: 80px
+    width: 80px;
 }
 
 .w-85{
@@ -32,7 +40,7 @@
 }
 
 .w-100{
-    width: 100px
+    width: 100px;
 }
 
 .w-120{

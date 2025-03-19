@@ -20,6 +20,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      id_layers:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      base:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      fabric_mu:{
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       enabled:{
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -40,7 +52,8 @@ module.exports = (sequelize, DataTypes) => {
       }),
       Cutting.hasMany(models.Cuttings_layers,{
         as:'layers_data',
-        foreignKey: 'id_cuttings'
+        foreignKey: 'id_layers',
+        sourceKey:'id_layers'
       })
     }
 

@@ -8,26 +8,26 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement : true,
         allowNull: false
       },
-      id_cuttings:{
+      id_layers:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      position:{
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       color:{
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       layers:{
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       kgs_mts:{
         type: DataTypes.DECIMAL,
-        allowNull: false,
-      },
-      mu:{
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+        allowNull: true,
+      }
     }
 
     const config = {
@@ -36,13 +36,6 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     const Cutting_layer = sequelize.define(alias, cols, config)
-
-    Cutting_layer.associate = (models) => {
-      Cutting_layer.belongsTo(models.Cuttings,{
-        as:'cutting_data',
-        foreignKey: 'id_cuttings'
-      })
-    }
 
     return Cutting_layer
     

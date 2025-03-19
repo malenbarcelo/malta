@@ -44,6 +44,11 @@
     top: 300px
 }
 
+/*--- top perc---*/
+.t-40-perc{
+    top: 40%
+}
+
 /* right px */
 .r-20{
     right: 20px
