@@ -1,4 +1,14 @@
 
+/*--- position ---*/
+.pos-a{
+    position: absolute;
+}
+
+.pos-r{
+    position: relative;
+}
+
+
 /*--- top ---*/
 .t-20{
     top: 20px
@@ -10,6 +20,22 @@
 
 .t-50-perc{
     top: 50%;
+}
+
+.t-75{
+    top: 75px
+}
+
+.t-80{
+    top: 80px
+}
+
+.t-85{
+    top: 85px
+}
+
+.t-90{
+    top: 90px
 }
 
 .t-100{
@@ -49,13 +75,30 @@
     top: 40%
 }
 
+/*--- bottom ---*/
+.b-10{
+    bottom:10px
+}
+
 /* right px */
+.r-10{
+    right: 10px
+}
+
 .r-20{
     right: 20px
 }
 
 .r-40{
     right: 40px
+}
+
+.r-75{
+    right: 75px
+}
+
+.r-80{
+    right: 80px
 }
 
 .r-100{
@@ -67,6 +110,10 @@
 }
 
 /* right perc */
+.r-5-perc{
+    right: 5%
+}
+
 .r-10-perc{
     right: 10%
 }
@@ -77,6 +124,10 @@
 
 .r-28-perc{
     right: 28%
+}
+
+.r-35-perc{
+    right: 35%
 }
 
 .r-38-perc{

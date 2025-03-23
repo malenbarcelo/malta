@@ -1,8 +1,8 @@
-.coppOrder{
+.cuoppOrder{
     border: black solid 2px;
 }
 
-.coppOrderTitle{
+.cuoppOrderTitle{
     background-color: rgb(212, 204, 204);
     border-top: black solid 1px;
     border-bottom  : black solid 1px;
@@ -12,7 +12,7 @@
     align-items: center;
 }
 
-.coppOrderValue{
+.cuoppOrderValue{
     border-top: black solid 1px;
     border-bottom  : black solid 1px;
     border-right: black solid 1px;
@@ -21,6 +21,6 @@
     align-items: center;
 }
 
-.coppImageDiv{
+.cuoppImageDiv{
     border: black solid 1px;
 }

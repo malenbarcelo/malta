@@ -25,6 +25,14 @@
     width: 23px;
 }
 
+.dga-m{
+    border: var(--color1) solid 2px;
+    font-size: 20px;
+    height: 30px;
+    width: 30px;
+    column-gap: 3px;
+}
+
 .divGeneralAction:hover{
     color:var(--color2);
     background-color: var(--color1);

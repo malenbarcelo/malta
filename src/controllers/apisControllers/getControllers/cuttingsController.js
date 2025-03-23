@@ -47,7 +47,7 @@ const cuttingsController = {
   getCuttings: async(req,res) =>{
     try{
 
-      const { page, size, cutting, order } = req.query
+      const { page, size, cutting, mold_string, description, id_layers, order } = req.query
       const limit = size ? parseInt(size) : undefined
       const offset = page ? (parseInt(page) - 1) * limit : undefined
       const filters = {}
@@ -56,6 +56,18 @@ const cuttingsController = {
       if (cutting) {
           filters.cutting = cutting
       }
+
+      if (mold_string) {
+        filters.mold_string = mold_string
+      }
+
+      if (description) {
+        filters.description = description
+      }
+
+      if (id_layers) {
+        filters.id_layers = id_layers
+    }
 
       if (order) {
         filters.order = JSON.parse(order)
@@ -79,14 +91,14 @@ const cuttingsController = {
   getLayers: async(req,res) =>{
     try{
 
-      const { page, size, id_cuttings, order } = req.query
+      const { page, size, id_layers, order } = req.query
       const limit = size ? parseInt(size) : undefined
       const offset = page ? (parseInt(page) - 1) * limit : undefined
       const filters = {}
             
       // add filters
-      if (id_cuttings) {
-          filters.id_cuttings = id_cuttings
+      if (id_layers) {
+          filters.id_layers = id_layers
       }
 
       if (order) {

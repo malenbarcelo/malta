@@ -12,6 +12,7 @@ npm install moment-timezone
 npm install session-file-store
 npm install cors
 npm install pdfkit
+npm install image-size
 
 /*---Sequelize---*/
 1. npm install --save sequelize-cli

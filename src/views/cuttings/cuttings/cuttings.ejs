@@ -27,13 +27,18 @@
     <div class="divInputsRow">            
         <div class="divInput">
             <label class="label1">Corte</label>
-            <input type="text" id="cutting" class="input1 w-150 ipm" autocomplete="off">
+            <input type="text" id="cutting" class="input1 w-100 ipm" autocomplete="off">
             <ul class="predictedElements" id="cuttingPredicted"></ul>
         </div>
         <div class="divInput">
             <label class="label1">Molde</label>
-            <input type="text" id="mold" class="input1 w-150 ipm" autocomplete="off">
+            <input type="text" id="mold" class="input1 w-100 ipm" autocomplete="off">
             <ul class="predictedElements" id="moldPredicted"></ul>
+        </div>
+        <div class="divInput">
+            <label class="label1">Descripción</label>
+            <input type="text" id="description" class="input1 w-350 ipm" autocomplete="off">
+            <ul class="predictedElements" id="decsriptionPredicted"></ul>
         </div>
         <div class="unfilterIcon" id="unfilter">
             <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -54,21 +59,24 @@
                 <tr>
                     <th class="theadCss p-7-0 w-100">
                         Fecha
-                        <i class="fa-solid fa-arrow-down-1-9 th-order r-10-perc notVisible" id="order_asc_date"></i>
-                        <i class="fa-solid fa-arrow-up-9-1 th-order r-10-perc" id="order_desc_date"></i>
+                        <i class="fa-solid fa-arrow-down-1-9 th-order r-10-perc" id="order_asc_date"></i>
+                        <i class="fa-solid fa-arrow-up-9-1 th-order r-10-perc notVisible" id="order_desc_date"></i>
                     </th>
                     <th class="theadCss p-7-0 w-100">
                         Corte
-                        <i class="fa-solid fa-arrow-down-a-z th-order r-10-perc" id="order_asc_cutting"></i>
-                        <i class="fa-solid fa-arrow-up-z-a th-order r-10-perc notVisible" id="order_desc_cutting"></i>
+                        <i class="fa-solid fa-arrow-down-1-9 th-order r-10-perc notVisible" id="order_asc_cutting"></i>
+                        <i class="fa-solid fa-arrow-up-9-1 th-order r-10-perc" id="order_desc_cutting"></i>
                     </th>
                     <th class="theadCss p-7-0 w-100">Molde</th>
-                    <th class="theadCss p-7-0 w-400">Descripción</th>
-                    <th class="theadCss p-7-0 w-70">Kgs</th>
-                    <th class="theadCss p-7-0 w-70">Mts</th>
-                    <th class="theadCss p-7-0 w-70">Prendas</th>
+                    <th class="theadCss p-7-0 w-400">
+                        Descripción
+                        <i class="fa-solid fa-arrow-down-a-z th-order r-35-perc" id="order_asc_description"></i>
+                        <i class="fa-solid fa-arrow-up-z-a th-order r-35-perc notVisible" id="order_desc_description"></i>
+                    </th>
+                    <th class="theadCss p-7-0 w-80">Kgs</th>
+                    <th class="theadCss p-7-0 w-80">Mts</th>
+                    <th class="theadCss p-7-0 w-80">Prendas</th>
                     <th class="theadCss p-7-0 w-50"><i class="fa-solid fa-layer-group tableIcon" id="celppIcon"></i></th>
-                    <th class="theadCss p-7-0 w-50"><i class="fa-solid fa-scissors tableIcon" id="coppIcon"></i></th>
                     <th class="theadCss p-7-0 w-50"><i class="fa-regular fa-pen-to-square tableIcon" id="cecppIcon"></i></th>
                 </tr>
             </thead>

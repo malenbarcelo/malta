@@ -12,7 +12,7 @@ const cuttingsQueries = {
             order = filters.order
         }
 
-        // where        
+        // where cuttings        
         const where = {
             enabled: 1
         }
@@ -21,9 +21,32 @@ const cuttingsQueries = {
             where.cutting = filters.cutting
         }
 
+        if (filters.description) {
+            where.description = {
+                [Op.like]: `%${filters.description}%`
+            }
+        }
+
+        if (filters.id_layers) {
+            where.id_layers = filters.id_layers
+        }
+
+        // where molds
+        const whereMolds = {}
+        if (filters.mold_string) {
+            whereMolds.mold = {
+                [Op.like]: `%${filters.mold_string}%`
+            }
+        }
+
+        console.log(whereMolds)
+
         const data = await model.findAndCountAll({
             include:[
-                {'association':'mold_data'},
+                {
+                    'association':'mold_data',
+                    where: whereMolds,
+                },
                 {'association':'layers_data'}
 
             ],
@@ -47,6 +70,12 @@ const cuttingsQueries = {
             { where: { id: d.id } }
             )
         }
+    },
+    getMaxCuttingNumber: async() => {
+
+        const data = await model.max('cutting')
+
+        return data
     },
 }       
 

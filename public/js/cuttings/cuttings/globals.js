@@ -5,19 +5,18 @@ let g = {
     // popups
     popups: [elpp,cecpp,celpp],
     cecppInputs: [cecppDate, cecppCutting, cecppMold, cecppDescription],
+    // scroll
+    loadedPages: new Set(),
+    previousScrollTop:0,
     // tooltips
     tooltips: [
         {
             icon:celppIcon,
-            right:'20.5%'
-        },
-        {
-            icon:coppIcon,
-            right:'17%'
-        },          
+            right:'18.5%'
+        },      
         {
             icon:cecppIcon,
-            right:'14%'
+            right:'15%'
         },
     ],
     // filters
@@ -25,6 +24,9 @@ let g = {
     filters: {
         size:'',
         page:'',
+        cutting:'',
+        mold_string:'',
+        description:'',
         order: '[["cutting","ASC"]]'
     },
     // scroll
@@ -47,8 +49,10 @@ let g = {
             elementName: 'cecppMold'
         },
     ],
+    // edit
+    cuttingToEdit:{},
     // order data
-    elementsToOrder:['cutting','mold'],
+    elementsToOrder:['date','cutting','description'],
     // layers
     totalBase: 0,
     totalLayers:0,

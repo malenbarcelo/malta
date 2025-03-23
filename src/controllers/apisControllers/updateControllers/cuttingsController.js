@@ -1,5 +1,6 @@
 const moldsQueries = require('../../../dbQueries/cuttings/moldsQueries')
 const cuttingsQueries = require('../../../dbQueries/cuttings/cuttingsQueries')
+const layersQueries = require('../../../dbQueries/cuttings/layersQueries')
 
 const moldsController = {
    // cuttings
@@ -35,6 +36,22 @@ const moldsController = {
       await moldsQueries.update(data)
 
       res.json({message:'ok',data:data})
+
+    }catch(error){
+      console.log(error)
+      res.json({message:'error'})
+    }
+  },
+  // cuttings_layers
+  updateLayers: async(req,res) =>{
+    try{
+
+      const data = req.body
+
+      // edit layers
+      await layersQueries.update(data)
+
+      res.json({message:'ok'})
 
     }catch(error){
       console.log(error)

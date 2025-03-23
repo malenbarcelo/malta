@@ -1,7 +1,7 @@
 import g from "./globals.js"
 import { dominio } from "../../dominio.js"
 import { printTable } from "./printTable.js"
-import { printLayers, printLayersSummary } from "./printLayers.js"
+import { printLayers } from "./printLayers.js"
 import { f } from "./functions.js"
 import { gf } from "../../globalFunctions.js"
 import { clearInputs, closePopups, closeWithEscape, applyPredictElement, acceptWithEnterInput, showOkPopup } from "../../generalFunctions.js"
@@ -45,131 +45,137 @@ window.addEventListener('load',async()=>{
     g.cuttings = await f.getData()
     printTable()
 
-    // // add data with scroll
-    // table.addEventListener('scroll', async () => {
-    //     if (table.scrollTop > g.previousScrollTop) {  // down scroll
-    //         if (table.scrollTop + table.clientHeight + 1 >= table.scrollHeight) {
-    //             loader.style.display = 'block'                
-    //             if (!g.loadedPages.has(g.filters.page + 1)){
-    //                 g.filters.page += 1
-    //                 g.loadedPages.add(g.filters.page)
-    //                 const newData = await f.getData()
-    //                 g.molds = [...g.molds, ...newData]
-    //                 printTable()
-    //             }
-    //             loader.style.display = 'none'                
-    //         }
-    //     }
-    //     // Update previous position
-    //     g.previousScrollTop = table.scrollTop
-    // })
+    // add data with scroll
+    table.addEventListener('scroll', async () => {
+        if (table.scrollTop > g.previousScrollTop) {  // down scroll
+            if (table.scrollTop + table.clientHeight + 1 >= table.scrollHeight) {
+                loader.style.display = 'block'                
+                if (!g.loadedPages.has(g.filters.page + 1)){
+                    g.filters.page += 1
+                    g.loadedPages.add(g.filters.page)
+                    const newData = await f.getData()
+                    g.cuttings = [...g.cuttings, ...newData]
+                    printTable()
+                }
+                loader.style.display = 'none'                
+            }
+        }
+        // Update previous position
+        g.previousScrollTop = table.scrollTop
+    })
 
-    // //filters event listeners
-    // const filters = [mold,description]
-    // filters.forEach(filter => {
-    //     filter.addEventListener("change", async() => {
+    //filters event listeners
+    const filters = [cutting,mold,description]
+    filters.forEach(filter => {
+        filter.addEventListener("change", async() => {
 
-    //         loader.style.display = 'block'
+            loader.style.display = 'block'
 
-    //         //complete filters
-    //         g.filters.moldString = mold.value
-    //         g.filters.description = description.value
-    //         g.filters.page = 1
+            //complete filters
+            g.filters.cutting = cutting.value
+            g.filters.mold_string = mold.value
+            g.filters.description = description.value
+            g.filters.page = 1
 
-    //         //update scroll data
-    //         g.loadedPages = new Set()
-    //         g.previousScrollTop = 0
+            //update scroll data
+            g.loadedPages = new Set()
+            g.previousScrollTop = 0
 
-    //         //get and print data
-    //         g.molds = await f.getData()
-    //         printTable()
+            //get and print data             
+            g.cuttings = await f.getData()
+            printTable()
 
-    //         table.scrollTop = 0            
-    //         loader.style.display = 'none'
-    //     })
-    // })
+            table.scrollTop = 0            
+            loader.style.display = 'none'
+        })
+    })
 
-    // // unfilter event listener
-    // unfilter.addEventListener("click", async() => {
+    // unfilter event listener
+    unfilter.addEventListener("click", async() => {
 
-    //     loader.style.display = 'block'
+        loader.style.display = 'block'
 
-    //     // reset filters
-    //     g.filters.moldString = ''
-    //     g.filters.description = ''
-    //     g.filters.page = 1
+        // reset filters
+        g.filters.cutting = ''
+        g.filters.mold_string = ''
+        g.filters.description = ''
+        g.filters.page = 1
 
-    //     // clear filters
-    //     clearInputs(filters)
+        // clear filters
+        clearInputs(filters)
 
-    //     // update scroll data
-    //     g.loadedPages = new Set()
-    //     g.previousScrollTop = 0
+        // update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
 
-    //     // get and print data
-    //     g.molds = await f.getData()
-    //     console.log(g.molds)
-    //     printTable()
+        // get and print data
+        g.cuttings = await f.getData()
+        printTable()
 
-    //     table.scrollTop = 0
-    //     loader.style.display = 'none'
+        table.scrollTop = 0
+        loader.style.display = 'none'
         
-    // })
+    })
 
     //predicts elements
     applyPredictElement(g.elementsToPredict)
 
-    // // order data
-    // g.elementsToOrder.forEach(element => {
+    // order data
+    g.elementsToOrder.forEach(element => {
 
-    //     const asc = document.getElementById('order_asc_' + element)
-    //     const desc = document.getElementById('order_desc_' + element)
+        const asc = document.getElementById('order_asc_' + element)
+        const desc = document.getElementById('order_desc_' + element)
 
-    //     asc.addEventListener("click", async() => {
-    //         loader.style.display = 'block'
-    //         asc.classList.add('notVisible')
-    //         desc.classList.remove('notVisible')
-    //         g.filters.order = '[["' + element + '","ASC"]]'
+        asc.addEventListener("click", async() => {
+            loader.style.display = 'block'
+            asc.classList.add('notVisible')
+            desc.classList.remove('notVisible')
+            g.filters.order = '[["' + element + '","ASC"]]'
             
-    //         //get and print data
-    //         g.molds = await f.getData()
-    //         printTable()
+            //get and print data
+            g.cuttings = await f.getData()
+            printTable()
 
-    //         table.scrollTop = 0            
-    //         loader.style.display = 'none'
+            // update scroll data
+            table.scrollTop = 0            
+            loader.style.display = 'none'
 
-    //     })
+        })
 
-    //     desc.addEventListener("click", async() => {
-    //         loader.style.display = 'block'
-    //         asc.classList.remove('notVisible')
-    //         desc.classList.add('notVisible')
-    //         g.filters.order = '[["' + element + '","DESC"]]'
+        desc.addEventListener("click", async() => {
+            loader.style.display = 'block'
+            asc.classList.remove('notVisible')
+            desc.classList.add('notVisible')
+            g.filters.order = '[["' + element + '","DESC"]]'
             
-    //         //get and print data
-    //         g.molds = await f.getData()
-    //         printTable()
+            //get and print data
+            g.cuttings = await f.getData()
+            printTable()
 
-    //         table.scrollTop = 0            
-    //         loader.style.display = 'none'
-    //     })
+            // update scroll data
+            table.scrollTop = 0            
+            loader.style.display = 'none'
+        })
 
-    //     loader.style.display = 'none'
+        loader.style.display = 'none'
 
-    // })
+    })
 
     // create cutting
     DGAcreate.addEventListener("click", async() => {
+        g.action = 'createCutting'
         clearInputs(g.cecppInputs)
         const date = new Date()
         date.setHours(date.getHours()-3)
         const formattedDate = date.toISOString().split('T')[0]
+        const maxCuttingNumber = await (await fetch(`${dominio}apis/composed/max-cutting-number`)).json()
+        cecppCutting.value = (maxCuttingNumber + 1) || 1
         cecppDate.value = formattedDate
         cecppTitle.innerText = 'CREAR CORTE'
         cecppCreate.classList.remove('notVisible')
         cecppEdit.classList.add('notVisible')
         cecpp.style.display = 'block'
-        cecppCutting.focus()
+        cecppMold.focus()
     })
 
     // create layers
@@ -184,12 +190,17 @@ window.addEventListener('load',async()=>{
             // clear inputs
             clearInputs([celppMU])
 
-            // clear layers
-            f.clearLayers()
+            // clear layers and update data
+            f.clearLayersToCreate()
+            f.updateTotalsData()
+            f.printLayersSummary()
+            f.updateLayersSummary()
 
-            // print details
+            // print layers
             printLayers()
-            printLayersSummary()
+
+            // print cutting orders
+            f.printCuttingOrders()
 
             celpp.style.display = 'block'
             loader.style.display = 'none'

@@ -15,12 +15,11 @@ const layersQueries = {
         // where        
         const where = {}
 
-        if (filters.id_cuttings) {
-            where.id_cuttings = filters.id_cuttings
+        if (filters.id_layers) {
+            where.id_layers = filters.id_layers
         }
 
         const data = await model.findAndCountAll({
-            include:[{'association':'cutting_data'}],
             where,
             limit,
             order,
@@ -40,35 +39,6 @@ const layersQueries = {
             { where: { id: d.id } }
             )
         }
-    },
-    summary: async({filters}) => {
-
-        // order
-        let order = ''
-        if (filters.order) {
-            order = filters.order
-        }
-        
-        // where        
-        const where = {}
-
-        if (filters.id_cuttings) {
-            where.id_cuttings = filters.id_cuttings
-        }
-
-        const data = await model.findAll({
-            attributes: [
-                'id_cuttings',
-                'color',
-                [fn('SUM', col('layers')), 'total_layers'],
-                [fn('SUM', col('kgs_mts')), 'total_kgs_mts']
-              ],
-              where,
-              order,
-              group: ['id_cuttings', 'color']
-        })
-
-        return data
     },
     getMaxId: async() => {
 

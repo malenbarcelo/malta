@@ -1,6 +1,7 @@
 import { validations, showOkPopup } from "../../generalFunctions.js"
 import g from "./globals.js"
-import { printLayers, printLayersSummary } from "./printLayers.js"
+import { printLayers } from "./printLayers.js"
+import { f } from "./functions.js"
 
 // edit line popup (elpp)
 async function elppEventListeners() {
@@ -12,18 +13,34 @@ async function elppEventListeners() {
 
         if (errors == 0) {
 
+            let elementToEdit = {}
+
             detailsBody.innerHTML = ''
             layersLoader.style.display = 'block'
             elpp.style.display = 'none'
-            const elementToEdit = g.layersToCreate.find(l => l.position == g.positionToEdit);
+
+            if (g.action == 'create') {
+                elementToEdit = g.layersToCreate.find(l => l.position == g.positionToEdit);
+            }else{
+                elementToEdit = g.layersToEdit.find(l => l.position == g.positionToEdit);
+            }
+            
             elementToEdit.color = elppColor.value
             elementToEdit.layers = parseInt(elppLayers.value)
             elementToEdit.kgs_mts = elppKgsMts.value == '' ? 0 : parseFloat(elppKgsMts.value,2)
-            g.totalLayers = g.layersToCreate.reduce((total, l) => total + ((l.layers == null || l.layers == '') ? 0 : parseInt(l.layers)), 0)
-            g.totalKgsMts = g.layersToCreate.reduce((total, l) => total + ((l.kgs_mts == null || l.kgs_mts == '') ? 0 : parseFloat(l.kgs_mts,2)), 0)
 
+            // update cuttings data
+            // g.selectedCuttingsToEdit.forEach(element => {
+            //     const percentage = (element.base == null || element.base == 0 || g.totalBase == 0) ? 0 : ((parseFloat(element.base,2) / parseFloat(g.totalBase,2)) * 100)
+            //     element.kgs_mts = parseFloat(percentage * g.totalKgsMts,2)
+            // })
+            
+            f.updateTotalsData()
+            f.printLayersSummary()
+            f.updateLayersSummary()
             printLayers()
-            printLayersSummary()
+            f.printCuttingOrders()
+
             layersLoader.style.display = 'none'            
         }
     })

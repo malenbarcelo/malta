@@ -2,45 +2,136 @@
 <div class="popup" id="celpp">    
     <div class="popupContent t-20 w-850">
 
+        <!------GENERAL ACTIONS------>
+        <div class="divGeneralActions c-g-10 t-75 r-75">
+            <div class="divGeneralAction dga-m" id="celppSave">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <div class="showActionPopup">
+                    Guardar
+                </div>        
+            </div>
+            <div class="divGeneralAction dga-m" id="celppPrint">
+                <i class="fa-solid fa-download"></i>
+                <div class="showActionPopup">
+                    Descargar
+                </div>        
+            </div>
+        </div>
+
         <div class="popupIcons">
             <div class="popupIcon3"><i class="fa-solid fa-layer-group"></i></div>
             <div class="popupClose1" id="celppClose"><i class="fa-solid fa-rectangle-xmark"></i></div>
         </div>
-        
-        <div class="popupTitle1" id="celppTitle">ORDEN DE CORTE</div>    
 
-        <div class="divInputsRow m-t-20 m-b-15">
-            <div class="divInput">
-                <label class="label1 f-s-12" id="celppMULabel">UM</label>
-                <select class="input-1 f-s-12 w-100 p-5-0"  id="celppMU">
-                    <option value=""></option>
-                    <option value="KG">KG</option>
-                    <option value="MT">MT</option>
-                </select>
-                <div class="divError" id="celppMUError">Campo requerido</div>
+        <div class="b-2-black m-t-5">
+
+            <div class="popupTitle1 m-t-15" id="celppTitle">DETALLE DEL CORTE</div>    
+
+            <div class="divInputsRow m-t-20 m-b-15">
+                <div class="divInput">
+                    <label class="label1 f-s-12" id="celppMULabel">UM</label>
+                    <select class="input-1 f-s-12 w-100 p-5-0"  id="celppMU">
+                        <option value=""></option>
+                        <option value="KG">KG</option>
+                        <option value="MT">MT</option>
+                    </select>
+                    <div class="divError" id="celppMUError">Campo requerido</div>
+                </div>
             </div>
+
+            <!--- table --->
+            <div class="divTable h-400" id="detailsTable">
+                <table>
+                    <thead>
+                        <th class="theadCss p-5-0 w-50">#</th>
+                        <th class="theadCss p-5-0 w-150">Color</th>
+                        <th class="theadCss p-5-0 w-100">Capas</th>
+                        <th class="theadCss p-5-0 w-100">Kg/Mt</th>
+                        <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-pen-to-square"></i></th>
+                    </thead>
+                    <tbody id="detailsBody"></tbody>
+                </table>            
+            </div>
+
+            <div class="m-t-20" id="layersSummary"></div>        
+
         </div>
 
-        <!--- tables --->
-        <div class="divTable h-400" id="detailsTable">
-            <table>
-                <thead>
-                    <th class="theadCss p-5-0 w-50">#</th>
-                    <th class="theadCss p-5-0 w-150">Color</th>
-                    <th class="theadCss p-5-0 w-100">Capas</th>
-                    <th class="theadCss p-5-0 w-100">Kg/Mt</th>
-                    <th class="theadCss p-5-0 w-50"><i class="fa-regular fa-pen-to-square"></i></th>
-                </thead>
-                <tbody id="detailsBody"></tbody>
-            </table>            
+        <div id="celppCuttingOrders">
+            <div class="b-2-black m-t-5">
+
+                <div class="popupTitle1 m-t-15 m-b-20">ORDEN DE CORTE</div>
+                
+                <div class="d-f-r j-c-c c-g-5">
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>#CORTE</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>FECHA</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+                <div class="d-f-r j-c-c c-g-5 m-t-5 m-b-5">
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>MODELO</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>TELA</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+                <div class="w-80-perc m-a cuoppImageDiv">
+                    <div class="popupTitle1 m-t-15 m-b-15" id="celppTitle">DESCRIPCIÓN</div>
+                    <div class="h-350 d-f-r j-c-c m-b-20">
+                        <img src="/images/moldsImages/1741359036285.jpg" alt="Imagen del corte" class="h-350">
+                    </div>                
+                </div>
+                <div class="d-f-r j-c-c c-g-5 m-t-5">
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>COLLARETA</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>TALLER</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+                <div class="d-f-r j-c-c c-g-5 m-t-5">
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>ACCESORIOS</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>FECHA DE SALIDA</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+                <div class="d-f-r j-c-c c-g-5 m-t-5">
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>KGS/MTS</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                    <div class="d-f-r w-45-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>PRENDAS</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+                <div class="d-f-r j-c-c c-g-5 m-t-5 m-b-15">
+                    <div class="d-f-r w-80-perc">
+                        <div class="cuoppOrderTitle h-35 w-35-perc"><b>OBSERVACIONES</b></div>
+                        <div class="cuoppOrderValue h-35 w-65-perc"></div>
+                    </div>
+                </div>
+    
+            </div>
+
         </div>
 
-        <div class="m-t-20" id="layersSummary"></div>        
-
-        <!--- buttons --->
-        <div class="divButtonsRow m-t-20 m-b-5">
-            <div id="celppSave" class="button1 bxs">Guardar</div>
-        </div>
+        
+        
+        
     </div>
 
     <!----------LOADER---------->

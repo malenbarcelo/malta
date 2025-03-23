@@ -2,6 +2,8 @@
 import g from "./globals.js"
 import { dateToString, clearInputs, isValid } from "../../generalFunctions.js"
 import { dominio } from "../../dominio.js"
+import { f } from "./functions.js"
+import { printLayers } from "./printLayers.js"
 
 async function printTable() {
     
@@ -15,11 +17,11 @@ async function printTable() {
     dataToPrint.forEach(element => {
 
         const rowClass = counter % 2 === 0 ? 'tBody4 tBodyEven' : 'tBody4 tBodyOdd'
-        const kgs = (element.layers_data.length > 0 && element.layers_data[0].mu == 'KG') ? (element.layers_data.reduce((sum, obj) => sum + parseFloat(obj.kgs_mts,2), 0)).toFixed(2) : ''
-        const mts = (element.layers_data.length > 0 && element.layers_data[0].mu == 'MT') ? (element.layers_data.reduce((sum, obj) => sum + parseFloat(obj.kgs_mts,2), 0)).toFixed(2) : ''
+        const kgs = element.fabric_mu == 'KG' ? (element.kgs_mts || '') : ''
+        const mts = element.fabric_mu == 'MT' ? (element.kgs_mts || '') : ''
         const layers = element.layers_data.reduce((sum, obj) => sum + (obj.layers == null ? 0 : parseFloat(obj.layers,2)), 0)
-        const garments = layers == 0 ? '' : layers * parseInt(element.base)
-        const layerIcon = element.layers_data.length > 0 ? `<i class="fa-solid fa-pencil allowedIcon" id="editLayer_${element.id}"></i>` : `<input type="checkbox" id="check_${element.id}">`
+        const garments = (layers == 0 || element.base == null)? '' : layers * parseInt(element.base)
+        const layerIcon = element.layers_data.length > 0 ? `<i class="fa-solid fa-pencil allowedIcon" id="editLayers_${element.id}"></i>` : `<input type="checkbox" id="check_${element.id}">`
                 
         const row = document.createElement('tr')
         row.id = 'tr_' + element.id
@@ -28,12 +30,11 @@ async function printTable() {
             <th class="${rowClass}">${dateToString(element.date)}</th>
             <th class="${rowClass}">${element.cutting}</th>
             <th class="${rowClass}">${element.mold_data.mold}</th>
-            <th class="${rowClass}">${element.mold_data.description}</th>
+            <th class="${rowClass}">${element.description}</th>
             <th class="${rowClass}">${kgs}</th>
             <th class="${rowClass}">${mts}</th>
             <th class="${rowClass}">${garments}</th>
             <th class="${rowClass}">${layerIcon}</th>
-            <th class="${rowClass}"><i class="fa-solid fa-scissors allowedIcon" id="cuttingOrder_${element.id}"></i></th>
             <th class="${rowClass}"><i class="fa-regular fa-pen-to-square allowedIcon" id="edit_${element.id}"></i></th>
         `
         fragment.appendChild(row)
@@ -53,8 +54,8 @@ function eventListeners() {
 
     g.cuttings.forEach(element => {
 
+        const editLayers = document.getElementById('editLayers_' + element.id)
         const edit = document.getElementById('edit_' + element.id)
-        const cuttingOrder = document.getElementById('cuttingOrder_' + element.id)
         const check = document.getElementById('check_' + element.id)
         const tr = document.getElementById('tr_' + element.id)
 
@@ -70,41 +71,59 @@ function eventListeners() {
             
         }
         
+        // edit layers
+        if (editLayers) {
+            editLayers.addEventListener('click',async()=>{    
+                loader.style.display = 'block'
+                g.action = 'edit'
+                const layersToEdit = await (await fetch(`${dominio}apis/get/cuttings-layers?id_layers=${element.id_layers}`)).json()
+                const cuttingsToEdit = await (await fetch(`${dominio}apis/get/cuttings?id_layers=${element.id_layers}`)).json()
+                g.layersToEdit = layersToEdit.rows
+                g.selectedCuttingsToEdit = cuttingsToEdit.rows
+                celppMU.value = element.fabric_mu
 
-        cuttingOrder.addEventListener('click',async()=>{
-            copp.style.display = 'block'
+                // clear inputs
+                isValid([celppMU])
+
+                // clear layers and update data
+                f.clearLayersToCreate()
+                f.updateTotalsData()
+                f.printLayersSummary()
+                f.updateLayersSummary()
+
+                // print layers
+                printLayers()
+
+                // print cutting orders
+                f.printCuttingOrders()
+                
+                celpp.style.display = 'block'
+                loader.style.display = 'none'    
+            })            
+        }
+
+        // edit cutting
+        edit.addEventListener('click',async()=>{    
+            loader.style.display = 'block'
+            g.action = 'editCutting'
+            g.cuttingToEdit = element
+            cecppDate.value = element.date
+            cecppCutting.value = element.cutting
+            cecppMold.value = element.mold_data.mold
+            cecppDescription.value = element.description
+            cecppTitle.innerText = 'EDITAR CORTE'
+            cecppCreate.classList.add('notVisible')
+            cecppEdit.classList.remove('notVisible')
+            cecpp.style.display = 'block'
+            cecppMold.focus()
+            
+            loader.style.display = 'none'    
         })
-        
-        // // edit
-        // edit.addEventListener('click',async()=>{
-        //     g.moldToEdit = element
-        //     isValid(g.cemppInputs)
-        //     cemppTitle.innerText = 'EDITAR MOLDE'
-        //     cemppCreate.classList.add('notVisible')
-        //     cemppEdit.classList.remove('notVisible')            
-        //     cemppMold.value = element.mold
-        //     cemppDescription.value = element.description
-        //     cemppUnits.value = element.units_per_layer
 
-        //     if (element.image == null || element.image == '') {
-        //         cemppImageLabel.innerText = 'Imagen'
-        //         cemppDrawingDiv.style.display = 'none'
-        //     }else{
-        //         cemppDrawingDiv.style.display = 'block'
-        //         cemppImageLabel.innerText = 'Cambiar imagen'
-        //         cemppDrawingDiv.innerHTML = '<img src="/images/moldsImages/' + element.image +'" alt="Imagen modelo" class="moldImage" id="cemppDrawing"></img>'
-        //     }
-                    
-        //     cempp.style.display = 'block'
-        //     cemppMold.focus()
-        // })
-
-        // //edit row with double click
-        // tr.addEventListener('dblclick',async()=>{
-        //     if (edit) {
-        //         edit.click()
-        //     }
-        // })
+        //edit row with double click
+        tr.addEventListener('dblclick',async()=>{
+            edit.click()
+        })
         
     })
     

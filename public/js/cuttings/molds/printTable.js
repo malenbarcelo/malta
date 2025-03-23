@@ -61,6 +61,7 @@ function eventListeners() {
             cemppCreate.classList.add('notVisible')
             cemppEdit.classList.remove('notVisible')            
             cemppMold.value = element.mold
+            cemppImage.value = ''
             cemppDescription.value = element.description
             cemppUnits.value = element.units_per_layer
 

@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       cutting:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      description:{
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -30,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       fabric_mu:{
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      kgs_mts:{
+        type: DataTypes.DECIMAL,
+        allowNull: true,
+      },
+      cutting_order_obs:{
+        type: DataTypes.DECIMAL,
         allowNull: true,
       },
       enabled:{

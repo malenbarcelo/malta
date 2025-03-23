@@ -3,7 +3,7 @@ const salesController = require('../../controllers/apisControllers/composedContr
 const cuttingsController = require('../../controllers/apisControllers/composedControllers/cuttingsController.js')
 const router = express.Router()
 
-// customer balance
+// print customer balance
 router.post('/print-customer-balance',salesController.printCustomerBalance)
 
 // positive balance
@@ -21,10 +21,13 @@ router.get('/predict-molds/:string',cuttingsController.predictMolds)
 // predict molds descriptions
 router.get('/predict-molds-descriptions/:string',cuttingsController.predictMoldsDescriptions)
 
-// layers summary
-router.get('/layers-summary',cuttingsController.layersSummary)
-
 // max id layers
 router.get('/max-id-layers',cuttingsController.maxIdLayers)
+
+// max cutting number
+router.get('/max-cutting-number',cuttingsController.maxCuttingNumber)
+
+// print cutting order
+router.post('/print-cutting-order',cuttingsController.printCuttingOrder)
 
 module.exports = router

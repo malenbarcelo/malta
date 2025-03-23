@@ -40,4 +40,7 @@ router.post('/cuttings-molds',upload.single('cemppImage'),cuttingsController.upd
 // cuttings
 router.post('/cuttings',cuttingsController.updateCuttings)
 
+// cuttings_layers
+router.post('/cuttings-layers',cuttingsController.updateLayers)
+
 module.exports = router

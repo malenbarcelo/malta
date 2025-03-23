@@ -86,7 +86,6 @@ window.addEventListener('load',async()=>{
 
         // get and print data
         g.molds = await f.getData()
-        console.log(g.molds)
         printTable()
 
         table.scrollTop = 0
