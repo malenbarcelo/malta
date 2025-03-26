@@ -21,6 +21,9 @@ router.get('/predict-molds/:string',cuttingsController.predictMolds)
 // predict molds descriptions
 router.get('/predict-molds-descriptions/:string',cuttingsController.predictMoldsDescriptions)
 
+// predict cuttings descriptions
+router.get('/predict-cuttings-descriptions/:string',cuttingsController.predictCuttingsDescriptions)
+
 // max id layers
 router.get('/max-id-layers',cuttingsController.maxIdLayers)
 

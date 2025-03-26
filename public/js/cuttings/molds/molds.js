@@ -19,7 +19,7 @@ window.addEventListener('load',async()=>{
 
     // get molds
     g.filters.page = 1
-    g.filters.size = 18
+    g.filters.size = 25
     g.molds = await f.getData()
     printTable()
 

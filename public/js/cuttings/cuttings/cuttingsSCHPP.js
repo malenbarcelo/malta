@@ -14,6 +14,12 @@ async function schppEventListeners() {
         schpp.style.display = 'none'
         celpp.style.display = 'none'
     })
+
+    // yes
+    schppYes.addEventListener("click", async() => {
+        schpp.style.display = 'none'
+        celppSave.click()
+    })
 }
 
 export { schppEventListeners }

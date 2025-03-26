@@ -29,12 +29,6 @@ async function elppEventListeners() {
             elementToEdit.layers = parseInt(elppLayers.value)
             elementToEdit.kgs_mts = elppKgsMts.value == '' ? 0 : parseFloat(elppKgsMts.value,2)
 
-            // update cuttings data
-            // g.selectedCuttingsToEdit.forEach(element => {
-            //     const percentage = (element.base == null || element.base == 0 || g.totalBase == 0) ? 0 : ((parseFloat(element.base,2) / parseFloat(g.totalBase,2)) * 100)
-            //     element.kgs_mts = parseFloat(percentage * g.totalKgsMts,2)
-            // })
-            
             f.updateTotalsData()
             f.printLayersSummary()
             f.updateLayersSummary()

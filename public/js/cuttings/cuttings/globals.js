@@ -3,7 +3,7 @@ let g = {
     molds:[],
     escNumber:0,
     // popups
-    popups: [elpp,cecpp,celpp],
+    popups: [schpp, elpp,cecpp,celpp],
     cecppInputs: [cecppDate, cecppCutting, cecppMold, cecppDescription],
     // scroll
     loadedPages: new Set(),
@@ -42,12 +42,19 @@ let g = {
             elementName: 'mold'
         },
         {
+            input: description,
+            list: descriptionPredicted,
+            apiUrl: 'apis/composed/predict-cuttings-descriptions/',
+            name: 'description',
+            elementName: 'description'
+        },
+        {
             input: cecppMold,
             list: cecppMoldPredicted,
             apiUrl: 'apis/composed/predict-molds/',
             name: 'mold',
             elementName: 'cecppMold'
-        },
+        }
     ],
     // edit
     cuttingToEdit:{},
@@ -61,6 +68,7 @@ let g = {
     selectedCuttingsToEdit:[],
     action: '',
     positionToEdit:0,
+    layers:[],
     layersToEdit:[],
     layersToCreate:[
         {

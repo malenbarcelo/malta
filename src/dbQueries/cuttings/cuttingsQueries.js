@@ -39,8 +39,6 @@ const cuttingsQueries = {
             }
         }
 
-        console.log(whereMolds)
-
         const data = await model.findAndCountAll({
             include:[
                 {

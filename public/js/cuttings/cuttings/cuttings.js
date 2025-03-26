@@ -27,7 +27,7 @@ window.addEventListener('load',async()=>{
     schppEventListeners() // save changes popup (schpp)
 
     // close popups
-    const popupsToClose = g.popups.filter( p => p.id != 'celpp')
+    const popupsToClose = g.popups.filter( p => p.id != 'celpp' && p.id != 'schpp')
     closePopups(popupsToClose)
     closeWithEscape(popupsToClose)
 
@@ -41,7 +41,7 @@ window.addEventListener('load',async()=>{
 
     // get cuttings
     g.filters.page = 1
-    g.filters.size = 18
+    g.filters.size = 25
     g.cuttings = await f.getData()
     printTable()
 
@@ -131,8 +131,11 @@ window.addEventListener('load',async()=>{
             asc.classList.add('notVisible')
             desc.classList.remove('notVisible')
             g.filters.order = '[["' + element + '","ASC"]]'
-            
-            //get and print data
+
+            // update page number
+            g.filters.page = 1
+
+            // get and print data
             g.cuttings = await f.getData()
             printTable()
 
@@ -147,6 +150,9 @@ window.addEventListener('load',async()=>{
             asc.classList.remove('notVisible')
             desc.classList.add('notVisible')
             g.filters.order = '[["' + element + '","DESC"]]'
+
+            // update page number
+            g.filters.page = 1
             
             //get and print data
             g.cuttings = await f.getData()

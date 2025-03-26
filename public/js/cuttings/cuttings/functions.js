@@ -27,9 +27,11 @@ const f = {
     },
     updateTotalsData: async function() {
         const layers = g.action == 'create' ? g.layersToCreate : g.layersToEdit
+        const sumLayers = layers.reduce((total, c) => total + ((c.kgs_mts == null) ? 0 : parseFloat(c.kgs_mts,2)), 0)
         g.totalBase = g.selectedCuttingsToEdit.reduce((total, c) => total + ((c.base == null) ? 0 : parseInt(c.base)), 0)
         g.totalLayers = layers.reduce((total, l) => total + ((l.layers == null) ? 0 : parseInt(l.layers)), 0)
-        g.totalKgsMts = g.selectedCuttingsToEdit.reduce((total, c) => total + ((c.kgs_mts == null) ? 0 : parseFloat(c.kgs_mts,2)), 0)
+        
+        g.totalKgsMts = sumLayers == 0 ? g.selectedCuttingsToEdit.reduce((total, c) => total + ((c.kgs_mts == null) ? 0 : parseFloat(c.kgs_mts,2)), 0) : sumLayers
     },
     restablishSelectedCuttings: async function() {
         g.selectedCuttings = []
@@ -66,7 +68,7 @@ const f = {
                     <div class="w-90 d-f-r c-g-5 a-i-c j-c-c"><b>BASE:</b><input class="input-1 w-30 f-s-12 unabledInput" type="text" value="${g.totalBase == 0 ? '' : g.totalBase}" id="totalBase" readonly></div>
                     <div class="w-90 d-f-r a-i-c j-c-c">100.00%</div>
                     <div class="w-120 d-f-r c-g-5 a-i-c"><b>PRENDAS:</b><div class="w-80" id="totalGarments"></div></div>
-                    <div class="w-120 d-f-r c-g-5 a-i-c"><b>KGS/MTS:</b><input class="input-1 w-50 f-s-12" type="text" step="0.01" value="${g.totalKgsMts == 0 ? '' : g.totalKgsMts}" id="totalKgsMts"></div>
+                    <div class="w-120 d-f-r c-g-5 a-i-c"><b>KGS/MTS:</b><input class="input-1 w-50 f-s-12" type="text" step="0.01" value="${g.totalKgsMts == 0 ? '' : g.totalKgsMts}" id="totalKgsMts" autocomplete="off"></div>
                 </div>
             `
 
@@ -129,7 +131,11 @@ const f = {
         totalGarments.innerText = g.totalLayers * g.totalBase
         totalKgsMts.value = g.totalKgsMts.toFixed(2)
 
-        if (g.totalKgsMts == 0) {
+        // allow edit kgs mts
+        const layers = g.action == 'create' ? g.layersToCreate : g.layersToEdit
+        const sumLayers = layers.reduce((total, c) => total + ((c.kgs_mts == null) ? 0 : parseFloat(c.kgs_mts,2)), 0)
+        
+        if (sumLayers == 0) {
             totalKgsMts.readOnly = false
         }else{
             totalKgsMts.readOnly = true

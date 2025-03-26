@@ -39,6 +39,22 @@ const cuttingsController = {
         return res.send('Ha ocurrido un error')
         }
     },
+    predictCuttingsDescriptions: async(req,res) =>{
+        try{
+            const string = req.params.string.toLowerCase()
+            const limit = undefined
+            const offset = undefined
+            const filters = {description: string}
+            
+            let data = await cuttingsQueries.get({ limit, offset, filters })
+            
+            res.status(200).json(data.rows)
+
+        }catch(error){
+        console.group(error)
+        return res.send('Ha ocurrido un error')
+        }
+    },
     maxIdLayers: async(req,res) =>{
         try{
             
@@ -89,16 +105,38 @@ const cuttingsController = {
             // Set data for layers details
             const rowHeight = 15;
             const tableColumnWidths = [40, 120, 80, 80];
+            const tableSummaryColumnWidths = [50, 50, 50, 50, 60, 60];
             const tableWidth = tableColumnWidths.reduce((a, b) => a + b, 0)
+            const tableSummaryWidth = tableSummaryColumnWidths.reduce((a, b) => a + b, 0)
             const startX = (doc.page.width - tableWidth) / 2;
+            const startXsummary = (doc.page.width - tableSummaryWidth) / 2;
             const startY = 65;
+            const startYSummary = 700;
             let currentY = startY;
+            let currentYSummary = startYSummary;
+            
 
             // Prepare layers for the table
             let layers = [];
             data.layers.forEach(element => {
                 layers.push([element.position, element.color, element.layers, element.kgs_mts])
             })
+
+            // Prepare cuttings for the table summary
+            let cuttings = [];
+            const totalLayers = layers.reduce((sum, item) => {
+                return sum + (item[2] !== null ? item[2] : 0)
+              }, 0)
+            const totalBase = data.cuttings.reduce((sum, obj) => sum + obj.base, 0)
+            const totalKgsMts = data.cuttings.reduce((sum, obj) => sum + parseFloat(obj.kgs_mts,2), 0)
+        
+        
+            data.cuttings.forEach(element => {
+                const garments = element.base * totalLayers
+                const perc = ((element.base / totalBase) * 100).toFixed(2) + ' %'
+                cuttings.push([element.cutting, totalLayers, element.base, perc, garments, element.kgs_mts.toFixed(2)])
+            })
+            cuttings.push(['TOTAL', totalLayers, totalBase, '100%', totalBase * totalLayers, totalKgsMts.toFixed(2)])
 
             // Function to draw table header
             const drawHeader = () => {
@@ -185,7 +223,94 @@ const cuttingsController = {
             drawHeader();
             drawContent();
 
-            // print cutting orders
+            /*-----------------------------------------*/
+            // Function to draw table summary header
+            const drawSummaryHeader = () => {
+                let currentX = startXsummary;
+                const headerData = ['#CORTE', 'CAPAS', 'BASE', '%','PRENDAS', 'KGS/MTS'];
+
+                headerData.forEach((headerCell, colIndex) => {
+                    const cellWidth = tableSummaryColumnWidths[colIndex]
+                    // Draw header background
+                    
+                    doc.rect(currentX, currentYSummary, cellWidth, rowHeight)
+                        .fillColor('#AFABAB')
+                        .fill();
+
+                    // Add header text
+                    doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(9);
+                    
+                    const cellHeight = rowHeight
+                    const textY = currentYSummary + (cellHeight / 2) - 3
+
+                    doc.text(headerCell, currentX, textY, {
+                        width: cellWidth,
+                        align: 'center',
+                        lineBreak: false,
+                    });
+
+                    // Draw header border
+                    doc.rect(currentX, currentYSummary, cellWidth, rowHeight).strokeColor('black').lineWidth(0.5).stroke();
+
+                    currentX += cellWidth;
+                });
+
+                currentYSummary += rowHeight;
+            };
+            // Function to draw table summary
+            const drawSummaryContent = () => {
+                cuttings.forEach((row, rowIndex) => {
+                    let currentX = startXsummary;
+
+                    if (currentYSummary > doc.page.height - 50) {
+                        doc.addPage();
+                        currentYSummary = 50;
+                        drawHeader();
+                    }
+
+                    row.forEach((cell, colIndex) => {
+                        const cellContent = cell !== null && cell !== undefined ? String(cell) : '';
+
+                        // Draw row background
+                        doc.rect(currentX, currentYSummary, tableSummaryColumnWidths[colIndex], rowHeight)
+                            .fillColor('white')
+                            .fill();
+
+                        // Add row text
+                        doc.fillColor('black')
+                        .font('Helvetica')
+                        .fontSize(8);
+
+                        const cellWidth = tableSummaryColumnWidths[colIndex]
+                        const cellHeight = rowHeight
+                        const textY = currentYSummary + (cellHeight / 2) - 3
+
+                        doc.text(cellContent, currentX, textY, {
+                            width: cellWidth,
+                            align: 'center',
+                            lineBreak: false,
+                        });
+
+                        // Draw cell border
+                        doc.rect(currentX, currentYSummary, cellWidth, rowHeight).strokeColor('black').lineWidth(0.5).stroke();
+
+                        currentX += cellWidth;
+                    });
+
+                    currentYSummary += rowHeight;
+                });
+            };
+
+            // Draw table summary header and content
+            currentY = startY;
+            drawSummaryHeader();
+            drawSummaryContent();
+
+            
+            /*-----------------------------------------*/
+            // print upper data orders
             const drawUpperInputs = (doc, startX, startY, labelWidth, valueWidth, cellHeight, element) => {
 
                 // Cutting title
@@ -240,7 +365,7 @@ const cuttingsController = {
                 doc.text(dateText, dateX, startY + (cellHeight) + (cellHeight / 2) - 3)
 
                 // mold title
-                startY += 35
+                startY += 45
                 doc.lineWidth(0.5)
                     .rect(startX, startY + (cellHeight), labelWidth, cellHeight)
                     .fillAndStroke('#D7D0D0', 'black')
@@ -292,52 +417,233 @@ const cuttingsController = {
 
                 
             }
+
+            // print lower data orders
+            const drawLowerInputs = (doc, startX, startY, labelWidth, valueWidth, cellHeight, element) => {
+
+                // Collareta title
+                doc.lineWidth(0.5)
+                    .rect(startX, startY + (cellHeight), labelWidth, cellHeight)
+                    .fillAndStroke('#D7D0D0', 'black')
+
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('COLLARETA', startX + 5, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // Collareta text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const collaretaText = ''
+                const collaretaTextWidth = doc.widthOfString(collaretaText)
+                const collaretaX = startX + labelWidth + (valueWidth / 2) - (collaretaTextWidth / 2)
+
+                doc.text(collaretaText, collaretaX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // workshop title
+                doc.lineWidth(0.5)
+                        .rect(startX + labelWidth + valueWidth + 10, startY + (cellHeight), labelWidth, cellHeight)
+                        .fillAndStroke('#D7D0D0', 'black')                        
             
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('TALLER', startX + labelWidth + valueWidth + 15, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth + valueWidth + 10 + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // workshop text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const workshopText = ''
+                const workshopTextWidth = doc.widthOfString(workshopText)
+
+                const workshopBoxStartX = startX + labelWidth + valueWidth + 10 + labelWidth
+                const workshopX = workshopBoxStartX + (valueWidth / 2) - (workshopTextWidth / 2)
+
+                doc.text(workshopText, workshopX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // accesorios title
+                startY += 45
+                doc.lineWidth(0.5)
+                    .rect(startX, startY + (cellHeight), labelWidth, cellHeight)
+                    .fillAndStroke('#D7D0D0', 'black')
+
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('ACCESORIOS', startX + 5, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // accesorios text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const accesoriosText = ''
+                const accesoriosTextWidth = doc.widthOfString(accesoriosText)
+                const accesoriosX = startX + labelWidth + (valueWidth / 2) - (accesoriosTextWidth / 2)
+
+                doc.text(accesoriosText, accesoriosX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // departure date title
+                doc.lineWidth(0.5)
+                        .rect(startX + labelWidth + valueWidth + 10, startY + (cellHeight), labelWidth, cellHeight)
+                        .fillAndStroke('#D7D0D0', 'black')                        
+            
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('FECHA DE SALIDA', startX + labelWidth + valueWidth + 15, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth + valueWidth + 10 + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // departure date text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const departureText = ''
+                const departureTextWidth = doc.widthOfString(departureText)
+
+                const departureBoxStartX = startX + labelWidth + valueWidth + 10 + labelWidth
+                const departureX = departureBoxStartX + (valueWidth / 2) - (departureTextWidth / 2)
+
+                doc.text(departureText, departureX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // kgs mts title
+                startY += 45
+                doc.lineWidth(0.5)
+                    .rect(startX, startY + (cellHeight), labelWidth, cellHeight)
+                    .fillAndStroke('#D7D0D0', 'black')
+
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('KGS/MTS', startX + 5, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // kgs mts text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const kgsMtsText = String(element.kgs_mts.toFixed(2)) + ' ' + element.fabric_mu
+                const kgsMtsTextWidth = doc.widthOfString(kgsMtsText)
+                const kgsMtsX = startX + labelWidth + (valueWidth / 2) - (kgsMtsTextWidth / 2)
+
+                doc.text(kgsMtsText, kgsMtsX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // garments title
+                doc.lineWidth(0.5)
+                        .rect(startX + labelWidth + valueWidth + 10, startY + (cellHeight), labelWidth, cellHeight)
+                        .fillAndStroke('#D7D0D0', 'black')                        
+            
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('PRENDAS', startX + labelWidth + valueWidth + 15, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth + valueWidth + 10 + labelWidth, startY + (cellHeight), valueWidth, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // garments text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const garmentsText = String(element.base * element.layers_data.reduce((sum, obj) => sum + obj.layers, 0))
+                const garmentsTextWidth = doc.widthOfString(garmentsText)
+
+                const garmentsBoxStartX = startX + labelWidth + valueWidth + 10 + labelWidth
+                const garmentsX = garmentsBoxStartX + (valueWidth / 2) - (garmentsTextWidth / 2)
+
+                doc.text(garmentsText, garmentsX, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                // observations title
+                startY += 45
+                doc.lineWidth(0.5)
+                    .rect(startX, startY + (cellHeight), labelWidth, cellHeight)
+                    .fillAndStroke('#D7D0D0', 'black')
+
+                doc.fillColor('black')
+                    .font('Helvetica-Bold')
+                    .fontSize(10)
+                    .text('OBSERVACIONES', startX + 5, startY + (cellHeight) + (cellHeight / 2) - 3)
+
+                doc.rect(startX + labelWidth, startY + (cellHeight), 389, cellHeight)
+                    .strokeColor('black').lineWidth(0.5).stroke()
+
+                // observations text
+                doc.fillColor('black')
+                    .font('Helvetica')
+                    .fontSize(10)
+
+                const obsText = element.cutting_order_obs || ''
+                const obsTextWidth = doc.widthOfString(obsText)
+                const obsX = startX + labelWidth + (389 / 2) - (obsTextWidth / 2)
+
+                doc.text(obsText, obsX, startY + (cellHeight) + (cellHeight / 2) - 3)
+            }
 
             const pageWidth = doc.page.width
 
             data.cuttings.forEach(element => {
 
-                doc.addPage()            
-                doc.font('Helvetica-Bold').fontSize(14).text('CORTE #' + element.cutting + ' (' + element.mold_data.mold + ')', { align: 'center' })
+                doc.addPage()
+                doc.moveDown(2)            
+                doc.font('Helvetica-Bold').fontSize(16).text('CORTE #' + element.cutting + ' (' + element.mold_data.mold + ')', { align: 'center' })
                 doc.moveDown()
             
                 const startX = 50
-                let startY = 35
-                const labelWidth = 80
-                const valueWidth = 160
+                let startY = 70
+                const labelWidth = 100
+                const valueWidth = 140
                 const cellHeight = 30
             
                 drawUpperInputs(doc, startX, startY, labelWidth, valueWidth, cellHeight, element)
 
-                startY = 170
+                startY = 205
                 
                 doc.font('Helvetica-Bold')
                     .fontSize(12)
                     .text(element.description, 0, startY, { width: pageWidth, align: 'center' })
 
-                startY = 170
-
                 // mold image
-                const imagePath = path.resolve(__dirname, './public/images/moldsImages/1741697235104.jpeg')
-                const buffer = fs.readFileSync(imagePath)
-                const dimensions = imageSize(buffer)
+                if (element.mold_data.image) {
+                    const imagePath = path.resolve(__dirname, '../../../../public/images/moldsImages/' + element.mold_data.image)
+                    const buffer = fs.readFileSync(imagePath)
+                    const dimensions = imageSize(buffer)
 
-                console.log('DIMENSIONS:', dimensions)
+                    const targetHeight = 300
+                    const scaleFactor = targetHeight / dimensions.height
+                    const scaledWidth = dimensions.width * scaleFactor
 
-                const targetHeight = 250
-                const scaleFactor = targetHeight / dimensions.height
-                const scaledWidth = dimensions.width * scaleFactor
+                    const x = (pageWidth / 2) - (scaledWidth / 2)
 
-                const x = (pageWidth / 2) - (scaledWidth / 2)
+                    doc.image(imagePath, x, 235, { height: targetHeight })
+                    
+                }
 
-                doc.image(imagePath, x, 200, { height: targetHeight })
+                // draw lower inputs
+                startY = 565
+                drawLowerInputs(doc, startX, startY, labelWidth, valueWidth, cellHeight, element)
 
                 
             })
-            
-
-            
 
             // End PDF and send response
             doc.end()

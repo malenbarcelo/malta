@@ -265,6 +265,10 @@ function selectFocusedElement(e,input,list,elementName) {
         g.focusedElement = -1
 
         input.dispatchEvent(new Event('change'))
+
+        setTimeout(() => {
+            list.style.display = 'none'
+        }, 300)
         
         //handleEnter(input,list)
     }else if(e.key === 'Escape'){
@@ -274,6 +278,9 @@ function selectFocusedElement(e,input,list,elementName) {
     }
 
     input.addEventListener('blur', function() {
+        setTimeout(() => {
+            list.style.display = 'none'
+        }, 300)
         //handleEnter(input, list)
     })
 }

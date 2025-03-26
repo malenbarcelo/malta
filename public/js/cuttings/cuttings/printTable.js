@@ -76,6 +76,7 @@ function eventListeners() {
             editLayers.addEventListener('click',async()=>{    
                 loader.style.display = 'block'
                 g.action = 'edit'
+                f.restablishSelectedCuttings()
                 const layersToEdit = await (await fetch(`${dominio}apis/get/cuttings-layers?id_layers=${element.id_layers}`)).json()
                 const cuttingsToEdit = await (await fetch(`${dominio}apis/get/cuttings?id_layers=${element.id_layers}`)).json()
                 g.layersToEdit = layersToEdit.rows
