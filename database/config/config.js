@@ -1,6 +1,6 @@
-  const username = "root"
-  const password = "30941767"
-  const database = "malta_db"
+  const username = "maltachicwnpower_adm"
+  const password = "[832R(I~V=*f"
+  const database = "maltachicwnpower_db"
 
   module.exports = 
     {

@@ -45,11 +45,11 @@ app.set('view engine','ejs')
 
 //configure session
 app.use(session({
-    store: new FileStore(),
+    //store: new FileStore(),
     secret:'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Change to true in PRD to use HTTPS
+    //cookie: { secure: false } // Change to true in PRD to use HTTPS
 }))
 
 //middlewares
@@ -101,14 +101,6 @@ app.use('/apis/sales/web-orders',salesRoutes) //web orders
 
 //cuttings
 app.use('/apis/cuttings',cuttingsRoutes) //orders
-
-const array = ['ulisesrguez88','salomerys05','jhonny12cfe','migue3031jm','manolo187','alonsobrindis','velasquewalter07','ulisesbati','edwinsd952','dibanhicastro12','leninmr20','ivan.martinezm','sanchezlopezwilliams','kevinalainmilla89','maria.angeles.arenas','alexrobles901','clopezv601','josealberth0727','l20e40087','cjudithalbertom2808','gonzalovazpe','luisalbertosalomecruz1','inajeremez','ricardoagustin.mejia','guillermo.emmanuel.chavez','burciaga.jesusalvaroo','luis.delgado','KARLA.PALMAPR20','mayraoc','je.rodriguez.pecina','r-hernandezv','gerardo.olma18','mfgh3105','andresgj2002','edgar.ab','5urbina30andreus','samuel_rdg_27','lecoelihu','albertm970','josuecaloch6','abraham010407','ga6897029','tonote0550','franco.benitez7','ericleonlazc','fernando.tapia','mariana.magana','alonso.magoscruz','rodoariguznaga','omargonzalez2110df','erickdedios','hugonorbertoavendanoroblero-est','afloresga07','aile2302','luicardoso93','malonsom1400','fnavarrete461','morgadocuevasirani','carloscorcab','alejandro.ortiz']
-
-array.forEach(element => {
-    console.log(bcrypt.hashSync(element,10))
-    
-});
-
 
 
 //console.log(bcrypt.hashSync('dan',10))

@@ -133,7 +133,8 @@ const cuttingsController = {
         
             data.cuttings.forEach(element => {
                 const garments = element.base * totalLayers
-                const perc = ((element.base / totalBase) * 100).toFixed(2) + ' %'
+                const percentage = ((element.base / totalBase) * 100)
+                const perc = isNaN(percentage) ? '' : percentage.toFixed(2) + ' %'
                 cuttings.push([element.cutting, totalLayers, element.base, perc, garments, element.kgs_mts.toFixed(2)])
             })
             cuttings.push(['TOTAL', totalLayers, totalBase, '100%', totalBase * totalLayers, totalKgsMts.toFixed(2)])
@@ -259,6 +260,7 @@ const cuttingsController = {
 
                 currentYSummary += rowHeight;
             };
+
             // Function to draw table summary
             const drawSummaryContent = () => {
                 cuttings.forEach((row, rowIndex) => {

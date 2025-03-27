@@ -40,6 +40,13 @@ const layersQueries = {
             )
         }
     },
+    destroy: async(idLayers) => {
+        await model.destroy(
+            {
+                where: { id_layers: idLayers }
+            }
+        )
+    },
     getMaxId: async() => {
 
         const data = await model.max('id_layers')

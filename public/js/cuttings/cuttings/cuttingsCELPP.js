@@ -17,7 +17,7 @@ async function celppEventListeners() {
     document.addEventListener('keydown', function(e) {
         const popup = document.getElementById('celpp')
         if (e.key === 'Escape' && popup.style.display == 'block') {
-            const activePopups = g.popups.filter(p => p.style.display == 'block')
+            const activePopups = g.popups.filter(p => p.style.display == 'block')            
             if (activePopups.includes(schpp)) {
                 if (g.escNumber == 0) {
                     schpp.style.display = 'none'
@@ -29,7 +29,7 @@ async function celppEventListeners() {
                 }
             }
 
-            if (!activePopups.includes(schpp)) {
+            if (!activePopups.includes(schpp) && !activePopups.includes(dlpp)) {
                 g.escNumber += 1
                 schpp.style.display = 'block'
             }
@@ -60,9 +60,16 @@ async function celppEventListeners() {
             const {responseData1, responseData2 } = await saveChanges()
 
             if (responseData1.message == 'ok' && responseData2.message == 'ok') {
-                // get cuttings
+                
+                // update filters
                 g.filters.page = 1
-                g.filters.size = 18
+                g.filters.size = 25
+
+                // update scroll data
+                g.loadedPages = new Set()
+                g.previousScrollTop = 0
+
+                // get cuttings
                 g.cuttings = await f.getData()                
                 okText.innerText = 'Capas agregadas con éxito'
                 showOkPopup(okPopup)
@@ -86,12 +93,6 @@ async function celppEventListeners() {
         const errors = validation()
 
         if (errors == 0) {
-
-            body.innerHTML = ''
-            loader.style.display = 'block'
-
-            // save changes
-            await saveChanges()
 
             // print pdf
             const data = {
@@ -126,15 +127,16 @@ async function celppEventListeners() {
         
             console.log('PDF descargado con éxito')
 
-            // get data
-            g.cuttings = await f.getData()
-
-            // print table
-            printTable()
-
             loader.style.display = 'none'   
         }
 
+    })
+
+    // delete layer
+    celppDelete.addEventListener("click", async() => {
+        dlppQuestion.innerText = '¿Confirma que desea eliminar la orden de corte #' + g.layersToEdit[0].id_layers + '?'
+        dlpp.style.display = 'block'
+        
     })
 }
 
@@ -160,14 +162,6 @@ async function saveChanges(){
     // complete MU
     g.selectedCuttingsToEdit.map( sc => sc.fabric_mu = celppMU.value)
 
-    // complete layers_id
-    if (g.action == 'create') {
-        const maxId = await (await fetch(`${dominio}apis/composed/max-id-layers`)).json()
-        const layersId = maxId == null ? 1 : maxId + 1 
-        g.selectedCuttingsToEdit.map( sc => sc.id_layers = layersId)
-        g.layersToCreate.map( l => l.id_layers = layersId)
-    }
-    
     // edit cuttings
     const response1 = await fetch(dominio + 'apis/update/cuttings',{
         method:'POST',

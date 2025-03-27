@@ -1,6 +1,7 @@
 import { dominio } from "../../dominio.js"
 import g from "./globals.js"
 import { dateToString } from "../../generalFunctions.js"
+import { printTable } from "./printTable.js"
 
 const f = {
     getData: async function() {
@@ -17,6 +18,26 @@ const f = {
         const fetchData = await (await fetch(`${dominio}apis/get/cuttings?${filters}`)).json()
 
         return fetchData.rows
+    },
+    restoreData: async function() {
+        
+        // update filters
+        g.filters.page = 1
+        g.filters.size = 25        
+
+        // update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
+        
+        // get data 
+        g.cuttings = await this.getData()
+
+        // print table
+        printTable()
+
+        // scroll up
+        table.scrollTop = 0  
+        
     },
     clearLayersToCreate: async function() {
         g.layersToCreate.forEach(ltc => {

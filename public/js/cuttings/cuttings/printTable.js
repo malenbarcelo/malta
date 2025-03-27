@@ -82,7 +82,8 @@ function eventListeners() {
                 g.layersToEdit = layersToEdit.rows
                 g.selectedCuttingsToEdit = cuttingsToEdit.rows
                 celppMU.value = element.fabric_mu
-
+                celppDelete.style.display = 'flex'
+                
                 // clear inputs
                 isValid([celppMU])
 

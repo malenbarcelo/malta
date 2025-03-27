@@ -11,6 +11,7 @@ import { cecppEventListeners } from "./cuttingsCECPP.js"
 import { celppEventListeners } from "./cuttingsCELPP.js"
 import { elppEventListeners } from "./cuttingsELPP.js"
 import { schppEventListeners } from "./cuttingsSCHPP.js"
+import { dlppEventListeners } from "./cuttingsDLPP.js"
 
 window.addEventListener('load',async()=>{
 
@@ -25,6 +26,7 @@ window.addEventListener('load',async()=>{
     celppEventListeners() // create edit layers popup (celpp)
     elppEventListeners() // edit line popup (elpp)
     schppEventListeners() // save changes popup (schpp)
+    dlppEventListeners() // delete layers popup (dlpp)
 
     // close popups
     const popupsToClose = g.popups.filter( p => p.id != 'celpp' && p.id != 'schpp')
@@ -39,11 +41,8 @@ window.addEventListener('load',async()=>{
     // show tooltips
     gf.showTooltips(g.tooltips,239,100)
 
-    // get cuttings
-    g.filters.page = 1
-    g.filters.size = 25
-    g.cuttings = await f.getData()
-    printTable()
+    // restore data
+    await f.restoreData()
 
     // add data with scroll
     table.addEventListener('scroll', async () => {
@@ -75,17 +74,10 @@ window.addEventListener('load',async()=>{
             g.filters.cutting = cutting.value
             g.filters.mold_string = mold.value
             g.filters.description = description.value
-            g.filters.page = 1
 
-            //update scroll data
-            g.loadedPages = new Set()
-            g.previousScrollTop = 0
-
-            //get and print data             
-            g.cuttings = await f.getData()
-            printTable()
-
-            table.scrollTop = 0            
+            // restore data
+            await f.restoreData()
+                        
             loader.style.display = 'none'
         })
     })
@@ -99,20 +91,13 @@ window.addEventListener('load',async()=>{
         g.filters.cutting = ''
         g.filters.mold_string = ''
         g.filters.description = ''
-        g.filters.page = 1
 
         // clear filters
         clearInputs(filters)
 
-        // update scroll data
-        g.loadedPages = new Set()
-        g.previousScrollTop = 0
+        // restore data
+        await f.restoreData()
 
-        // get and print data
-        g.cuttings = await f.getData()
-        printTable()
-
-        table.scrollTop = 0
         loader.style.display = 'none'
         
     })
@@ -132,15 +117,9 @@ window.addEventListener('load',async()=>{
             desc.classList.remove('notVisible')
             g.filters.order = '[["' + element + '","ASC"]]'
 
-            // update page number
-            g.filters.page = 1
+            // restore data
+            await f.restoreData()
 
-            // get and print data
-            g.cuttings = await f.getData()
-            printTable()
-
-            // update scroll data
-            table.scrollTop = 0            
             loader.style.display = 'none'
 
         })
@@ -151,15 +130,9 @@ window.addEventListener('load',async()=>{
             desc.classList.add('notVisible')
             g.filters.order = '[["' + element + '","DESC"]]'
 
-            // update page number
-            g.filters.page = 1
-            
-            //get and print data
-            g.cuttings = await f.getData()
-            printTable()
-
-            // update scroll data
-            table.scrollTop = 0            
+            // restore data
+            await f.restoreData()
+                       
             loader.style.display = 'none'
         })
 
@@ -180,7 +153,7 @@ window.addEventListener('load',async()=>{
         cecppTitle.innerText = 'CREAR CORTE'
         cecppCreate.classList.remove('notVisible')
         cecppEdit.classList.add('notVisible')
-        cecpp.style.display = 'block'
+        celppDelete.style.display = 'block'
         cecppMold.focus()
     })
 
@@ -202,12 +175,19 @@ window.addEventListener('load',async()=>{
             f.printLayersSummary()
             f.updateLayersSummary()
 
+            // complete layers_id            
+            const maxId = await (await fetch(`${dominio}apis/composed/max-id-layers`)).json()
+            const layersId = maxId == null ? 1 : maxId + 1 
+            g.selectedCuttingsToEdit.map( sc => sc.id_layers = layersId)
+            g.layersToCreate.map( l => l.id_layers = layersId)
+
             // print layers
             printLayers()
 
             // print cutting orders
             f.printCuttingOrders()
 
+            celppDelete.style.display = 'none'
             celpp.style.display = 'block'
             loader.style.display = 'none'
 
