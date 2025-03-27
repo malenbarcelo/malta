@@ -142,6 +142,7 @@ window.addEventListener('load',async()=>{
 
     // create cutting
     DGAcreate.addEventListener("click", async() => {
+        loader.style.display = 'block'
         g.action = 'createCutting'
         clearInputs(g.cecppInputs)
         const date = new Date()
@@ -153,8 +154,9 @@ window.addEventListener('load',async()=>{
         cecppTitle.innerText = 'CREAR CORTE'
         cecppCreate.classList.remove('notVisible')
         cecppEdit.classList.add('notVisible')
-        celppDelete.style.display = 'block'
+        cecpp.style.display = 'block'
         cecppMold.focus()
+        loader.style.display = 'none'
     })
 
     // create layers
