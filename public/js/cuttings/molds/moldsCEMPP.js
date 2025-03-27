@@ -20,9 +20,6 @@ async function cemppEventListeners() {
             const formData = new FormData()
             formData.append('mold', cemppMold.value.trim())
             formData.append('description', cemppDescription.value.trim())
-            if (cemppUnits.value != '') {
-                formData.append('units_per_layer', parseInt(cemppUnits.value))
-            }
             if (cemppImage.files.length > 0) {
                 formData.append('cemppImage', cemppImage.files[0])
             }
@@ -63,9 +60,6 @@ async function cemppEventListeners() {
             formData.append('id', g.moldToEdit.id)
             formData.append('mold', cemppMold.value.trim())
             formData.append('description', cemppDescription.value.trim())
-            if (cemppUnits.value != '') {
-                formData.append('units_per_layer', parseInt(cemppUnits.value))
-            }
             if (cemppImage.files.length > 0) {
                 formData.append('cemppImage', cemppImage.files[0])
             }

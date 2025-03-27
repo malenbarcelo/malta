@@ -2,7 +2,7 @@ let g = {
     molds:[],
     // popups
     popups: [cempp,impp],
-    cemppInputs: [cemppMold,cemppDescription, cemppUnits, cemppImage],
+    cemppInputs: [cemppMold,cemppDescription, cemppImage],
     // filters
     pages:0,
     filters: {

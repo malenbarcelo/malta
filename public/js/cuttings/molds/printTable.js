@@ -63,7 +63,6 @@ function eventListeners() {
             cemppMold.value = element.mold
             cemppImage.value = ''
             cemppDescription.value = element.description
-            cemppUnits.value = element.units_per_layer
 
             if (element.image == null || element.image == '') {
                 cemppImageLabel.innerText = 'Imagen'
