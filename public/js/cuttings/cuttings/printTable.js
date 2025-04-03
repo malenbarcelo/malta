@@ -67,6 +67,7 @@ function eventListeners() {
                     g.selectedCuttings.push(element)
                 }
                 g.selectedCuttingsToEdit = g.selectedCuttings.map(item => ({ ...item }))
+                g.cuttingToEdit = element
             })
             
         }
