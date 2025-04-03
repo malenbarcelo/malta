@@ -72,7 +72,7 @@ const f = {
 
             html += `
                 <div class="d-f-r j-c-c c-g-5 m-b-5 f-s-12">
-                    <div class="w-90 d-f-r a-i-c"><b>CORTE #${element.cutting}</b></div>
+                    <div class="w-150 d-f-r a-i-c"><b>CORTE #${element.cutting} (${element.mold_data.mold})</b></div>
                     <div class="w-90 d-f-r c-g-5 a-i-c"><b>CAPAS:</b><div class="w-50" id="layers_${element.id}">0</div></div>
                     <div class="w-90 d-f-r c-g-5 a-i-c j-c-c"><b>BASE:</b><input class="input-1 w-30 f-s-12" type="text" value="${(element.base || '')}" id="base_${element.id}"></div>
                     <div class="w-90 d-f-r a-i-c j-c-c" id="perc_${element.id}"></div>
@@ -84,7 +84,7 @@ const f = {
 
         html += `
                 <div class="d-f-r j-c-c c-g-5 m-b-15 f-s-12">
-                    <div class="w-90 d-f-r a-i-c"><b>TOTAL</b></div>
+                    <div class="w-150 d-f-r a-i-c"><b>TOTAL</b></div>
                     <div class="w-90 d-f-r c-g-5 a-i-c"><b>CAPAS:</b><div class="w-50" id="totalLayers">0</div></div>
                     <div class="w-90 d-f-r c-g-5 a-i-c j-c-c"><b>BASE:</b><input class="input-1 w-30 f-s-12 unabledInput" type="text" value="${g.totalBase == 0 ? '' : g.totalBase}" id="totalBase" readonly></div>
                     <div class="w-90 d-f-r a-i-c j-c-c">100.00%</div>
@@ -167,7 +167,8 @@ const f = {
         
         celppCuttingOrders.innerHTML = ''
         let html = ''
-        g.selectedCuttingsToEdit.forEach(element => {
+        const cutting = g.selectedCuttingsToEdit.filter( c => c.id == g.cuttingToEdit.id)
+        cutting.forEach(element => {
 
             const image = element.mold_data.image ? `<img src="/images/moldsImages/${element.mold_data.image}" class="h-350"></img>` : ''
 

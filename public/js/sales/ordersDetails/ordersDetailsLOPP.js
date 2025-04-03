@@ -1,16 +1,20 @@
 import { dominio } from "../../dominio.js"
-import odg from "./globals.js"
-import { getData, applyFilters } from "./functions.js"
+import g from "./globals.js"
 import { showOkPopup } from "../../generalFunctions.js"
-import { printOrdersDetails } from "./printOrdersDetails.js"
+import { f } from "./functions.js"
+import { printDetails } from "./printDetails.js"
 
 //LINE OBSERVATIONS POPUP (LOPP)
 function loppEventListeners() {
 
     loppAccept.addEventListener("click", async() => {
 
+        lopp.style.display = 'none'
+        bodyOrdersDetails.innerHTML = ''
+        ordersDetailsLoader.style.display = 'block'
+
         const data = {
-            id: odg.lineToEdit.id,
+            id: g.lineToEdit.id,
             observations: loppObs.value
         }
 
@@ -20,16 +24,23 @@ function loppEventListeners() {
             body: JSON.stringify(data)
         })
 
-        lopp.style.display = 'none'
+        
+        
+        
+        //update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
 
-        bodyOrdersDetails.innerHTML = ''
-        ordersDetailsLoader.style.display = 'block'
-        await getData()
-        applyFilters()
-        printOrdersDetails()
+        //get and print data
+        g.details = await f.getDetails()
+        printDetails()
 
-        okppText.innerText = 'Observaciones editadas con éxito'
-        showOkPopup(okpp)
+        ordersDetailsTable.scrollTop = 0
+
+        okText.innerText = 'Observaciones editadas con éxito'
+        showOkPopup(okPopup)
+
+        ordersDetailsLoader.style.display = 'none'
 
     })
 

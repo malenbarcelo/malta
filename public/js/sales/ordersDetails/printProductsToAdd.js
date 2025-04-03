@@ -1,4 +1,4 @@
-import g from "./globals2.js"
+import g from "./globals.js"
 
 function printProductsToAdd() {
 

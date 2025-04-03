@@ -1,5 +1,5 @@
 import { dominio } from "../../dominio.js"
-import g from "./globals2.js"
+import g from "./globals.js"
 import gg from "../../globals.js"
 import { clearInputs } from "../../generalFunctions.js"
 

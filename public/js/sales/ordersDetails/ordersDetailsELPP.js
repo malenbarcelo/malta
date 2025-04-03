@@ -1,8 +1,7 @@
 import { dominio } from "../../dominio.js"
-import g from "./globals2.js"
-import { f } from "./functions2.js"
-import { printDetails } from "./printDetails2.js"
-import { completeELCPPcolors, completeELSPPsizes } from "./functions.js"
+import g from "./globals.js"
+import { f } from "./functions.js"
+import { printDetails } from "./printDetails.js"
 import { showOkPopup, inputsValidation } from "../../generalFunctions.js"
 
 //EDIT LINE POPUP (ELPP)

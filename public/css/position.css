@@ -18,10 +18,6 @@
     top: 50px
 }
 
-.t-50-perc{
-    top: 50%;
-}
-
 .t-75{
     top: 75px
 }
@@ -73,6 +69,18 @@
 /*--- top perc---*/
 .t-40-perc{
     top: 40%
+}
+
+.t-50-perc{
+    top: 50%;
+}
+
+.t-55-perc{
+    top: 55%;
+}
+
+.t-60-perc{
+    top: 60%;
 }
 
 /*--- bottom ---*/

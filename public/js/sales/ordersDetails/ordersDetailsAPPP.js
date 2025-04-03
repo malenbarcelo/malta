@@ -1,10 +1,9 @@
 import { dominio } from "../../dominio.js"
-import g from "./globals2.js"
-import { applyFilters, getData } from "./functions.js"
-import { f } from "./functions2.js"
+import g from "./globals.js"
+import { f } from "./functions.js"
 import { showOkPopup, getDate } from "../../generalFunctions.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { printDetails } from "./printDetails2.js"
+import { printDetails } from "./printDetails.js"
 
 //ADD PRODUCT POPUP (APPP)
 function apppEventListeners() {

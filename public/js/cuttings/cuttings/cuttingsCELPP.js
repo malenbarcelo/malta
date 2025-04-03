@@ -96,6 +96,7 @@ async function celppEventListeners() {
 
             // print pdf
             const data = {
+                cutting: g.selectedCuttingsToEdit.find( c => c.id == g.cuttingToEdit.id),
                 cuttings: g.selectedCuttingsToEdit,
                 layers: g.action == 'create' ? g.layersToCreate : g.layersToEdit
             }

@@ -27,8 +27,8 @@ async function printTable() {
         row.id = 'tr_' + element.id
 
         row.innerHTML = `
-            <th class="${rowClass}">${dateToString(element.date)}</th>
             <th class="${rowClass}">${element.cutting}</th>
+            <th class="${rowClass}">${dateToString(element.date)}</th>
             <th class="${rowClass}">${element.mold_data.mold}</th>
             <th class="${rowClass}">${element.description}</th>
             <th class="${rowClass}">${kgs}</th>
@@ -81,6 +81,8 @@ function eventListeners() {
                 const cuttingsToEdit = await (await fetch(`${dominio}apis/get/cuttings?id_layers=${element.id_layers}`)).json()
                 g.layersToEdit = layersToEdit.rows
                 g.selectedCuttingsToEdit = cuttingsToEdit.rows
+                g.cuttingToEdit = element
+                
                 celppMU.value = element.fabric_mu
                 celppDelete.style.display = 'flex'
                 

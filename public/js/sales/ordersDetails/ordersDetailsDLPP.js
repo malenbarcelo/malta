@@ -1,7 +1,7 @@
 import { dominio } from "../../dominio.js"
-import g from "./globals2.js"
-import { f } from "./functions2.js"
-import { printDetails } from "./printDetails2.js"
+import g from "./globals.js"
+import { f } from "./functions.js"
+import { printDetails } from "./printDetails.js"
 import { showOkPopup } from "../../generalFunctions.js"
 
 // DELETE LINE POPUP (DLPP)

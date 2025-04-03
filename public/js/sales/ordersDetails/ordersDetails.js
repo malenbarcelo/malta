@@ -1,127 +1,184 @@
 import { dominio } from "../../dominio.js"
-import odg from "./globals.js"
-import { getData, applyFilters, updateTableData } from "./functions.js"
-import { printOrdersDetails } from "./printOrdersDetails.js"
+import { f } from "./functions.js"
+import { gf } from "../../globalFunctions.js"
+import { clearInputs, focusInputs, applyPredictElement, closePopups, acceptWithEnterInput, closeWithEscape, isValid } from "../../generalFunctions.js"
+import g from "./globals.js"
+import { printDetails } from "./printDetails.js"
 import { printProductsToAdd } from "./printProductsToAdd.js"
-import { closePopups, applyPredictElement, acceptWithEnterInput, showTableInfo, clearInputs, isValid, closeWithEscape, focusInputs } from "../../generalFunctions.js"
 
 //popups events listeners
+import { elppEventListeners } from "./ordersDetailsELPP.js"
 import { dlppEventListeners } from "./ordersDetailsDLPP.js"
 import { loppEventListeners } from "./ordersDetailsLOPP.js"
-import { elppEventListeners } from "./ordersDetailsELPP.js"
-import { elcppEventListeners } from "./ordersDetailsELCPP.js"
-import { elsppEventListeners } from "./ordersDetailsELSPP.js"
 import { apppEventListeners } from "./ordersDetailsAPPP.js"
 
 window.addEventListener('load',async()=>{
 
-    //get data
+    // show loader
     ordersDetailsLoader.style.display = 'block'
-    
-    const date0 = Date.now()
-    await getData()
-    const date1 = Date.now()
-    console.log(date1-date0)
-
-    //select order manager
-    if (odg.userLogged == 'Esteban') {
-        filterOrderManager.value = 4
-        filterChannel.value = 2
-    }
-    if (odg.userLogged == 'Pedro') {
-        filterOrderManager.value = 5
-        filterChannel.value = 1
-    }
-
-    //apply filters
-    applyFilters()
-
-    //print orders
-    printOrdersDetails()
 
     //popups event listeners
-    dlppEventListeners() //DELET LINE POPUP
-    loppEventListeners() //LINE OBSERVATIONS POPUP
-    elppEventListeners() //EDIT LINE POPUP
-    elcppEventListeners() //EDIT LINE COLORS POPUP
-    elsppEventListeners() //EDIT LINE SIZES POPUP
-    apppEventListeners() //ADD PRODUCT POPUP
+    dlppEventListeners() // delete line
+    loppEventListeners() // line observations
+    elppEventListeners() // edit line
+    apppEventListeners() // add product
 
-    //table info events listeners
-    const tableIcons = [
-        {
-            icon:elppIcon,
-            right:'8.5%'
-        },        
-        {
-            icon:loppIcon,
-            right:'6%'
-        },
-        {
-            icon:dlppIcon,
-            right:'3%'
+    // get general data
+    await f.getGeneralData()
+
+    //get first page data and print table
+    g.details = await f.getDetails()
+    printDetails()
+
+    // add data with scroll
+    ordersDetailsTable.addEventListener('scroll', async () => {
+        if (ordersDetailsTable.scrollTop > g.previousScrollTop) {  // down scroll
+            if (ordersDetailsTable.scrollTop + ordersDetailsTable.clientHeight + 1 >= ordersDetailsTable.scrollHeight) {
+                ordersDetailsLoader.style.display = 'block'                
+                if (!g.loadedPages.has(g.filters.page + 1)){
+                    g.filters.page += 1
+                    g.loadedPages.add(g.filters.page)
+                    const newDetails = await f.getDetails()
+                    g.details = [...g.details, ...newDetails]
+                    printDetails()
+                }
+                ordersDetailsLoader.style.display = 'none'                
+            }
         }
-    ]
-        
-    showTableInfo(tableIcons,268,100)
+        // Update previous position
+        g.previousScrollTop = ordersDetailsTable.scrollTop
+    })
+
+    // show tooltips
+    gf.showTooltips(g.tooltips,252,100)
+
+    // hide loader
+    ordersDetailsLoader.style.display = 'none'
 
     //filters event listeners
-    const filters = [filterOrder,filterProduct,filterCustomer,filterChannel,filterOrderStatus,filterItemStatus,filterOrderManager]
+    const filters = [filterOrder,filterProduct,filterCustomer,filterChannel,filterOrderStatus,filterItemStatus]
     filters.forEach(filter => {
         filter.addEventListener("change", async() => {
-            applyFilters()
-            printOrdersDetails()
+            ordersDetailsLoader.style.display = 'block'
+
+            //complete filters
+            g.filters.order_number = filterOrder.value
+            g.filters.customer_name = filterCustomer.value
+            g.filters.description = filterProduct.value
+            g.filters.id_sales_channels = filterChannel.value
+            g.filters.id_orders_status = filterOrderStatus.value
+            g.filters.item_status = filterItemStatus.value
+            g.filters.page = 1
+
+            //update scroll data
+            g.loadedPages = new Set()
+            g.previousScrollTop = 0
+
+            //get and print data
+            g.details = await f.getDetails()
+            printDetails()
+
+            ordersDetailsTable.scrollTop = 0
+            
+            ordersDetailsLoader.style.display = 'none'
         })
     })
 
-    //focus filters
+    // focus filters
     focusInputs(filters)
 
-    //unfilter event listener
+    // unfilter event listener
     unfilterOrdersDetails.addEventListener("click", async() => {
 
         ordersDetailsLoader.style.display = 'block'
-        odg.ordersDetailsFiltered = odg.ordersDetails
-        filterOrder.value = ''
-        filterProduct.value = ''
-        filterCustomer.value = ''
-        filterOrderStatus.value = 'default'
-        filterItemStatus.value = ''
-        //filterFrom.value = ''
-        //filterUntil.value = ''
-        applyFilters()
-        printOrdersDetails()
+
+        // reset filters
+        g.filters.order_number = ''
+        g.filters.customer_name = ''
+        g.filters.description = ''
+        g.filters.id_sales_channels = ''
+        g.filters.id_orders_status = ''
+        g.filters.item_status = ''
+        g.filters.page = 1
+
+        // clear filters
+        clearInputs(filters)
+
+        // update scroll data
+        g.loadedPages = new Set()
+        g.previousScrollTop = 0
+
+        // get and print data
+        g.details = await f.getDetails()
+        printDetails()
+
+        ordersDetailsTable.scrollTop = 0
+
         ordersDetailsLoader.style.display = 'none'
         
     })
 
     //predicts elements
-    applyPredictElement(odg.elementsToPredict)
+    applyPredictElement(g.elementsToPredict)
 
     //close popups event listener
-    closePopups(odg.popups)
+    closePopups(g.popups)
 
     //close with escape
-    closeWithEscape(odg.popups)
+    closeWithEscape(g.popups)
 
-    //accept with enter inputs
-    acceptWithEnterInput(apppCustomer,apppAddLine) //add product
+    // accept with enter
+    acceptWithEnterInput(elppPrice,elppAccept) // elpp
+    acceptWithEnterInput(elppQtyR,elppAccept) // elpp
+    acceptWithEnterInput(elppQtyC,elppAccept) // elpp
+    acceptWithEnterInput(apppCustomer,apppAddLine) // appp
+    acceptWithEnterInput(erqppQty,erqppAccept) // erqpp
 
     //DGAaddProduct    
     DGAaddProduct.addEventListener("click", async() => {
-        const inputs = [apppReqQty,apppProduct, apppCustomer]
+
+        ordersDetailsLoader.style.display = 'block'
+
+        const inputs = [apppProduct, apppCustomer]
+        g.customers = g.customers.length == 0 ? await (await fetch(`${dominio}apis/get/data-customers`)).json() : g.customers
+        g.products = g.products.length == 0 ? await (await fetch(`${dominio}apis/get/cuttings-products?season=${g.season.season}`)).json() : g.products
         clearInputs(inputs)
         isValid(inputs)
         apppError.style.display = 'none'
-        odg.salesChannel = 0
-        odg.productsToAdd = []
+        g.productsToAdd = []
         printProductsToAdd()
-        closeWithEscape(appp,inputs)
         appp.style.display = 'block'
+        apppProduct.focus()
+
+        ordersDetailsLoader.style.display = 'none'
     })
 
-    const date2 = Date.now()
+    // order data
+    orderDown.addEventListener("click", async() => {
 
-    console.log(date2-date1)
+        ordersDetailsLoader.style.display = 'block'
 
+        orderUp.classList.remove('notVisible')
+        orderDown.classList.add('notVisible')
+        g.filters.order = '[["id","DESC"]]'
+
+        await f.updateData()
+
+        ordersDetailsLoader.style.display = 'none'
+    })
+
+    orderUp.addEventListener("click", async() => {
+
+        ordersDetailsLoader.style.display = 'block'
+
+        orderUp.classList.add('notVisible')
+        orderDown.classList.remove('notVisible')
+        g.filters.order = '[["id","ASC"]]'
+
+        await f.updateData()
+
+        ordersDetailsLoader.style.display = 'none'
+    })
 })
+
+
